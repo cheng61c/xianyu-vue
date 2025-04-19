@@ -1249,6 +1249,11 @@ local-pkg@^1.1.1:
     pkg-types "^2.0.1"
     quansync "^0.2.8"
 
+lucide-vue-next@^0.501.0:
+  version "0.501.0"
+  resolved "https://registry.npmjs.org/lucide-vue-next/-/lucide-vue-next-0.501.0.tgz#85a98d8a03c02d39ac9b9c346150dacc51f041bb"
+  integrity sha512-SFOkh2YFQYQjg5+jJH4F1aC7JvjrrRmNVGQnWkTUb6chkTFmUteMDf7lJFe2SKoOv10RRT1xLFYNKJiAXzeOeA==
+
 magic-string@^0.30.11, magic-string@^0.30.17:
   version "0.30.17"
   resolved "https://registry.npmjs.org/magic-string/-/magic-string-0.30.17.tgz"

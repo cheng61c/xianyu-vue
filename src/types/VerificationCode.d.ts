@@ -1,3 +1,3 @@
 export declare interface VerificationCode {
-   email : string;
+  email: string
 }

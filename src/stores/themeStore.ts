@@ -1,9 +1,9 @@
-import { defineStore } from 'pinia';
-import {Theme} from "@/types/Theme";
+import type { Theme } from '@/types/Theme'
+import { defineStore } from 'pinia'
 
 export const useThemeStore = defineStore('theme', {
-    state: () => ({
-        themeList : [] as Theme[]
-    }),
-    persist: true
-});
+  state: () => ({
+    themeList: [] as Theme[],
+  }),
+  persist: true,
+})

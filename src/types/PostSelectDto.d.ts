@@ -1,6 +1,6 @@
 export declare interface PostSelectDto {
-    title?: string;
-    page?: number;
-    limit?: number;
-    type : number;
+  title?: string
+  page?: number
+  limit?: number
+  type: number
 }

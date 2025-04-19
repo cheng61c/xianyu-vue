@@ -1,16 +1,16 @@
-import {Role} from "@/type/Role";
+import { Role } from '@/type/Role'
 
 export declare interface User {
-    id: number;
-    account: string;
-    password: string;
-    nickname: string;
-    signature: string;
-    headImg: string;
-    background: string;
-    createTime: string;
-    updateTime: string;
-    disabled?: boolean;
-    roles?: Role[]
-    email?: string;
+  id: number
+  account: string
+  password: string
+  nickname: string
+  signature: string
+  headImg: string
+  background: string
+  createTime: string
+  updateTime: string
+  disabled?: boolean
+  roles?: Role[]
+  email?: string
 }

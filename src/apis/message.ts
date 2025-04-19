@@ -1,5 +1,5 @@
-import request from "@/utils/request.ts";
+import request from '@/utils/request.ts'
 
 export const getMessageList = () => {
-    return request.get('/notification/unread')
+  return request.get('/notification/unread')
 }

@@ -1,4 +1,4 @@
 export declare interface PlateDisabledDto {
-    id?: number
-    disabled?: number
+  id?: number
+  disabled?: number
 }

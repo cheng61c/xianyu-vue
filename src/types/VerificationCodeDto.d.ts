@@ -1,4 +1,4 @@
 export declare interface VerificationCodeDto {
-   email : string;
-   code : string;
+  email: string
+  code: string
 }

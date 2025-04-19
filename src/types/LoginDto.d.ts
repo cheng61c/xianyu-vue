@@ -1,4 +1,4 @@
 export declare interface LoginDto {
-    account : string;
-    password : string;
+  account: string
+  password: string
 }

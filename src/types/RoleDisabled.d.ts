@@ -1,4 +1,4 @@
 export declare interface RoleDisabledDto {
-    id?: number
-    disabled?: number
+  id?: number
+  disabled?: number
 }

@@ -1,4 +1,4 @@
 export declare interface Motd {
-    id?: number
-    motd: string
+  id?: number
+  motd: string
 }

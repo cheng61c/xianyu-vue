@@ -1,13 +1,13 @@
-import { defineStore } from 'pinia';
-import { User } from "@/types/User";
+import { defineStore } from 'pinia'
+import type { UserType } from '@/types/user'
 
 export const useUserStore = defineStore('user', {
-    state: () => ({
-        token: '',
-        userInfo: {} as User,
-        account: '',
-        password: '',
-        role: false
-    }),
-    persist: true
-});
+  state: () => ({
+    token: '',
+    userInfo: {} as UserType,
+    account: '',
+    password: '',
+    role: false,
+  }),
+  persist: true,
+})

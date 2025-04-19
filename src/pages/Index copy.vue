@@ -29,11 +29,6 @@
         <option value="zh">简体中文</option>
         <option value="en">English</option>
       </select>
-      <el-time-picker
-        v-model="time"
-        arrow-control
-        :placeholder="$t('arbitrary time')"
-      />
       <button class="btn btn-ml">1111</button>
     </div>
   </div>

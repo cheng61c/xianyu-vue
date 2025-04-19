@@ -7,5 +7,9 @@ export const useConfigStore = defineStore('config', {
 
     /** 语言 */
     lang: 'zh',
+
+    /** 主题模式 */
+    themeMode: 'light',
   }),
+  persist: true,
 })

@@ -1,8 +1,13 @@
 <template>
   <header class="flex h-16 justify-baseline items-center px-6">
     <div class="flex justify-center items-center gap-2">
-      <Logo class="text-base-content" />
-      <div class="text-lg text-base-content font-bold">SC 社区</div>
+      <Logo
+        class="text-base-content dark:color-gray-200"
+        :style="{
+          fill: configStore.themeMode === 'dark' ? 'gray' : 'inherit',
+        }"
+      />
+      <div class="text-lg text-base-content font-bold">{{ $t('logo') }}</div>
     </div>
   </header>
 </template>
