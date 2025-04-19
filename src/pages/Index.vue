@@ -1,47 +1,16 @@
 <template>
-  <div
-    class="min-h-screen flex flex-col items-center justify-center p-4 bg-base-100"
-  >
-    <div
-      class="bg-base-100 dark:bg-base-200 rounded-lg px-6 py-8 ring shadow-lg dark:shadow-gray-300/5 ring-gray-900/5 dark:ring-gray-300/5"
-    >
-      <h3 class="text-base-content font-medium tracking-tight">
-        {{ $t('title') }}
-      </h3>
-      <p class="text-base-content mt-2 text-sm">
-        tailwindcss: {{ $t('description') }}
-      </p>
-      <el-text> el-text: {{ $t('description') }} </el-text>
+  <header class="flex h-16 justify-baseline items-center px-6">
+    <div class="flex justify-center items-center gap-2">
+      <Logo class="text-base-content" />
+      <div class="text-lg text-base-content font-bold">SC 社区</div>
     </div>
-
-    <div class="mt-6 flex flex-wrap gap-4 justify-center">
-      <button
-        @click="toggleTheme"
-        class="px-4 py-2 bg-gray-200 dark:bg-gray-500 rounded"
-      >
-        {{ $t('button') }}
-      </button>
-      <select
-        :value="configStore.lang"
-        @change="changeLocale"
-        class="px-3 py-2 rounded bg-gray-200 dark:bg-gray-500"
-      >
-        <option value="zh">简体中文</option>
-        <option value="en">English</option>
-      </select>
-      <el-time-picker
-        v-model="time"
-        arrow-control
-        :placeholder="$t('arbitrary time')"
-      />
-      <button class="btn btn-ml">1111</button>
-    </div>
-  </div>
+  </header>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useConfigStore } from '@/stores/configStore'
+import { Logo } from '@/icon.js'
 import { ref } from 'vue'
 
 const configStore = useConfigStore()
