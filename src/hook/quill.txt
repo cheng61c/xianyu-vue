@@ -1,0 +1,74 @@
+import Delta, {Op} from "quill-delta";
+
+export const deltaToString = (delta: Delta) => {
+    return delta.ops?.map((op : Op) => {
+        if (typeof op.insert === 'string') {
+            return op.insert;
+        }
+        if (typeof op.insert === 'object') {
+            const media = op.insert;
+            if (media.image) {
+                return `[图片](${media.image})`;
+            }
+            if (media.video) {
+                return `[视频](${media.video})`;
+            }
+            if (media.audio) {
+                return `[音乐](${media.audio})`;
+            }
+        }
+        return ''
+    }).join('');
+};
+export const stringToDelta : (text : string ) => Delta = (text: string) => {
+    const delta: Delta = {} as Delta;
+    delta.ops = []
+    const contents : string[] = text.split('\n');
+    contents.forEach(line => {
+        if (line.indexOf('[') !== -1) {
+            const type = line.substring(line.indexOf('[') + 1 , line.indexOf(']'));
+            const url = line.substring(line.indexOf('(') + 1 , line.lastIndexOf(')'));
+            switch (type) {
+                case '图片':
+                    delta.ops?.push({
+                        insert : {
+                            image : url
+                        }
+                    })
+                    break;
+                case '视频':
+                    delta.ops?.push({
+                        insert : {
+                            video : url
+                        }
+                    })
+                    break;
+                case '音乐':
+                    delta.ops?.push({
+                        insert : {
+                            audio : url
+                        }
+                    })
+                    break;
+                case '附件':
+                    delta.ops?.push({
+                        attributes : {
+                            link : url
+                        },
+                        insert : line
+                    })
+                    break;
+                default:
+                    delta.ops?.push({
+                        insert : line
+                    })
+                    break;
+            }
+        } else {
+            delta.ops?.push({
+                insert : line
+            })
+        }
+    });
+    return delta;
+};

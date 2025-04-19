@@ -1,14 +1,13 @@
-// stores/userStore.js
-import type { UserType } from '@/types'
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { User } from "@/types/User";
 
 export const useUserStore = defineStore('user', {
-  state: () => ({
-    /** 用户令牌 */
-    token: '',
-    /** 用户信息 */
-    user: {} as UserType,
-    /** 是否登录 */
-    islogin: false,
-  }),
-})
+    state: () => ({
+        token: '',
+        userInfo: {} as User,
+        account: '',
+        password: '',
+        role: false
+    }),
+    persist: true
+});
