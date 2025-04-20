@@ -1,6 +1,6 @@
 import request from '@/utils/request.ts'
-import { type PlateDto } from '@/types/PlateDto'
-import { type PlateDisabledDto } from '@/types/PlateDisabled'
+import type { PlateDto } from '@/types/PlateDto'
+import type { PlateDisabledDto } from '@/types/PlateDisabled'
 export const getPlateList = () => {
   return request.get('/plate/list')
 }

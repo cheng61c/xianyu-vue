@@ -9,7 +9,7 @@ export const useConfigStore = defineStore('config', {
     lang: 'zh',
 
     /** 主题模式 */
-    themeMode: 'light',
+    darkTheme: false,
   }),
   persist: true,
 })

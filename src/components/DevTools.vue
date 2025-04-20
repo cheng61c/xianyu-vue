@@ -2,7 +2,7 @@
   <!-- 悬浮球 -->
   <div
     v-if="!popupVisible"
-    class="fixed bottom-4 right-4 w-14 h-14 flex bg-blue-500 rounded-full items-center justify-center cursor-pointer transition-all duration-300 ease-in-out z-50 no-select lg:w-20 lg:h-20"
+    class="fixed bottom-4 right-4 w-12 h-12 flex bg-blue-500 rounded-full items-center justify-center cursor-pointer transition-all duration-300 ease-in-out z-50 no-select lg:w-16 lg:h-16"
     @click="toggleCard"
   >
     <span class="text-white text-xl no-select">⚽</span>
@@ -41,63 +41,18 @@
 
       <div class="flex gap-4 items-center justify-between">
         <div>{{ $t('zhou-ye-qie-huan') }}</div>
-        <label class="toggle text-base-content">
-          <input
-            type="checkbox"
-            v-model="themeController"
-            class="theme-controller"
-          />
-
-          <svg
-            aria-label="sun"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              stroke-linejoin="round"
-              stroke-linecap="round"
-              stroke-width="2"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="12" cy="12" r="4"></circle>
-              <path d="M12 2v2"></path>
-              <path d="M12 20v2"></path>
-              <path d="m4.93 4.93 1.41 1.41"></path>
-              <path d="m17.66 17.66 1.41 1.41"></path>
-              <path d="M2 12h2"></path>
-              <path d="M20 12h2"></path>
-              <path d="m6.34 17.66-1.41 1.41"></path>
-              <path d="m19.07 4.93-1.41 1.41"></path>
-            </g>
-          </svg>
-
-          <svg
-            aria-label="moon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              stroke-linejoin="round"
-              stroke-linecap="round"
-              stroke-width="2"
-              fill="none"
-              stroke="currentColor"
-            >
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-            </g>
-          </svg>
-        </label>
+        <ThemeButton />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useConfigStore } from '@/stores/configStore'
 import { Minimize2 } from 'lucide-vue-next'
+import ThemeButton from './HomeHeader/ThemeButton.vue'
 
 const configStore = useConfigStore()
 const { locale } = useI18n()
@@ -106,11 +61,6 @@ const popupVisible = ref(false)
 
 const toggleCard = () => {
   popupVisible.value = !popupVisible.value
-}
-
-// 弹窗按钮点击事件
-const handleButtonClick = (buttonName: string) => {
-  alert(`${buttonName} clicked!`)
 }
 
 // 弹窗位置
@@ -127,29 +77,6 @@ const changeLocale = (e: Event) => {
   configStore.lang = target.value
   locale.value = target.value
 }
-
-// 初始状态，默认为当前主题
-const themeController = ref(false)
-
-// 获取当前主题
-const currentTheme = document.documentElement.getAttribute('data-theme')
-
-// 根据当前主题状态设置 themeController 的初始值
-if (currentTheme === 'dark') {
-  themeController.value = true
-}
-
-// 切换主题函数
-const toggleTheme = () => {
-  const newTheme = themeController.value ? 'dark' : 'light'
-
-  // 更新 data-theme 和 dark 类
-  document.documentElement.setAttribute('data-theme', newTheme)
-  document.documentElement.classList.toggle('dark', themeController.value)
-}
-
-// 监听 themeController 的变化
-watch(themeController, toggleTheme)
 </script>
 
 <style scoped>

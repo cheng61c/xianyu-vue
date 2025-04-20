@@ -1,0 +1,17 @@
+{
+  "Vue 3 Template with Script Setup": {
+    "prefix": "vue",
+    "body": [
+      "<template>",
+      "  <div>",
+      "    <!-- Your template content goes here -->",
+      "  </div>",
+      "</template>",
+      "",
+      "<script setup lang=\"ts\">",
+      "  // Your TypeScript logic goes here",
+      "</script>",
+    ],
+    "description": "Vue 3 component with script setup",
+  },
+}
