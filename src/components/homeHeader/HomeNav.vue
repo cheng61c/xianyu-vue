@@ -4,14 +4,14 @@
       <li
         v-for="(item, index) in menuItems"
         :key="item.path"
-        class="list-none"
-        :class="{ 'text-blue-500': isActive(item) }"
+        class="list-none text-base-content"
+        :class="{ 'text-primary': isActive(item) }"
         @click="setActive(index)"
       >
         <router-link
           :to="item.path"
-          class="inline-block px-2 transition-colors"
-          :class="{ 'text-info': isActive(item) }"
+          class="inline-block px-2 transition-colors text-base-content"
+          :class="{ 'text-primary': isActive(item) }"
         >
           {{ item.name }}
         </router-link>
@@ -20,7 +20,7 @@
         class="absolute bottom-[-2px] h-1 transition-all duration-300"
         :style="indicatorStyle"
       >
-        <div class="w-4 h-1 bg-info rounded-full mx-auto my-0"></div>
+        <div class="w-4 h-1 bg-primary rounded-full mx-auto my-0"></div>
       </div>
     </ul>
   </nav>
@@ -33,11 +33,12 @@ import { useRoute, useRouter } from 'vue-router'
 interface MenuItem {
   name: string
   path: string
+  pathName: string // 添加 pathName 字段
 }
 
 const menuItems: MenuItem[] = [
-  { name: '交流帖子', path: '/postList/0' },
-  { name: '资源下载', path: '/modList/0' },
+  { name: '交流帖子', path: '/postList/0', pathName: 'postList' },
+  { name: '资源下载', path: '/modList/0', pathName: 'modList' },
 ]
 
 const route = useRoute()
@@ -49,8 +50,9 @@ const indicatorStyle = ref({
   width: '0px',
 })
 
+// 使用 route.name 和 pathName 来判断是否高亮
 const isActive = computed(() => (item: MenuItem) => {
-  return route.path === item.path
+  return route.name === item.pathName
 })
 
 const updateIndicator = () => {
@@ -77,12 +79,15 @@ const updateIndicator = () => {
 
 const setActive = (index: number) => {
   activeIndex.value = index
-  router.push(menuItems[index].path)
+  router.push(menuItems[index].path).then(() => {
+    updateIndicator()
+  })
 }
 
 const updateActiveIndex = () => {
-  const index = menuItems.findIndex((item) => item.path === route.path)
+  const index = menuItems.findIndex((item) => item.pathName === route.name)
   activeIndex.value = index >= 0 ? index : 0
+  updateIndicator()
 }
 
 // 初始化
@@ -93,7 +98,7 @@ onMounted(() => {
 
 // 监听路由变化
 watch(
-  () => route.path,
+  () => route.name,
   () => {
     updateActiveIndex()
     updateIndicator()

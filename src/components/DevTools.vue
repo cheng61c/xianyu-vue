@@ -43,6 +43,11 @@
         <div>{{ $t('zhou-ye-qie-huan') }}</div>
         <ThemeButton />
       </div>
+
+      <div class="flex gap-4 items-center justify-between">
+        <div>{{ $t('tang-chuang') }}</div>
+        <button @click="onToast"><Forward /></button>
+      </div>
     </div>
   </div>
 </template>
@@ -51,9 +56,12 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useConfigStore } from '@/stores/configStore'
-import { Minimize2 } from 'lucide-vue-next'
-import ThemeButton from './HomeHeader/ThemeButton.vue'
+import { Minimize2, Forward } from 'lucide-vue-next'
+import ThemeButton from '@/components/homeHeader/ThemeButton.vue'
+import { useToast } from 'vue-toastification'
+import { notify } from '@kyvg/vue3-notification'
 
+const toast = useToast()
 const configStore = useConfigStore()
 const { locale } = useI18n()
 
@@ -76,6 +84,11 @@ const changeLocale = (e: Event) => {
   const target = e.target as HTMLSelectElement
   configStore.lang = target.value
   locale.value = target.value
+}
+
+const onToast = () => {
+  notify('Button clicked!')
+  toast.success('Button clicked!')
 }
 </script>
 

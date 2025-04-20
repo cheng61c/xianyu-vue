@@ -1,41 +1,56 @@
 import axios from 'axios'
-import { useUserStore } from '@/stores/userStore.js'
-const request = axios.create({
-  baseURL: 'http://127.0.0.1:3000/api',
-  timeout: 30000,
+
+import { useUserStore } from '@/stores/userStore'
+import { useConfigStore } from '@/stores/configStore'
+import type { Api } from '@/types'
+
+const config = useConfigStore()
+const serverUrl = config.serverAddress
+const userInfo = useUserStore()
+
+const apiClient = axios.create({
+  baseURL: serverUrl, // 替换为你的API基础地址
+  timeout: 5000, // 请求超时时间
+  headers: {
+    'Content-Type': 'application/json',
+  },
 })
-request.interceptors.request.use(
+
+apiClient.interceptors.request.use(
   (config) => {
-    const userStore = useUserStore()
-    const token = userStore.token
+    // 获取 token
+    const token = userInfo.token
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+
+    // 打印请求信息，包括 Query 参数和请求体
+    // console.log('请求信息:', {
+    //   url: config.url,
+    //   method: config.method,
+    //   headers: config.headers,
+    //   params: config.params || {}, // Query 参数
+    //   data: config.data || {}, // 请求体
+    // })
+
     return config
   },
-  async (e) => {
-    console.log(e)
-    await Promise.reject(null)
+  (error) => {
+    return Promise.reject(error)
   }
 )
 
-request.interceptors.response.use(
+// 响应拦截器
+apiClient.interceptors.response.use(
   (response) => {
-    return response.data
+    const data = response.data as Api
+    response.data = data
+    return response
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
-      return null
-    }
-    if (axios.isAxiosError(error)) {
-      if (error.code === 'ECONNABORTED') {
-        console.error('请求超时', error)
-      }
-      console.error('请求错误', error)
-    }
-    console.error('未知异常', error)
-    return null
+    console.error('请求错误：', error)
+    return Promise.reject(error)
   }
 )
 
-export default request
+export default apiClient

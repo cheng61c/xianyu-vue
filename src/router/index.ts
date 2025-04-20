@@ -5,32 +5,18 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/postlist/0', // 访问根路径时跳转到 /a
-    component: () => import('@/pages/Index.vue'), // 懒加载组件
+    redirect: '/postlist/0',
+    component: () => import('@/pages/Index.vue'),
     children: [
       {
         path: 'postlist/:plateId?',
-        name: 'PostList',
+        name: 'postList',
         component: () => import('@/pages/post/PostIndex.vue'),
-        children: [
-          {
-            path: ':plateId',
-            name: 'PostPlate',
-            component: () => import('@/pages/post/PostPlate.vue'),
-          },
-        ],
       },
       {
         path: 'modList/:plateId?',
         name: 'modList',
         component: () => import('@/pages/post/PostIndex.vue'),
-        children: [
-          {
-            path: ':plateId',
-            name: 'PostPlate',
-            component: () => import('@/pages/post/PostPlate.vue'),
-          },
-        ],
       },
     ],
   },

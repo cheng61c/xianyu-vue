@@ -1,4 +1,4 @@
-import { TFile } from '@/type/TFile'
+import type { TFile } from '@/types/TFile'
 
 export declare interface DocumentVersion {
   version: string

@@ -4,7 +4,9 @@ import { defineStore } from 'pinia'
 export const usePostStore = defineStore('post', {
   state: () => ({
     /** 板块缓存 */
-    plate: [] as Plate[],
+    plate: {} as Record<string, Plate[]>,
+    /** 搜索历史 */
+    searchHistory: [] as string[],
   }),
   persist: true,
 })

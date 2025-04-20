@@ -1,6 +1,6 @@
 import request from '@/utils/request.ts'
-import { type HeloListQueryDto } from '@/types/HeloListQueryDto'
-import { type HeloDto } from '@/types/HeloDto'
+import type { HeloListQueryDto } from '@/types/HeloListQueryDto'
+import type { HeloDto } from '@/types/HeloDto'
 export const getHeloList = (dto: HeloListQueryDto) => {
   return request({
     url: '/hall-of-fame',

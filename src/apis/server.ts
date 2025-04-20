@@ -1,5 +1,5 @@
 import request from '@/utils/request.ts'
-import { type ServerPost } from '@/types/ServerPost'
+import type { ServerPost } from '@/types/ServerPost'
 export const getServerList = () => {
   return request.get('/server-post')
 }

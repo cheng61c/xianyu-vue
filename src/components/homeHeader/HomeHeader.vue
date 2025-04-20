@@ -4,7 +4,7 @@
       <Logo
         class="text-base-content dark:color-gray-200"
         :style="{
-          fill: configStore.darkTheme ? 'gray' : 'inherit',
+          fill: themeStore.darkTheme ? 'gray' : 'inherit',
         }"
       />
       <div class="text-md text-base-content">{{ $t('logo') }}</div>
@@ -20,9 +20,11 @@
 import { useI18n } from 'vue-i18n'
 import { useConfigStore } from '@/stores/configStore'
 import { Logo } from '@/icon.js'
-import ThemeButton from './ThemeButton.vue'
-import HomeNav from './HomeNav.vue'
+import ThemeButton from '@/components/homeHeader/ThemeButton.vue'
+import HomeNav from '@/components/homeHeader/HomeNav.vue'
+import { useThemeStore } from '@/stores/themeStore'
 
+const themeStore = useThemeStore()
 const configStore = useConfigStore()
 const { locale } = useI18n()
 

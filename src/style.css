@@ -1,11 +1,4 @@
-@import 'tailwindcss';
-@custom-variant dark (&:where(.dark, .dark *));
-@plugin "daisyui" {
-  themes:
-    light --default,
-    dark --prefersdark,
-    cupcake;
-}
+@import './assets/theme.css';
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

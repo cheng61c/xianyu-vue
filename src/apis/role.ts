@@ -1,6 +1,6 @@
 import request from '@/utils/request.ts'
-import { type RoleDto } from '@/types/RoleDto'
-import { type RoleDisabledDto } from '@/types/RoleDisabled'
+import type { RoleDto } from '@/types/RoleDto'
+import type { RoleDisabledDto } from '@/types/RoleDisabled'
 
 export const getRoleList = () => {
   return request.get('/role/list')

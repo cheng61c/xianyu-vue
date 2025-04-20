@@ -2,7 +2,7 @@
   <label class="toggle text-base-content">
     <input
       type="checkbox"
-      v-model="configStore.darkTheme"
+      v-model="themeStore.darkTheme"
       class="theme-controller"
     />
 
@@ -49,19 +49,19 @@
 </template>
 
 <script setup lang="ts">
-import { useConfigStore } from '@/stores/configStore'
+import { useThemeStore } from '@/stores/themeStore'
 import { watch } from 'vue'
-const configStore = useConfigStore()
+const themeStore = useThemeStore()
 
 // 初始化
 document.documentElement.setAttribute(
   'data-theme',
-  configStore.darkTheme ? 'dark' : 'light'
+  themeStore.darkTheme ? 'dark' : 'light'
 )
-document.documentElement.classList.toggle('dark', configStore.darkTheme)
+document.documentElement.classList.toggle('dark', themeStore.darkTheme)
 
 watch(
-  () => configStore.darkTheme,
+  () => themeStore.darkTheme,
   (newTheme) => {
     document.documentElement.setAttribute(
       'data-theme',

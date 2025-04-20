@@ -1,7 +1,7 @@
 import request from '@/utils/request.ts'
-import { type DocumentVersion } from '@/types/DocumentVersion'
-import { type Report } from '@/types/Report'
-import { type GameVersionDto } from '@/types/GameVersionDto'
+import type { DocumentVersion } from '@/types/DocumentVersion'
+import type { Report } from '@/types/Report'
+import type { GameVersionDto } from '@/types/GameVersionDto'
 export const upload = (file: File) => {
   const formData = new FormData()
   formData.append('file', file)

@@ -1,12 +1,12 @@
 import request from '@/utils/request.ts'
-import { type PostListQueryDto } from '@/types/PostListQueryDto'
-import { type ServerPostListQueryDto } from '@/types/ServerPostListQueryDto'
-import { type Post } from '@/types/Post'
-import { type ServerPost } from '@/types/ServerPost'
-import { type TopPost } from '@/types/TopPost'
-import { type PostSelectDto } from '@/types/PostSelectDto'
-import { type PostDisabledDto } from '@/types/PostDisabled'
-import { PostCommentDto } from '@/types/PostCommentDto'
+import type { PostListQueryDto } from '@/types/PostListQueryDto'
+import type { ServerPostListQueryDto } from '@/types/ServerPostListQueryDto'
+import type { Post } from '@/types/Post'
+import type { ServerPost } from '@/types/ServerPost'
+import type { TopPost } from '@/types/TopPost'
+import type { PostSelectDto } from '@/types/PostSelectDto'
+import type { PostDisabledDto } from '@/types/PostDisabled'
+import type { PostCommentDto } from '@/types/PostCommentDto'
 
 export const getPostList = (dto: PostListQueryDto) => {
   return request({

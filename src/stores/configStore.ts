@@ -7,9 +7,13 @@ export const useConfigStore = defineStore('config', {
 
     /** 语言 */
     lang: 'zh',
-
-    /** 主题模式 */
-    darkTheme: false,
+    /** 自动登录 */
+    autoLogin: false,
+    // serverAddress: 'http://119.29.147.180/api'
+    /** 后端接口 */
+    serverAddress: 'http://localhost:3000/api',
+    /** 上传路径 */
+    uploadPath: 'http://localhost:3000/api/upload',
   }),
   persist: true,
 })

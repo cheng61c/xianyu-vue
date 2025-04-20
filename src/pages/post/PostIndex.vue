@@ -5,7 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import PostPlate from './PostPlate.vue'
-
-// Your TypeScript logic goes here
+import PostPlate from '@/components/post/PostPlate.vue'
 </script>
