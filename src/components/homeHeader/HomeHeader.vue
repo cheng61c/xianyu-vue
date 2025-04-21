@@ -1,5 +1,5 @@
 <template>
-  <header class="flex h-16 w-full justify-between items-center bg-">
+  <header class="flex h-16 w-full justify-between items-center">
     <button class="flex justify-center items-center gap-2">
       <Logo
         class="text-base-content dark:color-gray-200"
@@ -7,7 +7,9 @@
           fill: themeStore.darkTheme ? 'gray' : 'inherit',
         }"
       />
-      <div class="text-md text-base-content">{{ $t('logo') }}</div>
+      <div class="text-md text-base-content dark:text-gray-200">
+        {{ $t('logo') }}
+      </div>
     </button>
 
     <HomeNav />

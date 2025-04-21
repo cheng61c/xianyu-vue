@@ -1,11 +1,11 @@
 <template>
-  <ul class="flex flex-col gap-6">
+  <ul class="flex flex-col gap-4">
     <li
       v-for="plate in postStore.plate[currentRouteName as string]"
       :key="plate.id"
     >
-      <Card>
-        <div class="flex gap-2">
+      <Card @click="handleCardClick(plate.id)">
+        <div class="flex gap-2 text-background-content">
           <div>{{ plate.name }}</div>
           <div>{{ plate.postCount }}</div>
         </div>
@@ -18,12 +18,13 @@ import { plate } from '@/apis'
 import { usePostStore } from '@/stores/postStore'
 import { onMounted, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
 import Card from '../Card.vue'
 
 const route = useRoute()
+const router = useRouter()
 const currentRouteName = ref<string>((route.name as string) || '')
 const toast = useToast()
 const postStore = usePostStore()
@@ -47,6 +48,10 @@ const getPlate = async () => {
     .catch((error) => {
       toast.error('请求失败: ' + error.message)
     })
+}
+
+const handleCardClick = (plateId: number) => {
+  router.push({ name: route.name, params: { plateId } })
 }
 
 onMounted(async () => {

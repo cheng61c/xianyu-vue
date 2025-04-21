@@ -1,10 +1,12 @@
 // tailwind.config.ts
 module.exports = {
-  darkMode: 'class', // class 或 media
+  darkMode: ['selector', '[data-theme="dark"]'],
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {},
   },
   plugins: [require('daisyui')],
-  daisyui: {},
+  daisyui: {
+    themes: ['light', 'dark'],
+  },
 }

@@ -4,13 +4,13 @@
       <li
         v-for="(item, index) in menuItems"
         :key="item.path"
-        class="list-none text-base-content"
+        class="list-none"
         :class="{ 'text-primary': isActive(item) }"
         @click="setActive(index)"
       >
         <router-link
           :to="item.path"
-          class="inline-block px-2 transition-colors text-base-content"
+          class="inline-block px-2 transition-colors duration-100"
           :class="{ 'text-primary': isActive(item) }"
         >
           {{ item.name }}
