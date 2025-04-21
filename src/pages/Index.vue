@@ -1,7 +1,7 @@
 <template>
   <!-- 主窗口 -->
-  <div class="window bg-background-300 w-dvw h-dvh">
-    <div class="w-full max-w-7xl mx-auto px-4 transition-all duration-300">
+  <div class="window bg-background w-dvw h-dvh">
+    <div class="w-full max-w-7xl mx-auto px-4 transition-all duration-300 xl">
       <HomeHeader />
 
       <div>

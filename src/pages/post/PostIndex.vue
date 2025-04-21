@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full">
+  <div class="flex w-full gap-4">
     <PostPlate />
     <PostList />
   </div>

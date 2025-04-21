@@ -6,31 +6,31 @@ interface Creator {
   nickname: string
 }
 export declare interface Post {
-  id?: number
+  id: number
   title: string
   content: string
-  views?: number
-  cover?: string
-  visible?: number
-  creatorId?: number
+  views: number
+  cover: string
+  visible: number
+  creatorId: number
   plateId: number
   tags?: any[]
   type: number
-  fileType?: number
-  downloadCount?: number
-  createdAt?: string
-  updatedAt?: string
-  isLiked?: boolean
-  likeCount?: string
-  isBaded?: boolean
-  badCount?: string
-  isCollected?: boolean
-  postVersionCount?: string
-  commentCount?: string
-  heat?: string
-  creator?: Creator
-  dependencies?: number[]
-  plate?: Plate
-  postVersions?: DocumentVersion
-  author?: User
+  fileType: number
+  downloadCount: number
+  createdAt: string
+  updatedAt: string
+  isLiked: boolean
+  likeCount: string
+  isBaded: boolean
+  badCount: string
+  isCollected: boolean
+  postVersionCount: string
+  commentCount: string
+  heat: string
+  creator: Creator
+  dependencies: number[]
+  plate: Plate
+  postVersions: DocumentVersion
+  author: User
 }

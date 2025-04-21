@@ -21,3 +21,26 @@ body {
 .no-select {
   user-select: none;
 }
+
+.neumorphism {
+  position: relative;
+  &:before {
+    content: '';
+    border-radius: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    will-change: box-shadow;
+    transition: box-shadow 0.5s ease;
+    box-shadow:
+      10px 10px 15px rgba(0, 0, 0, 0.1),
+      5px 5px 5px rgba(0, 0, 0, 0.05),
+      -10px -10px 20px rgba(255, 255, 255, 0.5),
+      -5px -5px 10px rgba(255, 255, 255, 0.5);
+    user-select: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
