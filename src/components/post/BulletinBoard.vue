@@ -1,5 +1,5 @@
 <template>
-  <div class="w-sm">
+  <div class="w-sm p-1">
     <Card>
       <h2 class="card-title px-1.5">公告栏</h2>
       <div v-for="post in posts" class="">

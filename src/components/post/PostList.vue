@@ -1,7 +1,7 @@
 <template>
   <ul
     v-if="posts.length"
-    class="flex flex-col gap-4 overflow-y-auto w-xl no-scrollbar px-1"
+    class="flex flex-col gap-4 overflow-y-auto w-xl no-scrollbar p-1"
   >
     <li v-for="post in posts" :key="post.id">
       <ItemCard @click="handleCardClick(post.id)" :post="post" />
