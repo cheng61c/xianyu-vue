@@ -10,5 +10,6 @@
   "emmet.includeLanguages": {
     "postcss": "css"
   },
-  "color-highlight.markerType": "dot-before"
+  "color-highlight.markerType": "dot-before",
+  "idf.pythonInstallPath": "C:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe"
 }

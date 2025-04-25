@@ -1,5 +1,5 @@
 <template>
-  <Card @click="handleClick" class="w-xl">
+  <Card @click="handleClick">
     <!-- 第一行，头像、标题、时间 -->
     <div class="flex gap-2 justify-between items-center">
       <div class="font-bold mr-auto">{{ post.title }}</div>

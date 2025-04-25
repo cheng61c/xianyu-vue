@@ -1,16 +1,18 @@
 <template>
-  <Card class="w-full h-full">
-    <h2 class="card-title px-1.5">公告栏</h2>
-    <div v-for="post in posts" class="">
-      <div
-        v-if="post.top == 1"
-        class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all duration-200"
-      >
-        <div class="px-2 py-0.5 rounded-md bg-warning text-sm">置顶</div>
-        <div class="font-bold">{{ post.title }}</div>
+  <div class="w-sm">
+    <Card>
+      <h2 class="card-title px-1.5">公告栏</h2>
+      <div v-for="post in posts" class="">
+        <div
+          v-if="post.top == 1"
+          class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all duration-200"
+        >
+          <div class="px-2 py-0.5 rounded-md bg-warning text-sm">置顶</div>
+          <div class="font-bold">{{ post.title }}</div>
+        </div>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
 </template>
 
 <script setup lang="ts">

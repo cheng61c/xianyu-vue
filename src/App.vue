@@ -6,9 +6,9 @@ const configStore = useConfigStore()
 </script>
 
 <template>
-  <router-view />
-  <DevTools class="sm:hidden" />
-  <Notifications />
+  <div class="w-screen h-screen overflow-hidden">
+    <router-view />
+  </div>
 </template>
 
 <style scoped></style>

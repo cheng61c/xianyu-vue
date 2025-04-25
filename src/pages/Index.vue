@@ -1,10 +1,10 @@
 <template>
   <!-- 主窗口 -->
-  <div class="window bg-background w-dvw h-dvh">
-    <div class="w-full max-w-7xl mx-auto px-4 transition-all duration-300 xl">
+  <div class="bg-background w-dvw h-screen">
+    <div class="w-full max-w-7xl mx-auto px-4 transition-all duration-300">
       <HomeHeader />
 
-      <div>
+      <div class="h-[calc(100vh-64px)]">
         <router-view></router-view>
       </div>
     </div>
