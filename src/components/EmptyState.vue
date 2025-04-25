@@ -11,16 +11,16 @@
 
     <PackageSearch
       v-else
-      class="mx-auto h-12 w-12 text-gray-400 flex-shrink-0"
+      class="mx-auto h-12 w-12 text-gray-content flex-shrink-0"
     />
 
     <!-- 标题 -->
-    <h3 v-if="title" class="mt-4 text-lg font-medium text-gray-900">
+    <h3 v-if="title" class="mt-4 text-lg font-medium background-content">
       {{ title }}
     </h3>
 
     <!-- 描述 -->
-    <p v-if="description" class="mt-2 text-sm text-gray-500">
+    <p v-if="description" class="mt-2 text-sm text-background-content">
       {{ description }}
     </p>
 

@@ -12,7 +12,7 @@
       >
         上一页
       </ScButton>
-      <span class="text-sm text-gray-700">
+      <span class="text-sm text-background-content">
         第 {{ currentPage }} / {{ totalPages }} 页
       </span>
       <ScButton
@@ -31,7 +31,7 @@
     <!-- 桌面端：完整分页 -->
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div>
-        <p class="text-sm text-gray-700">
+        <p class="text-sm text-background-content">
           显示
           <span class="font-medium">{{
             (currentPage - 1) * pageSize + 1
@@ -65,7 +65,7 @@
           <template v-for="page in visiblePages" :key="page">
             <ScButton
               v-if="page === '...'"
-              variant="ghost"
+              variant="ghost text-gray"
               class="px-4"
               :no-bg="true"
               disabled
@@ -76,10 +76,10 @@
               v-else
               :variant="page === currentPage ? 'solid' : 'ghost'"
               :class="[
-                'px-4',
+                'px-4 text-background-content',
                 page === currentPage
-                  ? 'bg-primary-600 text-white'
-                  : 'text-gray-900 hover:bg-gray-50',
+                  ? 'bg-primary-600 text-gray-50'
+                  : 'text-background-content hover:text-primary',
               ]"
               :activation="page === currentPage"
               :no-bg="page !== currentPage"
@@ -90,7 +90,7 @@
           </template>
 
           <ScButton
-            variant="ghost"
+            variant="ghost text-gray"
             class="rounded-r-md"
             :disabled="currentPage >= totalPages"
             :icon="ChevronRight"

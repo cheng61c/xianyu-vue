@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'flex items-center justify-center gap-1 text-gray-content hover:text-gray',
+      'flex items-center justify-center gap-1 text-background-content hover:text-gray',
       { 'py-2 px-4': !noPadding },
       { 'bg-transparent': noBg },
       { 'bg-background': !noBg },
