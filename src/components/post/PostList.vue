@@ -1,12 +1,7 @@
 <template>
   <ul class="flex flex-col gap-4">
     <li v-for="post in posts" :key="post.id">
-      <Card @click="handleCardClick(post.id)">
-        <div class="flex gap-2 text-background-content">
-          <div>{{ post.title }}</div>
-          <div>{{ post.content }}</div>
-        </div>
-      </Card>
+      <ItemCard @click="handleCardClick(post.id)" :post="post" />
     </li>
   </ul>
 </template>
@@ -15,16 +10,39 @@
 import { getPostList } from '@/apis/post'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import Card from '../Card.vue'
+import ItemCard from './ItemCard.vue'
 import type { Post } from '@/types/Post'
 import type { Api } from '@/types'
+import type { PostListQueryDto } from '@/types/PostListQueryDto'
 
 const route = useRoute()
 const plateId = ref<string>(route.params.plateId as string)
 const posts = ref<Post[]>([])
+const postPage = ref({
+  page: 1,
+  total: 1,
+  limit: 2,
+})
 
 const handleCardClick = (postId: number) => {
   console.log(`Post clicked: ${postId}`)
+}
+
+const getPost = (pid: number) => {
+  const query: PostListQueryDto = {
+    type: route.name == 'postList' ? 1 : 2,
+  }
+  if (pid !== 0) {
+    query.plateId = pid
+  }
+  query.page = postPage.value.page
+  query.limit = postPage.value.limit
+  getPostList(query).then((response) => {
+    const res = response.data as Api
+    if (res.code === 200) {
+      posts.value = res.data.list
+    }
+  })
 }
 
 watch(
@@ -32,21 +50,11 @@ watch(
   (newPlateId) => {
     if (newPlateId) {
       plateId.value = newPlateId as string
-      getPostList({ plateId: +plateId.value }).then((response) => {
-        const res = response.data as Api
-        if (res.code === 200) {
-          posts.value = res.data.list
-        }
-      })
+      getPost(+newPlateId)
     }
   }
 )
 onMounted(() => {
-  getPostList({ plateId: +plateId.value }).then((response) => {
-    const res = response.data as Api
-    if (res.code === 200) {
-      posts.value = res.data.list
-    }
-  })
+  getPost(+route.params.plateId)
 })
 </script>

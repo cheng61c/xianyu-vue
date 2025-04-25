@@ -1,9 +1,10 @@
 import { Plate } from '@/type/Plate'
 import { DocumentVersion } from '@/type/DocumentVersion'
-import { User } from '@/type/User'
+import { User } from './user'
 interface Creator {
   id: number
   nickname: string
+  headImg: string
 }
 export declare interface Post {
   id: number

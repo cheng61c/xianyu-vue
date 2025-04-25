@@ -1,13 +1,38 @@
 <template>
   <ul class="flex flex-col gap-4">
+    <Card
+      @click="handleCardClick(0)"
+      class="w-60"
+      :activation="activation == 0"
+    >
+      <div class="flex gap-2 text-background-content justify-between">
+        <span
+          class="flex gap-2 items-center justify-center text-background-content font-bold"
+          :class="{ 'text-primary': activation == 0 }"
+        >
+          <Signpost />
+          全部板块
+        </span>
+      </div>
+    </Card>
+
     <li
       v-for="plate in postStore.plate[currentRouteName as string]"
       :key="plate.id"
     >
-      <Card @click="handleCardClick(plate.id)">
-        <div class="flex gap-2 text-background-content">
-          <div>{{ plate.name }}</div>
-          <div>{{ plate.postCount }}</div>
+      <Card
+        @click="handleCardClick(plate.id)"
+        class="w-60"
+        :activation="activation == plate.id"
+      >
+        <div class="flex gap-2 text-background-content justify-between">
+          <span
+            class="flex gap-2 items-center justify-center text-background-content font-bold"
+            :class="{ 'text-primary': activation == plate.id }"
+          >
+            <Signpost />
+            {{ plate.name }}
+          </span>
         </div>
       </Card>
     </li>
@@ -22,12 +47,15 @@ import { useRoute, useRouter } from 'vue-router'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
 import Card from '../Card.vue'
+import { Signpost } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
 const currentRouteName = ref<string>((route.name as string) || '')
 const toast = useToast()
 const postStore = usePostStore()
+
+const activation = ref<number>(0)
 
 /** 获取板块列表 */
 const getPlate = async () => {
@@ -52,6 +80,7 @@ const getPlate = async () => {
 
 const handleCardClick = (plateId: number) => {
   router.push({ name: route.name, params: { plateId } })
+  activation.value = plateId
 }
 
 onMounted(async () => {

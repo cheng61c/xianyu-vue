@@ -1,4 +1,4 @@
-import { Role } from '@/type/Role'
+import { Role } from './Role'
 
 export declare interface User {
   id: number

@@ -2,12 +2,12 @@
   <header class="flex h-16 w-full justify-between items-center">
     <button class="flex justify-center items-center gap-2">
       <Logo
-        class="text-base-content dark:color-gray-200"
+        class="text-background-content"
         :style="{
-          fill: themeStore.darkTheme ? 'gray' : 'inherit',
+          fill: themeStore.darkTheme ? 'rgba(255, 255, 255, 0.9)' : '#666666',
         }"
       />
-      <div class="text-md text-base-content dark:text-gray-200">
+      <div class="text-md text-background-content font-bold">
         {{ $t('logo') }}
       </div>
     </button>

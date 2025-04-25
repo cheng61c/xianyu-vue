@@ -5,18 +5,25 @@
 @theme {
   /* 默认主题 */
   --color-background: #f8fcff;
-  --color-background-content: #000000; /*普通文字*/
+  --color-background-content: #666666; /*主文本颜色*/
   --color-border: linear-gradient(to bottom right, #ff7e5f, #feb47b) 1;
-  --shadow-card:
-    6px 6px 6px rgba(90, 102, 114, 0.1), -2px -6px 6px rgba(255, 251, 255, 0.1);
   /* 卡片边框 */
   --color-border: 1px solid rgba(204, 204, 204, 0.6);
   /* 主色 */
   --color-primary: #30ddff;
   --color-success: oklch(65% 0.25 140);
   --color-success-content: oklch(98% 0.01 140);
-  --color-gray-100: #d1d5db;
-  --color-gray-content: #999999;
+  --color-gray: #d1d5db;
+  --color-gray-content: #666666; /* 次文本颜色 */
+
+  --shadow-card: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-card-md: 4px 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-card-dark:
+    2px 2px 4px rgba(255, 255, 255, 0.05),
+    -2px -2px 4px rgba(255, 255, 255, 0.15);
+  --shadow-card-md-dark:
+    4px 6px 6px rgba(255, 255, 255, 0.05),
+    -4px -4px 8px rgba(255, 255, 255, 0.15);
 }
 
 @layer base {
@@ -24,18 +31,13 @@
   .dark {
     --color-background: #2a2f34;
     --color-background-content: rgba(255, 255, 255, 0.9); /*普通文字*/
-    --shadow-card:
-      6px 6px 6px rgba(43, 50, 53, 0.2), -6px -6px 12px rgba(90, 102, 114, 0.1);
     /* 卡片边框 */
     --color-border: 1px solid rgba(204, 204, 204, 0.6);
 
     /* 主色 */
-    --color-primary: #30ddff;
-    --color-success: oklch(65% 0.25 140);
-    --color-success-content: oklch(98% 0.01 140);
     --color-white: #26282c;
-    --color-gray-100: #282d32;
-    --color-gray-content: #666666;
+    --color-gray: #444546;
+    --color-gray-content: #8b8b8b;
   }
 }
 
@@ -43,14 +45,9 @@
   p,
   div,
   a,
-  li {
-    color: var(--color-content);
-  }
-
-  /* 卡片边框 */
-  .border-card {
-    border: var(--border);
-    border-color: var(--color-border);
+  li,
+  button {
+    color: var(--color-background-content);
   }
 }
 
@@ -60,11 +57,7 @@
   prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
   color-scheme: light; /* color of browser-provided UI */
 
-  --color-base-100: #f8fdff;
-  --color-base-200: #f0f6fd;
-  --color-base-300: #e7f2fc;
-  --color-base-content: oklch(20% 0.05 240);
-  --color-primary: #30ddff;
+  --color-primary: #66ccff;
   --color-primary-content: oklch(0.933, 0.093, 210.26);
   --color-secondary: oklch(70% 0.25 200);
   --color-secondary-content: oklch(98% 0.01 200);
@@ -80,22 +73,6 @@
   --color-warning-content: oklch(20% 0.05 80);
   --color-error: oklch(0.682, 0.712, 2.59);
   --color-error-content: oklch(0.933, 0.093, 210.26);
-
-  /* border radius */
-  --radius-selector: 1rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-
-  /* base sizes */
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-
-  /* border size */
-  --border: 1px;
-
-  /* effects */
-  --depth: 1;
-  --noise: 0;
 }
 
 @plugin "daisyui/theme" {
@@ -104,11 +81,7 @@
   prefersdark: true; /* 设置为暗色模式 (prefers-color-scheme:dark) */
   color-scheme: dark; /* 浏览器 UI 的颜色模式为暗色 */
 
-  --color-base-100: #30373c; /* 深色背景 */
-  --color-base-200: #2c313a; /* 稍亮的背景 */
-  --color-base-300: #232229; /* 更亮的背景 */
-  --color-base-content: #ffffff; /* 浅色内容文本，纯白或接近白色 */
-  --color-primary: #6cd9fe; /* 主色：紫色 */
+  --color-primary: #66ccff; /* 主色：蓝色 */
   --color-primary-content: #ffffff; /* 主色内容文本，通常是浅色 */
   --color-secondary: #3b3f47; /* 次要色：蓝色 */
   --color-secondary-content: #ffffff; /* 次要色内容文本 */
@@ -120,24 +93,8 @@
   --color-info-content: oklch(90% 0.1 220); /* 信息色内容文本 */
   --color-success: oklch(50% 0.25 140); /* 成功色：绿色 */
   --color-success-content: oklch(90% 0.1 140); /* 成功色内容文本 */
-  --color-warning: oklch(50% 0.3 80); /* 警告色：黄色 */
+  --color-warning: oklch(70% 0.25 70); /* 警告色：黄色 */
   --color-warning-content: oklch(10% 0.05 80); /* 警告色内容文本 */
   --color-error: oklch(40% 0.3 30); /* 错误色：红色 */
   --color-error-content: oklch(90% 0.1 30); /* 错误色内容文本 */
-
-  /* border radius */
-  --radius-selector: 1rem;
-  --radius-field: 0.25rem;
-  --radius-box: 0.5rem;
-
-  /* base sizes */
-  --size-selector: 0.25rem;
-  --size-field: 0.25rem;
-
-  /* border size */
-  --border: 1px;
-
-  /* effects */
-  --depth: 1;
-  --noise: 0;
 }
