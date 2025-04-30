@@ -2,9 +2,10 @@
   <div class="w-sm p-1">
     <Card>
       <h2 class="card-title px-1.5">公告栏</h2>
-      <div v-for="post in posts" class="">
+      <div v-for="post in posts">
         <div
           v-if="post.top == 1"
+          @click="handleClick(post)"
           class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all duration-200"
         >
           <div class="px-2 py-0.5 rounded-md bg-warning text-sm">置顶</div>
@@ -18,6 +19,19 @@
 <script setup lang="ts">
 import Card from '@/components/Card.vue'
 import { usePostStore } from '@/stores/postStore'
+import { useRouter } from 'vue-router'
+import { useConfigStore } from '@/stores/configStore'
+import type { Post } from '@/types/Post'
+
+const router = useRouter()
+const configStore = useConfigStore()
+
+const handleClick = (post: { id: any }) => {
+  router.push({
+    name: 'postDetails',
+    params: { postId: post.id },
+  })
+}
 
 const postStore = usePostStore()
 const posts = [

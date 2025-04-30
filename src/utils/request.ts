@@ -1,8 +1,8 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { useUserStore } from '@/stores/userStore'
 import { useConfigStore } from '@/stores/configStore'
-import type { Api } from '@/types'
+import type { Api, ErrorResponse } from '@/types'
 
 const config = useConfigStore()
 const serverUrl = config.serverAddress
@@ -23,16 +23,6 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
-
-    // 打印请求信息，包括 Query 参数和请求体
-    // console.log('请求信息:', {
-    //   url: config.url,
-    //   method: config.method,
-    //   headers: config.headers,
-    //   params: config.params || {}, // Query 参数
-    //   data: config.data || {}, // 请求体
-    // })
-
     return config
   },
   (error) => {
@@ -42,14 +32,23 @@ apiClient.interceptors.request.use(
 
 // 响应拦截器
 apiClient.interceptors.response.use(
-  (response) => {
-    const data = response.data as Api
-    response.data = data
+  (response: Api) => {
+    console.log('Response:', response)
+
     return response
   },
-  (error) => {
-    console.error('请求错误：', error)
-    return Promise.reject(error)
+  (error: AxiosError) => {
+    const { response } = error
+    const customError = error as ErrorResponse
+    if (response) {
+      const responseData = response.data as { message?: string; msg?: string }
+      customError.msg = responseData.message || responseData.msg || '未知错误'
+      customError.status = response.status
+    } else {
+      customError.msg = '服务器无响应'
+      customError.status = 500
+    }
+    return Promise.reject(customError)
   }
 )
 

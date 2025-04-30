@@ -17,7 +17,6 @@
     class="w-xl px-1"
     action="前往发帖"
     :actionIcon="SquareArrowOutUpRight"
-    actionVariant
   />
 </template>
 
@@ -32,6 +31,7 @@ import type { Post } from '@/types/Post'
 import type { Api } from '@/types'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import { SquareArrowOutUpRight } from 'lucide-vue-next'
+import { useConfigStore } from '@/stores/configStore'
 
 const route = useRoute()
 const plateId = ref<string>(route.params.plateId as string)
@@ -41,6 +41,7 @@ const postPage = ref({
   total: 10,
   limit: 2,
 })
+const configStore = useConfigStore()
 
 const handleCardClick = (postId: number) => {
   console.log(`Post clicked: ${postId}`)
@@ -55,8 +56,8 @@ const getPost = (pid: number) => {
   }
   query.page = postPage.value.page
   query.limit = postPage.value.limit
-  getPostList(query).then((response) => {
-    const res = response.data as Api
+  getPostList(query).then((response: Api) => {
+    const res = response.data
     if (res.code === 200) {
       posts.value = res.data.list
       postPage.value.page = res.data.page
@@ -67,11 +68,11 @@ const getPost = (pid: number) => {
 }
 
 watch(
-  () => route.params.plateId,
-  (newPlateId) => {
-    if (newPlateId) {
-      plateId.value = newPlateId as string
-      getPost(+newPlateId)
+  () => route.params,
+  (newPlate) => {
+    if (newPlate.plateId && configStore.currentPlate.pathName === route.name) {
+      plateId.value = newPlate.plateId as string
+      getPost(+newPlate.plateId)
     }
   }
 )

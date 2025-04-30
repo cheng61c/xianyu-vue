@@ -48,22 +48,27 @@ import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
 import Card from '../Card.vue'
 import { Signpost } from 'lucide-vue-next'
+import { useConfigStore } from '@/stores/configStore'
 
 const route = useRoute()
 const router = useRouter()
 const currentRouteName = ref<string>((route.name as string) || '')
 const toast = useToast()
 const postStore = usePostStore()
+const configStore = useConfigStore()
 
-const activation = ref<number>(0)
+const activation = ref(0)
 
 /** 获取板块列表 */
 const getPlate = async () => {
-  const typeId = currentRouteName.value === 'modList' ? 2 : 1
+  const typeId =
+    configStore.menuItems.find(
+      (item) => item.pathName === currentRouteName.value
+    )?.type || 1
   plate
     .getPlateList()
-    .then((res) => {
-      const data = res.data as Api
+    .then((res: Api) => {
+      const data = res.data
       if (data.code !== 200) {
         return toast.error('获取板块失败')
       }
@@ -84,15 +89,18 @@ const handleCardClick = (plateId: number) => {
 }
 
 onMounted(async () => {
+  currentRouteName.value = (route.name as string) || ''
   getPlate()
 })
 
 watch(
-  () => route.name,
+  () => route.path,
   () => {
+    if (currentRouteName.value !== (route.name as string)) {
+      activation.value = 0
+    }
     currentRouteName.value = (route.name as string) || ''
     getPlate()
-    console.log(route.name)
   }
 )
 </script>

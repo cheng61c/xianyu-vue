@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <ul ref="menuList" class="flex gap-4 relative p-0">
+    <ul v-if="show" ref="menuList" class="flex gap-4 relative p-0">
       <li
-        v-for="(item, index) in menuItems"
+        v-for="(item, index) in configStore.menuItems"
         :key="item.path"
         class="list-none"
         :class="{ 'text-primary': isActive(item) }"
@@ -27,19 +27,12 @@
 </template>
 
 <script setup lang="ts">
+import { useConfigStore } from '@/stores/configStore'
+import type { MenuItem } from '@/types/Config'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-interface MenuItem {
-  name: string
-  path: string
-  pathName: string // 添加 pathName 字段
-}
-
-const menuItems: MenuItem[] = [
-  { name: '交流帖子', path: '/postList/0', pathName: 'postList' },
-  { name: '资源下载', path: '/modList/0', pathName: 'modList' },
-]
+const configStore = useConfigStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -49,15 +42,17 @@ const indicatorStyle = ref({
   left: '0px',
   width: '0px',
 })
+const show = ref(true)
 
-// 使用 route.name 和 pathName 来判断是否高亮
+// 使用 currentPlate.pathName 和 pathName 来判断是否高亮
 const isActive = computed(() => (item: MenuItem) => {
-  return route.name === item.pathName
+  return item.pathName === configStore.currentPlate.pathName
 })
 
 const updateIndicator = () => {
   nextTick(() => {
     if (!menuList.value?.children?.[activeIndex.value]) return
+    if (!isMenuItem.value) return
 
     const activeElement = menuList.value.children[
       activeIndex.value
@@ -79,29 +74,50 @@ const updateIndicator = () => {
 
 const setActive = (index: number) => {
   activeIndex.value = index
-  router.push(menuItems[index].path).then(() => {
+  router.push(configStore.menuItems[index].path).then(() => {
     updateIndicator()
   })
 }
 
 const updateActiveIndex = () => {
-  const index = menuItems.findIndex((item) => item.pathName === route.name)
-  activeIndex.value = index >= 0 ? index : 0
+  const index = configStore.menuItems.findIndex(
+    (item) => item.pathName === route.name
+  )
+  show.value = true
+  activeIndex.value = index !== -1 ? index : 0
+  // 更新当前所选板块
+  configStore.currentPlate = {
+    name: configStore.menuItems[activeIndex.value].name,
+    pathName: configStore.menuItems[activeIndex.value].pathName,
+  }
   updateIndicator()
 }
 
+const isMenuItem = computed(() => {
+  return configStore.menuItems.some((item) => item.pathName === route.name)
+})
+
 // 初始化
 onMounted(() => {
-  updateActiveIndex()
-  updateIndicator()
+  if (isMenuItem.value) {
+    updateActiveIndex()
+    updateIndicator()
+  } else {
+    show.value = false
+  }
 })
 
 // 监听路由变化
 watch(
   () => route.name,
   () => {
-    updateActiveIndex()
-    updateIndicator()
+    // 判断当前name是否属于menuItems中的一项
+    if (isMenuItem.value) {
+      updateActiveIndex()
+      updateIndicator()
+    } else {
+      show.value = false
+    }
   }
 )
 

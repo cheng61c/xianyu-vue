@@ -1,3 +1,4 @@
+<!-- 空内容 -->
 <template>
   <div class="flex flex-col items-center justify-center py-12 text-center">
     <!-- 图标 -->

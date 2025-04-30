@@ -18,6 +18,11 @@ const routes = [
         name: 'modList',
         component: () => import('@/pages/post/PostIndex.vue'),
       },
+      {
+        path: 'postDetails/:postId',
+        name: 'postDetails',
+        component: () => import('@/components/post/PostDetails.vue'),
+      },
     ],
   },
 ]
@@ -27,6 +32,11 @@ const router = createRouter({
   // history: createWebHashHistory(), // hash模式 有#号
   history: createWebHistory(), // history模式 无#号
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  console.log('Navigating to:', to.name)
+  next()
 })
 
 export default router

@@ -2,10 +2,11 @@
   <button
     :class="[
       'flex items-center justify-center gap-1 text-background-content hover:text-gray',
-      { 'py-2 px-4': !noPadding },
+      { 'p-1': !noPadding },
       { 'bg-transparent': noBg },
       { 'bg-background': !noBg },
-      { 'bg-primary': activation },
+      { [activationColor]: activation },
+      { 'rounded-md': !noRounded },
     ]"
   >
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
@@ -34,6 +35,14 @@ defineProps({
     default: false,
   },
   activation: {
+    type: Boolean,
+    default: false,
+  },
+  activationColor: {
+    type: String,
+    default: 'bg-primary',
+  },
+  noRounded: {
     type: Boolean,
     default: false,
   },
