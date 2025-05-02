@@ -7,7 +7,7 @@
         :disabled="currentPage <= 1"
         :icon="ChevronLeft"
         icon-size="20"
-        :no-bg="true"
+        noBg
         @click="handlePageChange(currentPage - 1)"
       >
         上一页
@@ -21,7 +21,7 @@
         :icon="ChevronRight"
         icon-position="right"
         icon-size="20"
-        :no-bg="true"
+        noBg
         @click="handlePageChange(currentPage + 1)"
       >
         下一页
@@ -49,13 +49,12 @@
           aria-label="Pagination"
         >
           <ScButton
-            variant="ghost"
             class="rounded-l-md"
             :disabled="currentPage <= 1"
             :icon="ChevronLeft"
             icon-size="20"
-            :no-padding="true"
-            :no-bg="true"
+            noPadding
+            noBg
             @click="handlePageChange(currentPage - 1)"
           >
             <span class="sr-only">上一页</span>
@@ -63,26 +62,35 @@
 
           <!-- 页码按钮 -->
           <template v-for="page in visiblePages" :key="page">
-            <ScButton
-              v-if="page === '...'"
-              variant="ghost text-gray"
-              class="px-4"
-              :no-bg="true"
-              disabled
-            >
-              ...
-            </ScButton>
+            <PopupBox v-if="page === '...'" buttonText="..." position="top">
+              <template #default="{ close }">
+                <div class="flex items-center justify-center w-36 p-2 gap-2">
+                  <input
+                    type="number"
+                    v-model="inputPage"
+                    class="w-20 text-center border border-gray-content/50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="页码"
+                    @keydown.enter="(handlePageChange(inputPage), close())"
+                    @keydown.esc="close()"
+                    min="1"
+                    :max="totalPages"
+                  />
+                  <ScButton
+                    noPadding
+                    class="border-gray-content/50"
+                    @click="(handlePageChange(inputPage), close())"
+                  >
+                    跳转
+                  </ScButton>
+                </div>
+              </template>
+            </PopupBox>
+
             <ScButton
               v-else
-              :variant="page === currentPage ? 'solid' : 'ghost'"
-              :class="[
-                'px-4 text-background-content',
-                page === currentPage
-                  ? 'bg-primary-600 text-gray-50'
-                  : 'text-background-content hover:text-primary',
-              ]"
-              :activation="page === currentPage"
-              :no-bg="page !== currentPage"
+              class="h-10 w-10"
+              :activation="page == currentPage"
+              noBg
               @click="handlePageChange(page)"
             >
               {{ page }}
@@ -90,13 +98,12 @@
           </template>
 
           <ScButton
-            variant="ghost text-gray"
             class="rounded-r-md"
             :disabled="currentPage >= totalPages"
             :icon="ChevronRight"
             icon-size="20"
-            :no-padding="true"
-            :no-bg="true"
+            noPadding
+            noBg
             @click="handlePageChange(currentPage + 1)"
           >
             <span class="sr-only">下一页</span>
@@ -109,8 +116,9 @@
 
 <script setup lang="ts">
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import ScButton from '@/components/ScButton.vue'
+import PopupBox from '@/components/PopupBox.vue'
 
 const props = defineProps({
   currentPage: {
@@ -171,6 +179,7 @@ const visiblePages = computed(() => {
 
   return pages
 })
+const inputPage = ref(props.currentPage)
 
 const handlePageChange = (page: number | string) => {
   page = Number(page)

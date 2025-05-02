@@ -101,11 +101,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <div>
-      <h1 class="text-xl font-bold mb-4">编辑帖子</h1>
-      <TipTap v-model="html1" />
-    </div> -->
   </div>
 </template>
 

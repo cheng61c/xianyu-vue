@@ -26,6 +26,15 @@ export const useConfigStore = defineStore('config', {
       { name: '交流帖子', path: '/postList/0', pathName: 'postList', type: 1 },
       { name: '资源下载', path: '/modList/0', pathName: 'modList', type: 2 },
     ],
+
+    fileTypes: [
+      { value: 1, label: '存档' },
+      { value: 2, label: '家具' },
+      { value: 3, label: '材质' },
+      { value: 4, label: '皮肤' },
+      { value: 5, label: '模组' },
+      { value: 7, label: '其他' },
+    ],
   }),
   persist: true,
 })

@@ -27,6 +27,9 @@ import {
   Subscript,
   Superscript,
   Copy,
+  List,
+  ListOrdered,
+  ImageIcon,
 } from 'lucide-vue-next'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
@@ -36,11 +39,14 @@ import SuperscriptE from '@tiptap/extension-superscript'
 import Strike from '@tiptap/extension-strike'
 import UnderlineE from '@tiptap/extension-underline'
 import CodeBlock from '@tiptap/extension-code-block'
+import BulletList from '@tiptap/extension-bullet-list'
+import Image from '@tiptap/extension-image'
 
 import Card from './Card.vue'
 import ScDivider from './ScDivider.vue'
 import ScDropListButtons from './ScDropListButtons.vue'
 import ScButton from './ScButton.vue'
+import TipTapUploadImage from './TipTapUploadImage.vue'
 
 const props = defineProps({
   modelValue: {
@@ -53,7 +59,54 @@ const props = defineProps({
   },
 })
 
+const CustomBulletList = BulletList.extend({
+  addKeyboardShortcuts() {
+    return {
+      // 无序列表
+      'Mod-l': () => this.editor.commands.toggleBulletList(),
+      // 有序列表
+      'Mod-o': () => this.editor.commands.toggleOrderedList(),
+      // 下标
+      'Mod-[': () => this.editor.commands.toggleSubscript(),
+      // 上标
+      'Mod-]': () => this.editor.commands.toggleSuperscript(),
+      // 图片
+      'Mod-Alt-i': () => {
+        togglePopup()
+        return true
+      },
+    }
+  },
+})
+
 const emit = defineEmits(['update:modelValue'])
+// 获取设备为Windows还是Mac
+const isMac = window.navigator.userAgent.toLowerCase().includes('mac')
+const keyboardShortcut = isMac ? '⌘' : 'Ctrl'
+const dataTip = {
+  Undo: `撤销 ${keyboardShortcut}+Z`,
+  Redo: `重做 ${keyboardShortcut}+Y`,
+  CodeBlock: `代码块 ${keyboardShortcut}+Alt+C`,
+  Code: `行内代码 ${keyboardShortcut}+E`,
+  Blockquote: `引用块 ${keyboardShortcut}+Shift+B`,
+  Heading: `标题 ${keyboardShortcut}+Alt+数字`,
+  Bold: `加粗 ${keyboardShortcut}+B`,
+  Italic: `斜体 ${keyboardShortcut}+I`,
+  Strikethrough: `删除线 ${keyboardShortcut}+Shift+S`,
+  Underline: `下划线 ${keyboardShortcut}+U`,
+  Copy: `复制 ${keyboardShortcut}+C`,
+  Paste: `粘贴 ${keyboardShortcut}+V`,
+  Highlight: `高亮 ${keyboardShortcut}+Shift+H`,
+  Subscript: `下标 ${keyboardShortcut}+[`,
+  Superscript: `上标 ${keyboardShortcut}+]`,
+  LeftAlign: `左对齐 ${keyboardShortcut}+Shift+L`,
+  CenterAlign: `居中对齐 ${keyboardShortcut}+Shift+E`,
+  RightAlign: `右对齐 ${keyboardShortcut}+Shift+R`,
+  JustifyAlign: `对齐全页 ${keyboardShortcut}+Shift+J`,
+  OrderedList: `有序列表 ${keyboardShortcut}+O`,
+  BulletList: `无序列表 ${keyboardShortcut}+L`,
+  Image: `插入图片 ${keyboardShortcut}+Shift+I`,
+}
 
 const contentModel = useVModel(props, 'modelValue', emit)
 
@@ -75,6 +128,7 @@ onMounted(() => {
   editor.value = new Editor({
     content: contentModel.value,
     extensions: [
+      CustomBulletList,
       StarterKit.configure({
         codeBlock: false,
       }),
@@ -96,6 +150,7 @@ onMounted(() => {
       }),
       SubscriptE,
       SuperscriptE,
+      Image,
     ],
     // 编辑器更新事件
     onUpdate: () => {
@@ -134,6 +189,17 @@ function copyToClipboard() {
       })
   }
 }
+
+const openImagePopup = ref(false)
+function togglePopup(value?: string) {
+  console.log('openImagePopup', value)
+
+  if (value === 'off') {
+    openImagePopup.value = false
+  } else {
+    openImagePopup.value = !openImagePopup.value
+  }
+}
 </script>
 
 <template>
@@ -147,6 +213,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().undo().run()"
           :disabled="!editor?.can().undo()"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Undo"
         >
           <Undo2 />
         </ScButton>
@@ -158,10 +226,38 @@ function copyToClipboard() {
           @click="editor?.chain().focus().redo().run()"
           :disabled="!editor?.can().redo()"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Redo"
         >
           <Redo2 />
         </ScButton>
 
+        <ScDivider vertical />
+
+        <!-- 无序列表 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="editor?.chain().focus().toggleBulletList().run()"
+          :activation="editor?.isActive('bulletList')"
+          hoverable
+          class="tooltip"
+          :data-tip="dataTip.BulletList"
+        >
+          <List />
+        </ScButton>
+        <!-- 有序列表 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="editor?.chain().focus().toggleOrderedList().run()"
+          :activation="editor?.isActive('orderedList')"
+          hoverable
+          class="tooltip"
+          :data-tip="dataTip.OrderedList"
+        >
+          <ListOrdered />
+        </ScButton>
         <ScDivider vertical />
 
         <!-- 代码块 -->
@@ -171,6 +267,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleCodeBlock().run()"
           :activation="editor?.isActive('codeBlock')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.CodeBlock"
         >
           <SquareCode />
         </ScButton>
@@ -182,9 +280,16 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleBlockquote().run()"
           :activation="editor?.isActive('blockquote')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Blockquote"
         >
           <TextQuote />
         </ScButton>
+
+        <!-- 图片 -->
+        <div class="tooltip" :data-tip="dataTip.Image">
+          <TipTapUploadImage />
+        </div>
 
         <ScDivider vertical />
 
@@ -193,10 +298,9 @@ function copyToClipboard() {
           v-model="selected"
           :options="options"
           :activation="editor?.isActive('heading')"
+          class="tooltip"
+          :data-tip="dataTip.Heading"
         >
-          <details class="dropdown">
-            <summary class="btn m-1">open or close</summary>
-          </details>
           <template #trigger>
             <Heading1
               v-if="editor?.isActive('heading', { level: 1 })"
@@ -293,6 +397,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleBold().run()"
           :activation="editor?.isActive('bold')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Bold"
         >
           <Bold />
         </ScButton>
@@ -304,6 +410,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleItalic().run()"
           :activation="editor?.isActive('italic')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Italic"
         >
           <Italic />
         </ScButton>
@@ -315,6 +423,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleStrike().run()"
           :activation="editor?.isActive('strike')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Strikethrough"
         >
           <Strikethrough />
         </ScButton>
@@ -326,6 +436,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleUnderline().run()"
           :activation="editor?.isActive('underline')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Underline"
         >
           <Underline />
         </ScButton>
@@ -337,6 +449,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleCode().run()"
           :activation="editor?.isActive('code')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Code"
         >
           <CodeXml />
         </ScButton>
@@ -348,6 +462,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleHighlight().run()"
           :activation="editor?.isActive('highlight')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Highlight"
         >
           <Highlighter />
         </ScButton>
@@ -359,6 +475,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleSubscript().run()"
           :activation="editor?.isActive('subscript')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Subscript"
         >
           <Subscript />
         </ScButton>
@@ -370,6 +488,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().toggleSuperscript().run()"
           :activation="editor?.isActive('superscript')"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Superscript"
         >
           <Superscript />
         </ScButton>
@@ -383,6 +503,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().setTextAlign('left').run()"
           :activation="editor?.isActive({ textAlign: 'left' })"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.LeftAlign"
         >
           <AlignLeft />
         </ScButton>
@@ -394,6 +516,8 @@ function copyToClipboard() {
           @click="editor?.chain().focus().setTextAlign('center').run()"
           :activation="editor?.isActive({ textAlign: 'center' })"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.CenterAlign"
         >
           <AlignCenter />
         </ScButton>
@@ -405,18 +529,10 @@ function copyToClipboard() {
           @click="editor?.chain().focus().setTextAlign('right').run()"
           :activation="editor?.isActive({ textAlign: 'right' })"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.RightAlign"
         >
           <AlignRight />
-        </ScButton>
-
-        <!-- 等距对齐 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().setTextAlign('justify').run()"
-          hoverable
-        >
-          <AlignJustify />
         </ScButton>
 
         <!-- 复制内容 -->
@@ -425,6 +541,8 @@ function copyToClipboard() {
           size="small"
           @click="copyToClipboard"
           hoverable
+          class="tooltip"
+          :data-tip="dataTip.Copy"
         >
           <Copy />
         </ScButton>

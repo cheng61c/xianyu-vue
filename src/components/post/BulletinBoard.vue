@@ -1,5 +1,8 @@
 <template>
-  <div class="w-sm p-1">
+  <div
+    class="flex flex-col gap-4 h-full overflow-y-auto px-1 w-4/5 no-scrollbar"
+  >
+    <Creation />
     <Card>
       <h2 class="card-title px-1.5">公告栏</h2>
       <div v-for="post in posts">
@@ -22,6 +25,7 @@ import { usePostStore } from '@/stores/postStore'
 import { useRouter } from 'vue-router'
 import { useConfigStore } from '@/stores/configStore'
 import type { Post } from '@/types/Post'
+import Creation from './Creation.vue'
 
 const router = useRouter()
 const configStore = useConfigStore()

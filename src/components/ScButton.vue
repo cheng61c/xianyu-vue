@@ -1,13 +1,26 @@
 <template>
   <button
     :class="[
-      'flex items-center justify-center gap-1 text-background-content hover:text-gray',
-      { 'p-1': !noPadding },
+      'flex items-center justify-center gap-1 text-background-content hover:text-active transition-all',
+      { 'p-2': !noPadding },
       { 'bg-transparent': noBg },
       { 'bg-background': !noBg },
-      { [activationColor]: activation },
       { 'rounded-md': !noRounded },
+      {
+        'border border-gray-content hover:border-active ':
+          !activation && border,
+      },
+      { 'border border-active': activation && border },
+      className,
     ]"
+    :style="{
+      ...(activation
+        ? {
+            color: 'var(--color-active-content)',
+            backgroundColor: 'var(--color-active)',
+          }
+        : {}),
+    }"
   >
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot name="icon" />
@@ -15,7 +28,7 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   // ...其他props
   icon: {
@@ -38,13 +51,17 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  activationColor: {
-    type: String,
-    default: 'bg-primary',
-  },
   noRounded: {
     type: Boolean,
     default: false,
+  },
+  border: {
+    type: Boolean,
+    default: false,
+  },
+  className: {
+    type: String,
+    default: '',
   },
 })
 </script>

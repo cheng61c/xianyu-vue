@@ -1,4 +1,4 @@
-import { User } from '@/type/User'
+import type { UserType } from '@/types/user'
 
 export declare interface PostComment {
   likeCount: string
@@ -8,8 +8,8 @@ export declare interface PostComment {
   content: string
   createdAt: string
   image: string[]
-  author: User
-  toAuthor: any
+  author: UserType
+  toAuthor: UserType
   children: PostComment[]
   showMessage: boolean
 }

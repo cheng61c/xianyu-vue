@@ -35,3 +35,9 @@ export declare interface Post {
   postVersions: DocumentVersion
   author: User
 }
+
+export declare interface SelectedPost {
+  id: number
+  title: string
+  creator: { id: number; nickname: string }
+}

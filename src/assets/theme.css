@@ -13,6 +13,7 @@
   --color-gray: #d1d5db;
   --color-gray-content: #666666; /* 次文本颜色 */
   --color-active: #30ddff; /* 激活状态颜色 */
+  --color-active-content: #ffffff; /* 激活状态内容颜色 */
   --color-like: #a7281e; /* 点赞颜色 */
   --color-bad: #a7281e; /* 点踩颜色 */
   --shadow-card: 2px 2px 4px rgba(0, 0, 0, 0.15);
@@ -40,6 +41,7 @@
     --color-bad: #a7281e; /* 点踩颜色 */
     --color-like: #a7281e; /* 点赞颜色 */
     --color-active: #30ddff; /* 激活状态颜色 */
+    --color-active-content: #ffffff; /* 激活状态内容颜色 */
   }
 }
 
@@ -48,7 +50,13 @@
   div,
   a,
   li,
-  button {
+  button,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: var(--color-background-content);
   }
 }

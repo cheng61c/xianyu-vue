@@ -23,6 +23,16 @@ const routes = [
         name: 'postDetails',
         component: () => import('@/components/post/PostDetails.vue'),
       },
+      {
+        path: 'publish/:postId?',
+        name: 'publish',
+        component: () => import('@/pages/publish/PublishIndex.vue'),
+      },
+      {
+        path: 'publishResource/:postId?',
+        name: 'publishResource',
+        component: () => import('@/pages/publish/PublishIndex.vue'),
+      },
     ],
   },
 ]

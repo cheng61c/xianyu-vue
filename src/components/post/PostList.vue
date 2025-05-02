@@ -1,17 +1,21 @@
 <template>
-  <ul
-    v-if="posts.length"
-    class="flex flex-col gap-4 overflow-y-auto w-xl no-scrollbar p-1"
-  >
-    <li v-for="post in posts" :key="post.id">
-      <ItemCard @click="handleCardClick(post.id)" :post="post" />
-    </li>
+  <div v-if="posts.length" class="w-full">
+    <ul
+      class="flex flex-col gap-4 overflow-y-auto no-scrollbar p-1 h-[calc(100vh-7.5rem)]"
+    >
+      <li v-for="post in posts" :key="post.id">
+        <ItemCard :post="post" />
+      </li>
+    </ul>
     <Pagination
       :current-page="postPage.page"
       :total-items="postPage.total"
       :page-size="postPage.limit"
+      @page-change="toPage"
     />
-  </ul>
+    {{ postPage }}
+  </div>
+
   <EmptyState
     v-else
     class="w-xl px-1"
@@ -39,12 +43,13 @@ const posts = ref<Post[]>([])
 const postPage = ref({
   page: 1,
   total: 10,
-  limit: 2,
+  limit: 1,
 })
 const configStore = useConfigStore()
 
-const handleCardClick = (postId: number) => {
-  console.log(`Post clicked: ${postId}`)
+const toPage = (page: number) => {
+  postPage.value.page = page
+  getPost(+plateId.value)
 }
 
 const getPost = (pid: number) => {
@@ -59,6 +64,8 @@ const getPost = (pid: number) => {
   getPostList(query).then((response: Api) => {
     const res = response.data
     if (res.code === 200) {
+      console.log('请求成功', res.data.list)
+
       posts.value = res.data.list
       postPage.value.page = res.data.page
       postPage.value.total = res.data.total
@@ -72,6 +79,9 @@ watch(
   (newPlate) => {
     if (newPlate.plateId && configStore.currentPlate.pathName === route.name) {
       plateId.value = newPlate.plateId as string
+      postPage.value.page = 1
+      postPage.value.limit = 1
+      posts.value = []
       getPost(+newPlate.plateId)
     }
   }
