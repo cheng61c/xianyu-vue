@@ -41,3 +41,9 @@ body {
     z-index: 0;
   }
 }
+
+.modal-backdrop {
+  button {
+    cursor: auto;
+  }
+}

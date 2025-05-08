@@ -9,7 +9,11 @@
   >
     <ImageIcon />
   </ScButton>
-  <div v-if="isOpen" class="absolute z-50 w-xl" ref="ImageUploadCard">
+  <div
+    v-if="isOpen"
+    class="absolute z-50 w-xl top-[110%] translate-x-[-50%]"
+    ref="ImageUploadCard"
+  >
     <Card class="p-6">
       <!-- 蚂蚁线框 -->
       <div
@@ -48,6 +52,14 @@
             >
               <X />
             </button>
+
+            <button
+              @click.stop="pushImage(index)"
+              class="absolute bottom-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-active rounded-full p-1 shadow"
+              title="插入图片"
+            >
+              <ImagePlus />
+            </button>
           </div>
           <div
             class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
@@ -63,7 +75,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import Card from './Card.vue'
-import { Plus, X, ImageIcon } from 'lucide-vue-next'
+import { Plus, X, ImageIcon, ImagePlus } from 'lucide-vue-next'
 import ScButton from './ScButton.vue'
 
 const fileInput = ref<HTMLInputElement | null>(null)
@@ -71,7 +83,7 @@ const isOpen = ref(false)
 
 // 保存所有图片对象（包含文件本体和预览链接）
 const images = ref<{ file: File; preview: string }[]>([])
-const emit = defineEmits(['imagClose'])
+const emit = defineEmits(['imagClose', 'pushImage'])
 
 // 触发文件选择器
 const triggerFileInput = () => {
@@ -119,6 +131,10 @@ const removeImage = (index: number) => {
   URL.revokeObjectURL(images.value[index].preview) // 释放 URL
   images.value.splice(index, 1)
   fileInput.value!.value = ''
+}
+
+const pushImage = (index: number) => {
+  emit('pushImage', images.value[index].file) // 触发插入图片事件
 }
 
 const togglePopup = () => {

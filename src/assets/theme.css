@@ -81,8 +81,8 @@
   --color-success-content: oklch(98% 0.01 140);
   --color-warning: oklch(80% 0.25 80);
   --color-warning-content: oklch(20% 0.05 80);
-  --color-error: oklch(0.682, 0.712, 2.59);
-  --color-error-content: oklch(0.933, 0.093, 210.26);
+  --color-error: #ff627d; /* 错误色：红色 */
+  --color-error-content: oklch(98% 0.01 30); /* 错误色内容文本 */
 }
 
 @plugin "daisyui/theme" {

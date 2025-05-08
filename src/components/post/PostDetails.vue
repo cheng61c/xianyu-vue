@@ -50,54 +50,6 @@
               </li>
             </ul>
           </Card>
-
-          <Card>
-            <h3 class="text-lg font-bold mb-2">目录</h3>
-            <ul class="space-y-1 text-sm">
-              <li
-                v-for="item in tocList"
-                :key="item.id"
-                :style="{ paddingLeft: `${(item.level - 1) * 12}px` }"
-              >
-                <a :href="`#${item.id}`" class="hover:underline text-blue-600">
-                  {{ item.text }}
-                </a>
-              </li>
-            </ul>
-          </Card>
-          <Card>
-            <h3 class="text-lg font-bold mb-2">目录</h3>
-            <ul class="space-y-1 text-sm">
-              <li
-                v-for="item in tocList"
-                :key="item.id"
-                :style="{ paddingLeft: `${(item.level - 1) * 12}px` }"
-              >
-                <a :href="`#${item.id}`" class="hover:underline text-blue-600">
-                  {{ item.text }}
-                </a>
-              </li>
-            </ul>
-          </Card>
-          <Card>
-            <h3 class="text-lg font-bold mb-2">目录</h3>
-            <ul class="space-y-1 text-sm">
-              <li
-                v-for="item in tocList"
-                :key="item.id"
-                :style="{ paddingLeft: `${(item.level - 1) * 12}px` }"
-              >
-                <a
-                  href="javascript:void(0)"
-                  @click="
-                    scrollToAnchorInContainer(item.id, '.article-content')
-                  "
-                >
-                  {{ item.text }}
-                </a>
-              </li>
-            </ul>
-          </Card>
         </div>
       </div>
     </div>
@@ -111,54 +63,21 @@ import type { Post } from '@/types/Post'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import CommentItem from './CommentItem.vue'
 import Card from '../Card.vue'
-import TipTap from '../TipTap.vue'
 import { useConfigStore } from '@/stores/configStore'
+import { generateTocFromHtml, type TocItem } from '@/utils/toc'
 
 const route = useRoute()
 const postData = ref<Post | null>(null)
 const toast = useToast()
-const tocList = ref<{ level: number; text: string; id: string }[]>([]) // 文章目录列表
+const tocList = ref<TocItem[]>([]) // 文章目录列表
 const configStore = useConfigStore()
 
 const html1 = ref(`
-<h1>测试测试，标题</h1><blockquote><p>哈哈哈</p></blockquote><h3>飒飒</h3><p></p><p></p><h3>gdsd</h3><p>a</p><p></p><p>as</p><p>vc</p><p>as</p><p>ca</p><p>sc</p><p></p><p>as</p><p>cas</p><p>c</p><p>asc</p><p>a</p><p>sc</p><p>a</p><p>sc</p><p>as</p><p>c</p><p>as</p><p>v</p><p>a</p><p>v</p><p>as</p><p>cas</p><p>c</p><p>as</p><p>c</p><p>as</p><p>cas</p><p>c</p><p>as</p><h5>acascasc</h5><p></p><p></p><h1>ascascas</h1><p></p><p></p>
+<h4 id="heading-32">是擦擦</h4><p></p><h1 id="heading-33">擦擦</h1>
 `) // 帖子内容
 
 const html2 = ref(``)
-
-function scrollToAnchorInContainer(id: string, containerSelector: string) {
-  const el = document.getElementById(id)
-  const container = document.querySelector(containerSelector)
-
-  if (el && container) {
-    const elTop = el.getBoundingClientRect().top
-    const containerTop = container.getBoundingClientRect().top
-    const scrollOffset = elTop - containerTop + container.scrollTop
-
-    container.scrollTo({
-      top: scrollOffset,
-      behavior: 'smooth',
-    })
-  }
-}
-function addHeadingIds(html: string) {
-  const parser = new DOMParser()
-  const doc = parser.parseFromString(html, 'text/html')
-  const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6')
-
-  headings.forEach((heading, index) => {
-    const text = heading.textContent?.trim() || `heading-${index}`
-    const id = text
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^\w\-]/g, '') // 移除特殊符号
-    heading.id = id
-  })
-
-  return doc.body.innerHTML
-}
 
 interface Comment {
   id: number
@@ -215,26 +134,14 @@ watch(
   () => html1.value,
   (html) => {
     if (!html) return
-    const parser = new DOMParser()
-    const doc = parser.parseFromString(html, 'text/html')
-    const headings = doc.querySelectorAll('h1, h2, h3, h4, h5, h6')
-    tocList.value = []
 
-    headings.forEach((heading, index) => {
-      const level = parseInt(heading.tagName.substring(1))
-      const text = heading.textContent?.trim() || `标题 ${index}`
-      const id = `heading-${index}`
-
-      heading.setAttribute('id', id) // 设置锚点
-      tocList.value.push({ level, text, id })
-    })
+    tocList.value = generateTocFromHtml(html)
 
     if (postData.value) {
-      // 更新带 ID 的 HTML
-      postData.value.content = doc.body.innerHTML
+      postData.value.content = html
     }
 
-    html2.value = addHeadingIds(html1.value)
+    html2.value = html // 已经包含 id，无需处理
   },
   { immediate: true }
 )

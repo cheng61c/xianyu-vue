@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col gap-4 h-full overflow-y-auto px-1 w-4/5 no-scrollbar"
+    class="flex flex-col gap-4 h-full overflow-y-auto px-1 min-w-xs no-scrollbar"
   >
     <Creation />
     <Card>

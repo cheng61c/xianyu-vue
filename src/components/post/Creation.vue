@@ -5,17 +5,9 @@
       class="text-active"
       @click="$router.push({ name: 'publish' })"
       :icon="MessageSquarePlus"
-      :border="true"
+      Border
     >
-      <span class="font-bold text-sm">发布文章</span>
-    </ScButton>
-    <ScButton
-      variant="ghost"
-      class="text-active"
-      :icon="PackagePlus"
-      :border="true"
-    >
-      <span class="font-bold text-sm">发布资源</span>
+      <span class="font-bold text-sm">发布内容</span>
     </ScButton>
   </Card>
 </template>

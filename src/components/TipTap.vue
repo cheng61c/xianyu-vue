@@ -17,7 +17,6 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  AlignJustify,
   Bold,
   Italic,
   Strikethrough,
@@ -29,7 +28,6 @@ import {
   Copy,
   List,
   ListOrdered,
-  ImageIcon,
 } from 'lucide-vue-next'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
@@ -38,15 +36,19 @@ import SubscriptE from '@tiptap/extension-subscript'
 import SuperscriptE from '@tiptap/extension-superscript'
 import Strike from '@tiptap/extension-strike'
 import UnderlineE from '@tiptap/extension-underline'
-import CodeBlock from '@tiptap/extension-code-block'
 import BulletList from '@tiptap/extension-bullet-list'
 import Image from '@tiptap/extension-image'
+import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
+import { common, createLowlight } from 'lowlight'
+
+import { toHtml } from 'hast-util-to-html'
 
 import Card from './Card.vue'
 import ScDivider from './ScDivider.vue'
 import ScDropListButtons from './ScDropListButtons.vue'
 import ScButton from './ScButton.vue'
 import TipTapUploadImage from './TipTapUploadImage.vue'
+import { HeadingWithId } from '@/extensions/HeadingWithId'
 
 const props = defineProps({
   modelValue: {
@@ -125,12 +127,21 @@ watch(
 )
 
 onMounted(() => {
+  const lowlight = createLowlight(common)
+
   editor.value = new Editor({
     content: contentModel.value,
     extensions: [
+      HeadingWithId.configure({
+        levels: [1, 2, 3, 4, 5, 6],
+      }),
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
       CustomBulletList,
       StarterKit.configure({
         codeBlock: false,
+        heading: false, // 禁用默认 Heading
       }),
       TextAlign.configure({
         types: ['heading', 'paragraph'],
@@ -145,9 +156,6 @@ onMounted(() => {
         },
       }),
       UnderlineE,
-      CodeBlock.configure({
-        languageClassPrefix: 'language-',
-      }),
       SubscriptE,
       SuperscriptE,
       Image,
@@ -155,6 +163,10 @@ onMounted(() => {
     // 编辑器更新事件
     onUpdate: () => {
       contentModel.value = editor.value!.getHTML()
+      console.log(
+        'editor.value.getHTML()',
+        toHtml(lowlight.highlightAuto(editor.value!.getHTML()))
+      )
     },
     // 失焦事件处理
     onBlur: () => {
@@ -200,6 +212,8 @@ function togglePopup(value?: string) {
     openImagePopup.value = !openImagePopup.value
   }
 }
+
+const addImage = () => {}
 </script>
 
 <template>
@@ -231,65 +245,6 @@ function togglePopup(value?: string) {
         >
           <Redo2 />
         </ScButton>
-
-        <ScDivider vertical />
-
-        <!-- 无序列表 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleBulletList().run()"
-          :activation="editor?.isActive('bulletList')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.BulletList"
-        >
-          <List />
-        </ScButton>
-        <!-- 有序列表 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleOrderedList().run()"
-          :activation="editor?.isActive('orderedList')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.OrderedList"
-        >
-          <ListOrdered />
-        </ScButton>
-        <ScDivider vertical />
-
-        <!-- 代码块 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleCodeBlock().run()"
-          :activation="editor?.isActive('codeBlock')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.CodeBlock"
-        >
-          <SquareCode />
-        </ScButton>
-
-        <!-- 引用块 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleBlockquote().run()"
-          :activation="editor?.isActive('blockquote')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Blockquote"
-        >
-          <TextQuote />
-        </ScButton>
-
-        <!-- 图片 -->
-        <div class="tooltip" :data-tip="dataTip.Image">
-          <TipTapUploadImage />
-        </div>
 
         <ScDivider vertical />
 
@@ -493,6 +448,65 @@ function togglePopup(value?: string) {
         >
           <Superscript />
         </ScButton>
+
+        <ScDivider vertical />
+
+        <!-- 无序列表 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="editor?.chain().focus().toggleBulletList().run()"
+          :activation="editor?.isActive('bulletList')"
+          hoverable
+          class="tooltip"
+          :data-tip="dataTip.BulletList"
+        >
+          <List />
+        </ScButton>
+        <!-- 有序列表 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="editor?.chain().focus().toggleOrderedList().run()"
+          :activation="editor?.isActive('orderedList')"
+          hoverable
+          class="tooltip"
+          :data-tip="dataTip.OrderedList"
+        >
+          <ListOrdered />
+        </ScButton>
+        <ScDivider vertical />
+
+        <!-- 代码块 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="editor?.chain().focus().toggleCodeBlock().run()"
+          :activation="editor?.isActive('codeBlock')"
+          hoverable
+          class="tooltip"
+          :data-tip="dataTip.CodeBlock"
+        >
+          <SquareCode />
+        </ScButton>
+
+        <!-- 引用块 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="editor?.chain().focus().toggleBlockquote().run()"
+          :activation="editor?.isActive('blockquote')"
+          hoverable
+          class="tooltip"
+          :data-tip="dataTip.Blockquote"
+        >
+          <TextQuote />
+        </ScButton>
+
+        <!-- 图片 -->
+        <div class="tooltip" :data-tip="dataTip.Image">
+          <TipTapUploadImage @pushImage="addImage" />
+        </div>
 
         <ScDivider vertical />
 

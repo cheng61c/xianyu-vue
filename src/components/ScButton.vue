@@ -8,9 +8,9 @@
       { 'rounded-md': !noRounded },
       {
         'border border-gray-content hover:border-active ':
-          !activation && border,
+          !activation && Border,
       },
-      { 'border border-active': activation && border },
+      { 'border border-active': activation && Border },
       className,
     ]"
     :style="{
@@ -55,7 +55,7 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  border: {
+  Border: {
     type: Boolean,
     default: false,
   },

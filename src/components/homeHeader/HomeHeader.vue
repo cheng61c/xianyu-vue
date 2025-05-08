@@ -14,7 +14,7 @@
 
     <HomeNav />
 
-    <div class="flex"><ThemeButton /></div>
+    <div class="flex gap-4"><ScLogin /><ThemeButton /></div>
   </header>
 </template>
 
@@ -22,8 +22,9 @@
 import { useI18n } from 'vue-i18n'
 import { useConfigStore } from '@/stores/configStore'
 import { Logo } from '@/icon.js'
-import ThemeButton from '@/components/homeHeader/ThemeButton.vue'
-import HomeNav from '@/components/homeHeader/HomeNav.vue'
+import ThemeButton from './ThemeButton.vue'
+import HomeNav from './HomeNav.vue'
+import ScLogin from './ScLogin.vue'
 import { useThemeStore } from '@/stores/themeStore'
 
 const themeStore = useThemeStore()
