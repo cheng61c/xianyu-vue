@@ -6,6 +6,7 @@
   /* 默认主题 */
   --color-background: #f8fcff;
   --color-background-content: #666666; /*主文本颜色*/
+  --color-text-white: #ffffff; /* 白色文本 */
   --color-border: linear-gradient(to bottom right, #ff7e5f, #feb47b) 1;
   /* 卡片边框 */
   --color-border: 1px solid rgba(204, 204, 204, 0.6);
@@ -31,6 +32,7 @@
   .dark {
     --color-background: #2a2f34;
     --color-background-content: rgba(255, 255, 255, 0.9); /*普通文字*/
+    --color-text-white: #ffffff; /* 白色文本 */
     /* 卡片边框 */
     --color-border: 1px solid rgba(204, 204, 204, 0.6);
 
