@@ -5,7 +5,7 @@ import ScButton from './ScButton.vue'
 import ScCard from './Card.vue'
 
 interface Option {
-  value: number
+  value: number | string
   label: string
 }
 
@@ -99,8 +99,7 @@ const ScDropListButtonsListStyle: CSSProperties = {
       :activation="props.active"
       size="small"
       hoverable
-      @click="toggleDropdown"
-    >
+      @click="toggleDropdown">
       <slot name="trigger">
         {{ selectedLabel || '请选择' }}
       </slot>
@@ -111,15 +110,13 @@ const ScDropListButtonsListStyle: CSSProperties = {
         in-card
         background
         v-show="isOpen"
-        class="dropdown-list"
-      >
+        class="dropdown-list">
         <ul :style="ScDropListButtonsListStyle">
           <li
             v-for="option in options"
             :key="option.value"
             class="dropdown-item"
-            @click="selectOption(option)"
-          >
+            @click="selectOption(option)">
             <slot :name="option.label">
               {{ option.label }}
             </slot>

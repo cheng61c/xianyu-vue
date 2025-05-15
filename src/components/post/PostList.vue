@@ -1,8 +1,7 @@
 <template>
   <div v-if="posts.length" class="w-full">
     <ul
-      class="flex flex-col gap-4 overflow-y-auto no-scrollbar p-1 h-[calc(100vh-7.5rem)]"
-    >
+      class="flex flex-col gap-4 overflow-y-auto no-scrollbar p-1 h-[calc(100vh-8rem)]">
       <li v-for="post in posts" :key="post.id">
         <ItemCard :post="post" />
       </li>
@@ -11,17 +10,14 @@
       :current-page="postPage.page"
       :total-items="postPage.total"
       :page-size="postPage.limit"
-      @page-change="toPage"
-    />
-    {{ postPage }}
+      @page-change="toPage" />
   </div>
 
   <EmptyState
     v-else
     class="w-xl px-1"
     action="前往发帖"
-    :actionIcon="SquareArrowOutUpRight"
-  />
+    :actionIcon="SquareArrowOutUpRight" />
 </template>
 
 <script setup lang="ts">
@@ -42,8 +38,8 @@ const plateId = ref<string>(route.params.plateId as string)
 const posts = ref<Post[]>([])
 const postPage = ref({
   page: 1,
-  total: 10,
-  limit: 1,
+  total: 0,
+  limit: 3,
 })
 const configStore = useConfigStore()
 
@@ -80,7 +76,8 @@ watch(
     if (newPlate.plateId && configStore.currentPlate.pathName === route.name) {
       plateId.value = newPlate.plateId as string
       postPage.value.page = 1
-      postPage.value.limit = 1
+      postPage.value.limit = 3
+      postPage.value.total = 0
       posts.value = []
       getPost(+newPlate.plateId)
     }

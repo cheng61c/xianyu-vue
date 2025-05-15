@@ -9,8 +9,7 @@
           v-model="title"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="请输入标题"
-        />
+          placeholder="请输入标题" />
       </div>
 
       <!-- 模式选择 -->
@@ -24,8 +23,7 @@
                 ? 'bg-blue-500 text-white border-blue-500'
                 : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
             "
-            @click="mode = 'post'"
-          >
+            @click="mode = 'post'">
             帖子
           </button>
           <button
@@ -35,8 +33,7 @@
                 ? 'bg-blue-500 text-white border-blue-500'
                 : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
             "
-            @click="mode = 'server'"
-          >
+            @click="mode = 'server'">
             服务器
           </button>
         </div>
@@ -59,8 +56,7 @@
               selectedBoard = b
               handleBoardChange()
             }
-          "
-        >
+          ">
           {{ b.name }}
         </button>
       </div>
@@ -68,8 +64,7 @@
       <!-- 文件类型 -->
       <div
         v-if="selectedBoard?.type === 2 && mode === 'post'"
-        class="flex items-center gap-2 flex-wrap"
-      >
+        class="flex items-center gap-2 flex-wrap">
         <label class="w-24 text-right">文件类型：</label>
         <div class="flex gap-2 flex-wrap">
           <button
@@ -81,8 +76,7 @@
                 ? 'bg-blue-500 text-white border-blue-500'
                 : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
             "
-            @click="fileType = type.value"
-          >
+            @click="fileType = type.value">
             {{ type.label }}
           </button>
         </div>
@@ -91,8 +85,7 @@
       <!-- 是否关联帖子开关 -->
       <div
         v-if="selectedBoard?.type === 2 && mode === 'post'"
-        class="flex items-center gap-2"
-      >
+        class="flex items-center gap-2">
         <label class="w-24 text-right">关联帖子：</label>
         <label class="flex items-center gap-2 cursor-pointer">
           <input type="checkbox" v-model="enablePostRelation" class="w-4 h-4" />
@@ -105,8 +98,7 @@
         v-if="
           selectedBoard?.type === 2 && mode === 'post' && enablePostRelation
         "
-        class="flex items-start gap-2"
-      >
+        class="flex items-start gap-2">
         <label class="w-24 text-right mt-2"></label>
         <div class="flex gap-6 w-full max-w-3xl">
           <!-- 左侧搜索与结果 -->
@@ -115,23 +107,19 @@
               v-model="relatedSearch"
               type="text"
               placeholder="搜索帖子标题"
-              class="w-full mb-2 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 outline-none"
-            />
+              class="w-full mb-2 px-3 py-1.5 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-400 outline-none" />
             <div
-              class="border rounded-lg p-2 h-[180px] overflow-y-auto space-y-1 text-sm"
-            >
+              class="border rounded-lg p-2 h-[180px] overflow-y-auto space-y-1 text-sm">
               <div
                 v-for="post in filteredPosts"
                 :key="post.id"
                 class="px-2 py-1 cursor-pointer rounded hover:bg-blue-100 transition"
-                @click="addPost(post)"
-              >
+                @click="addPost(post)">
                 {{ post.title }}（{{ post.creator.nickname }}）
               </div>
               <div
                 v-if="filteredPosts.length === 0"
-                class="text-gray-400 text-center py-2"
-              >
+                class="text-gray-400 text-center py-2">
                 没有匹配的帖子
               </div>
             </div>
@@ -140,25 +128,21 @@
           <!-- 右侧已选 -->
           <div class="flex-1">
             <div
-              class="border rounded-lg p-2 h-[220px] overflow-y-auto space-y-1 text-sm"
-            >
+              class="border rounded-lg p-2 h-[220px] overflow-y-auto space-y-1 text-sm">
               <div
                 v-for="post in selectedPosts"
                 :key="post.id"
-                class="px-2 py-1 flex justify-between items-center bg-blue-50 rounded"
-              >
+                class="px-2 py-1 flex justify-between items-center bg-blue-50 rounded">
                 <span>{{ post.title }}（{{ post.creator.nickname }}）</span>
                 <button
                   class="text-red-500 hover:underline text-xs"
-                  @click="removePost(post.id)"
-                >
+                  @click="removePost(post.id)">
                   移除
                 </button>
               </div>
               <div
                 v-if="selectedPosts.length === 0"
-                class="text-gray-400 text-center py-2"
-              >
+                class="text-gray-400 text-center py-2">
                 暂无已选帖子
               </div>
             </div>
@@ -173,21 +157,18 @@
           v-model="serverIp"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="请输入服务器 IP"
-        />
+          placeholder="请输入服务器 IP" />
       </div>
 
       <!-- 版本选择器 -->
       <div
         v-if="(selectedBoard?.type !== 1 && selectedBoard) || mode === 'server'"
-        class="flex items-start gap-2"
-      >
+        class="flex items-start gap-2">
         <label class="w-24 text-right mt-1">适配版本：</label>
         <div class="flex gap-y-2 gap-x-6">
           <template
             v-for="(group, groupName) in versionGroups"
-            :key="groupName"
-          >
+            :key="groupName">
             <div class="flex gap-2">
               <div class="text-gray-500 font-medium">{{ groupName }}:</div>
               <div class="flex flex-col gap-2">
@@ -199,14 +180,12 @@
                     selectedVersions.includes(item.id)
                       ? 'bg-blue-500 text-white border-blue-500'
                       : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100'
-                  "
-                >
+                  ">
                   <input
                     type="checkbox"
                     class="hidden"
                     :value="item.id"
-                    v-model="selectedVersions"
-                  />
+                    v-model="selectedVersions" />
                   {{ item.name }}
                 </label>
               </div>
@@ -225,8 +204,7 @@
     <div class="text-right mt-2">
       <button
         class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
-        @click="submitPost"
-      >
+        @click="submitPost">
         发布
       </button>
     </div>
@@ -235,7 +213,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import TipTap from '@/components/TipTap.vue'
+import TipTap from '@/components/tiptap/TipTap.vue'
 
 const content = ref('<h1>标题</h1><p>内容</p>')
 const title = ref('')

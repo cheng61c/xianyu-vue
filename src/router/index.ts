@@ -21,7 +21,7 @@ const routes = [
       {
         path: 'postDetails/:postId',
         name: 'postDetails',
-        component: () => import('@/components/post/PostDetails.vue'),
+        component: () => import('@/pages/post/PostDetails.vue'),
       },
       {
         path: 'publish/:postId?',
@@ -32,6 +32,11 @@ const routes = [
         path: 'publishResource/:postId?',
         name: 'publishResource',
         component: () => import('@/pages/publish/PublishIndex.vue'),
+      },
+      {
+        path: 'user/:userId?',
+        name: 'user',
+        component: () => import('@/pages/user/UserIndex.vue'),
       },
     ],
   },

@@ -1,6 +1,9 @@
 <template>
   <!-- Open the modal using ID.showModal() method -->
-  <div class="flex gap-4 items-center justify-between">
+  <div
+    v-if="userStore.token == ''"
+    class="flex gap-4 items-center justify-between"
+  >
     <ScButton
       noPadding
       onclick="modal_login.showModal()"
@@ -13,6 +16,9 @@
       @click="handleModalChange('register')"
       >{{ $t('register') }}</ScButton
     >
+  </div>
+  <div v-else>
+    <ScUserCard :userInfo="userStore.userInfo" onclick="modal_login.close()" />
   </div>
   <dialog id="modal_login" class="modal">
     <Card noPg class="modal-box max-w-[48rem] h-[36rem]">
@@ -82,9 +88,14 @@
                 <!-- if there is a button in form, it will close the modal -->
                 <ScButton Border class="cursor-pointer px-4">取消</ScButton>
               </form>
-              <ScButton Border activation class="cursor-pointer px-4">{{
-                $t('login')
-              }}</ScButton>
+              <ScButton
+                Border
+                activation
+                class="cursor-pointer px-4"
+                @click="handleLogin"
+              >
+                {{ $t('login') }}
+              </ScButton>
             </div>
           </div>
 
@@ -100,7 +111,7 @@
                 <span
                   class="text-active cursor-pointer"
                   @click="handleModalChange('login')"
-                  >去登录</span
+                  >返回登录</span
                 >
               </div>
             </div>
@@ -191,10 +202,19 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ScButton from '@/components/ScButton.vue'
 import Card from '@/components/Card.vue'
+import { userApi } from '@/apis'
+import type { Api, ApiUser } from '@/types'
+import { useUserStore } from '@/stores/userStore'
+import { useToast } from 'vue-toastification'
+import ScUserCard from './ScUserCard.vue'
 
 const username = ref('')
 const password = ref('')
 const router = useRouter()
+
+const toast = useToast()
+
+const userStore = useUserStore()
 
 const loginForm = reactive({
   account: '',
@@ -213,10 +233,30 @@ const registerForm = reactive({
 const modalType = ref('login') // 'login' or 'register' or 'reset_password'
 const handleModalChange = (type: string) => {
   modalType.value = type
-  console.log(document.getElementById('modal_register')?.close())
 }
 
 const handleLogin = () => {
-  console.log('登录', username.value, password.value)
+  userApi
+    .login(loginForm)
+    .then((res: Api) => {
+      if (res.data.code === 200) {
+        const userInfo = res.data.data as ApiUser
+        userStore.token = userInfo.token
+        userStore.userInfo = userInfo.user
+
+        toast.success('登录成功')
+
+        const modalLoginDialog = document.getElementById(
+          'modal_login'
+        ) as HTMLDialogElement
+        modalLoginDialog?.close()
+      } else {
+        toast.error('登录失败: ' + res.data.msg)
+      }
+    })
+    .catch((error) => {
+      // 处理登录错误
+      toast.error(error.msg)
+    })
 }
 </script>

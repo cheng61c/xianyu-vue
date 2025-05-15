@@ -23,7 +23,7 @@
       <Card
         @click="handleCardClick(plate.id)"
         class="w-60"
-        :activation="activation == plate.id"
+        :activation="activation == plate.id || currentRouteName == plate.name"
       >
         <div class="flex gap-2 text-background-content justify-between">
           <span
@@ -39,7 +39,7 @@
   </ul>
 </template>
 <script setup lang="ts">
-import { plate } from '@/apis'
+import { plateApi } from '@/apis'
 import { usePostStore } from '@/stores/postStore'
 import { onMounted, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -65,7 +65,7 @@ const getPlate = async () => {
     configStore.menuItems.find(
       (item) => item.pathName === currentRouteName.value
     )?.type || 1
-  plate
+  plateApi
     .getPlateList()
     .then((res: Api) => {
       const data = res.data
@@ -86,10 +86,14 @@ const getPlate = async () => {
 const handleCardClick = (plateId: number) => {
   router.push({ name: route.name, params: { plateId } })
   activation.value = plateId
+  configStore.currentPlateId = plateId
 }
 
 onMounted(async () => {
   currentRouteName.value = (route.name as string) || ''
+  activation.value = route.params.plateId
+    ? +(route.params.plateId as string)
+    : 0
   getPlate()
 })
 

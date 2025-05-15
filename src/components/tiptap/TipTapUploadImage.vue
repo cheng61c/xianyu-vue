@@ -5,65 +5,50 @@
     @click.stop="togglePopup()"
     :activation="isOpen"
     hoverable
-    class="relative"
-  >
+    class="relative">
     <ImageIcon />
   </ScButton>
   <div
     v-if="isOpen"
     class="absolute z-50 w-xl top-[110%] translate-x-[-50%]"
-    ref="ImageUploadCard"
-  >
+    ref="ImageUploadCard">
     <Card class="p-6">
       <!-- 蚂蚁线框 -->
       <div
         class="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 transition"
         @dragover.prevent
         @drop.prevent="handleDrop"
-        @click="triggerFileInput"
-      >
-        <div class="text-gray-500 mb-2">拖动图片到此处，或点击上传</div>
+        @click="triggerFileInput">
+        <div class="text-gray-500">拖动图片到此处，或点击上传</div>
+        <div class="text-gray-500 mb-2">将此处的图片拖拽至页面中添加图片</div>
         <input
           ref="fileInput"
           type="file"
           accept="image/*"
           multiple
           class="hidden"
-          @change="handleFileChange"
-        />
+          @change="handleFileChange" />
         <!-- 图片预览列表 -->
         <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div
             v-for="(img, index) in images"
             :key="index"
             class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
-            @click.stop
-          >
+            @click.stop>
             <img
               :src="img.preview"
               alt="预览图"
-              class="w-28 h-28 object-cover"
-            />
+              class="w-28 h-28 object-cover" />
             <!-- 删除按钮 -->
             <button
               @click.stop="removeImage(index)"
               class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow"
-              title="删除图片"
-            >
+              title="删除图片">
               <X />
-            </button>
-
-            <button
-              @click.stop="pushImage(index)"
-              class="absolute bottom-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-active rounded-full p-1 shadow"
-              title="插入图片"
-            >
-              <ImagePlus />
             </button>
           </div>
           <div
-            class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
-          >
+            class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer">
             <Plus :size="36" />
           </div>
         </div>
@@ -74,16 +59,19 @@
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import Card from './Card.vue'
+import Card from '../Card.vue'
 import { Plus, X, ImageIcon, ImagePlus } from 'lucide-vue-next'
-import ScButton from './ScButton.vue'
+import ScButton from '../ScButton.vue'
+import { uploadApi } from '@/apis'
+import { formatLink } from '@/hook/format'
+import { useToast } from 'vue-toastification'
+const toast = useToast()
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const isOpen = ref(false)
 
 // 保存所有图片对象（包含文件本体和预览链接）
 const images = ref<{ file: File; preview: string }[]>([])
-const emit = defineEmits(['imagClose', 'pushImage'])
 
 // 触发文件选择器
 const triggerFileInput = () => {
@@ -110,10 +98,16 @@ const handleDrop = (e: DragEvent) => {
 const handleFiles = (files: File[]) => {
   for (const file of files) {
     if (file.type.startsWith('image/')) {
-      images.value.push({
-        file,
-        preview: URL.createObjectURL(file),
+      toast.info('正在上传图片，请稍等...')
+      uploadApi.uploadFile(file, 6).then((res) => {
+        if (res.data.code === 200) {
+          images.value.push({
+            file,
+            preview: formatLink(res.data.data.url),
+          })
+        }
       })
+
       images.value = images.value.filter(
         (img, index, self) =>
           index ===
@@ -131,10 +125,6 @@ const removeImage = (index: number) => {
   URL.revokeObjectURL(images.value[index].preview) // 释放 URL
   images.value.splice(index, 1)
   fileInput.value!.value = ''
-}
-
-const pushImage = (index: number) => {
-  emit('pushImage', images.value[index].file) // 触发插入图片事件
 }
 
 const togglePopup = () => {

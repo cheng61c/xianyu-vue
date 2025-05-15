@@ -1,12 +1,14 @@
 <template>
-  <header class="flex h-16 w-full justify-between items-center">
-    <button class="flex justify-center items-center gap-2">
+  <header
+    class="sticky top-0 w-full max-w-7xl mx-auto px-4 flex h-16 justify-between items-center bg-background z-10">
+    <button
+      class="flex justify-center items-center gap-2 cursor-pointer"
+      @click="$router.push('/')">
       <Logo
         class="text-background-content"
         :style="{
           fill: themeStore.darkTheme ? 'rgba(255, 255, 255, 0.9)' : '#666666',
-        }"
-      />
+        }" />
       <div class="text-md text-background-content font-bold">
         {{ $t('logo') }}
       </div>
@@ -14,7 +16,7 @@
 
     <HomeNav />
 
-    <div class="flex gap-4"><ScLogin /><ThemeButton /></div>
+    <div class="flex gap-4 items-center"><ScLogin /><ThemeButton /></div>
   </header>
 </template>
 

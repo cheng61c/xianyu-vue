@@ -7,6 +7,7 @@ import type { TopPost } from '@/types/TopPost'
 import type { PostSelectDto } from '@/types/PostSelectDto'
 import type { PostDisabledDto } from '@/types/PostDisabled'
 import type { PostCommentDto } from '@/types/PostCommentDto'
+import type PostDto from '@/types/PostDto'
 
 export const getPostList = (dto: PostListQueryDto) => {
   return request({
@@ -32,10 +33,10 @@ export const getPostDetail = (id: number) => {
   return request.get(`/post/detail?id=${id}`)
 }
 
-export const createPost = (dto: Post) => {
+export const createPost = (dto: PostDto) => {
   return request.post('/post', dto)
 }
-export const updatePost = (dto: Post) => {
+export const updatePost = (dto: PostDto) => {
   return request.put('/post', dto)
 }
 export const createServerPost = (dto: ServerPost) => {
@@ -99,4 +100,8 @@ export const postCommentBad = (id: number) => {
 }
 export const replyPost = (dto: PostCommentDto) => {
   return request.post(`/post-comment`, dto)
+}
+
+export const searchPost = (keyword: string) => {
+  return request.get(`/post/search?title=${keyword}&page=1&limit=30&type=2`)
 }

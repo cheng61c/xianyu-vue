@@ -38,15 +38,14 @@ import Strike from '@tiptap/extension-strike'
 import UnderlineE from '@tiptap/extension-underline'
 import BulletList from '@tiptap/extension-bullet-list'
 import Image from '@tiptap/extension-image'
+import CustomImageExtension from '@/extensions/CustomImageExtension'
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
 import { common, createLowlight } from 'lowlight'
 
-import { toHtml } from 'hast-util-to-html'
-
-import Card from './Card.vue'
-import ScDivider from './ScDivider.vue'
-import ScDropListButtons from './ScDropListButtons.vue'
-import ScButton from './ScButton.vue'
+import Card from '../Card.vue'
+import ScDivider from '../ScDivider.vue'
+import ScDropListButtons from '../ScDropListButtons.vue'
+import ScButton from '../ScButton.vue'
 import TipTapUploadImage from './TipTapUploadImage.vue'
 import { HeadingWithId } from '@/extensions/HeadingWithId'
 
@@ -114,17 +113,17 @@ const contentModel = useVModel(props, 'modelValue', emit)
 
 const editor = ref<Editor>()
 
-watch(
-  () => contentModel.value,
-  (newContent) => {
-    if (!editor.value) return
-    const currentContent = editor.value.getHTML()
-    if (newContent !== currentContent) {
-      editor.value.chain().setContent(newContent, false).run()
-    }
-  },
-  { flush: 'post' }
-)
+// watch(
+//   () => contentModel.value,
+//   (newContent) => {
+//     if (!editor.value) return
+//     const currentContent = editor.value.getHTML()
+//     if (newContent !== currentContent) {
+//       editor.value.chain().setContent(newContent, false).run()
+//     }
+//   },
+//   { flush: 'post' }
+// )
 
 onMounted(() => {
   const lowlight = createLowlight(common)
@@ -140,7 +139,6 @@ onMounted(() => {
       }),
       CustomBulletList,
       StarterKit.configure({
-        codeBlock: false,
         heading: false, // 禁用默认 Heading
       }),
       TextAlign.configure({
@@ -158,15 +156,11 @@ onMounted(() => {
       UnderlineE,
       SubscriptE,
       SuperscriptE,
-      Image,
+      CustomImageExtension,
     ],
     // 编辑器更新事件
     onUpdate: () => {
       contentModel.value = editor.value!.getHTML()
-      console.log(
-        'editor.value.getHTML()',
-        toHtml(lowlight.highlightAuto(editor.value!.getHTML()))
-      )
     },
     // 失焦事件处理
     onBlur: () => {
@@ -212,8 +206,6 @@ function togglePopup(value?: string) {
     openImagePopup.value = !openImagePopup.value
   }
 }
-
-const addImage = () => {}
 </script>
 
 <template>
@@ -228,8 +220,7 @@ const addImage = () => {}
           :disabled="!editor?.can().undo()"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Undo"
-        >
+          :data-tip="dataTip.Undo">
           <Undo2 />
         </ScButton>
 
@@ -241,8 +232,7 @@ const addImage = () => {}
           :disabled="!editor?.can().redo()"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Redo"
-        >
+          :data-tip="dataTip.Redo">
           <Redo2 />
         </ScButton>
 
@@ -254,33 +244,38 @@ const addImage = () => {}
           :options="options"
           :activation="editor?.isActive('heading')"
           class="tooltip"
-          :data-tip="dataTip.Heading"
-        >
+          :data-tip="dataTip.Heading">
           <template #trigger>
             <Heading1
               v-if="editor?.isActive('heading', { level: 1 })"
-              @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
-            />
+              @click="
+                editor?.chain().focus().toggleHeading({ level: 1 }).run()
+              " />
             <Heading2
               v-else-if="editor?.isActive('heading', { level: 2 })"
-              @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
-            />
+              @click="
+                editor?.chain().focus().toggleHeading({ level: 2 }).run()
+              " />
             <Heading3
               v-else-if="editor?.isActive('heading', { level: 3 })"
-              @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()"
-            />
+              @click="
+                editor?.chain().focus().toggleHeading({ level: 3 }).run()
+              " />
             <Heading4
               v-else-if="editor?.isActive('heading', { level: 4 })"
-              @click="editor?.chain().focus().toggleHeading({ level: 4 }).run()"
-            />
+              @click="
+                editor?.chain().focus().toggleHeading({ level: 4 }).run()
+              " />
             <Heading5
               v-else-if="editor?.isActive('heading', { level: 5 })"
-              @click="editor?.chain().focus().toggleHeading({ level: 5 }).run()"
-            />
+              @click="
+                editor?.chain().focus().toggleHeading({ level: 5 }).run()
+              " />
             <Heading6
               v-else-if="editor?.isActive('heading', { level: 6 })"
-              @click="editor?.chain().focus().toggleHeading({ level: 6 }).run()"
-            />
+              @click="
+                editor?.chain().focus().toggleHeading({ level: 6 }).run()
+              " />
             <Heading v-else />
           </template>
           <template #h1>
@@ -288,8 +283,7 @@ const addImage = () => {}
               :shadow="false"
               size="small"
               @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
-              hoverable
-            >
+              hoverable>
               <Heading1 />
             </ScButton>
           </template>
@@ -298,8 +292,7 @@ const addImage = () => {}
               :shadow="false"
               size="small"
               @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
-              hoverable
-            >
+              hoverable>
               <Heading2 />
             </ScButton>
           </template>
@@ -308,8 +301,7 @@ const addImage = () => {}
               :shadow="false"
               size="small"
               @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()"
-              hoverable
-            >
+              hoverable>
               <Heading3 />
             </ScButton>
           </template>
@@ -318,8 +310,7 @@ const addImage = () => {}
               :shadow="false"
               size="small"
               @click="editor?.chain().focus().toggleHeading({ level: 4 }).run()"
-              hoverable
-            >
+              hoverable>
               <Heading4 />
             </ScButton>
           </template>
@@ -328,8 +319,7 @@ const addImage = () => {}
               :shadow="false"
               size="small"
               @click="editor?.chain().focus().toggleHeading({ level: 5 }).run()"
-              hoverable
-            >
+              hoverable>
               <Heading5 />
             </ScButton>
           </template>
@@ -338,8 +328,7 @@ const addImage = () => {}
               :shadow="false"
               size="small"
               @click="editor?.chain().focus().toggleHeading({ level: 6 }).run()"
-              hoverable
-            >
+              hoverable>
               <Heading6 />
             </ScButton>
           </template>
@@ -353,8 +342,7 @@ const addImage = () => {}
           :activation="editor?.isActive('bold')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Bold"
-        >
+          :data-tip="dataTip.Bold">
           <Bold />
         </ScButton>
 
@@ -366,8 +354,7 @@ const addImage = () => {}
           :activation="editor?.isActive('italic')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Italic"
-        >
+          :data-tip="dataTip.Italic">
           <Italic />
         </ScButton>
 
@@ -379,8 +366,7 @@ const addImage = () => {}
           :activation="editor?.isActive('strike')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Strikethrough"
-        >
+          :data-tip="dataTip.Strikethrough">
           <Strikethrough />
         </ScButton>
 
@@ -392,8 +378,7 @@ const addImage = () => {}
           :activation="editor?.isActive('underline')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Underline"
-        >
+          :data-tip="dataTip.Underline">
           <Underline />
         </ScButton>
 
@@ -405,8 +390,7 @@ const addImage = () => {}
           :activation="editor?.isActive('code')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Code"
-        >
+          :data-tip="dataTip.Code">
           <CodeXml />
         </ScButton>
 
@@ -418,8 +402,7 @@ const addImage = () => {}
           :activation="editor?.isActive('highlight')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Highlight"
-        >
+          :data-tip="dataTip.Highlight">
           <Highlighter />
         </ScButton>
 
@@ -431,8 +414,7 @@ const addImage = () => {}
           :activation="editor?.isActive('subscript')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Subscript"
-        >
+          :data-tip="dataTip.Subscript">
           <Subscript />
         </ScButton>
 
@@ -444,8 +426,7 @@ const addImage = () => {}
           :activation="editor?.isActive('superscript')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Superscript"
-        >
+          :data-tip="dataTip.Superscript">
           <Superscript />
         </ScButton>
 
@@ -459,8 +440,7 @@ const addImage = () => {}
           :activation="editor?.isActive('bulletList')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.BulletList"
-        >
+          :data-tip="dataTip.BulletList">
           <List />
         </ScButton>
         <!-- 有序列表 -->
@@ -471,8 +451,7 @@ const addImage = () => {}
           :activation="editor?.isActive('orderedList')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.OrderedList"
-        >
+          :data-tip="dataTip.OrderedList">
           <ListOrdered />
         </ScButton>
         <ScDivider vertical />
@@ -481,14 +460,58 @@ const addImage = () => {}
         <ScButton
           :shadow="false"
           size="small"
-          @click="editor?.chain().focus().toggleCodeBlock().run()"
+          @click="
+            editor?.chain().focus().toggleCodeBlock({ language: 'ts' }).run()
+          "
           :activation="editor?.isActive('codeBlock')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.CodeBlock"
-        >
+          :data-tip="dataTip.CodeBlock">
           <SquareCode />
         </ScButton>
+
+        <!-- <sc-drop-list-buttons
+          v-model="selected"
+          :options="[
+            { value: 'ts', label: 'TypeScript' },
+            { value: 'js', label: 'JavaScript' },
+            { value: 'json', label: 'JSON' },
+            { value: 'html', label: 'HTML' },
+            { value: 'css', label: 'CSS' },
+            { value: 'python', label: 'Python' },
+            { value: 'java', label: 'Java' },
+            { value: 'c', label: 'C' },
+            { value: 'cpp', label: 'C++' },
+            { value: 'go', label: 'Go' },
+            { value: 'php', label: 'PHP' },
+            { value: 'ruby', label: 'Ruby' },
+            { value: 'shell', label: 'Shell' },
+            { value: 'markdown', label: 'Markdown' },
+          ]"
+          :activation="editor?.isActive('codeBlock')"
+          class="tooltip"
+          :data-tip="dataTip.Heading">
+          <template #trigger>
+            <SquareCode
+              v-if="editor?.isActive('codeBlock')"
+              @click="editor?.chain().focus().toggleCodeBlock().run()" />
+          </template>
+          <template #TypeScript>
+            <ScButton
+              :shadow="false"
+              size="small"
+              @click="
+                editor
+                  ?.chain()
+                  .focus()
+                  .toggleCodeBlock({ language: 'ts' })
+                  .run()
+              "
+              hoverable>
+              <SquareCode />
+            </ScButton>
+          </template>
+        </sc-drop-list-buttons> -->
 
         <!-- 引用块 -->
         <ScButton
@@ -498,14 +521,13 @@ const addImage = () => {}
           :activation="editor?.isActive('blockquote')"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Blockquote"
-        >
+          :data-tip="dataTip.Blockquote">
           <TextQuote />
         </ScButton>
 
         <!-- 图片 -->
         <div class="tooltip" :data-tip="dataTip.Image">
-          <TipTapUploadImage @pushImage="addImage" />
+          <TipTapUploadImage />
         </div>
 
         <ScDivider vertical />
@@ -518,8 +540,7 @@ const addImage = () => {}
           :activation="editor?.isActive({ textAlign: 'left' })"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.LeftAlign"
-        >
+          :data-tip="dataTip.LeftAlign">
           <AlignLeft />
         </ScButton>
 
@@ -531,8 +552,7 @@ const addImage = () => {}
           :activation="editor?.isActive({ textAlign: 'center' })"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.CenterAlign"
-        >
+          :data-tip="dataTip.CenterAlign">
           <AlignCenter />
         </ScButton>
 
@@ -544,8 +564,7 @@ const addImage = () => {}
           :activation="editor?.isActive({ textAlign: 'right' })"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.RightAlign"
-        >
+          :data-tip="dataTip.RightAlign">
           <AlignRight />
         </ScButton>
 
@@ -556,8 +575,7 @@ const addImage = () => {}
           @click="copyToClipboard"
           hoverable
           class="tooltip"
-          :data-tip="dataTip.Copy"
-        >
+          :data-tip="dataTip.Copy">
           <Copy />
         </ScButton>
       </div>

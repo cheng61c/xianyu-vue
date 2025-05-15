@@ -15,8 +15,8 @@
   --color-gray-content: #666666; /* 次文本颜色 */
   --color-active: #30ddff; /* 激活状态颜色 */
   --color-active-content: #ffffff; /* 激活状态内容颜色 */
-  --color-like: #a7281e; /* 点赞颜色 */
-  --color-bad: #a7281e; /* 点踩颜色 */
+  --color-like: #f43098; /* 点赞颜色 */
+  --color-bad: #f43098; /* 点踩颜色 */
   --shadow-card: 2px 2px 4px rgba(0, 0, 0, 0.15);
   --shadow-card-md: 4px 4px 8px rgba(0, 0, 0, 0.15);
   --shadow-card-dark:
@@ -40,10 +40,13 @@
     --color-white: #26282c;
     --color-gray: #444546;
     --color-gray-content: #8b8b8b;
-    --color-bad: #a7281e; /* 点踩颜色 */
-    --color-like: #a7281e; /* 点赞颜色 */
+    --color-bad: #f43098; /* 点踩颜色 */
+    --color-like: #f43098; /* 点赞颜色 */
     --color-active: #30ddff; /* 激活状态颜色 */
     --color-active-content: #ffffff; /* 激活状态内容颜色 */
+
+    /* 特定颜色修改 */
+    --color-green-600: #2dd4bf; /* 绿色 */
   }
 }
 

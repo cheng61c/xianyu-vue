@@ -25,6 +25,7 @@
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot name="icon" />
     <span><slot /></span>
+    <slot name="endIcon" />
   </button>
 </template>
 

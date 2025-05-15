@@ -32,7 +32,7 @@ export const checkDuplicate = (dto: CheckDuplicateDto) => {
   })
 }
 export const logout = () => {
-  return request.get('/user/logout')
+  return request.post('/user/logout')
 }
 export const updateUser = (dto: UpdateUserDto) => {
   return request.put('/user/update', dto)

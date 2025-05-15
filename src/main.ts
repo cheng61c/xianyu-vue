@@ -13,7 +13,7 @@ import './style.css'
 const options = {
   maxToasts: 4,
   newestOnTop: true,
-  containerClassName: ['z-50', 'mt-6'],
+  containerClassName: ['text-white', 'mt-6'],
   timeout: 3000,
 }
 

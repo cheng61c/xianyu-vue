@@ -18,9 +18,13 @@ export const useConfigStore = defineStore('config', {
 
     /** 当前大板块 */
     currentPlate: {
+      /** 当前所在的板块名称 */
       name: '',
+      /** 当前所在的板块地址 */
       pathName: '',
     },
+    /** 当前小板块 */
+    currentPlateId: 0,
 
     menuItems: <MenuItem[]>[
       { name: '交流帖子', path: '/postList/0', pathName: 'postList', type: 1 },

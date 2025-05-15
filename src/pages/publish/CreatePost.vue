@@ -1,12 +1,9 @@
 <template>
-  <div
-    class="flex flex-col w-full h-[calc(100vh-4rem)] overflow-auto no-scrollbar p-4 space-y-4"
-  >
+  <div class="flex flex-col w-full space-y-4 pb-2">
     <div class="flex gap-2">
       <ScButton
         class="px-4 py-1 text-sm border border-gray"
-        @click="$emit('close')"
-      >
+        @click="$router.back()">
         返回
       </ScButton>
       <div class="text-lg font-semibold">编辑帖子</div>
@@ -17,10 +14,9 @@
       <!-- 标题 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
           data-tip="
-            帖子标题，帖子标题会显示在游戏内社区的列表中，建议使用简短的标题，便于用户快速搜索"
-        >
+            帖子标题，帖子标题会显示在游戏内社区的列表中，建议使用简短的标题，便于用户快速搜索">
           <span class="flex items-center gap-1">
             标题 <span><CircleHelp :size="16" /></span>
           </span>
@@ -31,16 +27,14 @@
           v-model="title"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="请输入标题"
-        />
+          placeholder="请输入标题" />
       </div>
 
       <!-- 模式选择 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="模式选择，用于选择发布帖子或服务器，不同模式下的表单内容会有所不同"
-        >
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          data-tip="模式选择，用于选择发布帖子或服务器，不同模式下的表单内容会有所不同">
           <span class="flex items-center gap-1">
             模式选择 <span><CircleHelp :size="16" /></span>
           </span>
@@ -52,16 +46,14 @@
             class="px-4 py-1 text-sm"
             :activation="mode === 'post'"
             Border
-            @click="mode = 'post'"
-          >
+            @click="mode = 'post'">
             帖子
           </ScButton>
           <ScButton
             class="px-4 py-1 text-sm"
             :activation="mode === 'server'"
             Border
-            @click="mode = 'server'"
-          >
+            @click="mode = 'server'">
             服务器
           </ScButton>
         </div>
@@ -70,12 +62,11 @@
       <!-- 发送到板块 -->
       <div v-if="mode === 'post'" class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
           data-tip="
-            选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块"
-        >
+            选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块">
           <span class="flex items-center gap-1">
-            关联帖子 <span><CircleHelp :size="16" /></span>
+            选择板块 <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -87,8 +78,7 @@
           :activation="postData.plateId === b.id"
           @click="setPlate(b)"
           :icon="b.type === 1 ? FileText : Package"
-          Border
-        >
+          Border>
           {{ b.name }}
         </ScButton>
       </div>
@@ -96,13 +86,11 @@
       <!-- 文件类型 -->
       <div
         v-if="postData.type === 2 && mode === 'post'"
-        class="flex items-center gap-2 flex-wrap"
-      >
+        class="flex items-center gap-2 flex-wrap">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
           data-tip="
-            选择文件类型，文件类型会影响文件的上传方式和显示方式，且一个帖子中只能存在一种文件类型，建议根据实际情况选择合适的文件类型"
-        >
+            选择文件类型，文件类型会影响文件的上传方式和显示方式，且一个帖子中只能存在一种文件类型，建议根据实际情况选择合适的文件类型">
           <span class="flex items-center gap-1">
             文件类型 <span><CircleHelp :size="16" /></span>
           </span>
@@ -116,8 +104,7 @@
             class="px-4 py-1 text-sm"
             :activation="postData.fileType === type.value"
             Border
-            @click="postData.fileType = type.value"
-          >
+            @click="postData.fileType = type.value">
             {{ type.label }}
           </ScButton>
         </div>
@@ -132,13 +119,11 @@
       <!-- 是否关联帖子开关 -->
       <div
         v-if="postData.type === 2 && mode === 'post'"
-        class="flex items-center gap-2"
-      >
+        class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
           data-tip="
-            关联帖子，当该帖子所使用的文件需要依赖其他帖子中的文件时使用，启用后可以选择其他帖子进行关联，便于快速查找和使用"
-        >
+            关联帖子，当该帖子所使用的文件需要依赖其他帖子中的文件时使用，启用后可以选择其他帖子进行关联，便于快速查找和使用">
           <span class="flex items-center gap-1">
             关联帖子 <span><CircleHelp :size="16" /></span>
           </span>
@@ -150,12 +135,10 @@
             id="checkbox"
             type="checkbox"
             v-model="enablePostRelation"
-            class="peer hidden"
-          />
+            class="peer hidden" />
           <label
             for="checkbox"
-            class="w-4 h-4 flex justify-center items-center border rounded cursor-pointer peer-checked:bg-active peer-checked:border-active peer-checked:text-active-content transition"
-          >
+            class="w-4 h-4 flex justify-center items-center border rounded cursor-pointer peer-checked:bg-active peer-checked:border-active peer-checked:text-active-content transition">
             <Check v-if="enablePostRelation" />
           </label>
           <span class="text-sm text-background-content">启用关联帖子选择</span>
@@ -165,8 +148,7 @@
       <!-- 穿梭框选择器 -->
       <div
         v-if="postData.type === 2 && mode === 'post' && enablePostRelation"
-        class="flex items-start gap-2"
-      >
+        class="flex items-start gap-2">
         <label class="w-24 text-right mt-2"></label>
         <div class="flex gap-6 w-full max-w-3xl">
           <!-- 左侧搜索与结果 -->
@@ -175,23 +157,19 @@
               v-model="relatedSearch"
               type="text"
               placeholder="搜索帖子标题"
-              class="w-full mb-2 px-3 py-1.5 border border-gray-content rounded-lg text-sm focus:ring-2 focus:ring-active outline-none"
-            />
+              class="w-full mb-2 px-3 py-1.5 border border-gray-content rounded-lg text-sm focus:ring-2 focus:ring-active outline-none" />
             <div
-              class="border border-gray-content rounded-lg p-2 h-[180px] overflow-y-auto space-y-1 text-sm"
-            >
+              class="border border-gray-content rounded-lg p-2 h-[180px] overflow-y-auto space-y-1 text-sm">
               <div
                 v-for="post in filteredPosts"
                 :key="post.id"
                 class="px-2 py-1 cursor-pointer rounded hover:bg-blue-100 transition"
-                @click="addPost(post)"
-              >
+                @click="addPost(post)">
                 {{ post.title }}（{{ post.creator.nickname }}）
               </div>
               <div
                 v-if="filteredPosts.length === 0"
-                class="text-gray-400 text-center py-2"
-              >
+                class="text-gray-400 text-center py-2">
                 没有匹配的帖子
               </div>
             </div>
@@ -200,25 +178,21 @@
           <!-- 右侧已选 -->
           <div class="flex-1">
             <div
-              class="border border-gray-content rounded-lg p-2 h-[220px] overflow-y-auto space-y-1 text-sm"
-            >
+              class="border border-gray-content rounded-lg p-2 h-[220px] overflow-y-auto space-y-1 text-sm">
               <div
                 v-for="post in selectedPosts"
                 :key="post.id"
-                class="px-2 py-1 flex justify-between items-center bg-blue-50 rounded"
-              >
+                class="px-2 py-1 flex justify-between items-center bg-blue-50 rounded">
                 <span>{{ post.title }}（{{ post.creator.nickname }}）</span>
                 <button
                   class="text-red-500 hover:underline text-xs"
-                  @click="removePost(post.id)"
-                >
+                  @click="removePost(post.id)">
                   移除
                 </button>
               </div>
               <div
                 v-if="selectedPosts.length === 0"
-                class="text-gray-400 text-center py-2"
-              >
+                class="text-gray-400 text-center py-2">
                 暂无已选帖子
               </div>
             </div>
@@ -229,10 +203,9 @@
       <!-- 服务器 IP -->
       <div v-if="mode === 'server'" class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
           data-tip="
-            你的服务器地址，这将用于在游戏内连接到你的服务器，通常是 IP:端口号"
-        >
+            你的服务器地址，这将用于在游戏内连接到你的服务器，通常是 IP:端口号">
           <span class="flex items-center gap-2">
             服务器 IP <span><CircleHelp :size="16" /></span>
           </span>
@@ -244,7 +217,71 @@
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
           placeholder="请输入服务器 IP "
-        />
+          @blur="connectionTest(serverData.url)" />
+
+        <span
+          class="text-info tooltip tooltip-right"
+          data-tip="
+        该测试只对ip有效，与端口号无关，请确保端口号已开放"
+          v-if="pingLoding">
+          测试延迟中...
+        </span>
+        <span
+          class="tooltip tooltip-right"
+          data-tip="
+            该测试只对ip有效，与端口号无关，请确保端口号已开放"
+          :class="{
+            'text-green-500': pingAvgTime < 50 && pingAvgTime > 0,
+            'text-yellow-500': pingAvgTime >= 50 && pingAvgTime < 100,
+            'text-error': pingAvgTime >= 100 || pingAvgTime === -1,
+          }"
+          v-if="pingAvgTime != 0 && !pingLoding">
+          {{ pingAvgTime }}ms
+        </span>
+      </div>
+
+      <!-- 服务器提示 -->
+      <div
+        v-if="mode === 'server' && pingAvgTime != 0 && !pingLoding"
+        class="flex items-center gap-2">
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <input
+            id="checkbox"
+            type="checkbox"
+            v-model="pingEnsure"
+            class="peer hidden" />
+          <label
+            for="checkbox"
+            class="w-4 h-4 flex justify-center items-center border rounded cursor-pointer peer-checked:bg-active peer-checked:border-active peer-checked:text-active-content transition">
+            <Check v-if="pingEnsure" />
+          </label>
+          <span class="text-sm text-error">
+            检测到IP无法ping通，若已确定IP正常，请勾选
+          </span>
+        </label>
+      </div>
+
+      <!-- 服务器版本 -->
+      <div v-if="mode === 'server'" class="flex items-center gap-2">
+        <label
+          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          data-tip="
+            选择服务器版本，服务器版本会影响游戏内的连接方式和功能，建议根据实际情况选择合适的版本">
+          <span class="flex items-center gap-1">
+            服务器版本 <span><CircleHelp :size="16" /></span>
+          </span>
+
+          <span>:</span>
+        </label>
+        <ScButton
+          v-for="version in versionList"
+          :key="version.id"
+          class="px-4 py-1 text-sm"
+          Border
+          :activation="serverData.versionId === version.id"
+          @click="serverData.versionId = version.id">
+          {{ version.name }}
+        </ScButton>
       </div>
     </div>
 
@@ -254,11 +291,10 @@
     </div>
 
     <!-- 发布按钮 -->
-    <div class="text-right mt-2">
+    <div class="text-right">
       <button
         class="bg-active text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
-        @click="submitPost"
-      >
+        @click="submitPost">
         发布
       </button>
     </div>
@@ -267,7 +303,7 @@
 
 <script setup lang="ts">
 import type { Api } from '@/types'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import {
   FileText,
   Package,
@@ -275,7 +311,7 @@ import {
   CircleHelp,
   CircleAlert,
 } from 'lucide-vue-next'
-import TipTap from '@/components/TipTap.vue'
+import TipTap from '@/components/tiptap/TipTap.vue'
 import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'
@@ -283,6 +319,8 @@ import { usePostStore } from '@/stores/postStore'
 import { useConfigStore } from '@/stores/configStore'
 import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/ScButton.vue'
+import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
+import type { Version } from '@/types/version'
 
 const toast = useToast()
 const postStore = usePostStore()
@@ -295,32 +333,22 @@ const props = defineProps({
   },
 })
 const plateList = ref<Plate[]>([]) // 板块列表
+const versionList = ref<Version[]>([]) // 版本列表
 
 // 表单
-const postContent = ref(`<p>
-          That's a boring paragraph followed by a fenced code block:
-        </p>
-        <pre><code class="language-javascript">for (var i=1; i <= 20; i++)
-{
-  if (i % 15 == 0)
-    console.log("FizzBuzz");
-  else if (i % 3 == 0)
-    console.log("Fizz");
-  else if (i % 5 == 0)
-    console.log("Buzz");
-  else
-    console.log(i);
-}</code></pre>
-        <p>
-          Press Command/Ctrl + Enter to leave the fenced code block and continue typing in boring paragraphs.
-        </p>`) // 帖子内容
+const postContent = ref(``) // 帖子内容
 const title = ref('') // 标题
 const mode = ref<'post' | 'server'>('post') // 模式选择
 const enablePostRelation = ref(false) // 是否启用关联帖子选择
 const relatedSearch = ref('') // 关联帖子搜索
 const selectedPosts = ref<SelectedPost[]>([]) // 关联帖子列表
 const filteredPosts = ref<SelectedPost[]>([]) // 过滤后的帖子列表
+const pingAvgTime = ref(0) // ping 延迟
+const pingAuccess = ref(true) // ping 成功
+const pingLoding = ref(false) // ping 加载中
+const pingEnsure = ref(false) // ping 确认
 
+// 帖子表单
 const postData = ref<PostDto>({
   id: 0,
   title: '',
@@ -331,12 +359,13 @@ const postData = ref<PostDto>({
   fileType: 0,
   dependencies: [],
 })
+// 服务器表单
 const serverData = ref({
   title: '',
   description: '',
   url: '',
-  versionId: 1,
-}) // 服务器数据
+  versionId: 0,
+})
 
 const setPlate = (plate: Plate) => {
   postData.value.plateId = plate.id
@@ -355,19 +384,136 @@ const removePost = (id: number) => {
 
 // 提交
 const submitPost = () => {
-  if (!postData.value.title) {
+  if (!title.value.trim()) {
     toast.error('标题不能为空')
     return
   }
-  if (!postData.value.content) {
+  if (!postContent.value.trim()) {
     toast.error('内容不能为空')
     return
   }
-  if (postData.value.type === 1 && !postData.value.plateId) {
-    toast.error('请选择板块')
-    return
+
+  if (mode.value === 'post') {
+    if (postData.value.plateId === 0) {
+      toast.error('请选择板块')
+      return
+    }
+    if (postData.value.type === 2 && postData.value.fileType === 0) {
+      toast.error('请选择文件类型')
+      return
+    }
+    sendPsot()
+  } else {
+    if (!serverData.value.url.trim()) {
+      toast.error('服务器地址不能为空')
+      return
+    }
+
+    if (serverData.value.versionId === 0) {
+      toast.error('请选择服务器版本')
+      return
+    }
+    sendServer()
   }
 }
+
+const sendPsot = () => {
+  postData.value.title = title.value
+  postData.value.content = postContent.value
+  postData.value.dependencies = selectedPosts.value.map((p) => p.id)
+
+  console.log('postData', postData.value)
+
+  postApi
+    .createPost(formatPostBody(postData.value))
+    .then((res: Api) => {
+      if (res.data.code === 200) {
+        toast.success('发布成功')
+        window.history.back()
+      }
+    })
+    .catch((err) => {
+      toast.error(err.msg)
+    })
+}
+
+const sendServer = () => {
+  serverData.value.title = title.value
+  serverData.value.description = postContent.value
+
+  console.log('serverData', serverData.value)
+
+  serverApi
+    .createServer(serverData.value)
+    .then((res: Api) => {
+      if (res.data.code === 200) {
+        toast.success('发布成功')
+        window.history.back()
+      }
+    })
+    .catch((err) => {
+      toast.error(err.msg)
+    })
+}
+
+// 测试服务器连接
+const connectionTest = async (url: string) => {
+  if (!url) {
+    return
+  }
+  // 检查本地地址或局域网ip
+  if (
+    url.startsWith('localhost') ||
+    url.startsWith('127.0.0.1') ||
+    url.startsWith('192.168.')
+  ) {
+    toast.error('本地地址或局域网IP不支持')
+    pingLoding.value = false
+    return
+  }
+
+  pingLoding.value = true
+  pingApi
+    .ping(url.split(':')[0])
+    .then((res: Api) => {
+      const data = res.data.data as {
+        success: boolean
+        host: string
+        avgTime: string
+        packetLoss: string
+      }
+      if (data.success) {
+        toast.success('连接成功')
+      } else {
+        toast.error('连接失败，请检查服务器地址')
+        data.avgTime = '-1'
+      }
+      pingAvgTime.value = Number(data.avgTime)
+      pingAuccess.value = data.success
+      pingLoding.value = false
+    })
+    .catch(() => {
+      toast.error('连接失败，请检查服务器地址')
+      pingAvgTime.value = -1
+      pingAuccess.value = false
+      pingLoding.value = false
+    })
+}
+
+const formatPostBody = (body: PostDto) => {
+  if (body.id == 0) delete body.id
+  if (body.type == 1) {
+    delete body.fileType
+    delete body.dependencies
+  }
+  if (body.type == 2) {
+    body.dependencies = selectedPosts.value.map((p) => p.id)
+  } else {
+    body.dependencies = []
+  }
+  return body
+}
+
 onMounted(() => {
   if (props.post) {
     postData.value = props.post
@@ -380,5 +526,42 @@ onMounted(() => {
         .map((item) => [item.id, item])
     ).values()
   )
+
+  plateApi.getPlateList().then((res: Api) => {
+    const data = res.data
+    if (data.code == 200) {
+      plateList.value = data.data.rows as Plate[]
+    }
+  })
+
+  versionApi.getVersion().then((res: Api) => {
+    const data = res.data
+    if (data.code == 200) {
+      versionList.value = data.data.filter((v: any) => v.type === 'online')
+    }
+  })
 })
+
+watch(
+  () => relatedSearch.value,
+  (newVal) => {
+    console.log('relatedSearch', newVal)
+
+    if (newVal) {
+      postApi.searchPost(newVal).then((res: Api) => {
+        const data = res.data
+        if (data.code === 200) {
+          filteredPosts.value = data.data.list.map((post: Post) => ({
+            id: post.id,
+            title: post.title,
+            creator: post.creator,
+          }))
+        }
+      })
+    } else {
+      filteredPosts.value = selectedPosts.value
+    }
+  },
+  { immediate: true }
+)
 </script>

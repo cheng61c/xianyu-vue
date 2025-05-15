@@ -1,3 +1,7 @@
+import { toHtml } from 'hast-util-to-html'
+import { common, createLowlight } from 'lowlight'
+const lowlight = createLowlight(common)
+
 export const htmlToText = (html: string): string => {
   return html.replace(/<[^>]*>/g, '')
 }
@@ -65,4 +69,38 @@ export const formatLink = (link: string): string => {
   if (reg.test(link)) return link // 已经是完整链接，直接返回
   const { protocol } = window.location // 获取当前访问协议
   return `${protocol}//${link}` // 添加协议前缀
+}
+
+/** 高亮处理 */
+export const lightHtml = (html: string): string => {
+  const codeBlock = extractCodeBlock(html)
+  if (codeBlock) {
+    // 解码 HTML 实体，因为代码块中的 < 和 & 等字符已经被转义
+    const decodedCode = codeBlock
+      .replace(/&#x3C;/g, '<')
+      .replace(/&#x26;/g, '&')
+
+    // 高亮处理代码
+    const highlightedCode = lowlight.highlight('typescript', decodedCode)
+
+    // 生成高亮后的 HTML
+    const highlightedHtml = toHtml(highlightedCode, {
+      allowDangerousHtml: true,
+    })
+    console.log('highlightedHtml', highlightedHtml)
+
+    // 替换原始 HTML 中的代码块
+    const finalHtml = html.replace(
+      /<pre.*><code>.*?<\/code><\/pre>/s,
+      `<pre class="language-typescript"><code>${highlightedHtml}</code></pre>`
+    )
+    return finalHtml
+  }
+  return html // 如果没有代码块，返回原始 HTML
+}
+
+const extractCodeBlock = (html: string) => {
+  const regex = /<pre.*><code>(.*?)<\/code><\/pre>/s
+  const match = html.match(regex)
+  return match ? match[1] : null
 }

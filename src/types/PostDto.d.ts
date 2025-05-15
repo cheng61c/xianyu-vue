@@ -10,9 +10,9 @@ export default interface PostDto {
   /** 帖子类型，1帖子，2资源 */
   type: number
   /** 文件类型 */
-  fileType: number
+  fileType?: number
   /** 引用的帖子id */
-  dependencies: number[]
+  dependencies?: number[]
   /** 帖子id */
-  id: number
+  id?: number
 }

@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { post } from '@/apis'
+import { postApi } from '@/apis'
 import type { Api } from '@/types'
 import { onMounted, ref } from 'vue'
 import { Undo2 } from 'lucide-vue-next'
@@ -38,7 +38,7 @@ onMounted(() => {
   const postId = route.params.postId
   if (postId) {
     // 携带帖子id为编辑帖子，获取帖子信息
-    post
+    postApi
       .getPostDetail(+postId)
       .then((response: Api) => {
         const res = response.data
