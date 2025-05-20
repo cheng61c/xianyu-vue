@@ -1,11 +1,15 @@
 import type { TFile } from '@/types/TFile'
 
 export declare interface DocumentVersion {
+  id: number
   version: string
-  title: string
-  files: (number | TFile)[]
-  content?: string
+  content: string
   postId: number
-  id?: number
+  title: string
+  type: number
+  fileType: number
   gameVersionIds: number[]
+  createdAt: string
+  updatedAt: string
+  files: TFile[]
 }

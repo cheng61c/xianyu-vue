@@ -2,41 +2,32 @@
   <!-- Open the modal using ID.showModal() method -->
   <div
     v-if="userStore.token == ''"
-    class="flex gap-4 items-center justify-between"
-  >
-    <ScButton
-      noPadding
-      onclick="modal_login.showModal()"
-      @click="handleModalChange('login')"
-      >{{ $t('login') }}</ScButton
-    >
-    <ScButton
-      noPadding
-      onclick="modal_login.showModal()"
-      @click="handleModalChange('register')"
-      >{{ $t('register') }}</ScButton
-    >
+    class="flex gap-4 items-center justify-between">
+    <ScButton noPadding @click="handleModalChange('login')">{{
+      $t('login')
+    }}</ScButton>
+    <ScButton noPadding @click="handleModalChange('register')">{{
+      $t('register')
+    }}</ScButton>
   </div>
   <div v-else>
-    <ScUserCard :userInfo="userStore.userInfo" onclick="modal_login.close()" />
+    <ScUserCard :userInfo="userStore.userInfo" />
   </div>
-  <dialog id="modal_login" class="modal">
-    <Card noPg class="modal-box max-w-[48rem] h-[36rem]">
+  <ScModal v-model="showModal">
+    <Card noPg class="max-w-[48rem] h-[36rem]">
       <div class="flex h-full">
         <div class="flex-1">
           <img
             src="/public/85120626_p0_master1200.jpg"
             alt="头图"
-            class="w-full h-full object-cover"
-          />
+            class="w-full h-full object-cover rounded-lg" />
         </div>
 
         <div class="flex items-center justify-center">
           <!-- 登录 -->
           <div
             v-if="modalType === 'login'"
-            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]"
-          >
+            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
             <div class="flex justify-between items-end">
               <h3 class="text-2xl font-bold">登录</h3>
               <div class="label">
@@ -56,8 +47,7 @@
                   type="text"
                   placeholder="邮箱或用户名"
                   v-model="loginForm.account"
-                  class="input"
-                />
+                  class="input" />
               </div>
 
               <div class="form-control w-full mb-6">
@@ -66,16 +56,18 @@
                   type="password"
                   placeholder="密码"
                   v-model="loginForm.password"
-                  class="input"
-                />
+                  class="input" />
               </div>
 
               <div
-                class="form-control w-full mb-4 flex justify-between items-center"
-              >
+                class="form-control w-full mb-4 flex justify-between items-center">
                 <label class="label cursor-pointer">
                   <span class="label-text">记住我</span>
-                  <input type="checkbox" class="checkbox" checked />
+                  <input
+                    type="checkbox"
+                    class="checkbox"
+                    checked
+                    v-model="note" />
                 </label>
                 <label class="label cursor-pointer">
                   <span class="label-text text-active">忘记密码？</span>
@@ -84,16 +76,14 @@
             </form>
 
             <div class="modal-action mt-2">
-              <form method="dialog">
-                <!-- if there is a button in form, it will close the modal -->
-                <ScButton Border class="cursor-pointer px-4">取消</ScButton>
-              </form>
+              <ScButton Border class="px-4" @click="offModal">取消</ScButton>
+
               <ScButton
                 Border
                 activation
-                class="cursor-pointer px-4"
-                @click="handleLogin"
-              >
+                class="px-4"
+                :loading="buttonLoading"
+                @click="handleLogin">
                 {{ $t('login') }}
               </ScButton>
             </div>
@@ -102,8 +92,7 @@
           <!-- 注册 -->
           <div
             v-if="modalType === 'register'"
-            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]"
-          >
+            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
             <div class="flex justify-between items-end">
               <h3 class="text-2xl font-bold">注册</h3>
               <div class="label">
@@ -116,15 +105,14 @@
               </div>
             </div>
 
-            <form class="flex flex-col" @submit.prevent="handleLogin">
+            <form class="flex flex-col" @submit.prevent="handleRregister">
               <div class="form-control w-full mb-4">
                 <label class="label py-1">用户名</label>
                 <input
                   type="text"
                   placeholder="邮箱或用户名"
                   v-model="registerForm.account"
-                  class="input"
-                />
+                  class="input" />
               </div>
 
               <div class="form-control w-full mb-4">
@@ -133,8 +121,7 @@
                   type="email"
                   placeholder="邮箱"
                   v-model="registerForm.email"
-                  class="input"
-                />
+                  class="input" />
               </div>
 
               <div class="form-control w-full mb-6">
@@ -143,8 +130,7 @@
                   type="password"
                   placeholder="密码"
                   v-model="registerForm.password"
-                  class="input"
-                />
+                  class="input" />
               </div>
 
               <div class="form-control w-full mb-6">
@@ -154,34 +140,38 @@
                     type="text"
                     placeholder="请输入验证码"
                     v-model="registerForm.captcha"
-                    class="input"
-                  />
+                    class="input" />
 
-                  <ScButton Border class="cursor-pointer w-44"
-                    >获取验证码</ScButton
-                  >
+                  <ScButton
+                    Border
+                    class="w-44"
+                    :disabled="isSendCode"
+                    @click="getCaptcha"
+                    type="button">
+                    {{ sendCodeText }}
+                  </ScButton>
                 </div>
               </div>
             </form>
 
             <div class="modal-action mt-2">
-              <form method="dialog">
-                <!-- if there is a button in form, it will close the modal -->
-                <ScButton Border class="cursor-pointer px-4">取消</ScButton>
-              </form>
-              <ScButton Border activation class="cursor-pointer px-4">{{
-                $t('register')
-              }}</ScButton>
+              <!-- if there is a button in form, it will close the modal -->
+              <ScButton Border class="px-4" @click="offModal">取消</ScButton>
+
+              <ScButton
+                Border
+                activation
+                class="px-4"
+                :loading="buttonLoading"
+                @click="handleRregister">
+                {{ $t('register') }}
+              </ScButton>
             </div>
           </div>
         </div>
       </div>
     </Card>
-
-    <form method="dialog" class="modal-backdrop">
-      <button></button>
-    </form>
-  </dialog>
+  </ScModal>
 
   <dialog id="modal_reset_password" class="modal">
     <div class="modal-box">
@@ -198,19 +188,25 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ScButton from '@/components/ScButton.vue'
 import Card from '@/components/Card.vue'
 import { userApi } from '@/apis'
-import type { Api, ApiUser } from '@/types'
+import type { Api, ApiUser, UserType } from '@/types'
 import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
 import ScUserCard from './ScUserCard.vue'
+import ScModal from '@/components/ScModal.vue'
 
 const username = ref('')
 const password = ref('')
 const router = useRouter()
+const showModal = ref(false)
+const buttonLoading = ref(false)
+const isSendCode = ref(false)
+const sendCodeText = ref('获取验证码')
+const note = ref(false)
 
 const toast = useToast()
 
@@ -225,17 +221,55 @@ const registerForm = reactive({
   account: '',
   email: '',
   password: '',
-  confirmPassword: '',
   captcha: '',
   nickname: '',
 })
 
+// 计时x秒
+const countdown = (duration: number) => {
+  let timer: ReturnType<typeof setInterval>
+  let timeLeft = duration
+
+  const updateText = () => {
+    if (timeLeft > 0) {
+      sendCodeText.value = `${timeLeft}秒后重发`
+      timeLeft--
+    } else {
+      clearInterval(timer)
+      sendCodeText.value = '获取验证码'
+      isSendCode.value = false
+    }
+  }
+
+  timer = setInterval(updateText, 1000)
+}
+
 const modalType = ref('login') // 'login' or 'register' or 'reset_password'
 const handleModalChange = (type: string) => {
   modalType.value = type
+  showModal.value = true
+}
+
+const getCaptcha = () => {
+  isSendCode.value = true
+  countdown(30)
+  userApi
+    .sendCode({ email: registerForm.email })
+    .then((res: Api) => {
+      if (res.data.code === 200) {
+        toast.success('验证码已发送到您的邮箱')
+      } else {
+        toast.error('获取验证码失败: ' + res.data.msg)
+      }
+    })
+    .catch((error) => {
+      // 处理获取验证码错误
+      toast.error(error.msg)
+    })
 }
 
 const handleLogin = () => {
+  buttonLoading.value = true
   userApi
     .login(loginForm)
     .then((res: Api) => {
@@ -245,11 +279,16 @@ const handleLogin = () => {
         userStore.userInfo = userInfo.user
 
         toast.success('登录成功')
+        offModal()
+        buttonLoading.value = false
 
-        const modalLoginDialog = document.getElementById(
-          'modal_login'
-        ) as HTMLDialogElement
-        modalLoginDialog?.close()
+        if (note.value) {
+          userStore.account = loginForm.account
+          userStore.password = loginForm.password
+        } else {
+          userStore.account = ''
+          userStore.password = ''
+        }
       } else {
         toast.error('登录失败: ' + res.data.msg)
       }
@@ -257,6 +296,61 @@ const handleLogin = () => {
     .catch((error) => {
       // 处理登录错误
       toast.error(error.msg)
+      buttonLoading.value = false
+      userStore.account = ''
+      userStore.password = ''
     })
 }
+
+const handleRregister = () => {
+  if (registerForm.password.length < 6 || registerForm.password.length > 20) {
+    toast.error('密码长度为6-20个字符')
+    return
+  }
+  if (
+    registerForm.captcha.length !== 6 ||
+    !/^\d+$/.test(registerForm.captcha)
+  ) {
+    toast.error('验证码为6位数字')
+    return
+  }
+  if (registerForm.account.length < 3 || registerForm.account.length > 20) {
+    toast.error('用户名长度为3-20个字符')
+    return
+  }
+  if (!/^[a-zA-Z0-9_]+$/.test(registerForm.account)) {
+    toast.error('用户名只能是字母、数字或下划线')
+    return
+  }
+
+  userApi
+    .register(registerForm)
+    .then((res: Api) => {
+      if (res.data.code === 200) {
+        toast.success('注册成功')
+        offModal()
+        buttonLoading.value = false
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+
+      // 处理注册错误
+      toast.error(error.msg)
+      buttonLoading.value = false
+    })
+}
+
+const offModal = () => {
+  showModal.value = false
+}
+
+onMounted(() => {
+  // 监听键盘esc键，关闭弹窗
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      offModal()
+    }
+  })
+})
 </script>

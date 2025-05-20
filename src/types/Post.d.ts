@@ -1,6 +1,6 @@
-import { Plate } from '@/type/Plate'
-import { DocumentVersion } from '@/type/DocumentVersion'
-import { User } from './user'
+import { Plate } from '@/types/Plate'
+import { DocumentVersion } from '@/types/DocumentVersion'
+import { UserType } from './user'
 interface Creator {
   id: number
   nickname: string
@@ -29,11 +29,13 @@ export declare interface Post {
   postVersionCount: string
   commentCount: string
   heat: string
+  score: string
+  isScored: boolean
   creator: Creator
-  dependencies: number[]
+  dependencies: { id: number; title: string; cover: string }[]
   plate: Plate
-  postVersions: DocumentVersion
-  author: User
+  postVersions: DocumentVersion[]
+  author: UserType
 }
 
 export declare interface SelectedPost {

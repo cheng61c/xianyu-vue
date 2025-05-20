@@ -1,6 +1,6 @@
 <template>
   <header
-    class="sticky top-0 w-full max-w-7xl mx-auto px-4 flex h-16 justify-between items-center bg-background z-10">
+    class="w-full max-w-7xl mx-auto px-4 flex h-16 justify-between items-center bg-background">
     <button
       class="flex justify-center items-center gap-2 cursor-pointer"
       @click="$router.push('/')">

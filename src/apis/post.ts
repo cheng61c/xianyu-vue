@@ -105,3 +105,7 @@ export const replyPost = (dto: PostCommentDto) => {
 export const searchPost = (keyword: string) => {
   return request.get(`/post/search?title=${keyword}&page=1&limit=30&type=2`)
 }
+
+export const getScoreList = (id: number) => {
+  return request.get(`/score/list?postId=${id}`)
+}

@@ -74,7 +74,7 @@
 
   --color-primary: #66ccff;
   --color-primary-content: oklch(0.933, 0.093, 210.26);
-  --color-secondary: oklch(70% 0.25 200);
+  --color-secondary: oklch(80% 0.25 200);
   --color-secondary-content: oklch(98% 0.01 200);
   --color-accent: oklch(0.47, 0.457, 137.45);
   --color-accent-content: oklch(0.933, 0.093, 210.26);
@@ -98,7 +98,7 @@
 
   --color-primary: #66ccff; /* 主色：蓝色 */
   --color-primary-content: #ffffff; /* 主色内容文本，通常是浅色 */
-  --color-secondary: #3b3f47; /* 次要色：蓝色 */
+  --color-secondary: oklch(50% 0.2 200); /* 次要色：蓝色 */
   --color-secondary-content: #ffffff; /* 次要色内容文本 */
   --color-accent: #ff6f61; /* 强调色：红色 */
   --color-accent-content: #ffffff; /* 强调色内容文本 */
