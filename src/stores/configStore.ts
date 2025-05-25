@@ -16,6 +16,9 @@ export const useConfigStore = defineStore('config', {
     /** 上传路径 */
     uploadPath: 'http://localhost:3000/api/upload',
 
+    errorImg:
+      'https://r2.schub.top/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
+
     /** 当前大板块 */
     currentPlate: {
       /** 当前所在的板块名称 */

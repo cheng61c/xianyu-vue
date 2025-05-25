@@ -9,3 +9,10 @@ export const uploadFile = (file: File, type: number) => {
     },
   })
 }
+
+export const getFilesList = () => {
+  return request({
+    method: 'get',
+    url: '/upload/list',
+  })
+}

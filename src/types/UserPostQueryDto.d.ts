@@ -1,5 +1,5 @@
 export declare interface UserPostQueryDto {
-  id?: number
-  type?: number
+  userId?: number | string
+  type?: number | string
   fileTypes?: string
 }

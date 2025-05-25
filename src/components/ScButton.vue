@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'relative flex justify-center items-center gap-1 text-background-content hover:text-active transition-all cursor-no-drop',
+      'relative flex justify-center items-center gap-1   transition-all cursor-no-drop',
       className,
     ]">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
@@ -71,14 +71,14 @@ const className = computed(() =>
   [
     props.activation
       ? 'bg-active text-active-content'
-      : 'bg-background text-background-content',
+      : 'bg-background text-background-content hover:text-active',
     props.Border
       ? props.activation
         ? 'border border-active'
         : 'border border-gray-content hover:border-active'
       : '',
     props.noPadding || props.noPd ? 'p-0' : 'p-2',
-    props.noBg ? 'bg-transparent' : 'bg-background',
+    props.noBg ? 'bg-transparent' : '',
     props.noRounded ? 'rounded-none' : 'rounded-md',
     props.isCol ? 'flex-col' : '',
     props.loading || props.disabled

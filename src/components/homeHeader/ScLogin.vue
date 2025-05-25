@@ -1,7 +1,7 @@
 <template>
   <!-- Open the modal using ID.showModal() method -->
   <div
-    v-if="userStore.token == ''"
+    v-if="userStore.token == '' || userStore.token == undefined"
     class="flex gap-4 items-center justify-between">
     <ScButton noPadding @click="handleModalChange('login')">{{
       $t('login')
@@ -328,7 +328,9 @@ const handleRregister = () => {
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success('注册成功')
-        offModal()
+        modalType.value = 'login'
+        loginForm.account = registerForm.account
+        loginForm.password = registerForm.password
         buttonLoading.value = false
       }
     })

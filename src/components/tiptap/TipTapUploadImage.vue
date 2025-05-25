@@ -14,13 +14,15 @@
     ref="ImageUploadCard">
     <Card class="p-6">
       <!-- 蚂蚁线框 -->
+      <div class="text-gray-500 mx-auto">拖动图片到虚线框，或点击 + 上传</div>
+      <div class="text-gray-500 mb-2 mx-auto">
+        将此处的图片拖拽至页面中添加图片
+      </div>
       <div
         class="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 transition"
         @dragover.prevent
         @drop.prevent="handleDrop"
         @click="triggerFileInput">
-        <div class="text-gray-500">拖动图片到此处，或点击上传</div>
-        <div class="text-gray-500 mb-2">将此处的图片拖拽至页面中添加图片</div>
         <input
           ref="fileInput"
           type="file"
@@ -35,7 +37,7 @@
             :key="index"
             class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
             @click.stop>
-            <img
+            <ScImage
               :src="img.preview"
               alt="预览图"
               class="w-28 h-28 object-cover" />
@@ -65,10 +67,12 @@ import ScButton from '../ScButton.vue'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/hook/format'
 import { useToast } from 'vue-toastification'
+import ScImage from '../ScImage.vue'
 const toast = useToast()
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const isOpen = ref(false)
+const uploading = ref(false)
 
 // 保存所有图片对象（包含文件本体和预览链接）
 const images = ref<{ file: File; preview: string }[]>([])
@@ -99,6 +103,7 @@ const handleFiles = (files: File[]) => {
   for (const file of files) {
     if (file.type.startsWith('image/')) {
       toast.info('正在上传图片，请稍等...')
+      uploading.value = true
       uploadApi.uploadFile(file, 6).then((res) => {
         if (res.data.code === 200) {
           images.value.push({
@@ -106,6 +111,8 @@ const handleFiles = (files: File[]) => {
             preview: formatLink(res.data.data.url),
           })
         }
+        uploading.value = false
+        toast.success('图片上传成功')
       })
 
       images.value = images.value.filter(

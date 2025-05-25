@@ -3,6 +3,17 @@ export declare interface ServerPost {
   id?: number
   url: string
   versionId: number
-  description: string
+  updatedAt?: string
+}
+
+export declare interface QueryServerPostList {
+  creatorId: number
+  key?: string
+  url?: string
+  versionId?: number
+  page?: number
+  limit?: number
+  level?: number
+  createdAt?: string
   updatedAt?: string
 }

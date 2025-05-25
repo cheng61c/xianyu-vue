@@ -1,6 +1,8 @@
 import { toHtml } from 'hast-util-to-html'
 import { common, createLowlight } from 'lowlight'
+import { useConfigStore } from '@/stores/configStore'
 const lowlight = createLowlight(common)
+const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {
   return html.replace(/<[^>]*>/g, '')
@@ -67,8 +69,14 @@ export const formatLink = (link: string): string => {
   if (!link) return ''
   const reg = /^(http|https):\/\//i
   if (reg.test(link)) return link // 已经是完整链接，直接返回
-  const { protocol } = window.location // 获取当前访问协议
-  return `${protocol}//${link}` // 添加协议前缀
+  // 查询是否有域名
+  const domainReg = /^(www|[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(\/.*)?$/
+  if (domainReg.test(link)) {
+    const { protocol } = window.location // 获取当前访问协议
+    return `${protocol}//${link}` // 添加协议前缀
+  }
+  // 链接不完整
+  return `${configStore.serverAddress}/${link.replace(/^\//, '')}` // 添加基础链接
 }
 
 /** 高亮处理 */
