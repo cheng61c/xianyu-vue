@@ -19,7 +19,7 @@
         将此处的图片拖拽至页面中添加图片
       </div>
       <div
-        class="border-2 border-dashed border-gray-300 rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 transition"
+        class="border-2 border-dashed border-gray rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 transition"
         @dragover.prevent
         @drop.prevent="handleDrop"
         @click="triggerFileInput">

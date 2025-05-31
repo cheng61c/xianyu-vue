@@ -231,7 +231,7 @@
           data-tip="
             该测试只对ip有效，与端口号无关，请确保端口号已开放"
           :class="{
-            'text-green-500': pingAvgTime < 50 && pingAvgTime > 0,
+            'text-green': pingAvgTime < 50 && pingAvgTime > 0,
             'text-yellow-500': pingAvgTime >= 50 && pingAvgTime < 100,
             'text-error': pingAvgTime >= 100 || pingAvgTime === -1,
           }"
@@ -516,7 +516,15 @@ const formatPostBody = (body: PostDto) => {
 
 onMounted(() => {
   if (props.post) {
-    postData.value = props.post
+    // 只拷贝需要的字段，并将 dependencies 转换为 number[]
+    postData.value = {
+      ...props.post,
+      dependencies: Array.isArray(props.post.dependencies)
+        ? props.post.dependencies.map((d: any) =>
+            typeof d === 'object' && d.id ? d.id : d
+          )
+        : [],
+    }
   }
 
   plateList.value = Array.from(

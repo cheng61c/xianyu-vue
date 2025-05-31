@@ -9,7 +9,10 @@ export const htmlToText = (html: string): string => {
 }
 
 export const formatTime = (value: string | number | Date) => {
-  const d = new Date(value)
+  const timestamp =
+    typeof value === 'string' && /^\d+$/.test(value) ? parseInt(value) : value
+  const d = new Date(timestamp)
+
   const [year, month, day, hours, minutes] = [
     d.getFullYear(),
     d.getMonth() + 1,
@@ -111,4 +114,16 @@ const extractCodeBlock = (html: string) => {
   const regex = /<pre.*><code>(.*?)<\/code><\/pre>/s
   const match = html.match(regex)
   return match ? match[1] : null
+}
+
+/** 格式化文件大小 */
+export const formatFileSize = (size: number | string): string => {
+  if (typeof size === 'string') {
+    size = parseInt(size, 10) // 确保是数字
+  }
+  if (size < 1024) return `${size} B`
+  if (size < 1024 * 1024) return `${(size / 1024).toFixed(1)} KB`
+  if (size < 1024 * 1024 * 1024)
+    return `${(size / (1024 * 1024)).toFixed(1)} MB`
+  return `${(size / (1024 * 1024 * 1024)).toFixed(1)} GB`
 }

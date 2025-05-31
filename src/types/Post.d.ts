@@ -43,3 +43,12 @@ export declare interface SelectedPost {
   title: string
   creator: { id: number; nickname: string }
 }
+
+export declare interface PostCreateVersionDto {
+  title: string
+  version: string
+  content: string
+  postId: number
+  files: number[]
+  gameVersionIds: number[]
+}

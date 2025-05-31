@@ -17,7 +17,8 @@
     v-else
     class="w-xl px-1"
     action="前往发帖"
-    :actionIcon="SquareArrowOutUpRight" />
+    :actionIcon="SquareArrowOutUpRight"
+    @action-click="$router.push({ name: 'publish' })" />
 </template>
 
 <script setup lang="ts">

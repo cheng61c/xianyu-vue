@@ -14,7 +14,7 @@
           v-for="role in postData.author.roles"
           :size="'xs'"
           :bgColor="role.color">
-          {{ role.name }}{{ role.id }}
+          {{ role.name }}
         </ScTag>
       </div>
     </div>

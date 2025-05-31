@@ -24,7 +24,7 @@ defineProps({
   },
   bgColor: {
     type: String,
-    default: '#66ccff',
+    default: 'var(--color-active)',
   },
   icon: {
     type: [Object, Function] as PropType<any>,

@@ -7,13 +7,11 @@
       :is="icon"
       v-if="icon"
       :size="iconSize"
-      class="mx-auto h-12 w-12 text-gray-400 flex-shrink-0"
-    />
+      class="mx-auto h-12 w-12 text-gray-400 flex-shrink-0" />
 
     <PackageSearch
       v-else
-      class="mx-auto h-12 w-12 text-gray-content flex-shrink-0"
-    />
+      class="mx-auto h-12 w-12 text-gray-content flex-shrink-0" />
 
     <!-- 标题 -->
     <h3 v-if="title" class="mt-4 text-lg font-medium background-content">
@@ -28,11 +26,9 @@
     <!-- 操作按钮 -->
     <div v-if="action" class="mt-6">
       <ScButton
-        :variant="actionVariant"
         :icon="actionIcon"
         :icon-size="actionIconSize"
-        @click="$emit('action-click')"
-      >
+        @click="$emit('action-click')">
         {{ action }}
       </ScButton>
     </div>
@@ -63,10 +59,6 @@ const props = defineProps({
   action: {
     type: String,
     default: '',
-  },
-  actionVariant: {
-    type: String,
-    default: 'solid',
   },
   actionIcon: {
     type: [Object, Function],

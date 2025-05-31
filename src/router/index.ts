@@ -34,9 +34,42 @@ const routes = [
         component: () => import('@/pages/publish/PublishIndex.vue'),
       },
       {
-        path: 'user/:userId?',
+        path: 'user',
         name: 'user',
+        redirect: '/user/panel',
         component: () => import('@/pages/user/UserIndex.vue'),
+        children: [
+          {
+            path: 'panel',
+            name: 'userPanel',
+            component: () => import('@/pages/user/children/UserPanel.vue'),
+          },
+          {
+            path: 'post',
+            name: 'userPost',
+            component: () => import('@/pages/user/children/UserPost.vue'),
+          },
+          {
+            path: 'resource',
+            name: 'userResource',
+            component: () => import('@/pages/user/children/UserResource.vue'),
+          },
+          {
+            path: 'file',
+            name: 'userFile',
+            component: () => import('@/pages/user/children/UserFile.vue'),
+          },
+          {
+            path: 'server',
+            name: 'userServer',
+            component: () => import('@/pages/user/children/UserServer.vue'),
+          },
+          {
+            path: 'comment',
+            name: 'userComment',
+            component: () => import('@/pages/user/children/UserComment.vue'),
+          },
+        ],
       },
     ],
   },

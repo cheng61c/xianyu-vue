@@ -1,7 +1,7 @@
 import request from '@/utils/request.ts'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { ServerPostListQueryDto } from '@/types/ServerPostListQueryDto'
-import type { Post } from '@/types/Post'
+import type { Post, PostCreateVersionDto } from '@/types/Post'
 import type { ServerPost } from '@/types/ServerPost'
 import type { TopPost } from '@/types/TopPost'
 import type { PostSelectDto } from '@/types/PostSelectDto'
@@ -46,9 +46,6 @@ export const updateServerPost = (dto: ServerPost) => {
   return request.put('/server-post', dto)
 }
 
-export const getPostDocumentList = ({ id }: { id: number }) => {
-  return request.get(`/post-version/list?postId=${id}`)
-}
 export const deletePostAsAdmin = (id: number) => {
   return request.delete(`/admin/post/${id}`)
 }
@@ -67,7 +64,7 @@ export const postDisabled = (dto: PostDisabledDto) => {
   return request.post('/admin/post/disabled', dto)
 }
 
-export const deletePostInAdmin = (id: number) => {
+export const deletePost = (id: number) => {
   return request.delete(`/post/${id}`)
 }
 export const getPostComment = (id: number, orderType: boolean) => {
@@ -108,4 +105,16 @@ export const searchPost = (keyword: string) => {
 
 export const getScoreList = (id: number) => {
   return request.get(`/score/list?postId=${id}`)
+}
+
+export const getPostDocumentList = ({ id }: { id: number }) => {
+  return request.get(`/post-version/list?postId=${id}`)
+}
+
+export const createVersion = (dto: PostCreateVersionDto) => {
+  return request.post(`/post-version`, dto)
+}
+
+export const deleteVersion = (id: number) => {
+  return request.delete(`/post-version/${id}`)
 }

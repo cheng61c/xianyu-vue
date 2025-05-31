@@ -1,18 +1,20 @@
 export default interface PostDto {
   /**标题 */
-  title: string
+  title?: string
   /** 板块id */
-  plateId: number
+  plateId?: number
   /** 内容 */
-  content: string
+  content?: string
   /** 封面 */
-  cover: string
+  cover?: string
   /** 帖子类型，1帖子，2资源 */
-  type: number
+  type?: number
   /** 文件类型 */
   fileType?: number
   /** 引用的帖子id */
   dependencies?: number[]
   /** 帖子id */
   id?: number
+  /** 是否展示 */
+  visible?: number
 }

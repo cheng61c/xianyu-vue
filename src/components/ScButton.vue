@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'relative flex justify-center items-center gap-1   transition-all cursor-no-drop',
+      'relative flex justify-center items-center gap-1 transition-all cursor-no-drop',
       className,
     ]">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />

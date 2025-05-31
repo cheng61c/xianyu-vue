@@ -8,8 +8,7 @@
         :icon="ChevronLeft"
         icon-size="20"
         noBg
-        @click="handlePageChange(currentPage - 1)"
-      >
+        @click="handlePageChange(currentPage - 1)">
         上一页
       </ScButton>
       <span class="text-sm text-background-content">
@@ -22,8 +21,7 @@
         icon-position="right"
         icon-size="20"
         noBg
-        @click="handlePageChange(currentPage + 1)"
-      >
+        @click="handlePageChange(currentPage + 1)">
         下一页
       </ScButton>
     </div>
@@ -46,17 +44,13 @@
       <div>
         <nav
           class="isolate inline-flex -space-x-px rounded-md shadow-sm"
-          aria-label="Pagination"
-        >
+          aria-label="Pagination">
           <ScButton
             class="rounded-l-md"
             :disabled="currentPage <= 1"
             :icon="ChevronLeft"
             icon-size="20"
-            noPadding
-            noBg
-            @click="handlePageChange(currentPage - 1)"
-          >
+            @click="handlePageChange(currentPage - 1)">
             <span class="sr-only">上一页</span>
           </ScButton>
 
@@ -73,13 +67,10 @@
                     @keydown.enter="(handlePageChange(inputPage), close())"
                     @keydown.esc="close()"
                     min="1"
-                    :max="totalPages"
-                  />
+                    :max="totalPages" />
                   <ScButton
-                    noPadding
                     class="border-gray-content/50"
-                    @click="(handlePageChange(inputPage), close())"
-                  >
+                    @click="(handlePageChange(inputPage), close())">
                     跳转
                   </ScButton>
                 </div>
@@ -90,9 +81,7 @@
               v-else
               class="h-10 w-10"
               :activation="page == currentPage"
-              noBg
-              @click="handlePageChange(page)"
-            >
+              @click="handlePageChange(page)">
               {{ page }}
             </ScButton>
           </template>
@@ -102,10 +91,8 @@
             :disabled="currentPage >= totalPages"
             :icon="ChevronRight"
             icon-size="20"
-            noPadding
             noBg
-            @click="handlePageChange(currentPage + 1)"
-          >
+            @click="handlePageChange(+currentPage + 1)">
             <span class="sr-only">下一页</span>
           </ScButton>
         </nav>
@@ -182,6 +169,8 @@ const visiblePages = computed(() => {
 const inputPage = ref(props.currentPage)
 
 const handlePageChange = (page: number | string) => {
+  console.log('handlePageChange', page)
+
   page = Number(page)
   if (page < 1 || page > totalPages.value || page === props.currentPage) {
     return
