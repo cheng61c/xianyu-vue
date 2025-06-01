@@ -3,7 +3,9 @@
     :class="[
       'relative flex justify-center items-center gap-1 transition-all cursor-no-drop',
       className,
-    ]">
+      tip ? 'tooltip tooltip-' + tipPosition : '',
+    ]"
+    :data-tip="tip">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot name="icon" />
     <span><slot /></span>
@@ -65,6 +67,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  tip: {
+    type: String,
+    default: '',
+  },
+  tipPosition: {
+    type: String,
+    default: 'top',
+  },
 })
 
 const className = computed(() =>
@@ -75,7 +85,7 @@ const className = computed(() =>
     props.Border
       ? props.activation
         ? 'border border-active'
-        : 'border border-gray-content hover:border-active'
+        : 'border border-gray-content/50 hover:border-active'
       : '',
     props.noPadding || props.noPd ? 'p-0' : 'p-2',
     props.noBg ? 'bg-transparent' : '',

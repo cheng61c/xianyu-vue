@@ -4,13 +4,11 @@
     size="small"
     @click.stop="togglePopup()"
     hoverable
-    class="relative flex items-center gap-2"
-  >
+    class="relative flex items-center gap-2">
     <template #icon>
       <Avatar
         :src="userStore.userInfo.headImg"
-        :alt="userStore.userInfo.nickname"
-      />
+        :alt="userStore.userInfo.nickname" />
     </template>
     <span> {{ userStore.userInfo.nickname }}</span>
     <template #endIcon>
@@ -18,15 +16,24 @@
     </template>
   </ScButton>
   <div v-if="isOpen" class="absolute z-50" ref="userCard">
-    <Card class="p-6">
+    <Card noPg class="overflow-hidden">
       <div
-        class="cursor-pointer"
-        @click="($router.push('/user'), closePopup())"
-      >
+        class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
+        @click="($router.push('/user/panel'), closePopup())">
         用户主页
       </div>
+      <div
+        v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7])"
+        class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
+        @click="($router.push('/admin/panel'), closePopup())">
+        后台管理
+      </div>
       <div class="border border-gray/60"></div>
-      <div class="text-error cursor-pointer" @click="logout">登出</div>
+      <div
+        class="cursor-pointer text-error px-4 py-2 hover:bg-error hover:text-active-content"
+        @click="logout">
+        登出
+      </div>
     </Card>
   </div>
 </template>
@@ -41,6 +48,7 @@ import Avatar from '../Avatar.vue'
 import { userApi } from '@/apis'
 import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
+import { verifyPermissions } from '@/hook/verify'
 
 const isOpen = ref(false)
 const toast = useToast()

@@ -1,7 +1,11 @@
 <template>
   <div class="flex flex-col w-full items-center gap-4 py-2">
     <div class="flex gap-2 justify-center items-center">
-      <ScButton v-for="btn in routeBtns" :key="btn.name" class="shadow-md px-4" :activation="activation === btn.name"
+      <ScButton
+        v-for="btn in routeBtns"
+        :key="btn.name"
+        class="shadow-md px-4"
+        :activation="activation === btn.name"
         @click="toPage(btn)">
         {{ btn.name }}
       </ScButton>
@@ -13,7 +17,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 import ScButton from '@/components/ScButton.vue'
 
@@ -60,4 +64,13 @@ onMounted(() => {
   }
 })
 
+watch(
+  () => route.path,
+  (newPath) => {
+    const currentBtn = routeBtns.value.find((btn) => btn.path === newPath)
+    if (currentBtn) {
+      activation.value = currentBtn.name
+    }
+  }
+)
 </script>

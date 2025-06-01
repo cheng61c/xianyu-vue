@@ -1,4 +1,11 @@
 <template>
+  <ScSearch
+    v-if="posts.length"
+    key="user-post-search"
+    placeholder="搜索帖子标题或内容"
+    @search="search"
+    v-model="searchText"
+    class="max-w-5xl min-w-4xl w-full" />
   <Card
     v-for="(post, postIndex) in posts"
     :key="post.id"
@@ -123,6 +130,13 @@
       </div>
     </div>
   </Card>
+
+  <Pagination
+    v-if="posts.length"
+    :current-page="pagination.page"
+    :total-items="pagination.count"
+    :page-size="pagination.limit"
+    @page-change="toPage" />
 
   <EmptyState
     v-if="posts.length === 0"
@@ -322,20 +336,21 @@ import {
 } from 'lucide-vue-next'
 import { userApi, postApi, downloadApi } from '@/apis'
 import { formatTime } from '@/hook/format'
-import ScImage from '@/components/ScImage.vue'
-import ScButton from '@/components/ScButton.vue'
-import ScModal from '@/components/ScModal.vue'
 import type { Post } from '@/types/Post'
 import { useToast } from 'vue-toastification'
 import { extractImageSrcs } from '@/hook/regex'
-import EmptyState from '@/components/EmptyState.vue'
 import { useRouter } from 'vue-router'
 import { iconMap, typeLabelMap } from '@/hook/fileType'
-import ScTag from '@/components/ScTag.vue'
 import type { DocumentVersion } from '@/types/DocumentVersion'
-
 import { formatFileSize } from '@/hook/format'
-import ScTable from '@/components/ScTable.vue'
+import ScImage from '@/components/ScImage.vue'
+import ScButton from '@/components/ScButton.vue'
+import ScModal from '@/components/ScModal.vue'
+import ScTag from '@/components/ScTag.vue'
+import EmptyState from '@/components/EmptyState.vue'
+import ScDivider from '@/components/ScDivider.vue'
+import ScSearch from '@/components/user/ScSearch.vue'
+import Pagination from '@/components/Pagination.vue'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
@@ -349,13 +364,28 @@ const openPackageList = ref(false)
 const isDeletePost = ref(false)
 const isDeletePkg = ref(false)
 
+const pagination = ref({
+  page: 1,
+  limit: 5,
+  total: 0,
+  count: 0,
+})
+const searchText = ref('')
+const isSearch = ref(false)
+
 const router = useRouter()
 
 const getPosts = () => {
+  if (isSearch.value) {
+    search(searchText.value)
+    return
+  }
   userApi
     .getUserPosts({
       userId: userInfo.value.id,
       type: 2,
+      page: pagination.value.page,
+      limit: pagination.value.limit,
     })
     .then((response) => {
       posts.value = response.data.data.list.map((item: any) => {
@@ -365,6 +395,12 @@ const getPosts = () => {
         item.createdAt = formatTime(item.createdAt)
         return item
       })
+      pagination.value = {
+        page: response.data.data.page,
+        limit: response.data.data.limit,
+        total: response.data.data.total,
+        count: response.data.data.count,
+      }
     })
     .catch((error) => {
       console.error('Error fetching posts:', error)
@@ -482,6 +518,52 @@ const deletePackage = () => {
       toast.error('请求失败: ' + error.msg)
     })
   isDeletePkg.value = false
+}
+
+const toPage = (page: number) => {
+  pagination.value.page = page
+  getPosts()
+}
+
+const search = (key: string) => {
+  if (key.trim() === '') {
+    isSearch.value = false
+    pagination.value = {
+      page: 1,
+      limit: 5,
+      total: 0,
+      count: 0,
+    }
+    getPosts()
+    return
+  }
+  searchText.value = key.trim()
+  isSearch.value = true
+  userApi
+    .getUserPosts({
+      userId: userInfo.value.id,
+      type: 2,
+      key: key,
+      page: pagination.value.page,
+      limit: pagination.value.limit,
+    })
+    .then((response) => {
+      posts.value = response.data.data.list.map((item: any) => {
+        const imgs = extractImageSrcs(item.content)
+        item.cover = imgs.length > 0 ? imgs[0] : ''
+        item.createdAt = formatTime(item.createdAt)
+        return item
+      })
+      pagination.value = {
+        page: response.data.data.page,
+        limit: response.data.data.limit,
+        total: response.data.data.total,
+        count: response.data.data.count,
+      }
+    })
+    .catch((error) => {
+      console.error('Error searching posts:', error)
+    })
 }
 
 onMounted(() => {

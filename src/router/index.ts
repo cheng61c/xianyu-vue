@@ -34,6 +34,29 @@ const routes = [
         component: () => import('@/pages/publish/PublishIndex.vue'),
       },
       {
+        path: 'admin',
+        name: 'admin',
+        redirect: '/admin/panel',
+        component: () => import('@/pages/admin/AdminIndex.vue'),
+        children: [
+          {
+            path: 'panel',
+            name: 'adminPanel',
+            component: () => import('@/pages/admin/children/AdminPanel.vue'),
+          },
+          {
+            path: 'account',
+            name: 'adminAccount',
+            component: () => import('@/pages/admin/children/AdminPanel.vue'),
+          },
+          {
+            path: 'post',
+            name: 'adminPost',
+            component: () => import('@/pages/admin/children/AdminPost.vue'),
+          },
+        ],
+      },
+      {
         path: 'user',
         name: 'user',
         redirect: '/user/panel',
