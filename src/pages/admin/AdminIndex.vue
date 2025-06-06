@@ -7,28 +7,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 import {
-  ThumbsUp,
-  ThumbsDown,
-  Star,
-  CornerDownRight,
   Package,
-  ArrowDownFromLine,
-  ArrowUpToLine,
-  MessageSquare,
   Server,
-  Flame,
-  PackagePlus,
-  Trash2,
-  Minimize2,
-  Eye,
-  SquarePen,
-  Delete,
-  Download,
-  SquareArrowOutUpRight,
-  LayoutGrid,
   UserRound,
   FileChartColumn,
   Award,
@@ -39,12 +22,10 @@ import {
   Home,
 } from 'lucide-vue-next'
 
-import ScButton from '@/components/ScButton.vue'
 import ScMenu from '@/components/admin/ScMenu.vue'
 import { verifyPermissions } from '@/hook/verify'
 
 const route = useRoute()
-const router = useRouter()
 const activation = ref('')
 
 const menuItems = [
