@@ -8,7 +8,7 @@
         'border-gray': !isOpen && !selectedItems.length,
       }"
       @click="toggleDropdown">
-      <div class="flex flex-wrap gap-1 min-h-6 flex-1 overflow-hidden">
+      <div class="flex flex-wrap gap-1 min-h-6 w-full flex-1 overflow-hidden">
         <!-- 多选标签 -->
         <template v-if="multiple && selectedItems.length">
           <span
@@ -27,15 +27,17 @@
 
         <!-- 单选显示或占位符 -->
         <template v-else>
-          <span class="text-gray-content">
-            {{ selectedItem ? getLabel(selectedItem) : placeholder }}
-          </span>
+          <div class="flex items-center w-full gap-1">
+            <span class="text-gray-content">
+              {{ selectedItem ? getLabel(selectedItem) : placeholder }}
+            </span>
+          </div>
         </template>
       </div>
 
       <!-- 下拉图标 -->
       <svg
-        class="w-5 h-5 text-gray-content transform transition-transform duration-200"
+        class="w-5 h-5 text-gray-content transform transition-transform"
         :class="{ 'rotate-180': isOpen }"
         fill="none"
         viewBox="0 0 24 24"
@@ -50,10 +52,10 @@
 
     <!-- 下拉菜单 -->
     <transition
-      enter-active-class="transition duration-100 ease-out"
+      enter-active-class="transition ease-out"
       enter-from-class="transform scale-95 opacity-0"
       enter-to-class="transform scale-100 opacity-100"
-      leave-active-class="transition duration-75 ease-in"
+      leave-active-class="transition  ease-in"
       leave-from-class="transform scale-100 opacity-100"
       leave-to-class="transform scale-95 opacity-0">
       <div
@@ -76,8 +78,8 @@
             v-for="item in filteredOptions"
             :key="getKey(item)"
             class="px-3 py-2 text-sm cursor-pointer hover:bg-active/60 group"
-            @click="handleItemClick(item)">
-            <div class="flex items-center group-hover:text-active-content">
+            @click.stop="handleItemClick(item)">
+            <div class="flex items-center group-hover:text-background-content">
               <!-- 多选复选框 -->
               <input
                 v-if="multiple"
@@ -118,6 +120,7 @@ interface Props {
   searchable?: boolean
   labelKey?: string // 自定义label字段名
   valueKey?: string // 自定义value字段名
+  clearable?: boolean // 是否可清除选中项
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -128,6 +131,7 @@ const props = withDefaults(defineProps<Props>(), {
   searchable: false,
   labelKey: 'label',
   valueKey: 'value',
+  clearable: false,
 })
 
 const emit = defineEmits(['update:modelValue', 'change'])
@@ -146,22 +150,30 @@ const getLabel = (item: any): string => {
 
 // 获取唯一key
 const getKey = (item: any): any => {
+  if (!item) return null
   return props.valueKey && item[props.valueKey]
     ? item[props.valueKey]
-    : item.value || item
+    : (item?.value ?? item)
 }
 
 // 判断是否选中
 const isSelected = (item: any): boolean => {
+  if (!item || props.modelValue === undefined || props.modelValue === null)
+    return false
+
   if (props.multiple) {
     return Array.isArray(props.modelValue)
       ? props.modelValue.some((val) => getKey(val) === getKey(item))
       : false
   } else {
-    return (
-      props.modelValue !== undefined &&
-      getKey(props.modelValue) === getKey(item)
-    )
+    return getKey(props.modelValue) === getKey(item)
+  }
+}
+
+const clearSelection = () => {
+  if (!props.multiple) {
+    emit('update:modelValue', null)
+    emit('change', null)
   }
 }
 
@@ -220,6 +232,10 @@ const handleItemClick = (item: any) => {
     emit('update:modelValue', newValue)
     emit('change', newValue)
   } else {
+    if (getKey(props.modelValue) === getKey(item)) {
+      // 防止重复设置相同值
+      return
+    }
     emit('update:modelValue', item)
     emit('change', item)
     isOpen.value = false

@@ -17,4 +17,9 @@ export default interface PostDto {
   id?: number
   /** 是否展示 */
   visible?: number
+  /** 状态 */
+  status?: number
+  /** 是否置顶 */
+  top?: number
+  remark?: string
 }

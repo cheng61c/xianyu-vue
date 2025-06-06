@@ -28,26 +28,86 @@ import {
   Delete,
   Download,
   SquareArrowOutUpRight,
+  LayoutGrid,
+  UserRound,
+  FileChartColumn,
+  Award,
+  LayoutPanelTop,
+  GitCommitHorizontal,
+  Megaphone,
+  Info,
+  Home,
 } from 'lucide-vue-next'
 
 import ScButton from '@/components/ScButton.vue'
 import ScMenu from '@/components/admin/ScMenu.vue'
+import { verifyPermissions } from '@/hook/verify'
 
 const route = useRoute()
 const router = useRouter()
 const activation = ref('')
 
 const menuItems = [
-  { icon: ThumbsUp, name: '首页', path: '/admin/panel' },
-  { icon: ThumbsDown, name: '账号管理', path: '/admin/account' },
-  { icon: CornerDownRight, name: '帖子管理', path: '/admin/post' },
-  { icon: ArrowDownFromLine, name: '资源管理', path: '/admin/resource' },
-  { icon: Server, name: '服务器管理', path: '/admin/server' },
-  { icon: Server, name: '角色管理', path: '/admin/role' },
-  { icon: Server, name: '板块管理', path: '/admin/plate' },
-  { icon: Server, name: '游戏版本号', path: '/admin/version' },
-  { icon: Server, name: '游戏公告', path: '/admin/motd' },
-  { icon: Server, name: '后台日志', path: '/admin/info' },
+  {
+    icon: Home,
+    name: '首页',
+    path: '/admin/panel',
+    role: verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10]),
+  },
+  {
+    icon: UserRound,
+    name: '账号管理',
+    path: '/admin/account',
+    role: verifyPermissions([1, 2, 3]),
+  },
+  {
+    icon: FileChartColumn,
+    name: '帖子管理',
+    path: '/admin/post',
+    role: verifyPermissions([1, 2, 9]),
+  },
+  {
+    icon: Package,
+    name: '资源管理',
+    path: '/admin/resource',
+    role: verifyPermissions([1, 2, 5]),
+  },
+  {
+    icon: Server,
+    name: '服务器管理',
+    path: '/admin/server',
+    role: verifyPermissions([1, 2, 4]),
+  },
+  {
+    icon: Award,
+    name: '角色管理',
+    path: '/admin/role',
+    role: verifyPermissions([1, 2]),
+  },
+  {
+    icon: LayoutPanelTop,
+    name: '板块管理',
+    path: '/admin/plate',
+    role: verifyPermissions([1, 2, 5, 9]),
+  },
+  {
+    icon: GitCommitHorizontal,
+    name: '游戏版本号',
+    path: '/admin/version',
+    role: verifyPermissions([1, 2, 3, 10]),
+  },
+  {
+    icon: Megaphone,
+    name: '游戏公告',
+    path: '/admin/motd',
+    role: verifyPermissions([1, 2, 6]),
+  },
+  {
+    icon: Info,
+    name: '后台日志',
+    path: '/admin/info',
+    role: verifyPermissions([1, 2]),
+  },
 ]
 
 onMounted(() => {

@@ -1,11 +1,11 @@
 <template>
   <div
     v-if="visible"
-    class="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 transition-opacity duration-300"
+    class="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 transition-opacity"
     :class="{ 'opacity-0 pointer-events-none': !showing }"
     @click.self="handleClick">
     <div
-      class="rounded-lg shadow-2xl max-w-4xl overflow-auto transition-all duration-300 transform"
+      class="rounded-lg shadow-2xl max-w-4xl overflow-auto transition-all transform"
       :class="{
         'scale-95 opacity-0': !showing,
         'scale-100 opacity-100': showing,

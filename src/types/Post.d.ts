@@ -36,6 +36,10 @@ export declare interface Post {
   plate: Plate
   postVersions: DocumentVersion[]
   author: UserType
+  status: number // 1 正常 2 禁用 3 完成验证
+  top: number // 0 不置顶 1 置顶
+  disabled: number // 0 正常 1 禁用
+  remark: string // 管理员备注
 }
 
 export declare interface SelectedPost {
@@ -51,4 +55,20 @@ export declare interface PostCreateVersionDto {
   postId: number
   files: number[]
   gameVersionIds: number[]
+}
+
+export declare interface PostQueryDto {
+  type?: number // 帖子类型
+  orderType?: number // 排序方式
+  top?: number // 是否置顶
+  status?: number // 帖子状态
+  plateId?: number // 板块ID
+  startTime?: string // 开始时间
+  endTime?: string // 结束时间
+  title?: string // 帖子标题
+  content?: string // 帖子内容
+  creatorId?: string // 用户ID
+  id?: string // 帖子ID
+  page?: number // 当前页码
+  limit?: number // 每页数量
 }

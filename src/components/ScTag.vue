@@ -2,7 +2,7 @@
   <div
     class="flex items-center gap-1 rounded-lg"
     :class="[sizeClass[size]]"
-    :style="{ color: color, backgroundColor: bgColor }">
+    :style="Style">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot name="icon" />
     <span><slot /></span>
@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue'
+import { computed, type PropType } from 'vue'
 
-defineProps({
+const props = defineProps({
   size: {
     type: String as PropType<'xs' | 'sm' | 'md' | 'lg'>,
     default: 'md',
@@ -34,6 +34,10 @@ defineProps({
     type: Number,
     default: 16,
   },
+  status: {
+    type: String as PropType<'success' | 'error' | 'warning' | 'info'>,
+    default: '',
+  },
 })
 
 const sizeClass = {
@@ -42,4 +46,28 @@ const sizeClass = {
   md: 'text-base px-2 py-1',
   lg: 'text-lg px-2 py-1',
 } as const
+
+const Style = computed(() => {
+  switch (props.status) {
+    case 'success':
+      return {
+        color: 'var(--color-success-content)',
+        backgroundColor: 'var(--color-success)',
+      }
+    case 'error':
+      return { color: '#f44336', backgroundColor: '#ffebee' }
+    case 'warning':
+      return {
+        color: 'var(--color-warning-content)',
+        backgroundColor: 'var(--color-warning)',
+      }
+    case 'info':
+      return {
+        color: 'var(--color-info-content)',
+        backgroundColor: 'var(--color-info)',
+      }
+    default:
+      return { color: props.color, backgroundColor: props.bgColor }
+  }
+})
 </script>

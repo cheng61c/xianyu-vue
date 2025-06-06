@@ -3,7 +3,7 @@ import DevTools from '@/components/DevTools.vue'
 </script>
 
 <template>
-  <div class="w-screen h-screen overflow-hidden">
+  <div class="w-screen h-screen overflow-hidden bg-background">
     <router-view />
   </div>
   <div class="absolute bottom-0 right-0"><DevTools /></div>

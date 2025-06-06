@@ -46,20 +46,6 @@ export const updateServerPost = (dto: ServerPost) => {
   return request.put('/server-post', dto)
 }
 
-export const deletePostAsAdmin = (id: number) => {
-  return request.delete(`/admin/post/${id}`)
-}
-export const postToTopAsAdmin = (dto: TopPost) => {
-  return request.post(`/post/top`, dto)
-}
-
-export const postListAsAdmin = (dto: PostSelectDto) => {
-  return request({
-    method: 'GET',
-    url: '/post/list',
-    params: dto,
-  })
-}
 export const postDisabled = (dto: PostDisabledDto) => {
   return request.post('/admin/post/disabled', dto)
 }
@@ -117,4 +103,24 @@ export const createVersion = (dto: PostCreateVersionDto) => {
 
 export const deleteVersion = (id: number) => {
   return request.delete(`/post-version/${id}`)
+}
+
+// Admin APIs
+export const updatePostAsAdmin = (dto: PostDto) => {
+  return request.put('/admin/post', dto)
+}
+
+export const deletePostAsAdmin = (id: number) => {
+  return request.delete(`/admin/post/${id}`)
+}
+export const postToTopAsAdmin = (dto: TopPost) => {
+  return request.post(`/post/top`, dto)
+}
+
+export const postListAsAdmin = (dto: object) => {
+  return request({
+    method: 'GET',
+    url: '/admin/post/list',
+    params: dto,
+  })
 }

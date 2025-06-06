@@ -1,9 +1,8 @@
 <template>
   <!-- 主窗口 -->
-  <div class="bg-background w-screen h-screen">
+  <div class="h-screen mx-auto max-w-[1600px]">
     <HomeHeader />
-    <div
-      class="w-full max-w-7xl mx-auto px-4 transition-all duration-300 h-[calc(100vh-64px)] overflow-auto">
+    <div class="w-full mx-auto px-4 h-[calc(100vh-64px)] overflow-auto">
       <router-view></router-view>
     </div>
   </div>

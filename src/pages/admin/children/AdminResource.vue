@@ -282,7 +282,7 @@ const getPosts = () => {
       ? searchTypeValue.value.value
       : searchTypeValue.value
 
-  params.type = 1
+  params.type = 2 // 帖子类型，2为资源帖
   params.page = postPage.value.page // 当前页码
   params.limit = postPage.value.limit // 每页数量
   params.orderType = orderByValue // 排序方式

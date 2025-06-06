@@ -54,6 +54,11 @@ const routes = [
             name: 'adminPost',
             component: () => import('@/pages/admin/children/AdminPost.vue'),
           },
+          {
+            path: 'resource',
+            name: 'adminResource',
+            component: () => import('@/pages/admin/children/AdminResource.vue'),
+          },
         ],
       },
       {

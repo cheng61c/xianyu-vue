@@ -1,7 +1,6 @@
 <template>
   <div
-    class="flex flex-col gap-4 h-full overflow-y-auto px-1 min-w-xs no-scrollbar"
-  >
+    class="flex flex-col gap-4 h-full overflow-y-auto px-1 min-w-xs no-scrollbar">
     <Creation />
     <Card>
       <h2 class="card-title px-1.5">公告栏</h2>
@@ -9,8 +8,7 @@
         <div
           v-if="post.top == 1"
           @click="handleClick(post)"
-          class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all duration-200"
-        >
+          class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all">
           <div class="px-2 py-0.5 rounded-md bg-warning text-sm">置顶</div>
           <div class="font-bold">{{ post.title }}</div>
         </div>

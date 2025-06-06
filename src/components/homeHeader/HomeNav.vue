@@ -6,20 +6,17 @@
         :key="item.path"
         class="list-none"
         :class="{ 'text-primary': isActive(item) }"
-        @click="setActive(index)"
-      >
+        @click="setActive(index)">
         <router-link
           :to="item.path"
-          class="inline-block px-2 transition-colors duration-100"
-          :class="{ 'text-primary': isActive(item) }"
-        >
+          class="inline-block px-2 transition-colors"
+          :class="{ 'text-primary': isActive(item) }">
           {{ item.name }}
         </router-link>
       </li>
       <div
-        class="absolute bottom-[-2px] h-1 transition-all duration-300"
-        :style="indicatorStyle"
-      >
+        class="absolute bottom-[-2px] h-1 transition-all"
+        :style="indicatorStyle">
         <div class="w-4 h-1 bg-primary rounded-full mx-auto my-0"></div>
       </div>
     </ul>

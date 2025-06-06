@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'relative flex justify-center items-center gap-1 transition-all cursor-no-drop',
+      'relative flex justify-center items-center gap-1 cursor-no-drop',
       className,
       tip ? 'tooltip tooltip-' + tipPosition : '',
     ]"
@@ -85,9 +85,9 @@ const className = computed(() =>
     props.Border
       ? props.activation
         ? 'border border-active'
-        : 'border border-gray-content/50 hover:border-active'
+        : 'border border-gray hover:border-active'
       : '',
-    props.noPadding || props.noPd ? 'p-0' : 'p-2',
+    props.noPadding || props.noPd ? 'p-0' : 'py-1.5 px-3',
     props.noBg ? 'bg-transparent' : '',
     props.noRounded ? 'rounded-none' : 'rounded-md',
     props.isCol ? 'flex-col' : '',

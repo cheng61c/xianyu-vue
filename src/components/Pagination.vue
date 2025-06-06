@@ -28,7 +28,7 @@
 
     <!-- 桌面端：完整分页 -->
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
-      <div>
+      <div class="pr-4">
         <p class="text-sm text-background-content">
           显示
           <span class="font-medium">{{

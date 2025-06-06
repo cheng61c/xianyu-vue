@@ -1,16 +1,16 @@
 <template>
   <div
-    class="border-r border-gray transition-all duration-300 h-[calc(100vh-5rem)]"
+    class="border-r border-gray transition-all h-[calc(100vh-5rem)]"
     :class="{ 'w-48': !collapsed, 'w-13': collapsed }">
     <!-- 菜单标题和折叠按钮 -->
     <div
       class="flex items-center justify-between p-4 cursor-pointer h-6"
       @click="toggleCollapse">
       <h3 v-if="!collapsed" class="whitespace-nowrap font-bold">菜单</h3>
-      <button class="transition-colors">
+      <button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 transform transition-transform duration-200"
+          class="h-5 w-5 transition-all"
           :class="{ 'rotate-180': collapsed }"
           fill="none"
           viewBox="0 0 24 24"
@@ -26,29 +26,29 @@
 
     <!-- 菜单项列表 -->
     <div class="relative divide-gray-200 z-1">
-      <div
-        v-for="(item, index) in items"
-        :key="index"
-        class="w-full h-12 flex items-center justify-start">
-        <ScButton
-          :icon="item.icon"
-          :iconSize="20"
-          noPd
-          noRounded
-          :activation="activation === item.name"
-          :tip="collapsed ? item.name : ''"
-          @click="toggleOptions(item.name)"
-          tipPosition="right"
-          class="transition-colors h-full w-full px-4 flex items-center justify-start">
-          <span
-            v-if="!collapsed"
-            data-tip="item.name"
-            class="ml-2 whitespace-nowrap overflow-hidden text-ellipsis">
-            {{ item.name }}
-          </span>
-        </ScButton>
-      </div>
-      <!-- 左侧图标 -->
+      <template v-for="(item, index) in items" :key="index">
+        <div
+          v-if="item.role"
+          class="w-full h-12 flex items-center justify-start">
+          <ScButton
+            :icon="item.icon"
+            :iconSize="20"
+            noPd
+            noRounded
+            :activation="activation === item.name"
+            :tip="collapsed ? item.name : ''"
+            @click="toggleOptions(item.name)"
+            tipPosition="right"
+            class="h-full w-full px-4 flex items-center justify-start">
+            <span
+              v-if="!collapsed"
+              data-tip="item.name"
+              class="ml-2 whitespace-nowrap overflow-hidden text-ellipsis">
+              {{ item.name }}
+            </span>
+          </ScButton>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -64,6 +64,7 @@ interface MenuItem {
   icon?: any // 可以使用 Vue 组件或 SVG
   name: string
   path: string
+  role?: boolean // 角色权限数组或布尔值
 }
 
 const props = defineProps({

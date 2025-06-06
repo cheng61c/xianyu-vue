@@ -10,15 +10,14 @@ defineProps<{
 
 <template>
   <div
-    class="flex bg-background rounded-lg gap-2 shadow-card transition-shadow duration-200 dark:shadow-card-dark border border-gray-content/10"
+    class="flex bg-background rounded-lg gap-2 shadow-card transition-shadow dark:shadow-card-dark border border-gray-content/10"
     :class="{
       'shadow-card-md dark:shadow-card-md-dark': activation,
       'bg-transparent': noBg,
       'p-0': noPg,
       'p-4': !noPg,
       'flex-col': !noCol,
-    }"
-  >
+    }">
     <slot />
   </div>
 </template>

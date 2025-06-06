@@ -5,6 +5,10 @@ body {
   overflow: hidden;
 }
 
+* {
+  transition: all 0.2s in-out;
+}
+
 .no-select {
   user-select: none;
 }
