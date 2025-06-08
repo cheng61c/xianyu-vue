@@ -3,13 +3,11 @@
     <Card
       @click="handleCardClick(0)"
       class="w-60"
-      :activation="activation == 0"
-    >
+      :activation="activation == 0">
       <div class="flex gap-2 text-background-content justify-between">
         <span
           class="flex gap-2 items-center justify-center text-background-content font-bold"
-          :class="{ 'text-primary': activation == 0 }"
-        >
+          :class="{ 'text-primary': activation == 0 }">
           <Signpost />
           全部板块
         </span>
@@ -18,18 +16,15 @@
 
     <li
       v-for="plate in postStore.plate[currentRouteName as string]"
-      :key="plate.id"
-    >
+      :key="plate.id">
       <Card
         @click="handleCardClick(plate.id)"
         class="w-60"
-        :activation="activation == plate.id || currentRouteName == plate.name"
-      >
+        :activation="activation == plate.id || currentRouteName == plate.name">
         <div class="flex gap-2 text-background-content justify-between">
           <span
             class="flex gap-2 items-center justify-center text-background-content font-bold"
-            :class="{ 'text-primary': activation == plate.id }"
-          >
+            :class="{ 'text-primary': activation == plate.id }">
             <Signpost />
             {{ plate.name }}
           </span>
@@ -72,14 +67,15 @@ const getPlate = async () => {
       if (data.code !== 200) {
         return toast.error('获取板块失败')
       }
-      const plates = data.data.rows as Plate[]
+      const plates = data.data as Plate[]
 
       postStore.plate[currentRouteName.value] = plates.filter(
         (plate) => plate.type === typeId
       )
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.message)
+      toast.error('获取板块失败: ' + error.message)
+      console.error('获取板块失败:', error)
     })
 }
 

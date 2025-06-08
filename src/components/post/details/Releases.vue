@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
 import type { Post } from '@/types/Post'
-import { defineProps, onMounted, ref, watch } from 'vue'
+import { defineProps, ref, watch } from 'vue'
 import type { PropType } from 'vue'
 import Card from '@/components/Card.vue'
 import ScTag from '@/components/ScTag.vue'
@@ -111,9 +111,9 @@ import ScButton from '@/components/ScButton.vue'
 import { Download, Minimize2 } from 'lucide-vue-next'
 import { formatFileSize, formatTime } from '@/hook/format'
 import { downloadApi } from '@/apis'
-import { useToast } from 'vue-toastification'
+// import { useToast } from 'vue-toastification'
 
-const toast = useToast()
+// const toast = useToast()
 const props = defineProps({
   postData: {
     type: Object as PropType<Post | null>,

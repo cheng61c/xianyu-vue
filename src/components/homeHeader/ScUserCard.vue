@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import Card from '../Card.vue'
-import { Plus, X, ImageIcon, ImagePlus, ChevronUp } from 'lucide-vue-next'
+import { ChevronUp } from 'lucide-vue-next'
 import type { UserType } from '@/types'
 import ScButton from '../ScButton.vue'
 import Avatar from '../Avatar.vue'
@@ -66,7 +66,7 @@ const logout = () => {
       toast.success('登出成功')
       closePopup()
     })
-    .catch((error) => {
+    .catch(() => {
       toast.error('登出失败')
     })
 }

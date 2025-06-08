@@ -14,7 +14,7 @@
       <!-- 标题 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             帖子标题，帖子标题会显示在游戏内社区的列表中，建议使用简短的标题，便于用户快速搜索">
           <span class="flex items-center gap-1">
@@ -33,7 +33,7 @@
       <!-- 模式选择 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="模式选择，用于选择发布帖子或服务器，不同模式下的表单内容会有所不同">
           <span class="flex items-center gap-1">
             模式选择 <span><CircleHelp :size="16" /></span>
@@ -50,6 +50,7 @@
             帖子
           </ScButton>
           <ScButton
+            v-if="verifyPermissions([1, 2, 8, 9])"
             class="px-4 py-1 text-sm"
             :activation="mode === 'server'"
             Border
@@ -62,7 +63,7 @@
       <!-- 发送到板块 -->
       <div v-if="mode === 'post'" class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块">
           <span class="flex items-center gap-1">
@@ -88,7 +89,7 @@
         v-if="postData.type === 2 && mode === 'post'"
         class="flex items-center gap-2 flex-wrap">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             选择文件类型，文件类型会影响文件的上传方式和显示方式，且一个帖子中只能存在一种文件类型，建议根据实际情况选择合适的文件类型">
           <span class="flex items-center gap-1">
@@ -121,7 +122,7 @@
         v-if="postData.type === 2 && mode === 'post'"
         class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             关联帖子，当该帖子所使用的文件需要依赖其他帖子中的文件时使用，启用后可以选择其他帖子进行关联，便于快速查找和使用">
           <span class="flex items-center gap-1">
@@ -203,7 +204,7 @@
       <!-- 服务器 IP -->
       <div v-if="mode === 'server'" class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             你的服务器地址，这将用于在游戏内连接到你的服务器，通常是 IP:端口号">
           <span class="flex items-center gap-2">
@@ -264,7 +265,7 @@
       <!-- 服务器版本 -->
       <div v-if="mode === 'server'" class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             选择服务器版本，服务器版本会影响游戏内的连接方式和功能，建议根据实际情况选择合适的版本">
           <span class="flex items-center gap-1">
@@ -321,6 +322,7 @@ import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/ScButton.vue'
 import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
 import type { Version } from '@/types/version'
+import { verifyPermissions } from '@/hook/verify'
 
 const toast = useToast()
 const postStore = usePostStore()
@@ -433,7 +435,7 @@ const sendPsot = () => {
       }
     })
     .catch((err) => {
-      toast.error(err.msg)
+      toast.error('发布失败' + err.msg)
     })
 }
 
@@ -452,7 +454,7 @@ const sendServer = () => {
       }
     })
     .catch((err) => {
-      toast.error(err.msg)
+      toast.error('发布失败' + err.msg)
     })
 }
 
@@ -538,7 +540,7 @@ onMounted(() => {
   plateApi.getPlateList().then((res: Api) => {
     const data = res.data
     if (data.code == 200) {
-      plateList.value = data.data.rows as Plate[]
+      plateList.value = data.data as Plate[]
     }
   })
 

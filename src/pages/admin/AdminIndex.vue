@@ -1,8 +1,19 @@
 <template>
-  <div class="flex w-full gap-4">
+  <div
+    v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])"
+    class="flex w-full gap-4">
     <ScMenu :items="menuItems" v-model:activation="activation" />
 
-    <div class="w-full"><RouterView></RouterView></div>
+    <div
+      v-if="release"
+      class="px-2 w-full h-[calc(100vh-64px)] overflow-y-auto no-scrollbar">
+      <RouterView></RouterView>
+    </div>
+  </div>
+  <div
+    v-else
+    class="flex items-center justify-center h-[calc(100vh-64px)] w-full">
+    <h1 class="text-2xl font-bold">没有权限访问此页面</h1>
   </div>
 </template>
 
@@ -27,6 +38,7 @@ import { verifyPermissions } from '@/hook/verify'
 
 const route = useRoute()
 const activation = ref('')
+const release = ref(true)
 
 const menuItems = [
   {
@@ -104,6 +116,9 @@ watch(
     const currentBtn = menuItems.find((btn) => btn.path === newPath)
     if (currentBtn) {
       activation.value = currentBtn.name
+      if (!currentBtn.role) {
+        release.value = false
+      }
     }
   },
   { immediate: true, deep: true }

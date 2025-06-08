@@ -19,14 +19,11 @@
 
 <script setup lang="ts">
 import Card from '@/components/Card.vue'
-import { usePostStore } from '@/stores/postStore'
 import { useRouter } from 'vue-router'
-import { useConfigStore } from '@/stores/configStore'
-import type { Post } from '@/types/Post'
+
 import Creation from './Creation.vue'
 
 const router = useRouter()
-const configStore = useConfigStore()
 
 const handleClick = (post: { id: any }) => {
   router.push({
@@ -35,7 +32,6 @@ const handleClick = (post: { id: any }) => {
   })
 }
 
-const postStore = usePostStore()
 const posts = [
   {
     id: 21,

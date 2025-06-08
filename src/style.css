@@ -5,6 +5,10 @@ body {
   overflow: hidden;
 }
 
+:root {
+  --cp-container-bg: var(--color-background);
+}
+
 * {
   transition: all 0.2s in-out;
 }
@@ -54,4 +58,27 @@ body {
 
 .Vue-Toastification__toast-body {
   color: #fff;
+}
+
+.ck-cp-container {
+  left: 0;
+  background-color: var(--color-background);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  width: 270px;
+  height: auto;
+  box-shadow: none;
+  border: var(--tw-border-style) 1px var(--color-gray);
+  padding-bottom: calc(var(--margin-top) * 1.5);
+  padding-top: var(--margin-top);
+}
+
+.cp-btn,
+.cp-main-btn,
+.ck-cp-input-content input {
+  background-color: transparent;
+}
+
+.ck-cp-input-container .ck-cp-input-content .ck-cp-input-label {
+  background: var(--color-background);
 }

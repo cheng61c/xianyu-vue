@@ -361,7 +361,7 @@ const getPlateList = () => {
       if (response.data.code === 200) {
         plateBarOptions.value = [
           { value: 0, label: '全部板块' },
-          ...response.data.data.rows
+          ...response.data.data
             .filter((plate: any) => plate.type === 2)
             .map((plate: any) => ({
               value: plate.id,

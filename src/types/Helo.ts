@@ -1,4 +1,4 @@
-import { User } from '@/type/User'
+import type { User } from './user'
 
 export declare interface Helo {
   id: number

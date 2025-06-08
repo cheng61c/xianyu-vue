@@ -47,7 +47,7 @@ const routes = [
           {
             path: 'account',
             name: 'adminAccount',
-            component: () => import('@/pages/admin/children/AdminPanel.vue'),
+            component: () => import('@/pages/admin/children/AdminAccount.vue'),
           },
           {
             path: 'post',
@@ -58,6 +58,21 @@ const routes = [
             path: 'resource',
             name: 'adminResource',
             component: () => import('@/pages/admin/children/AdminResource.vue'),
+          },
+          {
+            path: 'server',
+            name: 'adminServer',
+            component: () => import('@/pages/admin/children/AdminServer.vue'),
+          },
+          {
+            path: 'role',
+            name: 'adminRole',
+            component: () => import('@/pages/admin/children/AdminRole.vue'),
+          },
+          {
+            path: 'plate',
+            name: 'adminPlate',
+            component: () => import('@/pages/admin/children/AdminPlate.vue'),
           },
         ],
       },
@@ -110,7 +125,7 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   console.log('Navigating to:', to.name)
   next()
 })

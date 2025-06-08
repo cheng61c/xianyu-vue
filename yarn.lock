@@ -27,6 +27,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@cyhnkckali/vue3-color-picker@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/@cyhnkckali/vue3-color-picker/-/vue3-color-picker-2.1.2.tgz#0cac83e12cb8fc28121dc8acbac82022012eef29"
+  integrity sha512-HxSqbceR5yjm+xoFFstuRg9OfMh+X0eFWkf2Wj4+PtVndR5gsd37AKlBeYi5OdmeIbL1FcKu9ts8cUHD6GjEZw==
+
 "@electron-toolkit/preload@^3.0.0":
   version "3.0.2"
   resolved "https://registry.npmjs.org/@electron-toolkit/preload/-/preload-3.0.2.tgz#ee5bb33aba48741c5bc539a9a6faad0be455465e"

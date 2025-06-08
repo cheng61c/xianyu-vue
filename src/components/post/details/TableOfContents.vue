@@ -1,5 +1,5 @@
 <template>
-  <Card>
+  <Card v-if="tocList.length">
     <h3 class="text-lg font-bold mb-2">目录</h3>
     <ul class="space-y-1 text-sm">
       <li

@@ -10,11 +10,10 @@
         <span class="text-background-content font-bold">{{
           postData.author.nickname
         }}</span>
-        <ScTag
-          v-for="role in postData.author.roles"
-          :size="'xs'"
-          :bgColor="role.color">
-          {{ role.name }}
+        <ScTag :size="'xs'" :bgColor="postData.author.roles[0].color">
+          <span>LV</span>
+          <span class="mr-1">{{ postData.author.level }}</span>
+          <span>{{ postData.author.roles[0].name }}</span>
         </ScTag>
       </div>
     </div>

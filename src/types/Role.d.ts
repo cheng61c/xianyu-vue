@@ -6,4 +6,14 @@ export declare interface Role {
   className: string
   createdAt: string
   updatedAt: string
+  users: {
+    id: number
+    nickname: string
+  }[]
+}
+
+export declare interface UserRole {
+  id: number
+  name: string
+  color: string
 }

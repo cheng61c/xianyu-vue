@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import Card from '../Card.vue'
-import { Plus, X, ImageIcon, ImagePlus } from 'lucide-vue-next'
+import { Plus, X, ImageIcon } from 'lucide-vue-next'
 import ScButton from '../ScButton.vue'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/hook/format'
@@ -155,26 +155,6 @@ const handleEscKey = (event: KeyboardEvent) => {
   if (event.key === 'Escape') {
     closePopup()
   }
-}
-
-const addImage = (file: File) => {
-  if (file.type.startsWith('image/')) {
-    images.value.push({
-      file,
-      preview: URL.createObjectURL(file),
-    })
-  }
-}
-
-const upLoadImage = () => {
-  const formData = new FormData()
-  images.value.forEach((img) => {
-    formData.append('images[]', img.file, img.file.name)
-  })
-  // 上传图片的逻辑
-  // axios.post('/upload', formData).then((response) => {
-  //   console.log(response.data)
-  // })
 }
 
 // 监听组件销毁事件，释放预览链接

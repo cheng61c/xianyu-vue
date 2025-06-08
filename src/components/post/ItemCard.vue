@@ -3,14 +3,12 @@
     <!-- 第一行，头像、标题、时间 -->
     <div
       class="flex gap-2 justify-between items-center align-middle cursor-pointer"
-      @click="handleClick"
-    >
+      @click="handleClick">
       <Avatar
         :src="post.creator.headImg"
         :alt="post.creator.nickname"
         :size="24"
-        @click.stop="toUserPage(post.creator.id)"
-      />
+        @click.stop="toUserPage(post.creator.id)" />
       <div class="font-bold mr-auto">{{ post.title }}</div>
 
       <div class="text-sm text-gray-content">
@@ -21,17 +19,16 @@
     <!-- 第二行，帖子部分内容 -->
     <div
       class="text-gray-content line-clamp-2 cursor-pointer"
-      @click="handleClick"
-    >
+      @click="handleClick">
       {{ htmlToText(post.content) }}
     </div>
 
     <!-- 第三行，操作按钮 -->
     <div class="flex justify-between mt-2">
       <div class="flex gap-2 items-center cursor-pointer">
-        <div class="text-sm bg-gray px-1 py-0.5 rounded-md text-gray-content">
-          # {{ post.plate.name }}
-        </div>
+        <ScTag size="sm" :icon="SquareChartGantt" status="info">
+          {{ post.plate.name }}
+        </ScTag>
       </div>
       <div class="flex gap-6">
         <ScButton
@@ -40,8 +37,7 @@
           :icon="ThumbsUp"
           :activationColor="props.post.isLiked ? 'text-active' : ''"
           @click.stop="clickGood(post.id)"
-          :class="[post.isLiked ? 'active' : '']"
-        >
+          :class="[post.isLiked ? 'active' : '']">
           {{ post.likeCount }}
         </ScButton>
 
@@ -51,8 +47,7 @@
           :icon="ThumbsDown"
           :activationColor="props.post.isBaded ? 'text-active' : ''"
           :class="[post.isBaded ? 'active' : '']"
-          @click.stop="clickBad(post.id)"
-        >
+          @click.stop="clickBad(post.id)">
         </ScButton>
 
         <ScButton noPadding noBg :icon="MessageCircle">
@@ -74,8 +69,15 @@ import Card from '@/components/Card.vue'
 import ScButton from '@/components/ScButton.vue'
 import { defineProps } from 'vue'
 import { formatTime, htmlToText, formatNumber } from '@/hook/format'
-import { MessageCircle, Eye, ThumbsUp, ThumbsDown } from 'lucide-vue-next'
+import {
+  MessageCircle,
+  Eye,
+  ThumbsUp,
+  ThumbsDown,
+  SquareChartGantt,
+} from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
+import ScTag from '../ScTag.vue'
 
 const router = useRouter()
 

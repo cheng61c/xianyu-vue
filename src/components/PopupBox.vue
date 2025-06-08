@@ -6,8 +6,7 @@
       noBg
       :activation="isOpen"
       :icon="icon"
-      class="h-10 w-10"
-    >
+      class="h-10 w-10">
       {{ buttonText }}
     </ScButton>
 
@@ -21,8 +20,7 @@
           'bottom-[110%]': position === 'top',
           'left-[110%] top-0': position === 'right',
           'right-[110%] top-0': position === 'left',
-        }"
-      >
+        }">
         <slot :close="closePopup" />
       </div>
     </transition>
@@ -31,10 +29,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import ScCard from './Card.vue'
 import ScButton from './ScButton.vue'
 
-const props = defineProps<{
+defineProps<{
   buttonText: string
   icon?: any
   //位置

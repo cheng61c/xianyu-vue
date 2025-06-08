@@ -11,6 +11,7 @@
     "pretter": "npx prettier --write ."
   },
   "dependencies": {
+    "@cyhnkckali/vue3-color-picker": "^2.1.2",
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
     "@kyvg/vue3-notification": "^3.4.1",

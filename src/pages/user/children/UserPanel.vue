@@ -79,12 +79,7 @@
 
 <script setup lang="ts">
 import { commentApi, serverApi, uploadApi, userApi } from '@/apis'
-import {
-  formatLink,
-  formatNumber,
-  formatTime,
-  formatTimeAgo,
-} from '@/hook/format'
+import { formatLink, formatNumber, formatTime } from '@/hook/format'
 import { useUserStore } from '@/stores/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
@@ -100,7 +95,6 @@ import Card from '@/components/Card.vue'
 import Avatar from '@/components/Avatar.vue'
 
 import ScTag from '@/components/ScTag.vue'
-import ScButton from '@/components/ScButton.vue'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)

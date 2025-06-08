@@ -1,5 +1,10 @@
 import request from '@/utils/request.ts'
-import type { QueryServerPostList, ServerPost } from '@/types/ServerPost'
+import type {
+  QueryServerPostList,
+  ServerPost,
+  ServerPostListQueryDto,
+  ServerPostListUpdateDto,
+} from '@/types/ServerPost'
 export const getServerList = () => {
   return request.get('/server-post')
 }
@@ -14,4 +19,17 @@ export const deleteServer = (data: number) => {
 }
 export const getServer = (data: QueryServerPostList) => {
   return request.get(`/server-post`, data)
+}
+
+// admin apis
+export const getServerListAsAdmin = (dto: ServerPostListQueryDto) => {
+  return request({
+    method: 'GET',
+    url: '/admin/server-post/list',
+    params: dto,
+  })
+}
+
+export const updateServerPostAsAdmin = (data: ServerPostListUpdateDto) => {
+  return request.put(`/admin/server-post/update`, data)
 }

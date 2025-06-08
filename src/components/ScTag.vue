@@ -41,7 +41,7 @@ const props = defineProps({
 })
 
 const sizeClass = {
-  xs: 'text-xs px-1 py-0.5',
+  xs: 'text-xs px-1 py-0.5 min-w-8',
   sm: 'text-sm px-1.5 py-0.5',
   md: 'text-base px-2 py-1',
   lg: 'text-lg px-2 py-1',
@@ -67,7 +67,7 @@ const Style = computed(() => {
         backgroundColor: 'var(--color-info)',
       }
     default:
-      return { color: props.color, backgroundColor: props.bgColor }
+      return { color: props.color, background: props.bgColor }
   }
 })
 </script>

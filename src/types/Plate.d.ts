@@ -7,5 +7,17 @@ export declare interface Plate {
   postCount: number
   /** 板块类型，1交流板块，2文件板块 */
   type: number
-  disabled: boolean
+  disabled: number
+}
+
+export declare interface PlateDto {
+  id?: number
+  name?: string
+  description?: string
+  type?: number
+}
+
+export declare interface PlateDisabledDto {
+  id?: number
+  disabled?: number
 }

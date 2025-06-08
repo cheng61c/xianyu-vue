@@ -5,15 +5,13 @@
       width: size + 'px',
       height: size + 'px',
       fontSize: size / 2 + 'px',
-    }"
-  >
+    }">
     <img
       v-if="!loadError"
       class="w-full h-full object-cover"
       :src="formatLink(src)"
       :alt="alt"
-      @error="loadError = true"
-    />
+      @error="loadError = true" />
 
     <span v-else>{{ alt?.charAt(0) || '?' }}</span>
   </div>
@@ -23,7 +21,7 @@
 import { formatLink } from '@/hook/format'
 import { ref, defineProps } from 'vue'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     src: string
     alt: string

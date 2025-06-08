@@ -27,7 +27,20 @@
       <!-- 右侧文字信息 -->
       <div class="ml-4 flex flex-col justify-between flex-grow h-24">
         <!-- 标题 -->
-        <div class="">{{ post.title }}</div>
+        <div
+          class="flex items-center gap-2"
+          @click.stop="
+            $router.push({ name: 'postDetails', params: { postId: post.id } })
+          ">
+          {{ post.title }}
+          <ScTag
+            size="sm"
+            :bgColor="
+              post.visible == 1 ? 'var(--color-green)' : 'var(--color-error)'
+            ">
+            {{ post.visible == 1 ? '正常' : '下架' }}
+          </ScTag>
+        </div>
         <!-- 时间 -->
         <div class="text-sm text-gray-500">{{ post.createdAt }}</div>
         <!-- 底部数据 -->
@@ -149,12 +162,10 @@ import { onMounted, ref } from 'vue'
 import {
   ThumbsUp,
   ThumbsDown,
-  Star,
   Package,
   ArrowDownFromLine,
   ArrowUpToLine,
   MessageSquare,
-  Server,
   Flame,
   Trash2,
   Eye,
@@ -173,6 +184,7 @@ import ScModal from '@/components/ScModal.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import ScSearch from '@/components/user/ScSearch.vue'
 import Pagination from '@/components/Pagination.vue'
+import ScTag from '@/components/ScTag.vue'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)

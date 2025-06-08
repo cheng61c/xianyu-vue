@@ -6,16 +6,14 @@
 
 <script setup lang="ts">
 import { postApi } from '@/apis'
-import { defineProps, onMounted, ref } from 'vue'
-import { useToast } from 'vue-toastification'
+import { defineProps, onMounted } from 'vue'
+
 const props = defineProps({
   postId: {
     type: Number,
     required: true,
   },
 })
-const postData = ref([])
-const toast = useToast()
 
 const getScoreData = async (postId: number) => {
   postApi

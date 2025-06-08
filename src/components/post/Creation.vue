@@ -13,5 +13,5 @@
 <script setup lang="ts">
 import Card from '@/components/Card.vue'
 import ScButton from '@/components/ScButton.vue'
-import { PackagePlus, MessageSquarePlus } from 'lucide-vue-next'
+import { MessageSquarePlus } from 'lucide-vue-next'
 </script>

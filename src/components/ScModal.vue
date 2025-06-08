@@ -60,7 +60,7 @@ watch(
 )
 
 // 处理背景点击事件
-const handleClick = (event: MouseEvent) => {
+const handleClick = (_event: MouseEvent) => {
   if (props.closeOnClickOutside) {
     emits('update:modelValue', false)
   }

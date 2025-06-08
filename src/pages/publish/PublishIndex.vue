@@ -1,15 +1,13 @@
 <template>
   <div
     v-if="loadError"
-    class="flex flex-col items-center justify-center h-full"
-  >
+    class="flex flex-col items-center justify-center h-full">
     <EmptyState
       title="加载失败"
       description="请刷新页面或点击下方返回"
       action="返回"
       :actionIcon="Undo2"
-      @action-click="$emit('goBack')"
-    />
+      @action-click="$emit('goBack')" />
   </div>
 
   <CreatePost v-if="createType === '文章'" />
@@ -51,7 +49,7 @@ onMounted(() => {
         }
       })
       .catch((error) => {
-        toast.error(error.msg)
+        toast.error('获取帖子详情失败' + error.msg)
         loadError.value = true
       })
   } else {

@@ -14,7 +14,7 @@
       <!-- 标题 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             版本号，资源版本号">
           <span class="flex items-center gap-1">
@@ -33,7 +33,7 @@
       <!-- 标题 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="
             版本标题">
           <span class="flex items-center gap-1">
@@ -53,7 +53,7 @@
       <!-- 游戏版本 -->
       <div class="flex items-center gap-2">
         <label
-          class="w-24 flex justify-between items-center tooltip tooltip-bottom"
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本">
           <span class="flex items-center gap-1">
             适配的游戏版本 <span><CircleHelp :size="16" /></span>
@@ -97,35 +97,20 @@
 
 <script setup lang="ts">
 import type { Api } from '@/types'
-import { onMounted, ref, version, watch } from 'vue'
-import {
-  FileText,
-  Package,
-  Check,
-  CircleHelp,
-  CircleAlert,
-} from 'lucide-vue-next'
+import { onMounted, ref } from 'vue'
+import { CircleHelp } from 'lucide-vue-next'
 import TipTap from '@/components/tiptap/TipTap.vue'
-import type { Post, PostCreateVersionDto, SelectedPost } from '@/types/Post'
-import type PostDto from '@/types/PostDto'
+import type { Post, PostCreateVersionDto } from '@/types/Post'
 import { useToast } from 'vue-toastification'
-import { usePostStore } from '@/stores/postStore'
-import { useConfigStore } from '@/stores/configStore'
-import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/ScButton.vue'
 import ScUploadFile from '@/components/ScUploadFile.vue'
-import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
+import { postApi, versionApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
 
 const toast = useToast()
-const postStore = usePostStore()
-const configStore = useConfigStore()
 const router = useRouter()
-
-const plateList = ref<Plate[]>([]) // 板块列表
 const versionList = ref<Version[]>([]) // 版本列表
-
 const postInfo = ref<Post>({} as Post) // 帖子详情
 
 // 帖子表单

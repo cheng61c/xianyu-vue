@@ -23,8 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-
+import { defineProps, withDefaults, defineEmits } from 'vue'
 interface Props {
   modelValue?: string | number
   type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search'
@@ -37,7 +36,7 @@ interface Props {
   resizable?: boolean // 新增：是否可调整大小
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   modelValue: '',
   type: 'text',
   placeholder: '',

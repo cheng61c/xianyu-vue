@@ -109,6 +109,8 @@ const handleFiles = (selectedFiles: File[]) => {
           toast.success(`${fileTypeLabel.value}上传成功`)
         }
         uploading.value = false
+        console.log(res.data.data)
+
         uploadedFiles.value.push({
           file,
           name: file.name,
@@ -154,10 +156,6 @@ const uploaded = () => {
 const removeFile = (index: number) => {
   files.value.splice(index, 1)
   fileInput.value!.value = ''
-}
-
-const togglePopup = () => {
-  isOpen.value = !isOpen.value
 }
 
 const closePopup = () => {

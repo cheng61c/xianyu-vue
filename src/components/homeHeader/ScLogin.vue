@@ -11,7 +11,7 @@
     }}</ScButton>
   </div>
   <div v-else>
-    <ScUserCard :userInfo="userStore.userInfo" />
+    <ScUserCard />
   </div>
   <ScModal v-model="showModal">
     <Card noPg class="max-w-[48rem] h-[36rem]">
@@ -34,9 +34,9 @@
                 <span> 还没有账号？ </span>
                 <span
                   class="text-active cursor-pointer"
-                  @click="handleModalChange('register')"
-                  >去注册</span
-                >
+                  @click="handleModalChange('register')">
+                  去注册
+                </span>
               </div>
             </div>
 
@@ -69,7 +69,9 @@
                     checked
                     v-model="note" />
                 </label>
-                <label class="label cursor-pointer">
+                <label
+                  class="label cursor-pointer"
+                  @click="handleModalChange('reset_password')">
                   <span class="label-text text-active">忘记密码？</span>
                 </label>
               </div>
@@ -146,7 +148,7 @@
                     Border
                     class="w-44"
                     :disabled="isSendCode"
-                    @click="getCaptcha"
+                    @click="getCaptcha(registerForm.email)"
                     type="button">
                     {{ sendCodeText }}
                   </ScButton>
@@ -168,40 +170,94 @@
               </ScButton>
             </div>
           </div>
+
+          <!-- 忘记密码 -->
+          <div
+            v-if="modalType === 'reset_password'"
+            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
+            <div class="flex justify-between items-end">
+              <h3 class="text-2xl font-bold">重置密码</h3>
+              <div class="label">
+                <span> 想起来了？ </span>
+                <span
+                  class="text-active cursor-pointer"
+                  @click="handleModalChange('login')">
+                  返回登录
+                </span>
+              </div>
+            </div>
+
+            <form class="flex flex-col" @submit.prevent="handleRregister">
+              <div class="form-control w-full mb-4">
+                <label class="label py-1">邮箱</label>
+                <input
+                  type="email"
+                  placeholder="邮箱"
+                  v-model="resetPasswordForm.email"
+                  class="input" />
+              </div>
+
+              <div class="form-control w-full mb-6">
+                <label class="label py-1">新密码</label>
+                <input
+                  type="password"
+                  placeholder="密码"
+                  v-model="resetPasswordForm.password"
+                  class="input" />
+              </div>
+
+              <div class="form-control w-full mb-6">
+                <label class="label py-1">验证码</label>
+                <div class="flex gap-2 items-center">
+                  <input
+                    type="text"
+                    placeholder="请输入验证码"
+                    v-model="resetPasswordForm.captcha"
+                    class="input" />
+
+                  <ScButton
+                    Border
+                    class="w-44"
+                    :disabled="isSendCode"
+                    @click="getCaptcha(resetPasswordForm.email)"
+                    type="button">
+                    {{ sendCodeText }}
+                  </ScButton>
+                </div>
+              </div>
+            </form>
+
+            <div class="modal-action mt-2">
+              <!-- if there is a button in form, it will close the modal -->
+              <ScButton Border class="px-4" @click="offModal">取消</ScButton>
+
+              <ScButton
+                Border
+                activation
+                class="px-4"
+                :loading="buttonLoading"
+                @click="handleReset">
+                确认重置
+              </ScButton>
+            </div>
+          </div>
         </div>
       </div>
     </Card>
   </ScModal>
-
-  <dialog id="modal_reset_password" class="modal">
-    <div class="modal-box">
-      <h3 class="text-lg font-bold">Hello!</h3>
-      <p class="py-4">Press ESC key or click the button below to close</p>
-      <div class="modal-action">
-        <form method="dialog">
-          <!-- if there is a button in form, it will close the modal -->
-          <button class="btn">Close</button>
-        </form>
-      </div>
-    </div>
-  </dialog>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import ScButton from '@/components/ScButton.vue'
 import Card from '@/components/Card.vue'
 import { userApi } from '@/apis'
-import type { Api, ApiUser, UserType } from '@/types'
+import type { Api, ApiUser } from '@/types'
 import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
 import ScUserCard from './ScUserCard.vue'
 import ScModal from '@/components/ScModal.vue'
 
-const username = ref('')
-const password = ref('')
-const router = useRouter()
 const showModal = ref(false)
 const buttonLoading = ref(false)
 const isSendCode = ref(false)
@@ -223,6 +279,12 @@ const registerForm = reactive({
   password: '',
   captcha: '',
   nickname: '',
+})
+
+const resetPasswordForm = reactive({
+  email: '',
+  password: '',
+  captcha: '',
 })
 
 // 计时x秒
@@ -250,11 +312,11 @@ const handleModalChange = (type: string) => {
   showModal.value = true
 }
 
-const getCaptcha = () => {
+const getCaptcha = (email: string) => {
   isSendCode.value = true
   countdown(30)
   userApi
-    .sendCode({ email: registerForm.email })
+    .sendCode({ email })
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success('验证码已发送到您的邮箱')
@@ -338,6 +400,40 @@ const handleRregister = () => {
       console.log(error)
 
       // 处理注册错误
+      toast.error(error.msg)
+      buttonLoading.value = false
+    })
+}
+
+const handleReset = () => {
+  if (
+    resetPasswordForm.password.length < 6 ||
+    resetPasswordForm.password.length > 20
+  ) {
+    toast.error('密码长度为6-20个字符')
+    return
+  }
+  if (
+    resetPasswordForm.captcha.length !== 6 ||
+    !/^\d+$/.test(resetPasswordForm.captcha)
+  ) {
+    toast.error('验证码为6位数字')
+    return
+  }
+
+  userApi
+    .updatePassword(resetPasswordForm)
+    .then((res: Api) => {
+      if (res.data.code === 200) {
+        toast.success('密码重置成功')
+        modalType.value = 'login'
+        buttonLoading.value = false
+      }
+    })
+    .catch((error) => {
+      console.log(error)
+
+      // 处理重置密码错误
       toast.error(error.msg)
       buttonLoading.value = false
     })

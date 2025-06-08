@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStore'
-import type { role } from '@/types'
+import type { UserRole } from '@/types/Role'
 
 const userStore = useUserStore()
 /**
@@ -12,7 +12,7 @@ export const verifyPermissions = (ids: number[]) => {
   const userRoles = userStore.userInfo.roles
   if (!userRoles) return false
   // 获取当前用户的角色ID列表
-  const userRoleIds = userRoles.map((role: role) => role.id)
+  const userRoleIds = userRoles.map((role: UserRole) => role.id)
   // 检查是否有任何一个角色ID在支持的角色ID列表中
   const hasPermission = ids.some((id) => userRoleIds.includes(id))
   return hasPermission

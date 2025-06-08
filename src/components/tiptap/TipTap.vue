@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import {
@@ -37,7 +37,6 @@ import SuperscriptE from '@tiptap/extension-superscript'
 import Strike from '@tiptap/extension-strike'
 import UnderlineE from '@tiptap/extension-underline'
 import BulletList from '@tiptap/extension-bullet-list'
-import Image from '@tiptap/extension-image'
 import CustomImageExtension from '@/extensions/CustomImageExtension'
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
 import { common, createLowlight } from 'lowlight'

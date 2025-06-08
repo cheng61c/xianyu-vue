@@ -39,7 +39,7 @@
 import ScButton from './ScButton.vue' // 引入 ScButton 组件
 import { PackageSearch } from 'lucide-vue-next'
 
-const props = defineProps({
+defineProps({
   icon: {
     type: [Object, Function],
     default: null, // 默认使用 PackageSearch 图标

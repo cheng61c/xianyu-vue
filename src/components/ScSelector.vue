@@ -104,7 +104,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 
 interface DropdownItem {
   value: any
@@ -167,13 +167,6 @@ const isSelected = (item: any): boolean => {
       : false
   } else {
     return getKey(props.modelValue) === getKey(item)
-  }
-}
-
-const clearSelection = () => {
-  if (!props.multiple) {
-    emit('update:modelValue', null)
-    emit('change', null)
   }
 }
 

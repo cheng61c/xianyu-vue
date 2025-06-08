@@ -2,7 +2,7 @@
   <!-- 主窗口 -->
   <div class="h-screen mx-auto max-w-[1600px]">
     <HomeHeader />
-    <div class="w-full mx-auto px-4 h-[calc(100vh-64px)] overflow-auto">
+    <div class="w-full mx-auto px-4 h-[calc(100vh-64px)] overflow-y-auto">
       <router-view></router-view>
     </div>
   </div>
@@ -30,7 +30,7 @@ const login = () => {
         userStore.userInfo = res.data.data.userInfo
       }
     })
-    .catch((error) => {
+    .catch((_error) => {
       userStore.userInfo = {} as UserType
       userStore.token = ''
     })
@@ -45,7 +45,7 @@ onMounted(() => {
           userStore.userInfo = res.data.data
         }
       })
-      .catch((error) => {
+      .catch((_error) => {
         userStore.userInfo = {} as UserType
         userStore.token = ''
         if (userStore.account && userStore.password) {

@@ -4,11 +4,16 @@ import type { RegisterDto } from '@/types/RegisterDto'
 import type { VerificationCode } from '@/types/VerificationCode'
 import type { VerificationCodeDto } from '@/types/VerificationCodeDto'
 import type { CheckDuplicateDto } from '@/types/CheckDuplicateDto'
-import type { UpdateUserDto } from '@/types/UpdateUserDto'
-import type { UserPostQueryDto } from '@/types/UserPostQueryDto'
 import type { UpdatePasswordDto } from '@/types/UpdatePasswordDto'
-import type { UserSelectDto } from '@/types/UserSelectDto'
-import type { UserDisabledDto } from '@/types/UserDisabled'
+import type {
+  UpdateRoleDto,
+  UpdateUserAsAdminDto,
+  UpdateUserDto,
+  UserDisabledDto,
+  UserPostQueryDto,
+  UserSelectDto,
+} from '@/types'
+
 export const login = (dto: LoginDto) => {
   return request.post('/user/login', dto)
 }
@@ -52,17 +57,32 @@ export const deletePost = ({ id }: { id: number }) => {
 export const getCurrentUser = () => {
   return request.get('/user/info')
 }
-export const getUserList = (dto: UserSelectDto) => {
-  return request({
-    method: 'GET',
-    url: '/admin/user/list',
-    params: dto,
-  })
-}
+
 export const userDisabled = (dto: UserDisabledDto) => {
   return request.post('/admin/user/disabled', dto)
 }
 
 export const getUser = (id: number) => {
   return request.get(`/user/${id}`)
+}
+
+// admin apis
+export const getUserListAsAdmin = (dto: UserSelectDto) => {
+  return request({
+    method: 'GET',
+    url: '/admin/user/list',
+    params: dto,
+  })
+}
+
+export const updateUserAsAdmin = (dto: UpdateUserAsAdminDto) => {
+  return request.put('/admin/user/update', dto)
+}
+
+export const updateRoles = (dto: UpdateRoleDto) => {
+  return request.put(`/admin/user/update-roles`, dto)
+}
+
+export const updateUserKey = (id: number) => {
+  return request.put(`/admin/user/update-key/${id}`)
 }
