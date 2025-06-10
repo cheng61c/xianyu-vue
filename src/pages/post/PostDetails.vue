@@ -127,7 +127,6 @@ const getPostDetails = async (postId: number) => {
         ...item,
         createdAt: formatTime(item.createdAt),
       }))
-      toast.success('Post details fetched successfully!')
       tocList.value = generateTocFromHtml(data.content)
       postData.value = data
     })

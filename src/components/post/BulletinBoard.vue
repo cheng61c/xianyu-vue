@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-col gap-4 h-full overflow-y-auto px-1 min-w-xs no-scrollbar">
+    class="flex flex-col gap-4 h-full overflow-y-auto px-1 pt-1 min-w-xs no-scrollbar">
     <Creation />
     <Card>
       <h2 class="card-title px-1.5">公告栏</h2>

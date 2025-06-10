@@ -1,4 +1,4 @@
-import type { PutVersionDto } from '@/types/version'
+import type { DisableVersionDto, PutVersionDto } from '@/types/version'
 import request from '@/utils/request.ts'
 
 export const getVersion = () => {
@@ -15,4 +15,13 @@ export const delVersion = (id: number) => {
 
 export const addVersion = (dto: PutVersionDto) => {
   return request.post('/version', dto)
+}
+
+export const disableVersion = (dto: DisableVersionDto) => {
+  return request.post('/version', dto)
+}
+// admin apis
+
+export const getVersionAsAdmin = () => {
+  return request.get('/admin/version/list')
 }

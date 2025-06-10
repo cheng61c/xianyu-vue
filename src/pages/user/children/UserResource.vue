@@ -251,7 +251,7 @@
       </div>
       <ScButton
         v-if="packageList.length"
-        class="w-full text-sm"
+        class="w-full"
         @click="toCreateResource()"
         :icon="PackagePlus"
         iconSize="20"

@@ -180,6 +180,10 @@
           class="m-2" />
       </div>
       <div class="flex gap-4 justify-end">
+        <ScButton class="px-4" @click="updateUser(currentUser)" Border>
+          提交修改
+        </ScButton>
+
         <ScButton class="px-4" @click="updateModal = false" Border>
           取消
         </ScButton>
@@ -495,6 +499,12 @@ const updateUser = (index: number) => {
     body.account = updateBody.value.account
   }
   body.id = item.id // 设置用户ID
+
+  if (Object.keys(body).length === 1) {
+    toast.warning('啥也不是，走了')
+    updateModal.value = false
+    return
+  }
 
   userApi
     .updateUserAsAdmin(body)

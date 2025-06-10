@@ -6,7 +6,7 @@
 
     <div
       v-if="release"
-      class="px-2 w-full h-[calc(100vh-64px)] overflow-y-auto no-scrollbar">
+      class="px-2 w-full h-[calc(100vh-74px)] pb-2 overflow-y-auto no-scrollbar">
       <RouterView></RouterView>
     </div>
   </div>

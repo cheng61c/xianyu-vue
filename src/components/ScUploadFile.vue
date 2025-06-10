@@ -1,9 +1,9 @@
 <template>
   <div ref="uploadCardRef">
     <Card class="p-6">
-      <div class="text-gray-500 mx-auto flex items-center justify-center">
+      <div class="text-gray-500 mx-auto flex items-center justify-center gap-2">
         拖动
-        <ScTag claass="flex" size="sm">{{ fileTypeLabel }}</ScTag>
+        <ScTag size="sm">{{ fileTypeLabel }}</ScTag>
         到虚线框，或点击 + 上传
       </div>
 

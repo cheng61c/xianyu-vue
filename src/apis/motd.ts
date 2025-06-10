@@ -1,12 +1,17 @@
-import type { Motd } from '@/types/Motd'
+import type { MotdDto, MotdType } from '@/types/Motd'
 import request from '@/utils/request.ts'
 
-export const createMotd = (dto: Motd) => {
+export const createMotd = (dto: MotdDto) => {
   return request.post('/motd', dto)
 }
-export const updateMotd = (dto: Motd) => {
+export const updateMotd = (dto: MotdDto) => {
   return request.put('/motd', dto)
 }
 export const getMotd = () => {
   return request.get('/motd')
+}
+
+// admin apis
+export const getMotdAsAdmin = () => {
+  return request.get('/admin/motd')
 }

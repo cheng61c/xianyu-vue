@@ -74,6 +74,16 @@ const routes = [
             name: 'adminPlate',
             component: () => import('@/pages/admin/children/AdminPlate.vue'),
           },
+          {
+            path: 'version',
+            name: 'adminVersion',
+            component: () => import('@/pages/admin/children/AdminVersion.vue'),
+          },
+          {
+            path: 'motd',
+            name: 'adminMotd',
+            component: () => import('@/pages/admin/children/AdminMotd.vue'),
+          },
         ],
       },
       {
