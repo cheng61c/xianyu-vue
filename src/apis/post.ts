@@ -16,10 +16,7 @@ export const getPostList = (dto: PostListQueryDto) => {
   })
 }
 export const getPostListTop = () => {
-  return request({
-    method: 'get',
-    url: '/post/top',
-  })
+  return request.get('/post/top')
 }
 export const getServerPostList = (dto: ServerPostListQueryDto) => {
   return request({
@@ -109,8 +106,8 @@ export const updatePostAsAdmin = (dto: PostDto) => {
   return request.put('/admin/post', dto)
 }
 
-export const deletePostAsAdmin = (id: number) => {
-  return request.delete(`/admin/post/${id}`)
+export const deletePostAsAdmin = (dto: { id: number; disabled: number }) => {
+  return request.delete(`/admin/post/disabled`, { data: dto })
 }
 export const postToTopAsAdmin = (dto: TopPost) => {
   return request.post(`/post/top`, dto)

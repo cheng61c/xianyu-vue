@@ -24,7 +24,7 @@
           type="number"
           placeholder="缩进宽度"
           class="h-10 mb-[2px]" />
-        <ScButton @click="format()" Border noPd class="h-[42px]">
+        <ScButton @click="format()" Border noPd class="h-[42px] px-3">
           确定
         </ScButton>
       </div>
@@ -41,36 +41,35 @@
         </div>
       </div>
     </div>
-    <div class="relative w-full flex">
-      <div class="relative w-full flex border rounded-md overflow-y-hidden">
-        <!-- 行号栏 -->
-        <div
-          ref="lineNumber"
-          class="line-numbers select-none text-right px-2 py-2 text-xs text-gray-400 bg-gray-100 border-r overflow-y-hidden"
-          aria-hidden="true">
-          <span
-            v-for="(line, i) in lines"
-            :key="i"
-            class="block leading-[1.5rem] font-mono text-[16px]">
-            {{ i + 1 }}
-          </span>
-        </div>
 
-        <!-- 输入框 -->
-        <div class="relative flex-1">
-          <textarea
-            v-model="motdContent"
-            ref="textarea"
-            class="code-input w-full h-full px-4 py-2 text-[16px] font-mono leading-[1.5rem] resize-none overflow-auto focus:outline-none overflow-y-hidden"
-            placeholder="什么也没有"
-            :maxlength="8000"
-            @input="handleInput"
-            @scroll="syncScroll"
-            rows="1" />
-          <div
-            class="absolute right-4 bottom-2 text-xs text-gray-400 select-none">
-            {{ motdContent.length }} / 8000
-          </div>
+    <div class="relative flex border border-gray rounded-md overflow-y-hidden">
+      <!-- 行号栏 -->
+      <div
+        ref="lineNumber"
+        class="line-numbers select-none text-right px-2 py-2 text-xs text-gray-content dark:bg-gray/60 bg-gray/20 border-r border-gray overflow-y-hidden"
+        aria-hidden="true">
+        <span
+          v-for="(line, i) in lines"
+          :key="i"
+          class="block leading-[1.5rem] font-mono text-[16px]">
+          {{ i + 1 }}
+        </span>
+      </div>
+
+      <!-- 输入框 -->
+      <div class="relative flex-1">
+        <textarea
+          v-model="motdContent"
+          ref="textarea"
+          class="code-input w-full px-4 py-2 text-[16px] leading-[1.5rem] resize-none overflow-auto focus:outline-none overflow-y-hidden"
+          placeholder="什么也没有"
+          :maxlength="8000"
+          @input="handleInput"
+          @scroll="syncScroll"
+          rows="1" />
+        <div
+          class="absolute right-4 bottom-2 text-xs text-gray-content select-none">
+          {{ motdContent.length }} / 8000
         </div>
       </div>
     </div>
@@ -248,7 +247,7 @@ const handleInput = () => {
 // 行号栏高度同步
 const syncLineNumberHeight = () => {
   if (textarea.value && lineNumber.value) {
-    lineNumber.value.style.height = `${textarea.value.scrollHeight}px`
+    lineNumber.value.style.height = `${textarea.value.scrollHeight + 6}px`
   }
 }
 

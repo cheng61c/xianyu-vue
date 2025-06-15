@@ -60,6 +60,62 @@
         </div>
       </div>
 
+      <div
+        v-if="mode === 'post' && verifyPermissions([1, 2, 6, 9])"
+        class="flex items-center gap-2">
+        <label
+          class="w-24 flex justify-between items-center tooltip tooltip-right"
+          data-tip="置顶选项，用于选择帖子在社区中的显示方式，置顶的帖子会在列表中优先显示，横幅公告和弹窗公告会在站内有特殊提示">
+          <span class="flex items-center gap-1">
+            置顶模式 <span><CircleHelp :size="16" /></span>
+          </span>
+
+          <span>:</span>
+        </label>
+        <div class="flex gap-2">
+          <ScButton
+            class="px-4 py-1 text-sm"
+            :activation="postData.top === 0"
+            Border
+            @click="postData.top = 0">
+            不置顶
+          </ScButton>
+          <ScButton
+            class="px-4 py-1 text-sm"
+            :activation="postData.top === 1"
+            Border
+            @click="postData.top = 1">
+            置顶
+          </ScButton>
+          <ScButton
+            class="px-4 py-1 text-sm"
+            :activation="postData.top === 2"
+            Border
+            @click="postData.top = 2">
+            横幅公告
+          </ScButton>
+          <ScButton
+            class="px-4 py-1 text-sm"
+            :activation="postData.top === 3"
+            Border
+            @click="postData.top = 3">
+            弹窗公告
+          </ScButton>
+          <span
+            v-if="postData.top == 2"
+            class="flex gap-1 text-green items-center">
+            <CircleAlert :size="16" />
+            使用"横幅公告"选项时，该帖子的标题将置顶在主页的页面顶端
+          </span>
+          <span
+            v-if="postData.top == 3"
+            class="flex gap-1 text-green items-center">
+            <CircleAlert :size="16" />
+            使用"弹窗公告"选项时，该帖子将在页面加载完成时弹出
+          </span>
+        </div>
+      </div>
+
       <!-- 发送到板块 -->
       <div v-if="mode === 'post'" class="flex items-center gap-2">
         <label
@@ -111,10 +167,10 @@
         </div>
         <span
           v-if="postData.fileType == 7"
-          class="flex gap-1 text-error items-center"
-          ><CircleAlert :size="16" />使用该 其他
-          选项时，上传的资源将不会在游戏中显示</span
-        >
+          class="flex gap-1 text-error items-center">
+          <CircleAlert :size="16" />
+          使用"其他"选项时，上传的资源将不会在游戏中显示
+        </span>
       </div>
 
       <!-- 是否关联帖子开关 -->
@@ -359,6 +415,7 @@ const postData = ref<PostDto>({
   cover: '',
   type: 1,
   fileType: 0,
+  top: 0,
   dependencies: [],
 })
 // 服务器表单

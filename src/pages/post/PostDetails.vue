@@ -31,7 +31,7 @@
       </div>
     </div>
 
-    <div class="flex gap-6 pr-1 pt-4">
+    <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
       <!-- 左侧按钮 -->
       <ArticleActions :postData="postData" />
 
@@ -41,8 +41,16 @@
       <!-- 右侧卡片 -->
       <div class="w-2/5 relative">
         <div class="flex flex-col gap-4 no-scrollbar p-2">
-          <!-- 目录 -->
+          <Card
+            v-if="postData?.status == 2 || postData?.disabled == 1"
+            class="top-0 z-10">
+            <div class="text-red-500 text-lg font-bold">
+              该帖子已被封禁或禁用
+            </div>
+            <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
+          </Card>
 
+          <!-- 目录 -->
           <TableOfContents :postData="postData" :tocList="tocList" />
 
           <!-- 作者 -->
@@ -55,6 +63,20 @@
           <Releases :postData="postData" />
         </div>
       </div>
+    </div>
+    <!-- 错误页面 -->
+    <div v-else class="flex flex-col items-center justify-center h-full">
+      <Card class="w-96 text-center">
+        <h2 class="text-xl font-bold mb-4">帖子加载失败</h2>
+        <img
+          src="/public/wow.webp"
+          alt="Error"
+          class="w-auto h-40 mb-4 mx-auto" />
+        <p class="text-gray-content mb-4">
+          可能是帖子不存在或已被删除，您可以尝试刷新页面或返回上一页。
+        </p>
+        <ScButton @click="goBack" class="mt-2" Border>返回上一页</ScButton>
+      </Card>
     </div>
   </div>
 </template>
@@ -78,6 +100,7 @@ import Author from '@/components/post/details/Author.vue'
 import Releases from '@/components/post/details/Releases.vue'
 import TableOfContents from '@/components/post/details/TableOfContents.vue'
 import ArticleActions from '@/components/post/details/ArticleActions.vue'
+import Card from '@/components/Card.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -85,31 +108,7 @@ const postData = ref<Post | null>(null)
 const toast = useToast()
 const tocList = ref<TocItem[]>([]) // 文章目录列表
 const configStore = useConfigStore()
-
-// interface Comment {
-//   id: number
-//   author: string
-//   content: string
-//   created_at: string
-//   children?: Comment[] // 子评论
-// }
-// const newComment = ref('')
-// const comments = ref<Comment[]>([
-//   {
-//     id: 1,
-//     author: 'Alice',
-//     content: '好文章！',
-//     created_at: '2024-01-01',
-//     children: [
-//       {
-//         id: 2,
-//         author: 'Bob',
-//         content: '我也觉得不错！',
-//         created_at: '2024-01-02',
-//       },
-//     ],
-//   },
-// ])
+const errorPage = ref(false) // 错误页面标志
 
 /** 获取帖子详情 */
 const getPostDetails = async (postId: number) => {
@@ -134,12 +133,16 @@ const getPostDetails = async (postId: number) => {
       console.log('Error fetching post details:', error)
 
       toast.error(error.msg)
-      router.back()
+      errorPage.value = true
     })
 }
 
 const goBack = () => {
-  window.history.back()
+  if (window.history.length > 2) {
+    window.history.back()
+  } else {
+    router.push({ name: 'Home' })
+  }
 }
 
 onMounted(() => {

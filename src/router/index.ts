@@ -55,6 +55,11 @@ const routes = [
             component: () => import('@/pages/admin/children/AdminPost.vue'),
           },
           {
+            path: 'report',
+            name: 'adminReport',
+            component: () => import('@/pages/admin/children/AdminReport.vue'),
+          },
+          {
             path: 'resource',
             name: 'adminResource',
             component: () => import('@/pages/admin/children/AdminResource.vue'),
@@ -83,6 +88,11 @@ const routes = [
             path: 'motd',
             name: 'adminMotd',
             component: () => import('@/pages/admin/children/AdminMotd.vue'),
+          },
+          {
+            path: 'info',
+            name: 'adminInfo',
+            component: () => import('@/pages/admin/children/AdminInfo.vue'),
           },
         ],
       },

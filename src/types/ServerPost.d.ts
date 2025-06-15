@@ -6,6 +6,20 @@ export declare interface ServerPost {
   updatedAt?: string
 }
 
+export declare interface ServerPostType {
+  id: number
+  title: string
+  description: string
+  url: string
+  status: number
+  remark: string
+  versionId: number
+  level: number
+  creatorId: number
+  createdAt: string
+  updatedAt: string
+}
+
 export declare interface QueryServerPostList {
   creatorId: number
   key?: string

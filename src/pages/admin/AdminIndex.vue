@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])"
+    v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 10])"
     class="flex w-full gap-4">
     <ScMenu :items="menuItems" v-model:activation="activation" />
 
@@ -31,6 +31,7 @@ import {
   Megaphone,
   Info,
   Home,
+  ShieldAlert,
 } from 'lucide-vue-next'
 
 import ScMenu from '@/components/admin/ScMenu.vue'
@@ -58,6 +59,12 @@ const menuItems = [
     name: '帖子管理',
     path: '/admin/post',
     role: verifyPermissions([1, 2, 9]),
+  },
+  {
+    icon: ShieldAlert,
+    name: '举报审核',
+    path: '/admin/report',
+    role: verifyPermissions([1, 2, 7]),
   },
   {
     icon: Package,

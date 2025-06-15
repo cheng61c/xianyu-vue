@@ -9,17 +9,36 @@ export const htmlToText = (html: string): string => {
 }
 
 export const formatTime = (value: string | number | Date) => {
-  const timestamp =
-    typeof value === 'string' && /^\d+$/.test(value) ? parseInt(value) : value
-  const d = new Date(timestamp)
+  let date: Date
+
+  // 如果已经是 Date 对象，直接使用
+  if (value instanceof Date) {
+    date = value
+  }
+  // 如果是纯数字字符串（时间戳），转换为数字
+  else if (typeof value === 'string' && /^\d+$/.test(value)) {
+    date = new Date(parseInt(value, 10))
+  }
+  // 其他情况（ISO 字符串或数字时间戳），直接传给 Date 构造函数
+  else {
+    date = new Date(value)
+    console.log(value, 'date:', date)
+  }
+
+  // 检查是否解析成功
+  if (isNaN(date.getTime())) {
+    console.error('Invalid date:', value)
+    return 'Invalid Date'
+  }
 
   const [year, month, day, hours, minutes] = [
-    d.getFullYear(),
-    d.getMonth() + 1,
-    d.getDate(),
-    d.getHours(),
-    d.getMinutes(),
+    date.getFullYear(),
+    date.getMonth() + 1,
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
   ]
+
   return year === new Date().getFullYear()
     ? `${month}-${day} ${hours}:${minutes}`
     : `${year}-${month}-${day} ${hours}:${minutes}`

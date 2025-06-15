@@ -6,4 +6,5 @@ export declare interface PostListQueryDto {
   creatorId?: number
   type?: number
   fileTypes?: string
+  top?: number
 }

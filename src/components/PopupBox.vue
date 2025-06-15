@@ -3,7 +3,6 @@
     <!-- 触发按钮 -->
     <ScButton
       @click="togglePopup"
-      noBg
       :activation="isOpen"
       :icon="icon"
       class="h-10 w-10">

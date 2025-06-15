@@ -1,5 +1,5 @@
 <template>
-  <Card class="w-full">
+  <Card class="">
     <div class="flex justify-between">
       <div class="flex gap-2">
         <ScInput

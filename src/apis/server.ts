@@ -11,14 +11,14 @@ export const getServerList = () => {
 export const createServer = (data: ServerPost) => {
   return request.post(`/server-post`, data)
 }
-export const updateServer = (data: ServerPost) => {
+export const updateServer = (data: ServerPostListUpdateDto) => {
   return request.put(`/server-post`, data)
 }
 export const deleteServer = (data: number) => {
   return request.delete(`/server-post/${data}`)
 }
 export const getServer = (data: QueryServerPostList) => {
-  return request.get(`/server-post`, data)
+  return request.get(`/server-post/list`, data)
 }
 
 // admin apis

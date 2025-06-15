@@ -42,23 +42,22 @@
         </p>
       </div>
       <div>
-        <nav
-          class="isolate inline-flex -space-x-px rounded-md shadow-sm"
-          aria-label="Pagination">
+        <nav class="isolate inline-flex rounded-md shadow-sm">
           <ScButton
-            class="rounded-l-md"
+            class="rounded-l-md w-10"
             :disabled="currentPage <= 1"
-            :icon="ChevronLeft"
             icon-size="20"
             @click="handlePageChange(currentPage - 1)">
-            <span class="sr-only">上一页</span>
+            <ChevronLeft />
           </ScButton>
 
           <!-- 页码按钮 -->
           <template v-for="page in visiblePages" :key="page">
             <PopupBox v-if="page === '...'" buttonText="..." position="top">
               <template #default="{ close }">
-                <div class="flex items-center justify-center w-36 p-2 gap-2">
+                <Card
+                  noCol
+                  class="flex items-center justify-center w-40 p-2 gap-2 rounded-md">
                   <input
                     type="number"
                     v-model="inputPage"
@@ -69,11 +68,13 @@
                     min="1"
                     :max="totalPages" />
                   <ScButton
-                    class="border-gray-content/50"
+                    class="border-gray-content/50 w-20"
+                    Border
+                    noPd
                     @click="(handlePageChange(inputPage), close())">
                     跳转
                   </ScButton>
-                </div>
+                </Card>
               </template>
             </PopupBox>
 
@@ -87,13 +88,12 @@
           </template>
 
           <ScButton
-            class="rounded-r-md"
+            class="rounded-r-md w-8"
             :disabled="currentPage >= totalPages"
-            :icon="ChevronRight"
             icon-size="20"
             noBg
             @click="handlePageChange(+currentPage + 1)">
-            <span class="sr-only">下一页</span>
+            <ChevronRight />
           </ScButton>
         </nav>
       </div>
@@ -106,6 +106,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import ScButton from '@/components/ScButton.vue'
 import PopupBox from '@/components/PopupBox.vue'
+import Card from '@/components/Card.vue'
 
 const props = defineProps({
   currentPage: {

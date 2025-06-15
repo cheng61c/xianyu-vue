@@ -12,6 +12,7 @@ export declare interface Post {
   content: string
   views: number
   cover: string
+  images?: string[]
   visible: number
   creatorId: number
   plateId: number

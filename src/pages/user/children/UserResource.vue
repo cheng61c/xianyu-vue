@@ -1,6 +1,5 @@
 <template>
   <ScSearch
-    v-if="posts.length"
     key="user-post-search"
     placeholder="搜索帖子标题或内容"
     @search="search"
@@ -12,7 +11,7 @@
     class="stats max-w-5xl min-w-4xl w-full">
     <div class="flex justify-center items-center">
       <!-- 左侧封面图 -->
-      <div class="relative w-40 h-24 flex-shrink-0">
+      <div v-if="post.cover" class="relative w-40 h-24 flex-shrink-0">
         <ScImage
           :src="post.cover"
           alt="封面图"
@@ -131,12 +130,19 @@
     </div>
   </Card>
 
-  <Pagination
-    v-if="posts.length"
-    :current-page="pagination.page"
-    :total-items="pagination.count"
-    :page-size="pagination.limit"
-    @page-change="toPage" />
+  <div class="max-w-5xl min-w-4xl w-full">
+    <Pagination
+      v-if="posts.length && !loading"
+      :current-page="pagination.page"
+      :total-items="pagination.count"
+      :page-size="pagination.limit"
+      @page-change="toPage" />
+    <div v-else class="flex flex-col gap-4">
+      <div class="skeleton w-full h-20"></div>
+      <div class="skeleton w-full h-20"></div>
+      <div class="skeleton w-full h-20"></div>
+    </div>
+  </div>
 
   <EmptyState
     v-if="posts.length === 0"
@@ -360,10 +366,11 @@ const packageList = ref<DocumentVersion[]>([])
 const openPackageList = ref(false)
 const isDeletePost = ref(false)
 const isDeletePkg = ref(false)
+const loading = ref(false)
 
 const pagination = ref({
   page: 1,
-  limit: 5,
+  limit: 1,
   total: 0,
   count: 0,
 })
@@ -374,9 +381,10 @@ const router = useRouter()
 
 const getPosts = () => {
   if (isSearch.value) {
-    search(searchText.value)
+    search(searchText.value, false)
     return
   }
+  loading.value = true
   userApi
     .getUserPosts({
       userId: userInfo.value.id,
@@ -398,9 +406,10 @@ const getPosts = () => {
         total: response.data.data.total,
         count: response.data.data.count,
       }
+      loading.value = false
     })
     .catch((error) => {
-      console.error('Error fetching posts:', error)
+      toast.error('加载失败: ' + error.msg)
     })
 }
 
@@ -522,18 +531,22 @@ const toPage = (page: number) => {
   getPosts()
 }
 
-const search = (key: string) => {
+const search = (key: string, click = true) => {
   if (key.trim() === '') {
     isSearch.value = false
     pagination.value = {
       page: 1,
-      limit: 5,
+      limit: 1,
       total: 0,
       count: 0,
     }
     getPosts()
     return
   }
+  if (click) {
+    pagination.value.page = 1
+  }
+  loading.value = true
   searchText.value = key.trim()
   isSearch.value = true
   userApi
@@ -557,9 +570,10 @@ const search = (key: string) => {
         total: response.data.data.total,
         count: response.data.data.count,
       }
+      loading.value = false
     })
     .catch((error) => {
-      console.error('Error searching posts:', error)
+      toast.error('搜索失败: ' + error.msg)
     })
 }
 

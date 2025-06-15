@@ -439,8 +439,12 @@ const banned = (index: number, val?: number) => {
 
 const deleteItem = (index: number) => {
   const item = postList.value[index]
+  const isDeleted = item.disabled === 1 // 是否已删除
   postApi
-    .deletePostAsAdmin(item.id)
+    .deletePostAsAdmin({
+      id: item.id,
+      disabled: isDeleted ? 0 : 1, // 切换删除状态
+    })
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表

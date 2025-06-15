@@ -12,15 +12,23 @@
       <div class="font-bold mr-auto">{{ post.title }}</div>
 
       <div class="text-sm text-gray-content">
-        {{ formatTime(post.createdAt) }}
+        {{ post.createdAt }}
       </div>
     </div>
 
     <!-- 第二行，帖子部分内容 -->
-    <div
-      class="text-gray-content line-clamp-2 cursor-pointer"
-      @click="handleClick">
-      {{ htmlToText(post.content) }}
+    <div class="line-clamp-2 cursor-pointer" @click="handleClick">
+      <div v-if="post.images" class="flex gap-2">
+        <ScImage
+          v-for="img in post.images"
+          :key="img"
+          :src="img"
+          :alt="post.title"
+          class="w-28 h-28" />
+      </div>
+      <div class="text-gray-content">
+        {{ htmlToText(post.content) }}
+      </div>
     </div>
 
     <!-- 第三行，操作按钮 -->
@@ -68,7 +76,7 @@ import Avatar from '@/components/Avatar.vue'
 import Card from '@/components/Card.vue'
 import ScButton from '@/components/ScButton.vue'
 import { defineProps } from 'vue'
-import { formatTime, htmlToText, formatNumber } from '@/hook/format'
+import { htmlToText, formatNumber } from '@/hook/format'
 import {
   MessageCircle,
   Eye,
@@ -78,6 +86,7 @@ import {
 } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import ScTag from '../ScTag.vue'
+import ScImage from '../ScImage.vue'
 
 const router = useRouter()
 

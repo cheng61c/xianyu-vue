@@ -1,15 +1,17 @@
 <template>
-  <img
-    v-if="!loadError"
-    class="w-full h-full object-cover"
-    :src="formatLink(src)"
-    :alt="alt"
-    @error="loadError = true" />
-  <img
-    v-else
-    class="w-full h-full object-cover"
-    :src="configStore.errorImg"
-    :alt="alt" />
+  <div>
+    <img
+      v-if="!loadError"
+      class="w-full h-full object-cover"
+      :src="formatLink(src)"
+      :alt="alt"
+      @error="loadError = true" />
+    <img
+      v-else
+      class="w-full h-full object-cover"
+      :src="configStore.errorImg"
+      :alt="alt" />
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -18,6 +18,16 @@
 
     <div class="flex gap-4 items-center"><ScLogin /><ThemeButton /></div>
   </header>
+  <div v-if="show" class="flex justify-center w-full bg-warning/30">
+    <span @click="toAnnouncement">{{ postData?.title }}</span>
+    <ScButton
+      class="ml-4"
+      :icon="X"
+      @click="offAnnouncement(postData?.id)"
+      noPd
+      noBg>
+    </ScButton>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -28,10 +38,59 @@ import ThemeButton from './ThemeButton.vue'
 import HomeNav from './HomeNav.vue'
 import ScLogin from './ScLogin.vue'
 import { useThemeStore } from '@/stores/themeStore'
+import type { Post } from '@/types/Post'
+import { onMounted, ref } from 'vue'
+import { postApi } from '@/apis'
+import ScButton from '../ScButton.vue'
+import { X } from 'lucide-vue-next'
+import { useAnnouncementStore } from '@/stores/announcementStore'
+import { useRouter } from 'vue-router'
 
+const announcementStore = useAnnouncementStore()
 const themeStore = useThemeStore()
 const configStore = useConfigStore()
 const { locale } = useI18n()
+const postData = ref<Post | null>(null)
+const show = ref(false)
+const router = useRouter()
 
 locale.value = configStore.lang // 设置初始语言
+
+const toAnnouncement = () => {
+  show.value = false
+  if (!postData.value) return
+  router.push({
+    name: 'postDetails',
+    params: {
+      postId: postData.value.id,
+    },
+  })
+}
+
+const getAnnouncement = (postList: Post[]): Post | null => {
+  const popUpIds = new Set(announcementStore.popUps)
+  const diffPost = postList.find((post) => !popUpIds.has(post.id))
+  return diffPost ?? null
+}
+
+const offAnnouncement = (id?: number) => {
+  if (id) {
+    announcementStore.popUps.push(id)
+    announcementStore.popUps = Array.from(new Set(announcementStore.popUps)) // 去重
+  }
+  show.value = false
+}
+
+onMounted(() => {
+  postApi
+    .getPostList({
+      top: 2,
+    })
+    .then((res) => {
+      postData.value = getAnnouncement(res.data.data.list)
+      if (postData.value) {
+        show.value = true
+      }
+    })
+})
 </script>
