@@ -33,7 +33,9 @@
 
     <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
       <!-- 左侧按钮 -->
-      <ArticleActions :postData="postData" />
+      <ArticleActions
+        :postData="postData as Post"
+        @updatePost="getPostDetails" />
 
       <!-- 文章主体 -->
       <div v-html="postData?.content" class="tiptap w-full"></div>
@@ -47,6 +49,11 @@
             <div class="text-red-500 text-lg font-bold">
               该帖子已被封禁或禁用
             </div>
+            <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
+          </Card>
+
+          <Card v-if="postData?.visible == 0" class="top-0 z-10">
+            <div class="text-red-500 text-lg font-bold">该帖子已下架</div>
             <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
           </Card>
 

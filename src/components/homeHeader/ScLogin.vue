@@ -1,7 +1,7 @@
 <template>
   <!-- Open the modal using ID.showModal() method -->
   <div
-    v-if="userStore.token == '' || userStore.token == undefined"
+    v-if="!userStore.isLogin"
     class="flex gap-4 items-center justify-between">
     <ScButton noPadding @click="handleModalChange('login')">{{
       $t('login')
@@ -252,7 +252,7 @@ import { onMounted, reactive, ref } from 'vue'
 import ScButton from '@/components/ScButton.vue'
 import Card from '@/components/Card.vue'
 import { userApi } from '@/apis'
-import type { Api, ApiUser } from '@/types'
+import type { Api, ApiUser, UserType } from '@/types'
 import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
 import ScUserCard from './ScUserCard.vue'
@@ -344,15 +344,10 @@ const handleLogin = () => {
         offModal()
         buttonLoading.value = false
 
-        if (note.value) {
-          userStore.account = loginForm.account
-          userStore.password = loginForm.password
-        } else {
-          userStore.account = ''
-          userStore.password = ''
-        }
-      } else {
-        toast.error('登录失败: ' + res.data.msg)
+        userStore.account = loginForm.account
+        userStore.password = loginForm.password
+        userStore.autoLogin = note.value
+        userStore.isLogin = true
       }
     })
     .catch((error) => {
@@ -361,6 +356,8 @@ const handleLogin = () => {
       buttonLoading.value = false
       userStore.account = ''
       userStore.password = ''
+      userStore.userInfo = {} as UserType
+      userStore.isLogin = false
     })
 }
 

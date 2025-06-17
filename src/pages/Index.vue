@@ -20,7 +20,7 @@ import { onMounted } from 'vue'
 import type { UserType } from '@/types'
 import PopUpAnnouncement from '@/components/PopUpAnnouncement.vue'
 
-const login = () => {
+const login = async () => {
   userApi
     .login({
       account: userStore.account,
@@ -29,33 +29,20 @@ const login = () => {
     .then((res) => {
       if (res.data.code === 200) {
         userStore.token = res.data.data.token
-        userStore.userInfo = res.data.data.userInfo
+        userStore.userInfo = res.data.data.user
+        userStore.isLogin = true
       }
     })
     .catch((_error) => {
       userStore.userInfo = {} as UserType
       userStore.token = ''
+      userStore.isLogin = false
     })
 }
 
-onMounted(() => {
-  if (userStore.token) {
-    userApi
-      .getCurrentUser()
-      .then((res) => {
-        if (res.data.code === 200) {
-          userStore.userInfo = res.data.data
-        }
-      })
-      .catch((_error) => {
-        userStore.userInfo = {} as UserType
-        userStore.token = ''
-        if (userStore.account && userStore.password) {
-          login()
-        }
-      })
-  } else if (userStore.account && userStore.password) {
-    login()
+onMounted(async () => {
+  if (userStore.autoLogin) {
+    await login()
   }
 })
 </script>

@@ -7,6 +7,8 @@ export const useUserStore = defineStore('user', {
     userInfo: {} as UserType,
     account: '',
     password: '',
+    autoLogin: false,
+    isLogin: false,
   }),
   persist: true,
 })

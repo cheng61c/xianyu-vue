@@ -1,32 +1,35 @@
 <template>
-  <ScButton
-    :shadow="false"
-    size="small"
-    @click.stop="togglePopup()"
-    hoverable
-    class="relative flex items-center gap-2">
-    <template #icon>
-      <Avatar
-        :src="userStore.userInfo.headImg"
-        :alt="userStore.userInfo.nickname" />
-    </template>
-    <span> {{ userStore.userInfo.nickname }}</span>
-    <template #endIcon>
-      <ChevronUp class="transition-all" :class="{ 'rotate-180': !isOpen }" />
-    </template>
-  </ScButton>
+  <template v-if="userStore.isLogin">
+    <ScButton
+      :shadow="false"
+      size="small"
+      @click.stop="togglePopup()"
+      hoverable
+      class="relative flex items-center gap-2">
+      <template #icon>
+        <Avatar
+          :src="userStore.userInfo.headImg"
+          :alt="userStore.userInfo.nickname" />
+      </template>
+      <span> {{ userStore.userInfo.nickname }}</span>
+      <template #endIcon>
+        <ChevronUp class="transition-all" :class="{ 'rotate-180': !isOpen }" />
+      </template>
+    </ScButton>
+  </template>
+
   <div v-if="isOpen" class="absolute z-50" ref="userCard">
     <Card noPg class="overflow-hidden">
       <div
         class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
         @click="($router.push('/user/panel'), closePopup())">
-        用户主页
+        {{ $t('yong-hu-zhu-ye') }}
       </div>
       <div
         v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7])"
         class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
         @click="($router.push('/admin/panel'), closePopup())">
-        后台管理
+        {{ $t('hou-tai-guan-li') }}
       </div>
       <div class="border border-gray/60"></div>
       <div
@@ -56,6 +59,7 @@ const toast = useToast()
 const userStore = useUserStore()
 
 const logout = () => {
+  userStore.isLogin = false
   // 这里可以调用登出接口
   userApi
     .logout()
@@ -63,6 +67,7 @@ const logout = () => {
       // 清除用户信息
       userStore.token = ''
       userStore.userInfo = {} as UserType
+      userStore.autoLogin = false
       toast.success('登出成功')
       closePopup()
     })

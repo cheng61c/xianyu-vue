@@ -1,12 +1,15 @@
 <template>
   <div class="flex flex-col w-full space-y-4 pb-2">
-    <div class="flex gap-2">
+    <div class="flex gap-2 items-center">
       <ScButton
         class="px-4 py-1 text-sm border border-gray"
         @click="$router.back()">
         返回
       </ScButton>
       <div class="text-lg font-semibold">编辑资源</div>
+      <div v-if="!userStore.isLogin" class="text-error">
+        请先登录后再发布内容
+      </div>
     </div>
 
     <!-- 表单部分 -->
@@ -87,8 +90,16 @@
     <!-- 发布按钮 -->
     <div class="text-right">
       <button
-        class="bg-active text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition"
-        @click="submitVersiont">
+        class="px-6 py-2 rounded-lg"
+        :class="{
+          'bg-active text-active-content hover:bg-active/80  cursor-pointer':
+            userStore.isLogin === true,
+          'bg-active/60 text-active-content/60  cursor-not-allowed tooltip tooltip-left':
+            userStore.isLogin === false,
+        }"
+        data-tip="请先登录后再发布内容"
+        @click="submitVersiont"
+        :disabled="userStore.isLogin === false">
         发布
       </button>
     </div>
@@ -107,8 +118,10 @@ import ScUploadFile from '@/components/ScUploadFile.vue'
 import { postApi, versionApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
 
 const toast = useToast()
+const userStore = useUserStore()
 const router = useRouter()
 const versionList = ref<Version[]>([]) // 版本列表
 const postInfo = ref<Post>({} as Post) // 帖子详情

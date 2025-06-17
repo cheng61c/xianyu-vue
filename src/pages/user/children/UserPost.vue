@@ -114,17 +114,17 @@
   </Card>
 
   <div class="max-w-5xl min-w-4xl w-full">
-    <Pagination
-      v-if="posts.length && !loading"
-      :current-page="pagination.page"
-      :total-items="pagination.count"
-      :page-size="pagination.limit"
-      @page-change="toPage" />
-    <div v-else class="flex flex-col gap-4">
+    <div v-if="loading" class="flex flex-col gap-4">
       <div class="skeleton w-full h-20"></div>
       <div class="skeleton w-full h-20"></div>
       <div class="skeleton w-full h-20"></div>
     </div>
+    <Pagination
+      v-else-if="posts.length"
+      :current-page="pagination.page"
+      :total-items="pagination.count"
+      :page-size="pagination.limit"
+      @page-change="toPage" />
   </div>
 
   <EmptyState
@@ -203,7 +203,7 @@ const loading = ref(false)
 
 const pagination = ref({
   page: 1,
-  limit: 5,
+  limit: 10,
   total: 0,
   count: 0,
 })
@@ -300,7 +300,7 @@ const search = (key: string) => {
     isSearch.value = false
     pagination.value = {
       page: 1,
-      limit: 5,
+      limit: 10,
       total: 0,
       count: 0,
     }

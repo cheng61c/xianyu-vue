@@ -7,7 +7,7 @@
       description="请刷新页面或点击下方返回"
       action="返回"
       :actionIcon="Undo2"
-      @action-click="$emit('goBack')" />
+      @action-click="$router.back()" />
   </div>
 
   <CreatePost v-if="createType === '文章'" />
