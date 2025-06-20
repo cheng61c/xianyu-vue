@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import type { Post } from '@/types/Post'
-import { defineProps, ref, watch } from 'vue'
+import { defineProps } from 'vue'
 import type { PropType } from 'vue'
 import { verifyPermissions } from '@/hook/verify'
 import Card from '@/components/Card.vue'
@@ -83,7 +83,7 @@ const toast = useToast()
 
 const props = defineProps({
   postData: {
-    type: Object as PropType<Post>,
+    type: Object as PropType<Post | null>,
     required: true,
   },
 })
@@ -93,7 +93,7 @@ const likePost = (postId: number) => {
   postApi
     .postLike(postId)
     .then(() => {
-      emit('updatePost', props.postData.id)
+      emit('updatePost', props.postData?.id)
     })
     .catch((error) => {
       console.error('Error liking post:', error)
@@ -104,7 +104,7 @@ const badPost = (postId: number) => {
   postApi
     .postBad(postId)
     .then(() => {
-      emit('updatePost', props.postData.id)
+      emit('updatePost', props.postData?.id)
     })
     .catch((error) => {
       console.error('Error liking post:', error)
@@ -118,12 +118,12 @@ const deletePost = (postId: number) => {
   postApi
     .deletePostAsAdmin({
       id: postId,
-      disabled: props.postData.disabled == 1 ? 0 : 1,
+      disabled: props.postData?.disabled == 1 ? 0 : 1,
     })
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
-        emit('updatePost', props.postData.id)
+        emit('updatePost', props.postData?.id)
         toast.success('操作成功')
       } else {
         toast.error('操作失败: ' + response.data.msg)
@@ -135,7 +135,7 @@ const deletePost = (postId: number) => {
 }
 
 const unpublishItem = (postId: number) => {
-  if (props.postData.id !== postId) {
+  if (props.postData?.id !== postId) {
     toast.error('帖子不存在或已被删除')
     return
   }
@@ -147,7 +147,7 @@ const unpublishItem = (postId: number) => {
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
-        emit('updatePost', props.postData.id)
+        emit('updatePost', props.postData?.id)
         toast.success('操作成功')
       }
     })

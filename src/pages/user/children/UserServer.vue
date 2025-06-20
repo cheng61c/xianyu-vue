@@ -107,22 +107,15 @@ import { useUserStore } from '@/stores/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
 import {
-  ThumbsUp,
-  ThumbsDown,
   Package,
   ArrowDownFromLine,
   ArrowUpToLine,
-  MessageSquare,
-  Flame,
   Trash2,
-  Eye,
   SquarePen,
   SquareArrowOutUpRight,
 } from 'lucide-vue-next'
 import { serverApi } from '@/apis'
-import { extractImageSrcs } from '@/hook/regex'
 import { formatTime } from '@/hook/format'
-import ScImage from '@/components/ScImage.vue'
 import ScButton from '@/components/ScButton.vue'
 import { useToast } from 'vue-toastification'
 import ScDivider from '@/components/ScDivider.vue'

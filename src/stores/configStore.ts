@@ -12,10 +12,10 @@ export const useConfigStore = defineStore('config', {
     autoLogin: false,
     // serverAddress: 'http://119.29.147.180/api'
     /** 后端接口 */
-    serverAddress: 'http://localhost:3000/api',
+    serverAddress: 'https://dev.suancaixianyu.cn/api',
     // serverAddress: 'https://api.schub.top/api',
     /** 上传路径 */
-    uploadPath: 'http://localhost:3000/api/upload',
+    uploadPath: 'https://dev.suancaixianyu.cn/api/upload',
     // uploadPath: 'https://api.schub.top/api/upload',
     errorImg:
       'https://r2.schub.top/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
@@ -44,13 +44,16 @@ export const useConfigStore = defineStore('config', {
       { value: 7, label: '其他' },
     ],
   }),
+
   actions: {
     /** 运行时加载配置 */
     async loadRuntimeConfig() {
       try {
-        const res = await fetch('/config.json')
+        const res = await fetch('/public/config.json')
         const config = await res.json()
-
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`)
+        }
         // 将加载到的 config 合并进当前 state
         Object.assign(this.$state, config)
       } catch (err) {
@@ -58,5 +61,6 @@ export const useConfigStore = defineStore('config', {
       }
     },
   },
+
   persist: true,
 })

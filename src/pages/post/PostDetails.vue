@@ -33,12 +33,14 @@
 
     <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
       <!-- 左侧按钮 -->
-      <ArticleActions
-        :postData="postData as Post"
-        @updatePost="getPostDetails" />
+      <ArticleActions :postData="postData" @updatePost="getPostDetails" />
 
       <!-- 文章主体 -->
-      <div v-html="postData?.content" class="tiptap w-full"></div>
+      <div class="tiptap w-full">
+        <div v-html="postData?.content"></div>
+        <div class="border-t-2 border-gray my-4"></div>
+        <div>123</div>
+      </div>
 
       <!-- 右侧卡片 -->
       <div class="w-2/5 relative">

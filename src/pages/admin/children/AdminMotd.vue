@@ -49,7 +49,7 @@
         class="line-numbers select-none text-right px-2 py-2 text-xs text-gray-content dark:bg-gray/60 bg-gray/20 border-r border-gray overflow-y-hidden"
         aria-hidden="true">
         <span
-          v-for="(line, i) in lines"
+          v-for="(_, i) in lines"
           :key="i"
           class="block leading-[1.5rem] font-mono text-[16px]">
           {{ i + 1 }}
@@ -81,7 +81,7 @@ import Card from '@/components/Card.vue'
 import ScInput from '@/components/ScInput.vue'
 import ScButton from '@/components/ScButton.vue'
 import { Plus, RotateCcw, Save } from 'lucide-vue-next'
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { motdApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import type { MotdType } from '@/types/Motd'

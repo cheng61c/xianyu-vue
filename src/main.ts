@@ -10,6 +10,7 @@ import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 import '@cyhnkckali/vue3-color-picker/dist/style.css'
 import './style.css'
+import { useConfigStore } from './stores/configStore.js'
 
 const options = {
   maxToasts: 4,
@@ -20,12 +21,17 @@ const options = {
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
+
 const app = createApp(App)
 app.use(pinia)
 app.use(i18n)
 app.use(Notifications)
 app.use(Toast, options)
 app.use(router)
+
+// 加载配置
+const configStore = useConfigStore()
+configStore.loadRuntimeConfig()
 
 const deviceStore = useDeviceStore()
 const userAgent = navigator.userAgent.toLowerCase()

@@ -1,4 +1,4 @@
-import type { MotdDto, MotdType } from '@/types/Motd'
+import type { MotdDto } from '@/types/Motd'
 import request from '@/utils/request.ts'
 
 export const createMotd = (dto: MotdDto) => {

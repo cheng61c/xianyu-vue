@@ -28,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(info, index) in reportList" :key="info.id">
+          <tr v-for="info in reportList" :key="info.id">
             <th>{{ info.id }}</th>
             <td>
               <div class="flex items-center gap-2 flex-wrap">
@@ -150,11 +150,10 @@ import Card from '@/components/Card.vue'
 import ScInput from '@/components/ScInput.vue'
 import ScButton from '@/components/ScButton.vue'
 import EmptyState from '@/components/EmptyState.vue'
-import { infoApi, reportApi } from '@/apis'
+import { infoApi } from '@/apis'
 import Pagination from '@/components/Pagination.vue'
 import ScTag from '@/components/ScTag.vue'
 import { formatTime } from '@/hook/format'
-import ScModal from '@/components/ScModal.vue'
 import type { InfoType, QueryInfoDto } from '@/types/Info'
 
 const searchReportValue = ref('') // 搜索帖子内容
@@ -171,9 +170,7 @@ const reportPage = ref({
   limit: 15,
 })
 
-const reportList = ref<InfoType[]>([]) // 帖子列表数据
-const reportInfoModal = ref(false) // 封禁帖子模态框状态
-const currentReport = ref(-1) // 当前操作的帖子ID
+const reportList = ref<InfoType[]>([])
 
 const toPage = (page: number) => {
   reportPage.value.page = page
@@ -223,11 +220,6 @@ const getPosts = () => {
     .catch((error) => {
       console.error('请求错误:', error.msg)
     })
-}
-
-const getInfo = (index: number) => {
-  currentReport.value = index // 设置当前操作的帖子
-  reportInfoModal.value = true
 }
 
 onMounted(() => {

@@ -132,8 +132,9 @@ const handleModalChange = (item: DocumentVersion) => {
 
 const downloadFile = (url: string, vid: number) => {
   if (!url) return
-  const fileName = url.split('/').pop()
+  let fileName = url.split('/').pop()
   if (!fileName) return
+  fileName = fileName.replace(/preview\?filename=/, '')
   downloadApi.downloadFile(fileName, vid)
 }
 
