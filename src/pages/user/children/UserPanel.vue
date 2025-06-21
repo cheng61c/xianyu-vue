@@ -2,10 +2,10 @@
   <Card class="stats max-w-5xl min-w-4xl w-full items-center" noCol>
     <Avatar
       :src="formatLink(userInfo.headImg) || ''"
-      :alt="userInfo.nickname"
+      :alt="userStore.isLogin ? userInfo.nickname : ''"
       :size="64" />
     <div>
-      <div>{{ userInfo.nickname }}</div>
+      <div>{{ userStore.isLogin ? userInfo.nickname : '请先登录' }}</div>
       <div class="flex items-center flex-wrap gap-2">
         <ScTag
           v-for="(tag, index) in userInfo.roles"
@@ -70,7 +70,7 @@
     </div>
   </Card>
 
-  <Card class="stats max-w-5xl min-w-4xl w-full" noCol>
+  <Card v-if="userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full" noCol>
     <div
       v-html="userInfo.signature || '<p>这个人很懒，什么都没有留下</p>'"
       class="tiptap w-full"></div>
@@ -125,6 +125,9 @@ const servers = ref({
 })
 
 const getPosts = () => {
+  if (!userStore.isLogin) {
+    return
+  }
   userApi
     .getUserPosts({
       userId: userStore.userInfo.id,
@@ -148,6 +151,9 @@ const getPosts = () => {
 }
 
 const getResources = () => {
+  if (!userStore.isLogin) {
+    return
+  }
   userApi
     .getUserPosts({
       userId: userStore.userInfo.id,
@@ -171,6 +177,9 @@ const getResources = () => {
 }
 
 const getFiles = () => {
+  if (!userStore.isLogin) {
+    return
+  }
   uploadApi.getFilesList().then((response) => {
     files.value.data = response.data.data.map((item: any) => {
       item.createdAt = formatTime(item.createdAt)
@@ -181,6 +190,9 @@ const getFiles = () => {
 }
 
 const getServers = () => {
+  if (!userStore.isLogin) {
+    return
+  }
   serverApi
     .getServer({
       creatorId: userStore.userInfo.id,
@@ -196,6 +208,9 @@ const getServers = () => {
 }
 
 const getComments = () => {
+  if (!userStore.isLogin) {
+    return
+  }
   commentApi
     .getCommentList({
       uid: userStore.userInfo.id,

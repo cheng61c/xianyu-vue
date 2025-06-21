@@ -48,6 +48,10 @@ const routeBtns = ref([
     name: '服务器',
     path: '/user/server',
   },
+  {
+    name: '编辑资料',
+    path: '/user/edit',
+  },
 ])
 const activation = ref('主页')
 

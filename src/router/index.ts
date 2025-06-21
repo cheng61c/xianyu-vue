@@ -132,6 +132,11 @@ const routes = [
             name: 'userComment',
             component: () => import('@/pages/user/children/UserComment.vue'),
           },
+          {
+            path: 'edit',
+            name: 'userEdit',
+            component: () => import('@/pages/user/children/UserEdit.vue'),
+          },
         ],
       },
     ],

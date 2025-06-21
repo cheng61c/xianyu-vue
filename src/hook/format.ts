@@ -89,7 +89,7 @@ export const formatNumber = (
  */
 export const formatLink = (link: string): string => {
   if (!link) return ''
-  const reg = /^(http|https):\/\//i
+  const reg = /^(blob:)?(http|https):\/\//i
   if (reg.test(link)) return link // 已经是完整链接，直接返回
   // 查询是否有域名
   const domainReg = /^(www|[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(\/.*)?$/

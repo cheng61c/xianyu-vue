@@ -5,10 +5,11 @@
     :class="{ 'opacity-0 pointer-events-none': !showing }"
     @click.self="handleClick">
     <div
-      class="rounded-lg shadow-2xl max-w-4xl overflow-auto transition-all transform"
+      class="rounded-lg shadow-2xl transition-all transform"
       :class="{
         'scale-95 opacity-0': !showing,
         'scale-100 opacity-100': showing,
+        'overflow-auto': !offOverflow,
       }">
       <slot />
     </div>
@@ -27,6 +28,10 @@ const props = defineProps({
   },
   // 点击背景时是否关闭组件
   closeOnClickOutside: {
+    type: Boolean,
+    default: true,
+  },
+  offOverflow: {
     type: Boolean,
     default: true,
   },

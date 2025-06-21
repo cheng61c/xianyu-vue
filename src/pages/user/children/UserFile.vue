@@ -1,9 +1,13 @@
 <template>
-  <div>
-    <!-- Your template content goes here -->
-  </div>
+  <div class="w-full text-center">尚未开发</div>
+  <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+    <div class="text-center text-gray-content">
+      您还未登录，请先登录后再进行操作。
+    </div>
+  </Card>
 </template>
 
 <script setup lang="ts">
-// Your TypeScript logic goes here
+import { useUserStore } from '@/stores/userStore'
+const userStore = useUserStore()
 </script>

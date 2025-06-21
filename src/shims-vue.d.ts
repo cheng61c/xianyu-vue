@@ -8,3 +8,10 @@ declare module 'vue-toastification' {
   const Toast: Plugin
   export default Toast
 }
+
+// shims-vue.d.ts
+declare module 'vue-cropperjs' {
+  import { DefineComponent } from 'vue'
+  const VueCropper: DefineComponent<{}, {}, any>
+  export default VueCropper
+}
