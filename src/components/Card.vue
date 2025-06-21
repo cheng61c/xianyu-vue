@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
-const props = defineProps({
+defineProps({
   activation: { type: Boolean, default: false },
   noPg: { type: Boolean, default: false },
   noBg: { type: Boolean, default: false },

@@ -12,10 +12,10 @@ export const useConfigStore = defineStore('config', {
     autoLogin: false,
     // serverAddress: 'http://119.29.147.180/api'
     /** 后端接口 */
-    serverAddress: 'https://1.95.85.178/api',
+    serverAddress: 'https://dev.suancaixianyu.cn/api',
     // serverAddress: 'https://api.schub.top/api',
     /** 上传路径 */
-    uploadPath: 'https://1.95.85.178/api/upload',
+    uploadPath: 'https://dev.suancaixianyu.cn/api/upload',
     // uploadPath: 'https://api.schub.top/api/upload',
     errorImg:
       'https://r2.schub.top/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
