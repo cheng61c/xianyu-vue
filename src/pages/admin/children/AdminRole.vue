@@ -12,7 +12,6 @@
 
   <Card v-if="roleList.length" class="mb-4">
     <div class="overflow-x-auto">
-      <div v-if="verifyPermissions([11])">111</div>
       <table class="table">
         <!-- head -->
         <thead>
@@ -35,7 +34,7 @@
                 </ScTag>
               </div>
             </td>
-            <td>
+            <td class="max-w-lg">
               {{ role.color }}
             </td>
             <td>{{ role.users.length }}</td>
@@ -80,7 +79,6 @@
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
       <div class="text-xl mb-4">修改角色</div>
-
       <div class="flex items-center gap-4">
         <span> 名称: </span>
         <ScInput
@@ -210,7 +208,7 @@ const deleteRoleModal = ref(false) // 删除角色模态框状态
 const isPlusAdmin = ref(verifyPermissions([1])) // 是否为超级管理员
 // const isAdmin = ref(verifyPermissions([2])) // 是否为管理员
 const newRoleBody = ref({
-  color: '',
+  color: '#66ccff',
   name: '',
 }) // 新角色信息
 
@@ -266,7 +264,6 @@ const updateRole = (index: number) => {
 
 const addRole = () => {
   if (!addRoleModal.value) {
-    newRoleBody.value.color = ''
     newRoleBody.value.name = ''
     addRoleModal.value = true
     return

@@ -5,23 +5,18 @@
     <!-- 菜单标题和折叠按钮 -->
     <div
       class="flex items-center justify-between p-4 cursor-pointer h-6"
-      @click="toggleCollapse">
+      :class="{
+        'tooltip tooltip-right': collapsed,
+      }"
+      @click="toggleCollapse"
+      data-tip="展开菜单">
       <h3 v-if="!collapsed" class="whitespace-nowrap font-bold">菜单</h3>
-      <button>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 transition-all"
-          :class="{ 'rotate-180': collapsed }"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
+      <ScButton
+        :icon="ChevronLeft"
+        :icon-size="20"
+        class="h-5 w-5 transition-all"
+        :class="{ 'rotate-180': collapsed }"
+        noPd></ScButton>
     </div>
 
     <!-- 菜单项列表 -->
@@ -57,6 +52,7 @@
 import { ref } from 'vue'
 import ScButton from '../ScButton.vue'
 import { useRouter } from 'vue-router'
+import { ChevronLeft } from 'lucide-vue-next'
 
 const router = useRouter()
 
