@@ -181,19 +181,19 @@ const options = [
   { value: 5, label: 'h5' },
   { value: 6, label: 'h6' },
 ]
-function copyToClipboard() {
-  if (editor.value) {
-    const content = editor.value.getHTML()
-    navigator.clipboard
-      .writeText(content)
-      .then(() => {
-        console.log('Content copied to clipboard')
-      })
-      .catch((err) => {
-        console.error('Failed to copy content: ', err)
-      })
-  }
-}
+// function copyToClipboard() {
+//   if (editor.value) {
+//     const content = editor.value.getHTML()
+//     navigator.clipboard
+//       .writeText(content)
+//       .then(() => {
+//         console.log('Content copied to clipboard')
+//       })
+//       .catch((err) => {
+//         console.error('Failed to copy content: ', err)
+//       })
+//   }
+// }
 
 const openImagePopup = ref(false)
 function togglePopup(value?: string) {
@@ -217,7 +217,7 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().undo().run()"
         :disabled="!editor?.can().undo()"
         hoverable
-        class="tooltip"
+        class="tooltip p-2"
         :data-tip="dataTip.Undo"
         noPd>
         <Undo2 />
@@ -230,7 +230,7 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().redo().run()"
         :disabled="!editor?.can().redo()"
         hoverable
-        class="tooltip"
+        class="tooltip p-2"
         :data-tip="dataTip.Redo"
         noPd>
         <Redo2 />
@@ -242,8 +242,8 @@ function togglePopup(value?: string) {
       <sc-drop-list-buttons
         v-model="selected"
         :options="options"
-        :activation="editor?.isActive('heading')"
-        class="tooltip"
+        :active="editor?.isActive('heading')"
+        class="tooltip p-2"
         :data-tip="dataTip.Heading">
         <template #trigger>
           <Heading1
@@ -341,8 +341,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleBold().run()"
         :activation="editor?.isActive('bold')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Bold">
+        class="tooltip p-2"
+        :data-tip="dataTip.Bold"
+        noPd>
         <Bold />
       </ScButton>
 
@@ -353,8 +354,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleItalic().run()"
         :activation="editor?.isActive('italic')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Italic">
+        class="tooltip p-2"
+        :data-tip="dataTip.Italic"
+        noPd>
         <Italic />
       </ScButton>
 
@@ -365,8 +367,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleStrike().run()"
         :activation="editor?.isActive('strike')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Strikethrough">
+        class="tooltip p-2"
+        :data-tip="dataTip.Strikethrough"
+        noPd>
         <Strikethrough />
       </ScButton>
 
@@ -377,8 +380,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleUnderline().run()"
         :activation="editor?.isActive('underline')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Underline">
+        class="tooltip p-2"
+        :data-tip="dataTip.Underline"
+        noPd>
         <Underline />
       </ScButton>
 
@@ -389,8 +393,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleCode().run()"
         :activation="editor?.isActive('code')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Code">
+        class="tooltip p-2"
+        :data-tip="dataTip.Code"
+        noPd>
         <CodeXml />
       </ScButton>
 
@@ -401,8 +406,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleHighlight().run()"
         :activation="editor?.isActive('highlight')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Highlight">
+        class="tooltip p-2"
+        :data-tip="dataTip.Highlight"
+        noPd>
         <Highlighter />
       </ScButton>
 
@@ -413,8 +419,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleSubscript().run()"
         :activation="editor?.isActive('subscript')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Subscript">
+        class="tooltip p-2"
+        :data-tip="dataTip.Subscript"
+        noPd>
         <Subscript />
       </ScButton>
 
@@ -425,8 +432,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleSuperscript().run()"
         :activation="editor?.isActive('superscript')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Superscript">
+        class="tooltip p-2"
+        :data-tip="dataTip.Superscript"
+        noPd>
         <Superscript />
       </ScButton>
 
@@ -439,8 +447,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleBulletList().run()"
         :activation="editor?.isActive('bulletList')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.BulletList">
+        class="tooltip p-2"
+        :data-tip="dataTip.BulletList"
+        noPd>
         <List />
       </ScButton>
       <!-- 有序列表 -->
@@ -450,14 +459,15 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleOrderedList().run()"
         :activation="editor?.isActive('orderedList')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.OrderedList">
+        class="tooltip p-2"
+        :data-tip="dataTip.OrderedList"
+        noPd>
         <ListOrdered />
       </ScButton>
       <ScDivider vertical />
 
       <!-- 图片 -->
-      <div class="tooltip" :data-tip="dataTip.Image">
+      <div class="tooltip p-2" :data-tip="dataTip.Image">
         <TipTapUploadImage />
       </div>
 
@@ -470,8 +480,9 @@ function togglePopup(value?: string) {
         "
         :activation="editor?.isActive('codeBlock')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.CodeBlock">
+        class="tooltip p-2"
+        :data-tip="dataTip.CodeBlock"
+        noPd>
         <SquareCode />
       </ScButton>
 
@@ -482,8 +493,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().toggleBlockquote().run()"
         :activation="editor?.isActive('blockquote')"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Blockquote">
+        class="tooltip p-2"
+        :data-tip="dataTip.Blockquote"
+        noPd>
         <TextQuote />
       </ScButton>
 
@@ -496,8 +508,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().setTextAlign('left').run()"
         :activation="editor?.isActive({ textAlign: 'left' })"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.LeftAlign">
+        class="tooltip p-2"
+        :data-tip="dataTip.LeftAlign"
+        noPd>
         <AlignLeft />
       </ScButton>
 
@@ -508,8 +521,9 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().setTextAlign('center').run()"
         :activation="editor?.isActive({ textAlign: 'center' })"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.CenterAlign">
+        class="tooltip p-2"
+        :data-tip="dataTip.CenterAlign"
+        noPd>
         <AlignCenter />
       </ScButton>
 
@@ -520,21 +534,23 @@ function togglePopup(value?: string) {
         @click="editor?.chain().focus().setTextAlign('right').run()"
         :activation="editor?.isActive({ textAlign: 'right' })"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.RightAlign">
+        class="tooltip p-2"
+        :data-tip="dataTip.RightAlign"
+        noPd>
         <AlignRight />
       </ScButton>
 
       <!-- 复制内容 -->
-      <ScButton
+      <!-- <ScButton
         :shadow="false"
         size="small"
         @click="copyToClipboard"
         hoverable
-        class="tooltip"
-        :data-tip="dataTip.Copy">
+        class="tooltip p-2"
+        :data-tip="dataTip.Copy"
+        noPd>
         <Copy />
-      </ScButton>
+      </ScButton> -->
     </div>
 
     <editor-content :editor="editor" class="tiptapEditor" />

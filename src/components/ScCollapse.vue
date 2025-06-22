@@ -1,7 +1,7 @@
 <template>
   <Card noPg noShadow :Borlder="false">
     <div
-      class="flex justify-between items-center cursor-pointer select-none"
+      class="flex justify-between items-center cursor-pointer select-none w-full"
       @click="toggleCollapse">
       <slot name="header">
         <span>{{ title }}</span>

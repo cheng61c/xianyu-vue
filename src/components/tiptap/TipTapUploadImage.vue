@@ -5,7 +5,8 @@
     @click.stop="togglePopup()"
     :activation="isOpen"
     hoverable
-    class="relative">
+    class="relative p-2"
+    noPd>
     <ImageIcon />
   </ScButton>
   <div

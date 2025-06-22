@@ -99,7 +99,9 @@ const ScDropListButtonsListStyle: CSSProperties = {
       :activation="props.active"
       size="small"
       hoverable
-      @click="toggleDropdown">
+      @click="toggleDropdown"
+      class="p-2"
+      noPd>
       <slot name="trigger">
         {{ selectedLabel || '请选择' }}
       </slot>

@@ -43,17 +43,7 @@
         placeholder="请输入昵称" />
     </div>
 
-    <div class="flex gap-4 items-center">
-      <ScButton @click="updateInfo" Border>提交更改</ScButton>
-    </div>
-  </Card>
-
-  <Card
-    v-if="userStore.isLogin"
-    class="stats max-w-6xl min-w-4xl w-full overflow-x-hidden">
-    <div class="mb-4 text-xl font-bold">主页编辑</div>
-
-    <div class="flex gap-4">
+    <div class="">
       <ScCollapse>
         <template #header>
           <span class="text-active">点击编辑主页</span>
