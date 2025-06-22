@@ -19,13 +19,13 @@
       <div class="flex-1">文件大小: {{ file.size }}</div>
 
       <div class="flex gap-2 items-center flex-wrap">
-        <ScButton
+        <!-- <ScButton
           class="text-sm text-error px-4 border border-gray hover:border-active"
           :icon="Trash2"
           :iconSize="16"
-          @click="deleteItem(index)">
+          @click="">
           删除
-        </ScButton>
+        </ScButton> -->
       </div>
     </div>
   </Card>
@@ -35,11 +35,11 @@
 import Card from '@/components/Card.vue'
 import { uploadApi } from '@/apis'
 import { formatFileSize, formatTime } from '@/hook/format'
-import { Trash2 } from 'lucide-vue-next'
+// import { Trash2 } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/userStore'
 import type { FileType } from '@/types/Upload'
 import { onMounted, ref } from 'vue'
-import ScButton from '@/components/ScButton.vue'
+// import ScButton from '@/components/ScButton.vue'
 const userStore = useUserStore()
 
 const files = ref<FileType[]>([])
@@ -55,16 +55,6 @@ const getFiles = () => {
       return item
     })
   })
-}
-
-const deleteItem = (index: number) => {
-  if (!userStore.isLogin) {
-    return
-  }
-  const file = files.value[index]
-  // uploadApi.deleteFile(file.id).then(() => {
-  //   files.value.splice(index, 1)
-  // })
 }
 
 onMounted(() => {
