@@ -1,6 +1,6 @@
 import request from '@/utils/request.ts'
 import type { LoginDto } from '@/types/LoginDto'
-import type { RegisterDto } from '@/types/RegisterDto'
+import type { RegisterBotDto, RegisterDto } from '@/types/RegisterDto'
 import type { VerificationCode } from '@/types/VerificationCode'
 import type { VerificationCodeDto } from '@/types/VerificationCodeDto'
 import type { CheckDuplicateDto } from '@/types/CheckDuplicateDto'
@@ -85,4 +85,8 @@ export const updateRoles = (dto: UpdateRoleDto) => {
 
 export const updateUserKey = (id: number) => {
   return request.put(`/admin/user/update-key/${id}`)
+}
+
+export const registerAsAdmin = (dto: RegisterBotDto) => {
+  return request.post('/user/register-bot', dto)
 }

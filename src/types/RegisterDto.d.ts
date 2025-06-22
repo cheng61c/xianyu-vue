@@ -5,3 +5,10 @@ export declare interface RegisterDto {
   email: string
   captcha: string
 }
+
+export declare interface RegisterBotDto {
+  account: string
+  password: string
+  nickname: string
+  email: string
+}

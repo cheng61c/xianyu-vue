@@ -23,7 +23,7 @@ import { onMounted, ref, watch } from 'vue'
 import {
   Package,
   Server,
-  UserRound,
+  UserRoundPen,
   FileChartColumn,
   Award,
   LayoutPanelTop,
@@ -32,6 +32,7 @@ import {
   Info,
   Home,
   ShieldAlert,
+  UserRoundPlus,
 } from 'lucide-vue-next'
 
 import ScMenu from '@/components/admin/ScMenu.vue'
@@ -49,10 +50,16 @@ const menuItems = [
     role: verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10]),
   },
   {
-    icon: UserRound,
+    icon: UserRoundPen,
     name: '账号管理',
     path: '/admin/account',
     role: verifyPermissions([1, 2, 3]),
+  },
+  {
+    icon: UserRoundPlus,
+    name: '注册',
+    path: '/admin/reg',
+    role: verifyPermissions([1]),
   },
   {
     icon: FileChartColumn,

@@ -94,6 +94,12 @@ const routes = [
             name: 'adminInfo',
             component: () => import('@/pages/admin/children/AdminInfo.vue'),
           },
+          {
+            path: 'reg',
+            name: 'adminRegistered',
+            component: () =>
+              import('@/pages/admin/children/AdminRegistered.vue'),
+          },
         ],
       },
       {

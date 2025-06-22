@@ -41,8 +41,13 @@ apiClient.interceptors.response.use(
     const { response } = error
     const customError = error as ErrorResponse
     if (response) {
-      const responseData = response.data as { message?: string; msg?: string }
+      const responseData = response.data as {
+        message?: string
+        msg?: string
+        duplicates?: any[]
+      }
       customError.msg = responseData.message || responseData.msg || '未知错误'
+      customError.duplicates = responseData.duplicates || []
       customError.status = response.status
     } else {
       customError.msg = '服务器无响应'

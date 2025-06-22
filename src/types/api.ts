@@ -12,4 +12,5 @@ export interface ErrorResponse extends AxiosError {
   /** 服务器响应错误提示 */
   msg: string
   status?: number
+  duplicates?: any[] // 用于存储重复数据的数组
 }
