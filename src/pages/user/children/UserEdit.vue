@@ -1,7 +1,7 @@
 <template>
   <Card
     v-if="userStore.isLogin"
-    class="stats max-w-5xl min-w-4xl w-full items-center"
+    class="stats max-w-6xl min-w-4xl w-full items-center"
     noCol>
     <Avatar
       :src="formatLink(userStore.userInfo.headImg) || ''"
@@ -26,7 +26,7 @@
     </div>
   </Card>
 
-  <Card v-if="userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+  <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="mb-4 text-xl font-bold">基础信息</div>
     <div class="flex gap-4 items-center">
       邮箱: {{ userInfo.email ?? 'null' }}
@@ -43,6 +43,16 @@
         placeholder="请输入昵称" />
     </div>
 
+    <div class="flex gap-4 items-center">
+      <ScButton @click="updateInfo" Border>提交更改</ScButton>
+    </div>
+  </Card>
+
+  <Card
+    v-if="userStore.isLogin"
+    class="stats max-w-6xl min-w-4xl w-full overflow-x-hidden">
+    <div class="mb-4 text-xl font-bold">主页编辑</div>
+
     <div class="flex gap-4">
       <ScCollapse>
         <template #header>
@@ -57,7 +67,7 @@
     </div>
   </Card>
 
-  <Card v-if="userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+  <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="mb-4 text-xl font-bold">重置密码</div>
     <div class="flex gap-4 items-center">
       <span>新密码</span>
@@ -97,7 +107,7 @@
     </div>
   </Card>
 
-  <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+  <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="text-center text-gray-content">
       您还未登录，请先登录后再进行操作。
     </div>

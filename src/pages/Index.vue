@@ -45,7 +45,7 @@ const getInfo = async () => {
     .getCurrentUser()
     .then((res) => {
       if (res.data.code === 200) {
-        userStore.userInfo = res.data.data.user
+        userStore.userInfo = res.data.data
         userStore.isLogin = true
       }
     })

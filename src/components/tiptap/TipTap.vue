@@ -209,376 +209,333 @@ function togglePopup(value?: string) {
 
 <template>
   <Card>
-    <Card>
-      <div class="flex justify-center items-center flex-wrap gap-1 p-1">
-        <!-- 撤销 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().undo().run()"
-          :disabled="!editor?.can().undo()"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Undo">
-          <Undo2 />
-        </ScButton>
+    <div class="flex justify-center items-center flex-wrap gap-1">
+      <!-- 撤销 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().undo().run()"
+        :disabled="!editor?.can().undo()"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Undo"
+        noPd>
+        <Undo2 />
+      </ScButton>
 
-        <!-- 重做 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().redo().run()"
-          :disabled="!editor?.can().redo()"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Redo">
-          <Redo2 />
-        </ScButton>
+      <!-- 重做 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().redo().run()"
+        :disabled="!editor?.can().redo()"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Redo"
+        noPd>
+        <Redo2 />
+      </ScButton>
 
-        <ScDivider vertical />
+      <ScDivider vertical />
 
-        <!-- 标题 下拉选择 -->
-        <sc-drop-list-buttons
-          v-model="selected"
-          :options="options"
-          :activation="editor?.isActive('heading')"
-          class="tooltip"
-          :data-tip="dataTip.Heading">
-          <template #trigger>
-            <Heading1
-              v-if="editor?.isActive('heading', { level: 1 })"
-              @click="
-                editor?.chain().focus().toggleHeading({ level: 1 }).run()
-              " />
-            <Heading2
-              v-else-if="editor?.isActive('heading', { level: 2 })"
-              @click="
-                editor?.chain().focus().toggleHeading({ level: 2 }).run()
-              " />
-            <Heading3
-              v-else-if="editor?.isActive('heading', { level: 3 })"
-              @click="
-                editor?.chain().focus().toggleHeading({ level: 3 }).run()
-              " />
-            <Heading4
-              v-else-if="editor?.isActive('heading', { level: 4 })"
-              @click="
-                editor?.chain().focus().toggleHeading({ level: 4 }).run()
-              " />
-            <Heading5
-              v-else-if="editor?.isActive('heading', { level: 5 })"
-              @click="
-                editor?.chain().focus().toggleHeading({ level: 5 }).run()
-              " />
-            <Heading6
-              v-else-if="editor?.isActive('heading', { level: 6 })"
-              @click="
-                editor?.chain().focus().toggleHeading({ level: 6 }).run()
-              " />
-            <Heading v-else />
-          </template>
-          <template #h1>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
-              hoverable>
-              <Heading1 />
-            </ScButton>
-          </template>
-          <template #h2>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
-              hoverable>
-              <Heading2 />
-            </ScButton>
-          </template>
-          <template #h3>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()"
-              hoverable>
-              <Heading3 />
-            </ScButton>
-          </template>
-          <template #h4>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="editor?.chain().focus().toggleHeading({ level: 4 }).run()"
-              hoverable>
-              <Heading4 />
-            </ScButton>
-          </template>
-          <template #h5>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="editor?.chain().focus().toggleHeading({ level: 5 }).run()"
-              hoverable>
-              <Heading5 />
-            </ScButton>
-          </template>
-          <template #h6>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="editor?.chain().focus().toggleHeading({ level: 6 }).run()"
-              hoverable>
-              <Heading6 />
-            </ScButton>
-          </template>
-        </sc-drop-list-buttons>
+      <!-- 标题 下拉选择 -->
+      <sc-drop-list-buttons
+        v-model="selected"
+        :options="options"
+        :activation="editor?.isActive('heading')"
+        class="tooltip"
+        :data-tip="dataTip.Heading">
+        <template #trigger>
+          <Heading1
+            v-if="editor?.isActive('heading', { level: 1 })"
+            @click="
+              editor?.chain().focus().toggleHeading({ level: 1 }).run()
+            " />
+          <Heading2
+            v-else-if="editor?.isActive('heading', { level: 2 })"
+            @click="
+              editor?.chain().focus().toggleHeading({ level: 2 }).run()
+            " />
+          <Heading3
+            v-else-if="editor?.isActive('heading', { level: 3 })"
+            @click="
+              editor?.chain().focus().toggleHeading({ level: 3 }).run()
+            " />
+          <Heading4
+            v-else-if="editor?.isActive('heading', { level: 4 })"
+            @click="
+              editor?.chain().focus().toggleHeading({ level: 4 }).run()
+            " />
+          <Heading5
+            v-else-if="editor?.isActive('heading', { level: 5 })"
+            @click="
+              editor?.chain().focus().toggleHeading({ level: 5 }).run()
+            " />
+          <Heading6
+            v-else-if="editor?.isActive('heading', { level: 6 })"
+            @click="
+              editor?.chain().focus().toggleHeading({ level: 6 }).run()
+            " />
+          <Heading v-else />
+        </template>
+        <template #h1>
+          <ScButton
+            :shadow="false"
+            size="small"
+            @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
+            hoverable>
+            <Heading1 />
+          </ScButton>
+        </template>
+        <template #h2>
+          <ScButton
+            :shadow="false"
+            size="small"
+            @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
+            hoverable>
+            <Heading2 />
+          </ScButton>
+        </template>
+        <template #h3>
+          <ScButton
+            :shadow="false"
+            size="small"
+            @click="editor?.chain().focus().toggleHeading({ level: 3 }).run()"
+            hoverable>
+            <Heading3 />
+          </ScButton>
+        </template>
+        <template #h4>
+          <ScButton
+            :shadow="false"
+            size="small"
+            @click="editor?.chain().focus().toggleHeading({ level: 4 }).run()"
+            hoverable>
+            <Heading4 />
+          </ScButton>
+        </template>
+        <template #h5>
+          <ScButton
+            :shadow="false"
+            size="small"
+            @click="editor?.chain().focus().toggleHeading({ level: 5 }).run()"
+            hoverable>
+            <Heading5 />
+          </ScButton>
+        </template>
+        <template #h6>
+          <ScButton
+            :shadow="false"
+            size="small"
+            @click="editor?.chain().focus().toggleHeading({ level: 6 }).run()"
+            hoverable>
+            <Heading6 />
+          </ScButton>
+        </template>
+      </sc-drop-list-buttons>
 
-        <!-- 加粗 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleBold().run()"
-          :activation="editor?.isActive('bold')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Bold">
-          <Bold />
-        </ScButton>
+      <!-- 加粗 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleBold().run()"
+        :activation="editor?.isActive('bold')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Bold">
+        <Bold />
+      </ScButton>
 
-        <!-- 斜体 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleItalic().run()"
-          :activation="editor?.isActive('italic')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Italic">
-          <Italic />
-        </ScButton>
+      <!-- 斜体 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleItalic().run()"
+        :activation="editor?.isActive('italic')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Italic">
+        <Italic />
+      </ScButton>
 
-        <!-- 删除线 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleStrike().run()"
-          :activation="editor?.isActive('strike')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Strikethrough">
-          <Strikethrough />
-        </ScButton>
+      <!-- 删除线 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleStrike().run()"
+        :activation="editor?.isActive('strike')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Strikethrough">
+        <Strikethrough />
+      </ScButton>
 
-        <!-- 下划线 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleUnderline().run()"
-          :activation="editor?.isActive('underline')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Underline">
-          <Underline />
-        </ScButton>
+      <!-- 下划线 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleUnderline().run()"
+        :activation="editor?.isActive('underline')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Underline">
+        <Underline />
+      </ScButton>
 
-        <!-- 行内代码 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleCode().run()"
-          :activation="editor?.isActive('code')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Code">
-          <CodeXml />
-        </ScButton>
+      <!-- 行内代码 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleCode().run()"
+        :activation="editor?.isActive('code')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Code">
+        <CodeXml />
+      </ScButton>
 
-        <!-- 高亮 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleHighlight().run()"
-          :activation="editor?.isActive('highlight')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Highlight">
-          <Highlighter />
-        </ScButton>
+      <!-- 高亮 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleHighlight().run()"
+        :activation="editor?.isActive('highlight')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Highlight">
+        <Highlighter />
+      </ScButton>
 
-        <!-- 下标 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleSubscript().run()"
-          :activation="editor?.isActive('subscript')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Subscript">
-          <Subscript />
-        </ScButton>
+      <!-- 下标 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleSubscript().run()"
+        :activation="editor?.isActive('subscript')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Subscript">
+        <Subscript />
+      </ScButton>
 
-        <!-- 上标 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleSuperscript().run()"
-          :activation="editor?.isActive('superscript')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Superscript">
-          <Superscript />
-        </ScButton>
+      <!-- 上标 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleSuperscript().run()"
+        :activation="editor?.isActive('superscript')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Superscript">
+        <Superscript />
+      </ScButton>
 
-        <ScDivider vertical />
+      <ScDivider vertical />
 
-        <!-- 无序列表 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleBulletList().run()"
-          :activation="editor?.isActive('bulletList')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.BulletList">
-          <List />
-        </ScButton>
-        <!-- 有序列表 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleOrderedList().run()"
-          :activation="editor?.isActive('orderedList')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.OrderedList">
-          <ListOrdered />
-        </ScButton>
-        <ScDivider vertical />
+      <!-- 无序列表 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleBulletList().run()"
+        :activation="editor?.isActive('bulletList')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.BulletList">
+        <List />
+      </ScButton>
+      <!-- 有序列表 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleOrderedList().run()"
+        :activation="editor?.isActive('orderedList')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.OrderedList">
+        <ListOrdered />
+      </ScButton>
+      <ScDivider vertical />
 
-        <!-- 代码块 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="
-            editor?.chain().focus().toggleCodeBlock({ language: 'ts' }).run()
-          "
-          :activation="editor?.isActive('codeBlock')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.CodeBlock">
-          <SquareCode />
-        </ScButton>
-
-        <!-- <sc-drop-list-buttons
-          v-model="selected"
-          :options="[
-            { value: 'ts', label: 'TypeScript' },
-            { value: 'js', label: 'JavaScript' },
-            { value: 'json', label: 'JSON' },
-            { value: 'html', label: 'HTML' },
-            { value: 'css', label: 'CSS' },
-            { value: 'python', label: 'Python' },
-            { value: 'java', label: 'Java' },
-            { value: 'c', label: 'C' },
-            { value: 'cpp', label: 'C++' },
-            { value: 'go', label: 'Go' },
-            { value: 'php', label: 'PHP' },
-            { value: 'ruby', label: 'Ruby' },
-            { value: 'shell', label: 'Shell' },
-            { value: 'markdown', label: 'Markdown' },
-          ]"
-          :activation="editor?.isActive('codeBlock')"
-          class="tooltip"
-          :data-tip="dataTip.Heading">
-          <template #trigger>
-            <SquareCode
-              v-if="editor?.isActive('codeBlock')"
-              @click="editor?.chain().focus().toggleCodeBlock().run()" />
-          </template>
-          <template #TypeScript>
-            <ScButton
-              :shadow="false"
-              size="small"
-              @click="
-                editor
-                  ?.chain()
-                  .focus()
-                  .toggleCodeBlock({ language: 'ts' })
-                  .run()
-              "
-              hoverable>
-              <SquareCode />
-            </ScButton>
-          </template>
-        </sc-drop-list-buttons> -->
-
-        <!-- 引用块 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().toggleBlockquote().run()"
-          :activation="editor?.isActive('blockquote')"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Blockquote">
-          <TextQuote />
-        </ScButton>
-
-        <!-- 图片 -->
-        <div class="tooltip" :data-tip="dataTip.Image">
-          <TipTapUploadImage />
-        </div>
-
-        <ScDivider vertical />
-
-        <!-- 左对齐 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().setTextAlign('left').run()"
-          :activation="editor?.isActive({ textAlign: 'left' })"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.LeftAlign">
-          <AlignLeft />
-        </ScButton>
-
-        <!-- 居中对齐 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().setTextAlign('center').run()"
-          :activation="editor?.isActive({ textAlign: 'center' })"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.CenterAlign">
-          <AlignCenter />
-        </ScButton>
-
-        <!-- 右对齐 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="editor?.chain().focus().setTextAlign('right').run()"
-          :activation="editor?.isActive({ textAlign: 'right' })"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.RightAlign">
-          <AlignRight />
-        </ScButton>
-
-        <!-- 复制内容 -->
-        <ScButton
-          :shadow="false"
-          size="small"
-          @click="copyToClipboard"
-          hoverable
-          class="tooltip"
-          :data-tip="dataTip.Copy">
-          <Copy />
-        </ScButton>
+      <!-- 图片 -->
+      <div class="tooltip" :data-tip="dataTip.Image">
+        <TipTapUploadImage />
       </div>
-    </Card>
+
+      <!-- 代码块 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="
+          editor?.chain().focus().toggleCodeBlock({ language: 'ts' }).run()
+        "
+        :activation="editor?.isActive('codeBlock')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.CodeBlock">
+        <SquareCode />
+      </ScButton>
+
+      <!-- 引用块 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().toggleBlockquote().run()"
+        :activation="editor?.isActive('blockquote')"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Blockquote">
+        <TextQuote />
+      </ScButton>
+
+      <ScDivider vertical />
+
+      <!-- 左对齐 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().setTextAlign('left').run()"
+        :activation="editor?.isActive({ textAlign: 'left' })"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.LeftAlign">
+        <AlignLeft />
+      </ScButton>
+
+      <!-- 居中对齐 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().setTextAlign('center').run()"
+        :activation="editor?.isActive({ textAlign: 'center' })"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.CenterAlign">
+        <AlignCenter />
+      </ScButton>
+
+      <!-- 右对齐 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="editor?.chain().focus().setTextAlign('right').run()"
+        :activation="editor?.isActive({ textAlign: 'right' })"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.RightAlign">
+        <AlignRight />
+      </ScButton>
+
+      <!-- 复制内容 -->
+      <ScButton
+        :shadow="false"
+        size="small"
+        @click="copyToClipboard"
+        hoverable
+        class="tooltip"
+        :data-tip="dataTip.Copy">
+        <Copy />
+      </ScButton>
+    </div>
 
     <editor-content :editor="editor" class="tiptapEditor" />
   </Card>
