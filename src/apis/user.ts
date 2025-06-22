@@ -58,10 +58,6 @@ export const getCurrentUser = () => {
   return request.get('/user/info')
 }
 
-export const userDisabled = (dto: UserDisabledDto) => {
-  return request.post('/admin/user/disabled', dto)
-}
-
 export const getUser = (id: number) => {
   return request.get(`/user/${id}`)
 }
@@ -73,6 +69,10 @@ export const getUserListAsAdmin = (dto: UserSelectDto) => {
     url: '/admin/user/list',
     params: dto,
   })
+}
+
+export const userDisabledAsAdmin = (dto: UserDisabledDto) => {
+  return request.post('/admin/user/disabled', dto)
 }
 
 export const updateUserAsAdmin = (dto: UpdateUserAsAdminDto) => {

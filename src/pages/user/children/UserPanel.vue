@@ -243,6 +243,9 @@ const getCurrentUserInfo = () => {
     })
     .catch((error) => {
       console.error('Error fetching user data:', error)
+      userStore.userInfo = {} as UserType
+      userStore.token = ''
+      userStore.isLogin = false
     })
 }
 

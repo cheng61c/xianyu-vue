@@ -40,9 +40,27 @@ const login = async () => {
     })
 }
 
+const getInfo = async () => {
+  userApi
+    .getCurrentUser()
+    .then((res) => {
+      if (res.data.code === 200) {
+        userStore.userInfo = res.data.data.user
+        userStore.isLogin = true
+      }
+    })
+    .catch((_error) => {
+      userStore.userInfo = {} as UserType
+      userStore.token = ''
+      userStore.isLogin = false
+    })
+}
+
 onMounted(async () => {
   if (userStore.autoLogin) {
     await login()
+  } else {
+    getInfo()
   }
 })
 </script>

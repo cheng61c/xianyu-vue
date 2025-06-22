@@ -390,7 +390,7 @@ const updateHerdImg = async () => {
   })
 
   if (blob) {
-    const fileName = `${userInfo.value.account}-${Date.now()}.png`
+    const fileName = `avatar-${userInfo.value.account}-${Date.now()}.png`
     const file = new File([blob], fileName, {
       type: 'image/png',
     })

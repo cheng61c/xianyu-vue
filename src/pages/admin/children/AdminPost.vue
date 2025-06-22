@@ -67,7 +67,15 @@
         <tbody>
           <tr v-for="(post, index) in postList" :key="post.id">
             <th>{{ post.id }}</th>
-            <td>{{ post.title }}</td>
+            <td>
+              <RouterLink
+                :to="{
+                  name: 'postDetails',
+                  params: { postId: post.id },
+                }">
+                {{ post.title }}
+              </RouterLink>
+            </td>
             <td>{{ post.plate.name }}</td>
             <td>
               <div class="flex items-center gap-2">

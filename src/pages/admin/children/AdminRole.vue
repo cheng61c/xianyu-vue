@@ -8,6 +8,8 @@
     </div>
   </Card>
 
+  <div class="text-error" v-if="!isPlusAdmin">当前权限不足, 无法进行操作</div>
+
   <Card v-if="roleList.length" class="mb-4">
     <div class="overflow-x-auto">
       <div v-if="verifyPermissions([11])">111</div>
@@ -47,7 +49,7 @@
                 </ScTag>
               </div>
             </td>
-            <td>
+            <td v-if="isPlusAdmin">
               <div class="flex items-center gap-2">
                 <ScButton @click="updateRole(index)" Border> 编辑 </ScButton>
                 <ScButton
@@ -205,6 +207,8 @@ const currentRole = ref(-1) // 当前操作的帖子ID
 const updateModal = ref(false) // 更新帖子模态框状态
 const addRoleModal = ref(false) // 添加新角色模态框状态
 const deleteRoleModal = ref(false) // 删除角色模态框状态
+const isPlusAdmin = ref(verifyPermissions([1])) // 是否为超级管理员
+const isAdmin = ref(verifyPermissions([2])) // 是否为管理员
 const newRoleBody = ref({
   color: '',
   name: '',

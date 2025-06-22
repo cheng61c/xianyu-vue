@@ -362,7 +362,7 @@
         }"
         data-tip="请先登录后再发布帖子"
         @click="submitPost"
-        :disabled="userStore.isLogin === false">
+        :disabled="userStore.isLogin === false || loader">
         发布
       </button>
     </div>
@@ -418,6 +418,7 @@ const pingAvgTime = ref(0) // ping 延迟
 const pingAuccess = ref(true) // ping 成功
 const pingLoding = ref(false) // ping 加载中
 const pingEnsure = ref(false) // ping 确认
+const loader = ref(false) // 提交加载状态
 
 // 帖子表单
 const postData = ref<PostDto>({
@@ -494,6 +495,8 @@ const sendPsot = () => {
   postData.value.content = postContent.value
   postData.value.dependencies = selectedPosts.value.map((p) => p.id)
 
+  loader.value = true
+
   console.log('postData', postData.value)
 
   postApi
@@ -501,11 +504,13 @@ const sendPsot = () => {
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success('发布成功')
+        loader.value = false
         window.history.back()
       }
     })
     .catch((err) => {
       toast.error('发布失败' + err.msg)
+      loader.value = false
     })
 }
 
@@ -513,6 +518,7 @@ const sendServer = () => {
   serverData.value.title = title.value
   serverData.value.description = postContent.value
 
+  loader.value = true
   console.log('serverData', serverData.value)
 
   serverApi
@@ -520,11 +526,13 @@ const sendServer = () => {
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success('发布成功')
+        loader.value = false
         window.history.back()
       }
     })
     .catch((err) => {
       toast.error('发布失败' + err.msg)
+      loader.value = false
     })
 }
 

@@ -99,7 +99,7 @@
         }"
         data-tip="请先登录后再发布内容"
         @click="submitVersiont"
-        :disabled="userStore.isLogin === false">
+        :disabled="userStore.isLogin === false || loader">
         发布
       </button>
     </div>
@@ -125,6 +125,7 @@ const userStore = useUserStore()
 const router = useRouter()
 const versionList = ref<Version[]>([]) // 版本列表
 const postInfo = ref<Post>({} as Post) // 帖子详情
+const loader = ref(false) // 加载状态
 
 // 帖子表单
 const versionData = ref<PostCreateVersionDto>({
@@ -167,6 +168,8 @@ const submitVersiont = () => {
     return
   }
 
+  loader.value = true
+
   postApi
     .createVersion(versionData.value)
     .then((res: Api) => {
@@ -182,11 +185,13 @@ const submitVersiont = () => {
           postId: 0,
           gameVersionIds: [],
         }
+        loader.value = false
         router.back()
       }
     })
     .catch((error) => {
       toast.error('发布失败: ' + error.msg)
+      loader.value = false
     })
 }
 

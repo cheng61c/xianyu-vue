@@ -453,23 +453,26 @@ const banned = (index: number, val?: number) => {
     return
   }
   userApi
-    .updateUserAsAdmin({
-      id: item.id,
+    .userDisabledAsAdmin({
+      userId: item.id,
       disabled: val, // 封禁状态
-      remark: updateBody.value.remark, // 备注内容
     })
-    .then((response) => {
+    .then(async (response) => {
       if (response.data.code === 200) {
-        userApi
-          .updateUserKey(item.id)
-          .then(() => {
-            toast.success('操作成功')
-            getUserList()
-            bannedModal.value = false
+        try {
+          await userApi.updateUserAsAdmin({
+            id: item.id,
+            remark: updateBody.value.remark, // 备注内容
           })
-          .catch((error) => {
-            toast.error('更新用户信息失败: ' + error.msg)
-          })
+          if (verifyPermissions([1, 2])) {
+            await userApi.updateUserKey(item.id)
+          }
+          toast.success('操作成功')
+        } catch (error) {
+          console.error('更新用户key失败:', error)
+        }
+        getUserList()
+        bannedModal.value = false
       }
     })
     .catch((error) => {

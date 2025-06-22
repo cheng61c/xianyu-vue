@@ -1,4 +1,4 @@
 {
-  "serverAddress": "https://dev.suancaixianyu.cn/api",
-  "uploadPath": "https://dev.suancaixianyu.cn/api/upload"
+  "serverAddress": "http://localhost:3000/api",
+  "uploadPath": "http://localhost:3000/api/upload"
 }
