@@ -25,7 +25,6 @@ import {
   Highlighter,
   Subscript,
   Superscript,
-  Copy,
   List,
   ListOrdered,
 } from 'lucide-vue-next'
