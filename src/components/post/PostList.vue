@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-col">
+  <div class="w-full h-full flex flex-col pb-4">
     <ScSearch
       v-if="posts.length"
       key="user-post-search"

@@ -208,7 +208,7 @@ const updateModal = ref(false) // 更新帖子模态框状态
 const addRoleModal = ref(false) // 添加新角色模态框状态
 const deleteRoleModal = ref(false) // 删除角色模态框状态
 const isPlusAdmin = ref(verifyPermissions([1])) // 是否为超级管理员
-const isAdmin = ref(verifyPermissions([2])) // 是否为管理员
+// const isAdmin = ref(verifyPermissions([2])) // 是否为管理员
 const newRoleBody = ref({
   color: '',
   name: '',

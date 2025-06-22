@@ -234,5 +234,7 @@
   "zhou-ye-qie-huan": "Switch day and night",
   "tang-chuang": "toast",
   "yong-hu-zhu-ye": "User Home Page",
-  "hou-tai-guan-li": "Backend management"
+  "hou-tai-guan-li": "Backend management",
+  "qing-kong-yong-hu-huan-cun": "Clear user cache",
+  "qing-kong-gong-gao-yi-du-zhuang-tai": "Clear the status of the announcement read"
 }

@@ -2,7 +2,7 @@
   <!-- 主窗口 -->
   <div class="h-screen mx-auto max-w-[1600px]">
     <HomeHeader />
-    <div class="w-full mx-auto px-4 pt-1 h-[calc(100vh-68px)] overflow-y-auto">
+    <div class="w-full mx-auto px-4 pt-1 h-[calc(100vh-78px)] overflow-y-auto">
       <router-view></router-view>
     </div>
     <PopUpAnnouncement />

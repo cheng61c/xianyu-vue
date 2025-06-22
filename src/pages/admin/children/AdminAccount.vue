@@ -585,6 +585,7 @@ const getInfo = () => {
   userApi.getCurrentUser().catch((error) => {
     userStore.token = '' // 清除token
     userStore.userInfo = {} as UserType // 清除用户信息
+    userStore.isLogin = false // 设置登录状态为false
     router.replace({ path: '/' })
     toast.error('获取用户信息失败: ' + error.msg)
   })
