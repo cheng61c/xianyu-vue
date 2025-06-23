@@ -1,5 +1,6 @@
 <template>
   <PcIndex />
+  <MobileIndex v-if="false" />
 </template>
 
 <script setup lang="ts">
@@ -10,6 +11,7 @@ const userStore = useUserStore()
 import { onMounted } from 'vue'
 import type { UserType } from '@/types'
 import PcIndex from './pc/PcIndex.vue'
+import MobileIndex from './mobile/MobileIndex.vue'
 
 const login = async () => {
   userApi

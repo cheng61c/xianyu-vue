@@ -140,7 +140,7 @@
 import type { Api } from '@/types'
 import { onMounted, ref } from 'vue'
 import { CircleHelp } from 'lucide-vue-next'
-import TipTap from '@/components/tiptap/TipTap.vue'
+import TipTap from '@/components/pc/tiptap/TipTap.vue'
 import type { Post, PostCreateVersionDto } from '@/types/Post'
 import { useToast } from 'vue-toastification'
 import ScButton from '@/components/common/ScButton.vue'

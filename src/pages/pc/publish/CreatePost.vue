@@ -379,7 +379,7 @@ import {
   CircleHelp,
   CircleAlert,
 } from 'lucide-vue-next'
-import TipTap from '@/components/tiptap/TipTap.vue'
+import TipTap from '@/components/pc/tiptap/TipTap.vue'
 import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'

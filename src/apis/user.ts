@@ -1,9 +1,10 @@
 import request from '@/utils/request.ts'
 import type { LoginDto } from '@/types/LoginDto'
 import type { RegisterBotDto, RegisterDto } from '@/types/RegisterDto'
-import type { VerificationCode } from '@/types/VerificationCode'
-import type { VerificationCodeDto } from '@/types/VerificationCodeDto'
-import type { CheckDuplicateDto } from '@/types/CheckDuplicateDto'
+import type {
+  VerificationCode,
+  VerificationCodeDto,
+} from '@/types/VerificationCode'
 import type { UpdatePasswordDto } from '@/types/UpdatePasswordDto'
 import type {
   UpdateRoleDto,
@@ -13,6 +14,7 @@ import type {
   UserPostQueryDto,
   UserSelectDto,
 } from '@/types'
+import type { CheckDuplicateDto } from '@/types/CheckDuplicateDto'
 
 export const login = (dto: LoginDto) => {
   return request.post('/user/login', dto)

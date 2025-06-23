@@ -175,7 +175,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import Avatar from '@/components/common/Avatar.vue'
 import ScTag from '@/components/common/ScTag.vue'
 import Card from '@/components/common/Card.vue'
-import TipTap from '@/components/tiptap/TipTap.vue'
+import TipTap from '@/components/pc/tiptap/TipTap.vue'
 import ScCollapse from '@/components/common/ScCollapse.vue'
 import ScFileInput from '@/components/common/ScFileInput.vue'
 

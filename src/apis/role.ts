@@ -1,5 +1,5 @@
+import type { RoleDto } from '@/types/Role'
 import request from '@/utils/request.ts'
-import type { RoleDto } from '@/types/RoleDto'
 
 export const getRoleList = () => {
   return request.get('/role/list')

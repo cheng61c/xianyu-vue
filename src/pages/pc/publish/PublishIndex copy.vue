@@ -213,7 +213,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import TipTap from '@/components/tiptap/TipTap.vue'
+import TipTap from '@/components/pc/tiptap/TipTap.vue'
 
 const content = ref('<h1>标题</h1><p>内容</p>')
 const title = ref('')
