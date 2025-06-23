@@ -17,3 +17,15 @@ export declare interface UserRole {
   name: string
   color: string
 }
+
+export declare interface RoleDto {
+  id?: number
+  color?: string
+  name?: string
+  status?: number
+}
+
+export declare interface RoleDisabledDto {
+  id?: number
+  disabled?: number
+}

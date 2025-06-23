@@ -62,13 +62,13 @@
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import Card from '../Card.vue'
+import Card from '@/components/common/Card.vue'
 import { Plus, X, ImageIcon } from 'lucide-vue-next'
-import ScButton from '../ScButton.vue'
+import ScButton from '@/components/common/ScButton.vue'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/hook/format'
 import { useToast } from 'vue-toastification'
-import ScImage from '../ScImage.vue'
+import ScImage from '@/components/common/ScImage.vue'
 const toast = useToast()
 
 const fileInput = ref<HTMLInputElement | null>(null)

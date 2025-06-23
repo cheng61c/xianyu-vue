@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import DevTools from '@/components/DevTools.vue'
+import DevTools from '@/components/common/DevTools.vue'
 </script>
 
 <template>

@@ -3,13 +3,11 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  /* 默认主题 */
+  /* 背景 */
   --color-background: #faffff;
   --color-background-content: #666666; /*主文本颜色*/
   --color-text-white: #ffffff; /* 白色文本 */
-  --color-border: linear-gradient(to bottom right, #ff7e5f, #feb47b) 1;
-  /* 卡片边框 */
-  --color-border: 1px solid rgba(204, 204, 204, 0.6);
+
   /* 主色 */
   --color-gray: #adb3b3;
   --color-gray-content: #666666; /* 次文本颜色 */
@@ -18,26 +16,24 @@
   --color-like: #f43098; /* 点赞颜色 */
   --color-bad: #f43098; /* 点踩颜色 */
 
-  /* 自定义颜色*/
+  /* 自定义颜色 */
   --color-green: #1ec041;
+  --color-pink: #fce7f3; /* 粉色 */
+  --color-pink-content: #e60076; /* 粉色内容文本 */
+
+  /* 其他效果修改 */
+  --color-border: 1px solid rgba(204, 204, 204, 0.6); /* 卡片边框 */
   --shadow-card: 2px 2px 4px rgba(0, 0, 0, 0.15);
   --shadow-card-md: 4px 4px 8px rgba(0, 0, 0, 0.15);
-  --shadow-card-dark:
-    2px 2px 4px rgba(255, 255, 255, 0.05),
-    -2px -2px 4px rgba(255, 255, 255, 0.15);
-  --shadow-card-md-dark:
-    4px 6px 6px rgba(255, 255, 255, 0.05),
-    -4px -4px 8px rgba(255, 255, 255, 0.15);
 }
 
 @layer base {
   /* 暗色主题 */
   .dark {
+    /* 背景 */
     --color-background: #2a2f34;
     --color-background-content: rgba(255, 255, 255, 0.9); /*普通文字*/
     --color-text-white: #ffffff; /* 白色文本 */
-    /* 卡片边框 */
-    --color-border: 1px solid rgba(204, 204, 204, 0.6);
 
     /* 主色 */
     --color-white: #26282c;
@@ -50,6 +46,17 @@
 
     /* 特定颜色修改 */
     --color-green: #35dc5a; /* 绿色 */
+    --color-pink: #fce7f3; /* 粉色 */
+    --color-pink-content: #e60076; /* 粉色内容文本 */
+
+    /* 其他效果修改 */
+    --color-border: 1px solid rgba(204, 204, 204, 0.6); /* 卡片边框 */
+    --shadow-card:
+      2px 2px 4px rgba(255, 255, 255, 0.05),
+      -2px -2px 4px rgba(255, 255, 255, 0.15);
+    --shadow-card-md:
+      4px 6px 6px rgba(255, 255, 255, 0.05),
+      -4px -4px 8px rgba(255, 255, 255, 0.15);
   }
 }
 

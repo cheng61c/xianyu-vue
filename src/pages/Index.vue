@@ -1,24 +1,15 @@
 <template>
-  <!-- 主窗口 -->
-  <div class="h-screen mx-auto max-w-[1600px]">
-    <HomeHeader />
-    <div class="w-full mx-auto px-4 pt-1 h-[calc(100vh-78px)] overflow-y-auto">
-      <router-view></router-view>
-    </div>
-    <PopUpAnnouncement />
-  </div>
+  <PcIndex />
 </template>
 
 <script setup lang="ts">
-import HomeHeader from '@/components/homeHeader/HomeHeader.vue'
-
 import { userApi } from '@/apis'
 import { useUserStore } from '@/stores/userStore'
 const userStore = useUserStore()
 
 import { onMounted } from 'vue'
 import type { UserType } from '@/types'
-import PopUpAnnouncement from '@/components/PopUpAnnouncement.vue'
+import PcIndex from './pc/PcIndex.vue'
 
 const login = async () => {
   userApi
