@@ -3,9 +3,10 @@
     <!-- 触发按钮 -->
     <ScButton
       @click="togglePopup"
-      :activation="isOpen"
+      :activation="noActivation ? false : isOpen"
       :icon="icon"
-      class="h-10 w-10">
+      :no-pd="noPd"
+      class="">
       {{ buttonText }}
     </ScButton>
 
@@ -13,7 +14,7 @@
     <transition name="fade-slide">
       <div
         v-if="isOpen"
-        class="absolute z-10 flex justify-center w-full h-full"
+        class="absolute z-10"
         :class="{
           'top-[110%]': position === 'bottom',
           'bottom-[110%]': position === 'top',
@@ -36,6 +37,8 @@ defineProps<{
   //位置
   position?: 'top' | 'bottom' | 'left' | 'right'
   className?: string
+  noActivation?: boolean
+  noPd?: boolean
 }>()
 
 const emit = defineEmits(['close'])

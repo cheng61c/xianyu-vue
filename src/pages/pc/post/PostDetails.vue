@@ -112,7 +112,7 @@ import Releases from '@/components/pc/post/details/Releases.vue'
 import TableOfContents from '@/components/pc/post/details/TableOfContents.vue'
 import ArticleActions from '@/components/pc/post/details/ArticleActions.vue'
 import Card from '@/components/common/Card.vue'
-import CommentArea from '@/components/pc/post/details/CommentArea.vue'
+import CommentArea from '@/components/pc/post/details/comment/CommentArea.vue'
 
 const route = useRoute()
 const router = useRouter()

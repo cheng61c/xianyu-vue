@@ -111,9 +111,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import { Download, Minimize2 } from 'lucide-vue-next'
 import { formatFileSize, formatTime } from '@/hook/format'
 import { downloadApi } from '@/apis'
-// import { useToast } from 'vue-toastification'
 
-// const toast = useToast()
 const props = defineProps({
   postData: {
     type: Object as PropType<Post | null>,

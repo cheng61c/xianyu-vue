@@ -91,7 +91,7 @@ const className = computed(() =>
       : '',
     props.noPadding || props.noPd ? 'p-0' : 'py-1.5 px-3',
     props.noBg ? 'bg-transparent' : '',
-    props.noRounded ? 'rounded-none' : 'rounded-md',
+    props.noRounded ? '' : 'rounded-md',
     props.isCol ? 'flex-col' : '',
     props.loading || props.disabled
       ? 'pointer-events-none opacity-50 '
