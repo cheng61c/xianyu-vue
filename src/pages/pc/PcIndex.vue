@@ -6,7 +6,7 @@
       class="w-full mx-auto px-4 pt-1 overflow-y-auto"
       :class="{
         'h-[calc(100vh-78px)]': !configStore.padAdaptation,
-        'h-[calc(100vh-120px)]': configStore.padAdaptation,
+        'h-[calc(100vh-200px)]': configStore.padAdaptation,
       }">
       <router-view></router-view>
     </div>
