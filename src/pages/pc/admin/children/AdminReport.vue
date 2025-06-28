@@ -326,7 +326,7 @@ const reportTypeBarMap: { [key: number]: string } = {
 const reportPage = ref({
   page: 1,
   total: 0,
-  limit: 3,
+  limit: 10,
 })
 
 const reportList = ref<ReportType[]>([]) // 帖子列表数据
@@ -398,7 +398,7 @@ const getPosts = () => {
           item.updatedAt = formatTime(item.updatedAt)
           return item
         })
-        reportPage.value.limit = res.data.data.limit || 3
+        reportPage.value.limit = res.data.data.limit || 10
         reportPage.value.page = res.data.data.page || 1
         reportPage.value.total = res.data.data.total || 0
       }

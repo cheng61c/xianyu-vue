@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full gap-x-6 justify-between px-1 h-[calc(100vh-72px)]">
+  <div class="flex w-full gap-x-6 justify-between px-1 h-full">
     <PostPlate />
     <PostList />
     <BulletinBoard />

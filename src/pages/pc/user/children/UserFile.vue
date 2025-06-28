@@ -48,13 +48,17 @@ const getFiles = () => {
   if (!userStore.isLogin) {
     return
   }
-  uploadApi.getFilesList().then((response) => {
-    files.value = response.data.data.map((item: FileType) => {
-      item.createdAt = formatTime(item.createdAt)
-      item.size = formatFileSize(item.size)
-      return item
+  uploadApi
+    .getFilesList({
+      types: '1,2,3,4,5,7',
     })
-  })
+    .then((response) => {
+      files.value = response.data.data.map((item: FileType) => {
+        item.createdAt = formatTime(item.createdAt)
+        item.size = formatFileSize(item.size)
+        return item
+      })
+    })
 }
 
 onMounted(() => {

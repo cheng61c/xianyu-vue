@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'relative flex justify-center items-center gap-1 cursor-no-drop',
+      'flex justify-center items-center gap-1 cursor-no-drop',
       className,
       tip ? 'tooltip tooltip-' + tipPosition : '',
     ]"
@@ -10,12 +10,8 @@
     <slot name="icon" />
     <span><slot /></span>
     <slot name="endIcon" />
-    <div
-      v-if="loading"
-      class="absolute inset-0 flex items-center justify-center bg-white/80 border-white/80 z-10 cursor-no-drop">
-      <div
-        class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-active cursor-no-drop"></div>
-    </div>
+
+    <span v-if="loading" class="loading loading-spinner loading-sm"></span>
   </button>
 </template>
 

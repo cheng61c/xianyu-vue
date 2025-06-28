@@ -5,7 +5,7 @@
 @theme {
   /* 背景 */
   --color-background: #faffff;
-  --color-background-content: #666666; /*主文本颜色*/
+  --color-background-content: #555555; /*主文本颜色*/
   --color-text-white: #ffffff; /* 白色文本 */
 
   /* 主色 */
@@ -20,6 +20,7 @@
   --color-green: #1ec041;
   --color-pink: #fce7f3; /* 粉色 */
   --color-pink-content: #e60076; /* 粉色内容文本 */
+  --color-gray-200: #dde0e0; /* 骨架屏背景 */
 
   /* 其他效果修改 */
   --color-border: 1px solid rgba(204, 204, 204, 0.6); /* 卡片边框 */
@@ -48,6 +49,7 @@
     --color-green: #35dc5a; /* 绿色 */
     --color-pink: #fce7f3; /* 粉色 */
     --color-pink-content: #e60076; /* 粉色内容文本 */
+    --color-gray-200: #424a53; /* 骨架屏背景 */
 
     /* 其他效果修改 */
     --color-border: 1px solid rgba(204, 204, 204, 0.6); /* 卡片边框 */
@@ -82,22 +84,25 @@
   prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
   color-scheme: light; /* color of browser-provided UI */
 
-  --color-primary: #66ccff;
-  --color-primary-content: oklch(0.933, 0.093, 210.26);
-  --color-secondary: oklch(80% 0.25 200);
-  --color-secondary-content: oklch(98% 0.01 200);
   --color-accent: oklch(0.47, 0.457, 137.45);
   --color-accent-content: oklch(0.933, 0.093, 210.26);
   --color-neutral: oklch(50% 0.05 240);
   --color-neutral-content: oklch(98% 0.01 240);
-  --color-info: oklch(70% 0.2 220);
-  --color-info-content: oklch(98% 0.01 220);
-  --color-success: oklch(65% 0.25 140);
-  --color-success-content: oklch(98% 0.01 140);
-  --color-warning: oklch(80% 0.25 80);
-  --color-warning-content: #ffffff;
+
+  /* 已使用 */
   --color-error: #ff627d; /* 错误色：红色 */
   --color-error-content: oklch(98% 0.01 30); /* 错误色内容文本 */
+  --color-warning: oklch(80% 0.25 80);
+  --color-warning-content: #ffffff;
+  --color-success: oklch(65% 0.25 140);
+  --color-success-content: oklch(98% 0.01 140);
+  --color-info: oklch(70% 0.2 220);
+  --color-info-content: oklch(98% 0.01 220);
+  --color-secondary: oklch(80% 0.25 200);
+  --color-secondary-content: oklch(98% 0.01 200);
+  --color-primary: #66ccff;
+  --color-primary-content: oklch(0.933, 0.093, 210.26);
+  --color-base-100: #f0f0f0; /* 骨架屏高亮 */
 }
 
 @plugin "daisyui/theme" {
@@ -106,20 +111,23 @@
   prefersdark: true; /* 设置为暗色模式 (prefers-color-scheme:dark) */
   color-scheme: dark; /* 浏览器 UI 的颜色模式为暗色 */
 
-  --color-primary: #66ccff; /* 主色：蓝色 */
-  --color-primary-content: #ffffff; /* 主色内容文本，通常是浅色 */
-  --color-secondary: oklch(50% 0.2 200); /* 次要色：蓝色 */
-  --color-secondary-content: #ffffff; /* 次要色内容文本 */
   --color-accent: #ff6f61; /* 强调色：红色 */
   --color-accent-content: #ffffff; /* 强调色内容文本 */
   --color-neutral: oklch(20% 0.05 240); /* 中性色：灰色 */
   --color-neutral-content: oklch(90% 0.1 240); /* 中性色内容文本 */
-  --color-info: oklch(50% 0.2 220); /* 信息色：蓝色 */
-  --color-info-content: oklch(90% 0.1 220); /* 信息色内容文本 */
-  --color-success: oklch(50% 0.25 140); /* 成功色：绿色 */
-  --color-success-content: oklch(90% 0.1 140); /* 成功色内容文本 */
-  --color-warning: oklch(70% 0.25 70); /* 警告色：黄色 */
-  --color-warning-content: #ffffff; /* 警告色内容文本 */
+
+  /* 已使用 */
   --color-error: oklch(40% 0.3 30); /* 错误色：红色 */
   --color-error-content: oklch(90% 0.1 30); /* 错误色内容文本 */
+  --color-warning: oklch(70% 0.25 70); /* 警告色：黄色 */
+  --color-warning-content: #ffffff; /* 警告色内容文本 */
+  --color-success: oklch(50% 0.25 140); /* 成功色：绿色 */
+  --color-success-content: oklch(90% 0.1 140); /* 成功色内容文本 */
+  --color-info: oklch(50% 0.2 220); /* 信息色：蓝色 */
+  --color-info-content: oklch(90% 0.1 220); /* 信息色内容文本 */
+  --color-secondary: oklch(50% 0.2 200); /* 次要色：蓝色 */
+  --color-secondary-content: #ffffff; /* 次要色内容文本 */
+  --color-primary: #66ccff; /* 主色：蓝色 */
+  --color-primary-content: #ffffff; /* 主色内容文本，通常是浅色 */
+  --color-base-100: #525d69; /* 骨架屏高亮 */
 }

@@ -180,13 +180,17 @@ const getFiles = () => {
   if (!userStore.isLogin) {
     return
   }
-  uploadApi.getFilesList().then((response) => {
-    files.value.data = response.data.data.map((item: any) => {
-      item.createdAt = formatTime(item.createdAt)
+  uploadApi
+    .getFilesList({
+      types: '1,2,3,4,5,7',
     })
-    files.value.count = response.data.data.length
-    console.log(files.value)
-  })
+    .then((response) => {
+      files.value.data = response.data.data.map((item: any) => {
+        item.createdAt = formatTime(item.createdAt)
+      })
+      files.value.count = response.data.data.length
+      console.log(files.value)
+    })
 }
 
 const getServers = () => {

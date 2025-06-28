@@ -10,7 +10,6 @@
       <span>{{ localLikeCount }}</span>
     </ScButton>
     <ScButton noPd @click="openReply(commentId, toCommentId)"> 回复 </ScButton>
-    {{ commentId }}/{{ toCommentId }}
   </div>
   <div v-if="currentInput === `${commentId}-${toCommentId ?? 0}`" class="mt-3">
     <CommentInput
@@ -49,7 +48,7 @@ const props = defineProps({
     required: false,
   },
 })
-// Use local variables for default values instead of assigning to props
+
 const localLikeCount = ref(props.likeCount ?? 0)
 const localIsLike = ref(props.isLike ?? 0)
 const currentInput = ref('')
@@ -67,12 +66,17 @@ const openReply = (commentId: number, toCommentId?: number) => {
   }
   currentInput.value = `${commentId}-${toCommentId || '0'}`
 }
-const reply = (content: string, commentId: number, toCommentId?: number) => {
+const reply = (
+  content: string,
+  image?: string[],
+  commentId?: number,
+  toCommentId?: number
+) => {
   if (!userStore.isLogin) {
     toast.error('请先登录后再发表评论')
     return
   }
-  emit('reply', content, commentId, toCommentId)
+  emit('reply', content, image, commentId, toCommentId)
   currentInput.value = ''
 }
 

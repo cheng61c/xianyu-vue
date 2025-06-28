@@ -36,6 +36,7 @@ export declare interface ReportType {
 
 export declare interface ReportCreateDto {
   targetId: number
+  /**目标类型, 1-帖子，2-评论，3-服务器，4-用户 */
   targetType: number
   reason: string
 }

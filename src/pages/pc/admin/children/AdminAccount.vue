@@ -313,7 +313,7 @@ const roleBarOptions = ref([{ value: 0, label: '全部角色' }]) // 角色下�
 const userPage = ref({
   page: 1,
   total: 0,
-  limit: 3,
+  limit: 10,
 })
 
 const userList = ref<UserType[]>([]) // 帖子列表数据

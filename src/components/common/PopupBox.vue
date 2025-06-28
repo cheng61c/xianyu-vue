@@ -1,14 +1,21 @@
 <template>
   <div ref="popupWrapper" class="relative inline-block">
     <!-- 触发按钮 -->
-    <ScButton
-      @click="togglePopup"
-      :activation="noActivation ? false : isOpen"
-      :icon="icon"
-      :no-pd="noPd"
-      class="">
-      {{ buttonText }}
-    </ScButton>
+    <template v-if="buttonText || icon">
+      <ScButton
+        @click="togglePopup"
+        :activation="noActivation ? false : isOpen"
+        :icon="icon"
+        :no-pd="noPd"
+        class="">
+        {{ buttonText }}
+      </ScButton>
+    </template>
+    <template v-else>
+      <div @click="togglePopup">
+        <slot name="trigger" />
+      </div>
+    </template>
 
     <!-- 弹窗内容 -->
     <transition name="fade-slide">
@@ -32,9 +39,8 @@ import { ref, onMounted, onBeforeUnmount } from 'vue'
 import ScButton from './ScButton.vue'
 
 defineProps<{
-  buttonText: string
+  buttonText?: string
   icon?: any
-  //位置
   position?: 'top' | 'bottom' | 'left' | 'right'
   className?: string
   noActivation?: boolean

@@ -4,26 +4,11 @@
     <div class="comment-input flex items-start gap-3 mb-6">
       <Avatar
         :src="userStore.userInfo.headImg"
+        :alt="userStore.userInfo.nickname"
         :size="40"
         class="flex-shrink-0" />
       <div class="flex-1">
-        <textarea
-          class="w-full p-3 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-active focus:border-transparent"
-          placeholder="发个友善的评论吧~"
-          rows="3"
-          v-model="replayContent"></textarea>
-        <div class="flex justify-between items-center mt-2">
-          <div class="flex space-x-2">
-            <ScButton :icon="ImagePlus" :icon-size="18" Border disabled>
-            </ScButton>
-          </div>
-          <ScButton
-            class="px-4 py-1 rounded-md"
-            Border
-            @click="replay(replayContent)">
-            评论
-          </ScButton>
-        </div>
+        <CommentInput @submit="replay" />
       </div>
     </div>
 
@@ -31,7 +16,7 @@
     <div
       class="flex justify-between items-center border-b border-gray mb-4 pb-2">
       <div class="comment-sort flex items-center">
-        <span class="text-gray-600 mr-3">排序方式：</span>
+        <span class="mr-3">排序方式：</span>
         <ScButton
           v-for="sort in sortOptions"
           :key="sort.value"
@@ -56,11 +41,12 @@
           <!-- 用户头像 -->
           <Avatar
             :src="comment.author.headImg"
+            :alt="comment.author.nickname"
             :size="40"
             class="flex-shrink-0" />
 
           <!-- 评论内容 -->
-          <div class="flex-1 group">
+          <div class="flex-1 group/one">
             <div class="flex items-center mb-1">
               <span class="font-medium mr-2">
                 {{ comment.author.nickname }}
@@ -80,26 +66,40 @@
                 {{ comment.createdAt }}
               </span>
 
-              <div class="flex flex-1 justify-end">
+              <div
+                class="flex flex-1 justify-end"
+                @click="currentPopupBox = `${comment.id}`">
                 <PopupBox
-                  buttonText=""
                   position="bottom"
                   noActivation
                   noPd
                   class="transition-opacity"
                   :class="{
                     'opacity-100': currentPopupBox === `${comment.id}`,
-                    'opacity-0 group-hover/item:opacity-100':
+                    'opacity-0 group-hover/one:opacity-100':
                       currentPopupBox !== `${comment.id}`,
                   }"
                   :icon="EllipsisVertical">
-                  <CommentMenu @updateComment="getcomments(1)" />
+                  <CommentMenu
+                    @updateComment="getcomments(1)"
+                    :comment-id="comment.id" />
                 </PopupBox>
               </div>
             </div>
 
             <div class="mb-2" @click="currentPopupBox = `${comment.id}`">
               {{ comment.content }}
+            </div>
+
+            <!-- 图片 -->
+            <div v-if="comment.image" class="flex flex-wrap gap-2 mb-2">
+              <img
+                v-for="(img, imgIndex) in comment.image"
+                :key="imgIndex"
+                :src="img"
+                alt="评论图片"
+                class="w-20 h-20 object-cover rounded-md cursor-pointer"
+                @click="openImg(img)" />
             </div>
 
             <!-- 点赞回复操作 -->
@@ -123,6 +123,7 @@
                 <div class="flex items-start gap-3 group/item">
                   <Avatar
                     :src="reply.author.headImg"
+                    :alt="reply.author.nickname"
                     :size="32"
                     class="flex-shrink-0" />
 
@@ -147,21 +148,24 @@
                         {{ reply.createdAt }}
                       </span>
 
-                      <div class="flex flex-1 justify-end">
+                      <div
+                        class="flex flex-1 justify-end"
+                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
                         <PopupBox
-                          buttonText=""
                           position="bottom"
                           noActivation
                           noPd
                           class="transition-opacity"
                           :class="{
                             'opacity-100':
-                              currentPopupBox === `${comment.id}-${reply.id}`,
+                              currentPopupBox == `${comment.id}-${reply.id}`,
                             'opacity-0 group-hover/item:opacity-100':
-                              currentPopupBox !== `${comment.id}-${reply.id}`,
+                              currentPopupBox != `${comment.id}-${reply.id}`,
                           }"
                           :icon="EllipsisVertical">
-                          <CommentMenu @updateComment="getcomments(1)" />
+                          <CommentMenu
+                            @updateComment="getcomments(1)"
+                            :comment-id="reply.id" />
                         </PopupBox>
                       </div>
                     </div>
@@ -176,12 +180,23 @@
                       </span>
                     </div>
 
+                    <!-- 图片 -->
+                    <div v-if="reply.image" class="flex flex-wrap gap-2 mb-2">
+                      <img
+                        v-for="(img, replyImgIndex) in reply.image"
+                        :key="replyImgIndex"
+                        :src="img"
+                        alt="评论图片"
+                        class="w-20 h-20 object-cover rounded-md cursor-pointer"
+                        @click="openImg(img)" />
+                    </div>
+
                     <!-- 点赞回复操作 -->
                     <CommentReplyButton
                       :commentId="comment.id"
                       :to-comment-id="reply.id"
                       :like-count="reply.likeCount"
-                      :is-like="comment.isLike"
+                      :is-like="reply.isLike"
                       @reply="replay" />
                   </div>
                 </div>
@@ -218,6 +233,17 @@
         {{ currentLoadButtonText }}
       </ScButton>
     </div>
+
+    <ScModal v-model="imageModal">
+      <div class="relative w-[90vw] h-[90vh] overflow-hidden">
+        <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
+        <button
+          class="absolute z-[10] top-[5rem] right-[5rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
+          @click="imageModal = false">
+          <X class="mx-auto" />
+        </button>
+      </div>
+    </ScModal>
   </Card>
 </template>
 
@@ -230,20 +256,23 @@ import ScButton from '@/components/common/ScButton.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
 import {
   ArrowDown,
-  ImagePlus,
   EllipsisVertical,
   ArrowUp,
   ArrowDownWideNarrow,
   ArrowUpNarrowWide,
+  X,
 } from 'lucide-vue-next'
 import ScTag from '@/components/common/ScTag.vue'
 import { useUserStore } from '@/stores/userStore'
 import { commentApi } from '@/apis'
 import type { CommentType, SendCommentDto } from '@/types/comment'
-import { formatTime } from '@/hook/format'
+import { formatLink, formatTime } from '@/hook/format'
 import { useToast } from 'vue-toastification'
 import CommentReplyButton from './CommentReplyButton.vue'
 import CommentMenu from './CommentMenu.vue'
+import CommentInput from './CommentInput.vue'
+import ScModal from '@/components/common/ScModal.vue'
+import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 
 const toast = useToast()
 const props = defineProps<{
@@ -253,6 +282,9 @@ const props = defineProps<{
 // 当前用户
 const userStore = useUserStore()
 const replayContent = ref('') // 评论内容
+// 图片查看弹窗相关
+const imageModal = ref(false) // 图片查看弹窗
+const imgurl = ref('')
 
 // 排序选项
 const sortOptions = ref([
@@ -272,20 +304,23 @@ const currentLoadButtonText = computed(() => {
     : '加载更多评论'
 })
 
+const comments = ref<CommentType[]>([])
 const commentsPage = ref({
   page: 1,
   limit: 2,
   total: 0,
 })
 
+const openImg = (img: string) => {
+  imageModal.value = true
+  imgurl.value = img
+}
+
 const setSort = (value: string) => {
   currentSort.value = value
   commentsPage.value.page = 1 // 重置页码
   getcomments(commentsPage.value.page)
 }
-
-// 模拟评论数据
-const comments = ref<CommentType[]>([])
 
 const getcomments = (page: number) => {
   if (props.postData == null) return
@@ -307,8 +342,14 @@ const getcomments = (page: number) => {
       if (res.data.code === 200) {
         const list = res.data.data.list.map((item: any) => {
           item.createdAt = formatTime(item.createdAt)
+          item.image = item.image
+            ? item.image.map((img: string) => formatLink(img))
+            : []
           item.children = item.children.map((child: any) => {
             child.createdAt = formatTime(child.createdAt)
+            child.image = child.image
+              ? child.image.map((img: string) => formatLink(img))
+              : []
             return child
           })
           return item
@@ -328,7 +369,12 @@ const getcomments = (page: number) => {
     })
 }
 
-const replay = (content: string, commentId?: number, toCommentId?: number) => {
+const replay = (
+  content: string,
+  image?: string[],
+  commentId?: number,
+  toCommentId?: number
+) => {
   if (!userStore.isLogin) {
     toast.error('请先登录后再发表评论')
     return
@@ -350,6 +396,9 @@ const replay = (content: string, commentId?: number, toCommentId?: number) => {
   if (toCommentId) {
     data.toCommentId = toCommentId
   }
+  if (image && image.length > 0) {
+    data.image = image
+  }
   console.log(data)
 
   commentApi
@@ -358,6 +407,7 @@ const replay = (content: string, commentId?: number, toCommentId?: number) => {
       if (res.data.code === 200) {
         replayContent.value = ''
         getcomments(1) // 重新获取评论列表
+        toast.success('评论成功')
       }
     })
     .catch((error) => {

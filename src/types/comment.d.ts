@@ -32,5 +32,5 @@ export declare interface SendCommentDto {
   commentId?: number // 评论id，发送二级评论用
   toCommentId?: number // 回复的评论id，发送三级评论用
   content: string
-  image?: []
+  image?: string[]
 }

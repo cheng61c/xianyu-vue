@@ -25,6 +25,15 @@
           @click="badPost(postData.id)">
           {{ postData.badCount }}
         </ScButton>
+
+        <div class="w-4/5 border-1 border-gray mx-auto"></div>
+        <ScButton
+          isCol
+          :icon="TriangleAlert"
+          :icon-size="24"
+          @click="reportModal = true">
+          举报
+        </ScButton>
       </Card>
 
       <Card noPg v-if="postData && verifyPermissions([1, 2, 5])" class="mb-4">
@@ -57,15 +66,42 @@
       </Card>
     </div>
   </div>
+
+  <ScModal v-model="reportModal">
+    <Card class="p-6 w-2xl">
+      <h3 class="text-xl mb-4">举报帖子</h3>
+      <div>
+        帖子标题: <span class="text-active"> {{ postData?.title }} </span>
+      </div>
+      <div>你确定要举报此评论吗？请提供举报理由，我们会尽快处理。</div>
+      <ScInput
+        class="mt-4"
+        multiline
+        placeholder="请输入举报理由"
+        :rows="4"
+        :maxlength="200"
+        v-model="reportReason"></ScInput>
+      <div class="flex gap-4 justify-end">
+        <ScButton class="px-4" @click="handleReportSubmit" Border>
+          提交
+        </ScButton>
+        <ScButton class="px-4" @click="reportModal = false" Border>
+          取消
+        </ScButton>
+      </div>
+    </Card>
+  </ScModal>
 </template>
 
 <script setup lang="ts">
 import type { Post } from '@/types/Post'
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 import type { PropType } from 'vue'
 import { verifyPermissions } from '@/hook/verify'
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
+import ScModal from '@/components/common/ScModal.vue'
+import ScInput from '@/components/common/ScInput.vue'
 import {
   MessageCircleMore,
   ThumbsUp,
@@ -73,8 +109,9 @@ import {
   Trash2,
   ArrowDownFromLine,
   ArrowUpToLine,
+  TriangleAlert,
 } from 'lucide-vue-next'
-import { postApi } from '@/apis'
+import { postApi, reportApi } from '@/apis'
 import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
 
@@ -88,6 +125,8 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['updatePost'])
+const reportModal = ref(false)
+const reportReason = ref('')
 
 const likePost = (postId: number) => {
   postApi
@@ -153,6 +192,32 @@ const unpublishItem = (postId: number) => {
     })
     .catch((error) => {
       toast.error('请求失败: ' + error.msg)
+    })
+}
+
+const handleReportSubmit = () => {
+  if (!reportModal.value || !props.postData) return
+  if (userStore.isLogin === false) {
+    toast.error('请先登录')
+    return
+  }
+  if (!reportReason.value.trim()) {
+    toast.error('举报理由不能为空')
+    return
+  }
+  reportApi
+    .createReport({
+      targetType: 1,
+      targetId: props.postData.id,
+      reason: reportReason.value,
+    })
+    .then(() => {
+      toast.success('举报已提交，我们会尽快处理')
+      reportModal.value = false
+      reportReason.value = ''
+    })
+    .catch((error) => {
+      toast.error('举报失败: ' + error.msg)
     })
 }
 </script>

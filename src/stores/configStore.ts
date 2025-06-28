@@ -3,9 +3,6 @@ import { defineStore } from 'pinia'
 
 export const useConfigStore = defineStore('config', {
   state: () => ({
-    /** API 请求地址 */
-    baseURL: '',
-
     /** 语言 */
     lang: 'zh',
     /** 自动登录 */
@@ -29,6 +26,9 @@ export const useConfigStore = defineStore('config', {
     },
     /** 当前小板块 */
     currentPlateId: 0,
+
+    /** 平板适配 */
+    padAdaptation: false,
 
     menuItems: <MenuItem[]>[
       { name: '交流帖子', path: '/postList/0', pathName: 'postList', type: 1 },

@@ -104,7 +104,7 @@
   </Card>
 
   <ScModal v-model="updateHerdImgModal">
-    <Card class="w-3xl">
+    <Card class="w-4xl">
       <div class="text-lg font-bold mb-4">更新头像</div>
 
       <div class="flex gap-4 justify-between">
@@ -136,7 +136,7 @@
             class="mb-4" />
 
           <div class="mb-4">
-            <label class="block text-sm mb-2">
+            <label class="block mb-2">
               背景填充色 (用于给透明背景填充颜色) :
             </label>
             <div class="flex gap-1">
@@ -150,7 +150,7 @@
 
           <!-- 裁剪预览图 -->
           <div v-if="croppedUrl" class="mb-4">
-            <div class="text-sm mb-2">预览 (预览背景默认灰色):</div>
+            <div class="mb-2">预览 (实际效果背景默认灰色):</div>
             <Avatar :src="croppedUrl" alt="预览" :size="128" />
           </div>
         </div>
@@ -390,7 +390,7 @@ const updateHerdImg = async () => {
   })
 
   if (blob) {
-    const fileName = `avatar-${userInfo.value.account}-${Date.now()}.png`
+    const fileName = `avatar_${userInfo.value.account}_${Date.now()}.png`
     const file = new File([blob], fileName, {
       type: 'image/png',
     })

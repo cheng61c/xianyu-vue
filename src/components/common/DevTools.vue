@@ -41,6 +41,15 @@
       </div>
 
       <div class="flex gap-4 items-center justify-between">
+        <div>平板小白条适配</div>
+        <input
+          type="checkbox"
+          checked="checked"
+          class="toggle"
+          v-model="configStore.padAdaptation" />
+      </div>
+
+      <div class="flex gap-4 items-center justify-between">
         <div>{{ $t('tang-chuang') }}</div>
         <button @click="onToast"><Forward /></button>
       </div>
