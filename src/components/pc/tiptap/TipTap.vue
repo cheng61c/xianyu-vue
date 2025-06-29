@@ -204,6 +204,12 @@ function togglePopup(value?: string) {
     openImagePopup.value = !openImagePopup.value
   }
 }
+
+function addImg(url: string) {
+  if (editor.value) {
+    editor.value.chain().focus().setImage({ src: url }).run()
+  }
+}
 </script>
 
 <template>
@@ -467,7 +473,7 @@ function togglePopup(value?: string) {
 
       <!-- 图片 -->
       <div class="tooltip p-2" :data-tip="dataTip.Image">
-        <TipTapUploadImage />
+        <TipTapUploadImage @addImg="addImg" />
       </div>
 
       <!-- 代码块 -->

@@ -41,7 +41,8 @@
             <ScImage
               :src="img.preview"
               alt="预览图"
-              class="w-28 h-28 object-cover" />
+              class="w-28 h-28 object-cover"
+              @click.stop="$emit('addImg', img.preview)" />
             <!-- 删除按钮 -->
             <button
               @click.stop="removeImage(index)"
@@ -70,6 +71,7 @@ import { formatLink } from '@/hook/format'
 import { useToast } from 'vue-toastification'
 import ScImage from '@/components/common/ScImage.vue'
 const toast = useToast()
+const emit = defineEmits(['addImg'])
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const isOpen = ref(false)
@@ -167,13 +169,12 @@ onBeforeUnmount(() => {
   fileInput.value = null
   images.value = []
   document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('keydown', handleEscKey)
 })
 
 onMounted(() => {
   nextTick(() => {
     document.addEventListener('click', handleClickOutside)
-    // 监听键盘esc键，关闭弹窗
-
     document.addEventListener('keydown', handleEscKey)
   })
 })

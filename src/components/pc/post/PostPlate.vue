@@ -1,8 +1,8 @@
 <template>
-  <ul class="flex flex-col gap-4 p-1">
+  <ul class="flex flex-col gap-4 p-1 w-1/5">
     <Card
       @click="handleCardClick(0)"
-      class="w-60"
+      class="w-full"
       :activation="activation == 0">
       <div class="flex gap-2 text-background-content justify-between">
         <span
@@ -19,7 +19,7 @@
       :key="plate.id">
       <Card
         @click="handleCardClick(plate.id)"
-        class="w-60"
+        class="w-full"
         :activation="activation == plate.id || currentRouteName == plate.name">
         <div class="flex gap-2 text-background-content justify-between">
           <span

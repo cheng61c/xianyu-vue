@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-4 h-full px-1 pt-1 min-w-xs no-scrollbar">
+  <div class="flex flex-col gap-4 h-full w-1/5 px-1 pt-1 no-scrollbar">
     <Creation />
     <Card>
       <h2 class="card-title px-1.5"></h2>
@@ -25,6 +25,9 @@ import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
 import { formatTime } from '@/hook/format'
+import { useConfigStore } from '@/stores/configStore'
+
+const configStore = useConfigStore()
 
 const router = useRouter()
 
