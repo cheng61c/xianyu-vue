@@ -6,11 +6,11 @@
         <div v-html="postData?.content" class="tiptap w-full h-full p-4"></div>
       </div>
       <div class="flex gap-4">
-        <ScButton class="w-full" @click="toAnnouncement" Border>
+        <ScButton class="flex-1" @click="toAnnouncement" Border>
           查看详情
         </ScButton>
         <ScButton
-          class="w-full text-success"
+          class="flex-1 text-success"
           @click="offAnnouncement(postData?.id)"
           Border>
           已阅
