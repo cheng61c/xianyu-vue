@@ -36,9 +36,15 @@
       <ArticleActions :postData="postData" @updatePost="getPostDetails" />
 
       <!-- 文章主体 -->
-      <div class="tiptap w-full">
+      <div class="tiptap flex-1 min-w-[70%]">
         <div v-html="postData?.content"></div>
-        <div class="border-t-2 border-gray my-4"></div>
+        <div class="border-t border-gray my-8"></div>
+
+        <!-- 评分 -->
+        <Score
+          v-if="postData && postData.type == 2"
+          :postId="postData?.id"
+          class="mb-4" />
 
         <!-- 评论区 -->
         <CommentArea :postData="postData"></CommentArea>
@@ -113,6 +119,7 @@ import TableOfContents from '@/components/pc/post/details/TableOfContents.vue'
 import ArticleActions from '@/components/pc/post/details/ArticleActions.vue'
 import Card from '@/components/common/Card.vue'
 import CommentArea from '@/components/pc/post/details/comment/CommentArea.vue'
+import Score from '@/components/pc/post/details/score/Score.vue'
 
 const route = useRoute()
 const router = useRouter()

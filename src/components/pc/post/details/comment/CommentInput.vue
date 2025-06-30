@@ -2,12 +2,12 @@
   <div class="comment-input">
     <textarea
       v-model="commentContent"
-      placeholder="写下你的评论..."
+      :placeholder="placeholder"
       class="w-full p-3 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-active focus:border-transparent"></textarea>
 
     <div class="flex justify-between items-center">
       <!-- 上传图片按钮 -->
-      <div>
+      <div v-if="noImg === false">
         <ScButton
           :icon="ImagePlus"
           :icon-size="18"
@@ -21,10 +21,11 @@
           class="hidden"
           @change="handleFileChange" />
       </div>
+      <div v-else class="w-2"></div>
 
       <!-- 提交按钮 -->
       <ScButton @click="submitComment" activation class="hover:bg-active/60">
-        提交评论
+        {{ submitText }}
       </ScButton>
     </div>
 
@@ -69,6 +70,18 @@ const props = defineProps({
   toCommentId: {
     type: Number,
     required: false,
+  },
+  submitText: {
+    type: String,
+    default: '提交评论',
+  },
+  placeholder: {
+    type: String,
+    default: '写下你的评论...',
+  },
+  noImg: {
+    type: Boolean,
+    default: false,
   },
 })
 

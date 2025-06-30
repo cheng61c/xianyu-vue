@@ -229,6 +229,10 @@
       <ScButton
         class="px-4 py-2 rounded-md mx-auto"
         Border
+        :disabled="
+          commentsPage.page >=
+          Math.ceil(commentsPage.total / commentsPage.limit)
+        "
         @click="getcomments(commentsPage.page + 1)">
         {{ currentLoadButtonText }}
       </ScButton>

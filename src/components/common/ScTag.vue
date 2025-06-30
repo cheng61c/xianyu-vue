@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center gap-1 rounded-lg"
+    class="flex items-center gap-1 rounded-lg flex-shrink-0"
     :class="[sizeClass[size]]"
     :style="Style">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />

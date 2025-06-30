@@ -5,7 +5,9 @@ const lowlight = createLowlight(common)
 const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {
-  return html.replace(/<[^>]*>/g, '')
+  return html
+    .replace(/<img[^>]*>/gi, '[图片]') // 替换所有 <img> 标签为 "[图片]"
+    .replace(/<[^>]+>/g, '') // 移除其他所有 HTML 标签
 }
 
 export const formatTime = (value: string | number | Date) => {

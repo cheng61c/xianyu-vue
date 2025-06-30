@@ -1,7 +1,7 @@
 <template>
   <button
     :class="[
-      'flex justify-center items-center gap-1 cursor-no-drop',
+      'flex justify-center items-center gap-1 cursor-no-drop flex-shrink-0',
       className,
       tip ? 'tooltip tooltip-' + tipPosition : '',
     ]"
