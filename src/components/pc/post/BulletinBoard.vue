@@ -25,9 +25,6 @@ import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
 import { formatTime } from '@/hook/format'
-import { useConfigStore } from '@/stores/configStore'
-
-const configStore = useConfigStore()
 
 const router = useRouter()
 
