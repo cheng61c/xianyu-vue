@@ -6,7 +6,9 @@
         @click="$router.back()">
         返回
       </ScButton>
-      <div class="text-lg font-semibold">编辑资源</div>
+      <div class="text-lg font-semibold">
+        {{ isEdit ? '编辑' : '创建' }}资源
+      </div>
       <div v-if="!userStore.isLogin" class="text-error">
         请先登录后再发布内容
       </div>
@@ -108,12 +110,15 @@
       </div>
     </div>
 
-    <div>
-      <ScUploadFile :typeid="postInfo.fileType" @uploaded="setFileIds" />
+    <div v-if="!loaderData">
+      <ScUploadFile
+        :typeid="postInfo.fileType"
+        :loadFiles="uploadedFiles"
+        @uploaded="setFileIds" />
     </div>
 
     <!-- 编辑器 -->
-    <div>
+    <div v-if="!loaderData">
       <TipTap v-model="versionData.content" />
     </div>
 
@@ -149,6 +154,18 @@ import { postApi, versionApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
+import type { DocumentVersion } from '@/types/DocumentVersion'
+
+const props = defineProps({
+  post: {
+    type: Object as () => Post | null,
+    default: null,
+  },
+  isEdit: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -156,6 +173,8 @@ const router = useRouter()
 const versionList = ref<Version[]>([]) // 版本列表
 const postInfo = ref<Post>({} as Post) // 帖子详情
 const loader = ref(false) // 加载状态
+const loaderData = ref(true) // 编辑器加载状态
+const uploadedFiles = ref<{ name: string; id: number; size: number }[]>([]) // 已上传的文件ID
 
 // 帖子表单
 const versionData = ref<PostCreateVersionDto>({
@@ -168,7 +187,7 @@ const versionData = ref<PostCreateVersionDto>({
 })
 
 // 切换某个版本的选中状态
-function toggleVersion(id: number) {
+const toggleVersion = (id: number) => {
   const index = versionData.value.gameVersionIds.indexOf(id)
   if (index === -1) {
     versionData.value.gameVersionIds.push(id)
@@ -225,16 +244,35 @@ const submitVersiont = () => {
     })
 }
 
-onMounted(() => {
-  if (router.currentRoute.value.query.postId) {
-    const postId = Number(router.currentRoute.value.query.postId)
-    versionData.value.postId = postId
-    postApi.getPostDetail(postId).then((res: Api) => {
-      const data = res.data
-      if (data.code == 200) {
-        postInfo.value = data.data
+onMounted(async () => {
+  if (props.post) {
+    versionData.value.postId = props.post.id
+    postInfo.value = props.post
+  }
+
+  if (router.currentRoute.value.query.resourceId) {
+    const resourceId = Number(router.currentRoute.value.query.resourceId)
+    versionData.value.postId = resourceId
+    const res = await postApi.getResourceDetail(resourceId)
+
+    console.log('获取资源详情:', res.data)
+    if (res.data.code == 200) {
+      const data = res.data.data as DocumentVersion
+      versionData.value = {
+        title: data.title,
+        version: data.version,
+        content: data.content,
+        files: data.files.map((file) => file.id),
+        postId: data.postId,
+        gameVersionIds: data.gameVersionIds || [],
       }
-    })
+      uploadedFiles.value = data.files.map((file) => ({
+        name: file.filename,
+        id: file.id,
+        size: +file.size,
+      }))
+    }
+    loaderData.value = false
   }
 
   versionApi.getVersion().then((res: Api) => {

@@ -55,9 +55,8 @@
               <ScTag
                 v-if="comment.author.id == postData?.author.id"
                 size="sm"
-                bgColor="var(--color-pink)"
-                color="var(--color-pink-content)"
-                class="text-xs px-1 bg-pink-100 text-pink-600 rounded">
+                bgClass="bg-pink text-pink-content"
+                class="text-xs px-1 rounded">
                 帖主
               </ScTag>
               <span
@@ -137,9 +136,8 @@
                       <ScTag
                         v-if="reply.author.id == postData?.author.id"
                         size="sm"
-                        bgColor="var(--color-pink)"
-                        color="var(--color-pink-content)"
-                        class="text-xs px-1 bg-pink-100 text-pink-600 rounded">
+                        bgClass="bg-pink text-pink-content"
+                        class="text-xs px-1 rounded">
                         帖主
                       </ScTag>
                       <span

@@ -27,9 +27,7 @@
         <div
           @click="handleModalChange(item)"
           class="flex gap-1 items-center py-2 col-start-2 row-start-1 row-span-3">
-          <ScTag v-if="vIndex == 0" size="sm" :bgColor="'#41B883'">
-            最新
-          </ScTag>
+          <ScTag v-if="vIndex == 0" size="sm" status="success"> 最新 </ScTag>
           <ScTag size="sm">
             {{ item.version }}
           </ScTag>

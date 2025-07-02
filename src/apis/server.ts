@@ -21,6 +21,16 @@ export const getServer = (data: QueryServerPostList) => {
   return request.get(`/server-post/list`, data)
 }
 
+export const getCurrentUserServer = (data: QueryServerPostList) => {
+  return request.get(`/user/server-posts`, data)
+}
+
+export const deleteServerAsAdmin = (data: { id: number; disabled: number }) => {
+  return request.delete(`/server-post/${data.id}`, {
+    data: { disabled: data.disabled },
+  })
+}
+
 // admin apis
 export const getServerListAsAdmin = (dto: ServerPostListQueryDto) => {
   return request({

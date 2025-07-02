@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex items-center gap-1 rounded-lg flex-shrink-0"
-    :class="[sizeClass[size]]"
+    :class="[sizeClass[size], bgClass]"
     :style="Style">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot name="icon" />
@@ -25,6 +25,10 @@ const props = defineProps({
   bgColor: {
     type: String,
     default: 'var(--color-active)',
+  },
+  bgClass: {
+    type: String,
+    default: '',
   },
   icon: {
     type: [Object, Function] as PropType<any>,
@@ -67,7 +71,10 @@ const Style = computed(() => {
         backgroundColor: 'var(--color-info)',
       }
     default:
-      return { color: props.color, background: props.bgColor }
+      return {
+        color: props.color,
+        ...{ backgroundColor: props.bgClass == '' ? props.bgColor : undefined },
+      }
   }
 })
 </script>

@@ -28,6 +28,9 @@ export const getServerPostList = (dto: ServerPostListQueryDto) => {
 export const getPostDetail = (id: number) => {
   return request.get(`/post/detail?id=${id}`)
 }
+export const getResourceDetail = (id: number) => {
+  return request.get(`/post-version/info?id=${id}`)
+}
 
 export const createPost = (dto: PostDto) => {
   return request.post('/post', dto)

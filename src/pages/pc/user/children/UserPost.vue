@@ -35,12 +35,12 @@
           ">
           {{ post.title }}
           <ScTag
+            v-if="post.status == 1 || post.status == 3"
             size="sm"
-            :bgColor="
-              post.visible == 1 ? 'var(--color-green)' : 'var(--color-error)'
-            ">
-            {{ post.visible == 1 ? '正常' : '下架' }}
+            :status="post.visible == 1 ? 'success' : 'warning'">
+            {{ post.visible == 1 ? '发布中' : '下架' }}
           </ScTag>
+          <ScTag v-if="post.status == 2" size="sm" status="error"> 封禁 </ScTag>
         </div>
         <!-- 时间 -->
         <div class="text-sm text-gray-500">{{ post.createdAt }}</div>
@@ -94,7 +94,9 @@
           class="text-sm px-4 border border-gray hover:border-active"
           :icon="SquarePen"
           :iconSize="16"
-          disabled>
+          @click="
+            $router.push({ name: 'publish', params: { postId: post.id } })
+          ">
           编辑
         </ScButton>
         <ScButton

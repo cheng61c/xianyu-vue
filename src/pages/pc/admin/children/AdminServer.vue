@@ -67,8 +67,10 @@
                 <ScTag v-if="post.status == 2" size="xs" status="error">
                   封禁
                 </ScTag>
+                <ScTag v-if="post.disabled == 1" size="xs" status="error">
+                  已删除
+                </ScTag>
                 <ScTag v-else size="xs" status="success"> 正常 </ScTag>
-
                 <ScTag v-if="post.remark" size="xs" status="warning">
                   已备注
                 </ScTag>
@@ -84,6 +86,15 @@
                     'border border-error text-error': post.status == 2,
                   }">
                   {{ post.status == 2 ? '撤销封禁' : '封禁' }}
+                </ScButton>
+
+                <ScButton
+                  @click="deleteItem(index)"
+                  :class="{
+                    'border border-green text-green': post.disabled == 1,
+                    'border border-error text-error': post.disabled == 0,
+                  }">
+                  {{ post.disabled == 0 ? '删除' : '恢复' }}
                 </ScButton>
 
                 <ScButton @click="updatePost(index)" Border>
@@ -334,6 +345,25 @@ const updatePost = (index: number) => {
         // 刷新帖子列表
         getPosts()
         updateModal.value = false
+      }
+    })
+    .catch((error) => {
+      console.error('请求失败:', error.msg)
+    })
+}
+
+const deleteItem = (index: number) => {
+  const item = postList.value[index]
+  const isDeleted = item.disabled === 1 // 是否已删除
+  serverApi
+    .deleteServerAsAdmin({
+      id: item.id,
+      disabled: isDeleted ? 0 : 1, // 切换删除状态
+    })
+    .then((response) => {
+      if (response.data.code === 200) {
+        // 刷新帖子列表
+        getPosts()
       }
     })
     .catch((error) => {

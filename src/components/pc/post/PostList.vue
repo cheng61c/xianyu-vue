@@ -1,11 +1,11 @@
 <template>
   <div class="w-full h-full flex flex-1 flex-col pb-4">
     <ScSearch
-      v-if="posts.length"
       key="user-post-search"
       placeholder="搜索帖子标题"
       @search="search"
       v-model="searchText"
+      :searchType="route.name == 'postList' ? 1 : 2"
       class="m-1 mb-3" />
 
     <div v-if="posts.length" class="flex flex-col flex-grow">
@@ -102,17 +102,19 @@ const getPost = (pid: number) => {
   })
 }
 
-const search = (key: string, click = true) => {
-  if (key.trim() === '') {
-    isSearch.value = false
-    postPage.value = {
-      page: 1,
-      limit: limit,
-      total: 0,
-    }
-    getPost(+plateId.value)
-    return
-  }
+const search = (key: string, click = true, fileTypes?: string) => {
+  console.log('搜索帖子，关键词:', key, '点击:', click, '文件类型:', fileTypes)
+
+  // if (key.trim() === '') {
+  //   isSearch.value = false
+  //   postPage.value = {
+  //     page: 1,
+  //     limit: limit,
+  //     total: 0,
+  //   }
+  //   getPost(+plateId.value)
+  //   return
+  // }
   if (click) {
     postPage.value.page = 1
   }
@@ -123,6 +125,9 @@ const search = (key: string, click = true) => {
   }
   if (plateId.value && plateId.value !== '0') {
     query.plateId = +plateId.value
+  }
+  if (fileTypes && fileTypes.length > 0) {
+    query.fileTypes = fileTypes
   }
   query.title = searchText.value
   query.page = postPage.value.page

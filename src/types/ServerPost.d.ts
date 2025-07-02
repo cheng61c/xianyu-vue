@@ -50,6 +50,7 @@ export declare interface ServerPostListUpdateDto {
   status?: number
   versionId?: number
   level?: number
+  visible?: number
   remark?: string
 }
 
@@ -62,6 +63,8 @@ export declare interface ServerPostType {
   remark: null
   versionId: number
   level: number
+  visible: number
+  disabled: number
   creatorId: number
   createdAt: string
   updatedAt: string

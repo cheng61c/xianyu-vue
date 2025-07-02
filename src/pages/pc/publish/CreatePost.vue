@@ -6,7 +6,9 @@
         @click="$router.back()">
         返回
       </ScButton>
-      <div class="text-lg font-semibold">编辑帖子</div>
+      <div class="text-lg font-semibold">
+        {{ isEdit ? '编辑' : '创建' }}帖子
+      </div>
       <div v-if="!userStore.isLogin" class="text-error">
         请先登录后再发布帖子
       </div>
@@ -346,25 +348,20 @@
     </div>
 
     <!-- 编辑器 -->
-    <div>
+    <div v-if="postContent !== null">
       <TipTap v-model="postContent" />
     </div>
 
     <!-- 发布按钮 -->
-    <div class="text-right">
-      <button
-        class="px-6 py-2 rounded-lg"
-        :class="{
-          'bg-active text-active-content hover:bg-active/80  cursor-pointer':
-            userStore.isLogin === true,
-          'bg-active/60 text-active-content/60  cursor-not-allowed tooltip tooltip-left':
-            userStore.isLogin === false,
-        }"
-        data-tip="请先登录后再发布帖子"
+    <div class="flex justify-end my-2">
+      <ScButton
+        activation
+        :disabled="userStore.isLogin === false || loader"
+        class="px-6 py-2 hover:bg-active/80"
         @click="submitPost"
-        :disabled="userStore.isLogin === false || loader">
-        发布
-      </button>
+        :loading="loader">
+        {{ isEdit ? '更新帖子' : '发布帖子' }}
+      </ScButton>
     </div>
   </div>
 </template>
@@ -399,15 +396,17 @@ const userStore = useUserStore()
 
 const props = defineProps({
   post: {
-    type: Object as () => Post,
-    required: false,
+    type: Object as () => Post | null,
+  },
+  isEdit: {
+    type: Boolean,
   },
 })
 const plateList = ref<Plate[]>([]) // 板块列表
 const versionList = ref<Version[]>([]) // 版本列表
 
 // 表单
-const postContent = ref(``) // 帖子内容
+const postContent = ref<string | null>(null) // 帖子内容
 const title = ref('') // 标题
 const mode = ref<'post' | 'server'>('post') // 模式选择
 const enablePostRelation = ref(false) // 是否启用关联帖子选择
@@ -461,7 +460,7 @@ const submitPost = () => {
     toast.error('标题不能为空')
     return
   }
-  if (!postContent.value.trim()) {
+  if (postContent.value && !postContent.value.trim()) {
     toast.error('内容不能为空')
     return
   }
@@ -491,6 +490,10 @@ const submitPost = () => {
 }
 
 const sendPsot = () => {
+  if (postContent.value === null) {
+    toast.error('内容不能为空')
+    return
+  }
   postData.value.title = title.value
   postData.value.content = postContent.value
   postData.value.dependencies = selectedPosts.value.map((p) => p.id)
@@ -499,8 +502,9 @@ const sendPsot = () => {
 
   console.log('postData', postData.value)
 
-  postApi
-    .createPost(formatPostBody(postData.value))
+  postApi[props.isEdit ? 'updatePost' : 'createPost'](
+    formatPostBody(postData.value)
+  )
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success('发布成功')
@@ -515,6 +519,10 @@ const sendPsot = () => {
 }
 
 const sendServer = () => {
+  if (postContent.value === null) {
+    toast.error('内容不能为空')
+    return
+  }
   serverData.value.title = title.value
   serverData.value.description = postContent.value
 
@@ -581,7 +589,7 @@ const connectionTest = async (url: string) => {
 }
 
 const formatPostBody = (body: PostDto) => {
-  if (body.id == 0) delete body.id
+  if (body.id == 0 && !props.isEdit) delete body.id
   if (body.type == 1) {
     delete body.fileType
     delete body.dependencies
@@ -595,16 +603,45 @@ const formatPostBody = (body: PostDto) => {
 }
 
 onMounted(() => {
+  console.log('CreatePost mounted', props.post)
+
   if (props.post) {
     // 只拷贝需要的字段，并将 dependencies 转换为 number[]
+    // postData.value = {
+    //   ...props.post,
+    //   dependencies: Array.isArray(props.post.dependencies)
+    //     ? props.post.dependencies.map((d: any) =>
+    //         typeof d === 'object' && d.id ? d.id : d
+    //       )
+    //     : [],
+    // }
     postData.value = {
-      ...props.post,
+      id: props.post.id,
+      title: props.post.title,
+      plateId: props.post.plateId,
+      content: props.post.content,
+      cover: props.post.cover,
+      type: props.post.type,
+      fileType: props.post.fileType,
+      top: props.post.top,
       dependencies: Array.isArray(props.post.dependencies)
-        ? props.post.dependencies.map((d: any) =>
-            typeof d === 'object' && d.id ? d.id : d
-          )
+        ? props.post.dependencies.map((d) => d.id)
         : [],
     }
+    postContent.value = props.post.content
+    title.value = props.post.title
+
+    enablePostRelation.value = props.post.type === 2
+    selectedPosts.value = props.post.dependencies.map((d) => ({
+      id: d.id,
+      title: d.title,
+      creator: {
+        id: d.creator.id,
+        nickname: d.creator.nickname,
+      },
+    }))
+  } else {
+    postContent.value = ''
   }
 
   plateList.value = Array.from(

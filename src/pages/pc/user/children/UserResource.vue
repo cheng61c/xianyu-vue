@@ -1,10 +1,10 @@
 <template>
   <ScSearch
-    v-if="userStore.isLogin"
     key="user-post-search"
-    placeholder="搜索帖子标题或内容"
+    placeholder="搜索帖子标题"
     @search="search"
     v-model="searchText"
+    :searchType="2"
     class="max-w-5xl min-w-4xl w-full" />
 
   <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
@@ -44,12 +44,12 @@
             {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
           </ScTag>
           <ScTag
+            v-if="post.status == 1 || post.status == 3"
             size="sm"
-            :bgColor="
-              post.visible == 1 ? 'var(--color-green)' : 'var(--color-error)'
-            ">
-            {{ post.visible == 1 ? '正常' : '下架' }}
+            :status="post.visible == 1 ? 'success' : 'warning'">
+            {{ post.visible == 1 ? '发布中' : '下架' }}
           </ScTag>
+          <ScTag v-if="post.status == 2" size="sm" status="error"> 封禁 </ScTag>
         </div>
         <!-- 时间 -->
         <div class="text-sm text-gray-500">{{ post.createdAt }}</div>
@@ -111,7 +111,9 @@
           class="text-sm px-4 border border-gray hover:border-active"
           :icon="SquarePen"
           :iconSize="16"
-          disabled>
+          @click="
+            $router.push({ name: 'publish', params: { postId: post.id } })
+          ">
           编辑
         </ScButton>
         <ScButton
@@ -216,8 +218,7 @@
                 class="text-sm px-4 border border-gray"
                 :icon="SquarePen"
                 :iconSize="16"
-                @click="toCreateResource()"
-                disabled>
+                @click="toEditResource(pkg.id)">
                 编辑
               </ScButton>
 
@@ -251,14 +252,6 @@
                 noPd
                 @click="downloadFile(file.url, pkg.id)">
                 下载
-              </ScButton>
-              <ScButton
-                class="text-sm text-error px-4 border hover:border-active"
-                :icon="Trash2"
-                :iconSize="16"
-                noPd
-                disabled>
-                删除
               </ScButton>
             </div>
           </div>
@@ -461,6 +454,22 @@ const toCreateResource = () => {
     query: {
       postId: currenPostId.value,
     },
+    params: {
+      postId: currenPostId.value,
+    },
+  })
+}
+
+const toEditResource = (id: number) => {
+  openPackageList.value = false
+  router.push({
+    name: 'publishResource',
+    query: {
+      resourceId: id,
+    },
+    params: {
+      postId: currenPostId.value,
+    },
   })
 }
 
@@ -544,32 +553,28 @@ const toPage = (page: number) => {
   getPosts()
 }
 
-const search = (key: string, click = true) => {
-  if (key.trim() === '') {
-    isSearch.value = false
-    pagination.value = {
-      page: 1,
-      limit: 10,
-      total: 0,
-      count: 0,
-    }
-    getPosts()
-    return
-  }
+const search = (key: string, click = true, fileTypes?: string) => {
   if (click) {
     pagination.value.page = 1
   }
   loading.value = true
   searchText.value = key.trim()
   isSearch.value = true
+
+  const query: any = {
+    userId: userInfo.value.id,
+    type: 2,
+    key: key,
+    page: pagination.value.page,
+    limit: pagination.value.limit,
+  }
+
+  if (fileTypes && fileTypes.length > 0) {
+    query.fileTypes = fileTypes
+  }
+
   userApi
-    .getUserPosts({
-      userId: userInfo.value.id,
-      type: 2,
-      key: key,
-      page: pagination.value.page,
-      limit: pagination.value.limit,
-    })
+    .getUserPosts(query)
     .then((response) => {
       posts.value = response.data.data.list.map((item: any) => {
         const imgs = extractImageSrcs(item.content)

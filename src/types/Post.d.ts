@@ -33,7 +33,12 @@ export declare interface Post {
   score: string
   isScored: boolean
   creator: Creator
-  dependencies: { id: number; title: string; cover: string }[]
+  dependencies: {
+    id: number
+    title: string
+    cover: string
+    creator: UserType
+  }[]
   plate: Plate
   postVersions: DocumentVersion[]
   author: UserType

@@ -53,16 +53,14 @@
       <!-- 右侧卡片 -->
       <div class="w-2/5 relative">
         <div class="flex flex-col gap-4 no-scrollbar p-2">
-          <Card
-            v-if="postData?.status == 2 || postData?.disabled == 1"
-            class="top-0 z-10">
+          <Card v-if="postData?.status == 2 || postData?.disabled == 1">
             <div class="text-red-500 text-lg font-bold">
               该帖子已被封禁或禁用
             </div>
             <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
           </Card>
 
-          <Card v-if="postData?.visible == 0" class="top-0 z-10">
+          <Card v-if="postData?.visible == 0">
             <div class="text-red-500 text-lg font-bold">该帖子已下架</div>
             <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
           </Card>

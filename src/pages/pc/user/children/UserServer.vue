@@ -11,18 +11,14 @@
         <div class="flex items-center gap-2">
           {{ post.title }}
           <ScTag
+            v-if="post.status == 1 || post.status == 3"
             size="sm"
-            :bgColor="
-              post.status == 1 ? 'var(--color-green)' : 'var(--color-error)'
-            ">
-            {{ post.status == 1 ? '正常' : '下架' }}
+            :status="post.visible == 1 ? 'success' : 'warning'">
+            {{ post.visible == 1 ? '发布中' : '下架' }}
           </ScTag>
-          <ScTag
-            size="sm"
-            :bgColor="
-              post.level == 1 ? 'var(--color-green)' : 'var(--color-active)'
-            ">
-            {{ post.status == 1 ? '个人服' : '社区服' }}
+          <ScTag v-if="post.status == 2" size="sm" status="error"> 封禁 </ScTag>
+          <ScTag size="sm">
+            {{ post.level == 1 ? '个人服' : '社区服' }}
           </ScTag>
         </div>
       </div>
@@ -39,10 +35,10 @@
         </ScButton>
         <ScButton
           class="text-sm px-4 border border-gray hover:border-active"
-          :icon="post.status == 1 ? ArrowDownFromLine : ArrowUpToLine"
+          :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
           :iconSize="16"
           @click="unpublishItem(postIndex)">
-          {{ post.status == 1 ? '下架' : '上架' }}
+          {{ post.visible == 1 ? '下架' : '发布' }}
         </ScButton>
         <ScButton
           class="text-sm text-error px-4 border border-gray hover:border-active"
@@ -154,7 +150,7 @@ const getPosts = () => {
   }
   loading.value = true
   serverApi
-    .getServer({
+    .getCurrentUserServer({
       creatorId: userInfo.value.id,
       page: pagination.value.page,
       limit: pagination.value.limit,
@@ -186,7 +182,7 @@ const unpublishItem = (postIndex: number) => {
   serverApi
     .updateServer({
       id: item.id,
-      status: item.status == 1 ? 2 : 1,
+      visible: item.visible == 1 ? 0 : 1,
     })
     .then((response) => {
       if (response.data.code === 200) {

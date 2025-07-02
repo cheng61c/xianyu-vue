@@ -28,3 +28,23 @@ export const downloadFile = async (fileName: string, vid: number) => {
       toast.error('下载文件失败:' + error.msg)
     })
 }
+
+export const downloadFileByUrl = async (url: string) => {
+  if (!url) return
+  const fileName = url.split('/').pop()
+  if (!fileName) return
+  return request
+    .get(`/upload/download/url?filename=${fileName}`)
+    .then((response) => {
+      const { url: url_1 } = response.data.data
+      if (url_1) {
+        // 创建一个隐藏的a标签触发下载
+        const link = document.createElement('a')
+        link.href = url_1
+        link.download = fileName
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
+    })
+}

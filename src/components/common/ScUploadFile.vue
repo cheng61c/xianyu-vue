@@ -20,7 +20,7 @@
           @change="handleFileChange" />
         <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div
-            v-for="(file, index) in files"
+            v-for="(file, index) in uploadedFiles"
             :key="index"
             class="relative px-6 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
             @click.stop>
@@ -29,7 +29,7 @@
               :iconSize="36"
               noBg
               noPd />
-            <div class="text-center px-2">{{ file.file.name }}</div>
+            <div class="text-center px-2">{{ file.name }}</div>
             <button
               @click.stop="removeFile(index)"
               class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow cursor-pointe"
@@ -62,12 +62,16 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  loadFiles: {
+    type: Array as () => { name: string; id: number; size: number }[],
+    default: () => [],
+  },
 })
 const emit = defineEmits<{
   (e: 'uploaded', ids: number[]): void
 }>()
 
-const uploadedFiles = ref<{ file: File; name: string; id: number }[]>([])
+const uploadedFiles = ref<{ name: string; id: number; size: number }[]>([])
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const isOpen = ref(false)
@@ -112,9 +116,9 @@ const handleFiles = (selectedFiles: File[]) => {
         console.log(res.data.data)
 
         uploadedFiles.value.push({
-          file,
           name: file.name,
           id: res.data.data.id,
+          size: file.size,
         })
         uploaded()
       })
@@ -142,10 +146,7 @@ const uploaded = () => {
   const ids = uploadedFiles.value.filter(
     (fileObj, index, self) =>
       index ===
-      self.findIndex(
-        (t) =>
-          t.file.name === fileObj.file.name && t.file.size === fileObj.file.size
-      )
+      self.findIndex((t) => t.name === fileObj.name && t.size === fileObj.size)
   )
   console.log('去重后的文件ID:', ids)
 
@@ -187,6 +188,7 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
+  uploadedFiles.value = props.loadFiles || []
   nextTick(() => {
     document.addEventListener('click', handleClickOutside)
     document.addEventListener('keydown', handleEscKey)

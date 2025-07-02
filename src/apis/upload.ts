@@ -16,7 +16,11 @@ export const uploadFile = (file: File, type: number) => {
  * @param body.types 文件类型，逗号分隔的字符串，1.存档scworld 2.家具scfpack 3.材质png、scbtex 4.皮肤scskin 5.模组scmod 6.图片 7.软件
  * @returns
  */
-export const getFilesList = (body: { types: string }) => {
+export const getFilesList = (body: {
+  types: string
+  page: number
+  limit: number
+}) => {
   return request({
     method: 'get',
     url: '/upload/list',

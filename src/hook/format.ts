@@ -24,12 +24,10 @@ export const formatTime = (value: string | number | Date) => {
   // 其他情况（ISO 字符串或数字时间戳），直接传给 Date 构造函数
   else {
     date = new Date(value)
-    console.log(value, 'date:', date)
   }
 
   // 检查是否解析成功
   if (isNaN(date.getTime())) {
-    console.error('Invalid date:', value)
     return 'Invalid Date'
   }
 
