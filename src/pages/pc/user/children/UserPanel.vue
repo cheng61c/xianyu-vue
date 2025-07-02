@@ -183,12 +183,11 @@ const getFiles = () => {
   uploadApi
     .getFilesList({
       types: '1,2,3,4,5,7',
+      page: 1,
+      limit: 10,
     })
     .then((response) => {
-      files.value.data = response.data.data.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-      })
-      files.value.count = response.data.data.length
+      files.value.count = response.data.data.total
       console.log(files.value)
     })
 }

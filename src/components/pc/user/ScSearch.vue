@@ -71,7 +71,7 @@ watch(searchText, (val) => {
   emit('update:modelValue', val)
 })
 
-watch(fileType, (val) => {
+watch(fileType, () => {
   handleSearch()
 })
 
