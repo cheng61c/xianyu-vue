@@ -1,5 +1,5 @@
 <template>
-  <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+  <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="text-center text-gray-content">
       您还未登录，请先登录后再进行操作。
     </div>
@@ -9,7 +9,7 @@
     v-else
     v-for="(file, index) in files"
     :key="index"
-    class="stats max-w-5xl min-w-4xl w-full">
+    class="stats max-w-6xl min-w-4xl w-full">
     <div class="flex justify-between items-center">
       <!-- 标题 -->
       <div class="flex items-center gap-2 flex-[2] max-w-md">

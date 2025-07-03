@@ -55,7 +55,7 @@
               <ScTag
                 v-if="comment.author.id == postData?.author.id"
                 size="sm"
-                bgClass="bg-pink text-pink-content"
+                bgClass="bg-error text-pink-content"
                 class="text-xs px-1 rounded">
                 帖主
               </ScTag>
@@ -136,7 +136,7 @@
                       <ScTag
                         v-if="reply.author.id == postData?.author.id"
                         size="sm"
-                        bgClass="bg-pink text-pink-content"
+                        bgClass="bg-error text-pink-content"
                         class="text-xs px-1 rounded">
                         帖主
                       </ScTag>

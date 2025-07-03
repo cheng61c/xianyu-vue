@@ -5,13 +5,13 @@
     placeholder="搜索帖子标题或内容"
     @search="search"
     v-model="searchText"
-    class="max-w-5xl min-w-4xl w-full" />
+    class="max-w-6xl min-w-4xl w-full" />
 
   <Card
     v-if="userStore.isLogin"
     v-for="(post, postIndex) in posts"
     :key="post.id"
-    class="stats max-w-5xl min-w-4xl w-full">
+    class="stats max-w-6xl min-w-4xl w-full">
     <div class="flex justify-center items-center">
       <!-- 左侧封面图 -->
       <div v-if="post.cover" class="relative w-40 h-24 flex-shrink-0">
@@ -117,7 +117,7 @@
     </div>
   </Card>
 
-  <div v-if="userStore.isLogin" class="max-w-5xl min-w-4xl w-full">
+  <div v-if="userStore.isLogin" class="max-w-6xl min-w-4xl w-full">
     <div v-if="loading" class="flex flex-col gap-4">
       <div class="skeleton w-full h-20"></div>
       <div class="skeleton w-full h-20"></div>
@@ -131,7 +131,7 @@
       @page-change="toPage" />
   </div>
 
-  <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+  <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="text-center text-gray-content">
       您还未登录，请先登录后再进行操作。
     </div>

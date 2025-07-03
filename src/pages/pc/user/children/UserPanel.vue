@@ -1,6 +1,6 @@
 <template>
   <UserHeader @updateUserInfo="getCurrentUserInfo" />
-  <Card class="stats max-w-5xl min-w-4xl w-full" noCol noPg>
+  <Card class="stats max-w-6xl min-w-4xl w-full" noCol noPg>
     <div
       class="stat cursor-pointer"
       @click="$router.push({ name: 'userPost' })">
@@ -59,7 +59,7 @@
     </div>
   </Card>
 
-  <Card v-if="userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full" noCol>
+  <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full" noCol>
     <div
       v-html="userInfo.signature || '<p>这个人很懒，什么都没有留下</p>'"
       class="tiptap w-full"></div>
