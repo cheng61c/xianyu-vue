@@ -3,12 +3,15 @@
     <ul v-if="show" ref="menuList" class="flex gap-4 relative p-0">
       <li
         v-for="(item, index) in configStore.menuItems"
-        :key="item.path"
+        :key="item.pathName"
         class="list-none"
         :class="{ 'text-primary': isActive(item) }"
         @click="setActive(index)">
         <router-link
-          :to="item.path"
+          :to="{
+            name: item.pathName,
+            params: { plateId: configStore.currentPlateId },
+          }"
           class="inline-block px-2 transition-colors"
           :class="{ 'text-primary': isActive(item) }">
           {{ item.name }}
@@ -71,9 +74,14 @@ const updateIndicator = () => {
 
 const setActive = (index: number) => {
   activeIndex.value = index
-  router.push(configStore.menuItems[index].path).then(() => {
-    updateIndicator()
-  })
+  router
+    .push({
+      name: configStore.menuItems[index].pathName,
+      params: { plateId: configStore.currentPlateId },
+    })
+    .then(() => {
+      updateIndicator()
+    })
 }
 
 const updateActiveIndex = () => {

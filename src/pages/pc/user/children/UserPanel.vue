@@ -1,28 +1,9 @@
 <template>
-  <Card class="stats max-w-5xl min-w-4xl w-full items-center" noCol>
-    <Avatar
-      :src="formatLink(userInfo.headImg) || ''"
-      :alt="userStore.isLogin ? userInfo.nickname : ''"
-      :size="64" />
-    <div>
-      <div>{{ userStore.isLogin ? userInfo.nickname : '请先登录' }}</div>
-      <div class="flex items-center flex-wrap gap-2">
-        <ScTag
-          v-for="(tag, index) in userInfo.roles"
-          :key="index"
-          color="#fff"
-          :bgColor="tag.color"
-          size="sm">
-          {{ tag.name }}
-        </ScTag>
-      </div>
-      <div class="text-sm text-background-content">
-        上次登录时间 {{ formatTime(userInfo.lastLoginTime) }}
-      </div>
-    </div>
-  </Card>
+  <UserHeader @updateUserInfo="getCurrentUserInfo" />
   <Card class="stats max-w-5xl min-w-4xl w-full" noCol noPg>
-    <div class="stat">
+    <div
+      class="stat cursor-pointer"
+      @click="$router.push({ name: 'userPost' })">
       <div class="stat-figure text-primary">
         <ScrollText />
       </div>
@@ -31,7 +12,9 @@
       <div class="stat-desc">总获赞 {{ posts.likeCount }}</div>
     </div>
 
-    <div class="stat">
+    <div
+      class="stat cursor-pointer"
+      @click="$router.push({ name: 'userComment' })">
       <div class="stat-figure text-emerald-500">
         <MessageCircle />
       </div>
@@ -42,7 +25,9 @@
       <div class="stat-desc">总获赞 {{ comments.likeCount }}</div>
     </div>
 
-    <div class="stat">
+    <div
+      class="stat cursor-pointer"
+      @click="$router.push({ name: 'userResource' })">
       <div class="stat-figure text-violet-500">
         <Package />
       </div>
@@ -53,7 +38,9 @@
       <div class="stat-desc">总获赞 {{ resources.likeCount }}</div>
     </div>
 
-    <div class="stat">
+    <div
+      class="stat cursor-pointer"
+      @click="$router.push({ name: 'userFile' })">
       <div class="stat-figure text-primary">
         <File />
       </div>
@@ -61,7 +48,9 @@
       <div class="stat-value text-primary">{{ files.count }}</div>
     </div>
 
-    <div class="stat">
+    <div
+      class="stat cursor-pointer"
+      @click="$router.push({ name: 'userServer' })">
       <div class="stat-figure text-amber-500">
         <Server />
       </div>
@@ -79,7 +68,7 @@
 
 <script setup lang="ts">
 import { commentApi, serverApi, uploadApi, userApi } from '@/apis'
-import { formatLink, formatNumber, formatTime } from '@/hook/format'
+import { formatNumber, formatTime } from '@/hook/format'
 import { useUserStore } from '@/stores/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
@@ -92,9 +81,7 @@ import {
 } from 'lucide-vue-next'
 
 import Card from '@/components/common/Card.vue'
-import Avatar from '@/components/common/Avatar.vue'
-
-import ScTag from '@/components/common/ScTag.vue'
+import UserHeader from '@/components/pc/user/UserHeader.vue'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)

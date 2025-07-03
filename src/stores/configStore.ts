@@ -31,8 +31,18 @@ export const useConfigStore = defineStore('config', {
     padAdaptation: false,
 
     menuItems: <MenuItem[]>[
-      { name: '交流帖子', path: '/postList/0', pathName: 'postList', type: 1 },
-      { name: '资源下载', path: '/modList/0', pathName: 'modList', type: 2 },
+      {
+        name: '交流帖子',
+        pathName: 'postList',
+        params: { plateId: 0 },
+        type: 1,
+      },
+      {
+        name: '资源下载',
+        pathName: 'modList',
+        params: { plateId: 0 },
+        type: 2,
+      },
     ],
 
     fileTypes: [

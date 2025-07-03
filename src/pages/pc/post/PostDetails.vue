@@ -3,7 +3,7 @@
     <!-- 导航 -->
     <div class="flex gap-4 items-center">
       <!-- 面包屑 -->
-      <div class="breadcrumbs text-sm">
+      <!-- <div class="breadcrumbs text-sm">
         <ul>
           <li>
             <ScButton noPadding @click="goBack"> <Home :size="18" /> </ScButton>
@@ -28,7 +28,7 @@
           </li>
           <li>{{ postData?.title }}</li>
         </ul>
-      </div>
+      </div> -->
     </div>
 
     <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
@@ -100,11 +100,9 @@
 import { postApi } from '@/apis'
 import type { Api, ErrorResponse } from '@/types'
 import type { Post } from '@/types/Post'
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
-import { Home } from 'lucide-vue-next'
-import { useConfigStore } from '@/stores/configStore'
 import { generateTocFromHtml, type TocItem } from '@/utils/toc'
 import { formatNumber, formatTime, lightHtml } from '@/hook/format'
 
@@ -124,7 +122,7 @@ const router = useRouter()
 const postData = ref<Post | null>(null)
 const toast = useToast()
 const tocList = ref<TocItem[]>([]) // 文章目录列表
-const configStore = useConfigStore()
+
 const errorPage = ref(false) // 错误页面标志
 
 /** 获取帖子详情 */
@@ -166,6 +164,13 @@ onMounted(() => {
   const postId = route.params.postId
   console.log('Fetching details for post ID:', postId)
   getPostDetails(+postId)
+})
+
+onUnmounted(() => {
+  postData.value = null // 清理数据
+  tocList.value = [] // 清理目录列表
+  errorPage.value = false // 重置错误页面标志
+  console.log('Post details component unmounted, data cleared.')
 })
 
 watch(

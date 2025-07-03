@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col gap-4 h-full w-1/5 px-1 pt-1 no-scrollbar">
     <Creation />
-    <Card>
-      <h2 class="card-title px-1.5"></h2>
+    <Card class="flex flex-col gap-2">
+      <h2 class="card-title px-1.5">公告栏</h2>
       <div v-for="post in posts">
         <div
           v-if="post.top == 1"
@@ -10,6 +10,11 @@
           class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all">
           <div class="px-2 py-0.5 rounded-md bg-warning text-sm">置顶</div>
           <div class="font-bold">{{ post.title }}</div>
+        </div>
+      </div>
+      <div v-if="!posts.length">
+        <div class="text-gray-content text-center text-sm px-1.5 py-2">
+          啥也没有哦
         </div>
       </div>
     </Card>

@@ -73,7 +73,7 @@ const Style = computed(() => {
     default:
       return {
         color: props.color,
-        ...{ backgroundColor: props.bgClass == '' ? props.bgColor : undefined },
+        ...{ background: props.bgClass == '' ? props.bgColor : undefined },
       }
   }
 })

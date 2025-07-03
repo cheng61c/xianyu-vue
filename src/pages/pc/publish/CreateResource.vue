@@ -6,9 +6,7 @@
         @click="$router.back()">
         返回
       </ScButton>
-      <div class="text-lg font-semibold">
-        {{ isEdit ? '编辑' : '创建' }}资源
-      </div>
+      <div class="text-lg font-semibold">编辑资源</div>
       <div v-if="!userStore.isLogin" class="text-error">
         请先登录后再发布内容
       </div>
@@ -161,10 +159,6 @@ const props = defineProps({
     type: Object as () => Post | null,
     default: null,
   },
-  isEdit: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 const toast = useToast()
@@ -272,6 +266,8 @@ onMounted(async () => {
         size: +file.size,
       }))
     }
+    loaderData.value = false
+  } else {
     loaderData.value = false
   }
 

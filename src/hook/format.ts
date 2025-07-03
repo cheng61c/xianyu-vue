@@ -39,9 +39,12 @@ export const formatTime = (value: string | number | Date) => {
     date.getMinutes(),
   ]
 
+  // 补零
+  const pad = (n: number) => n.toString().padStart(2, '0')
+
   return year === new Date().getFullYear()
-    ? `${month}-${day} ${hours}:${minutes}`
-    : `${year}-${month}-${day} ${hours}:${minutes}`
+    ? `${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
+    : `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
 }
 
 export const formatTimeAgo = (dateString: string): string => {

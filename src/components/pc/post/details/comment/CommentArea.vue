@@ -309,7 +309,7 @@ const currentLoadButtonText = computed(() => {
 const comments = ref<CommentType[]>([])
 const commentsPage = ref({
   page: 1,
-  limit: 2,
+  limit: 10,
   total: 0,
 })
 
@@ -325,14 +325,17 @@ const setSort = (value: string) => {
 }
 
 const getcomments = (page: number) => {
+  console.log('1. getcomments called with page:', page)
+
   if (props.postData == null) return
   if (
-    commentsPage.value.total > 0 &&
     commentsPage.value.page >=
-      Math.ceil(commentsPage.value.total / commentsPage.value.limit)
+      Math.ceil(commentsPage.value.total / commentsPage.value.limit) &&
+    page > commentsPage.value.page
   ) {
     return
   }
+  console.log('2. getcomments called with page:', page)
   commentApi
     .getPostComments({
       postId: props.postData.id,

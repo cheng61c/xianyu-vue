@@ -126,7 +126,8 @@ const search = (key: string, click = true, fileTypes?: string) => {
   if (plateId.value && plateId.value !== '0') {
     query.plateId = +plateId.value
   }
-  if (fileTypes && fileTypes.length > 0) {
+
+  if (fileTypes && fileTypes != '0' && fileTypes.length > 0) {
     query.fileTypes = fileTypes
   }
   query.title = searchText.value

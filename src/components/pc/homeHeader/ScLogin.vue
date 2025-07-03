@@ -41,26 +41,23 @@
             </div>
 
             <form class="flex flex-col" @submit.prevent="handleLogin">
-              <div class="form-control w-full mb-4">
+              <div class="w-full mb-4">
                 <label class="label py-1">账号</label>
-                <input
+                <ScInput
                   type="text"
                   placeholder="邮箱或用户名"
-                  v-model="loginForm.account"
-                  class="input" />
+                  v-model="loginForm.account" />
               </div>
 
-              <div class="form-control w-full mb-6">
+              <div class="w-full mb-6">
                 <label class="label py-1">密码</label>
-                <input
+                <ScInput
                   type="password"
                   placeholder="密码"
-                  v-model="loginForm.password"
-                  class="input" />
+                  v-model="loginForm.password" />
               </div>
 
-              <div
-                class="form-control w-full mb-4 flex justify-between items-center">
+              <div class="w-full mb-4 flex justify-between items-center">
                 <label class="label cursor-pointer">
                   <span class="label-text">记住我</span>
                   <input
@@ -101,48 +98,44 @@
                 <span> 已经有账号？ </span>
                 <span
                   class="text-active cursor-pointer"
-                  @click="handleModalChange('login')"
-                  >返回登录</span
-                >
+                  @click="handleModalChange('login')">
+                  返回登录
+                </span>
               </div>
             </div>
 
             <form class="flex flex-col" @submit.prevent="handleRregister">
-              <div class="form-control w-full mb-4">
+              <div class="w-full mb-4">
                 <label class="label py-1">用户名</label>
-                <input
+                <ScInput
                   type="text"
                   placeholder="邮箱或用户名"
-                  v-model="registerForm.account"
-                  class="input" />
+                  v-model="registerForm.account" />
               </div>
 
-              <div class="form-control w-full mb-4">
+              <div class="w-full mb-4">
                 <label class="label py-1">邮箱</label>
-                <input
+                <ScInput
                   type="email"
                   placeholder="邮箱"
-                  v-model="registerForm.email"
-                  class="input" />
+                  v-model="registerForm.email" />
               </div>
 
-              <div class="form-control w-full mb-6">
+              <div class="w-full mb-6">
                 <label class="label py-1">密码</label>
-                <input
+                <ScInput
                   type="password"
                   placeholder="密码"
-                  v-model="registerForm.password"
-                  class="input" />
+                  v-model="registerForm.password" />
               </div>
 
-              <div class="form-control w-full mb-6">
+              <div class="w-full mb-6">
                 <label class="label py-1">验证码</label>
                 <div class="flex gap-2 items-center">
-                  <input
+                  <ScInput
                     type="text"
                     placeholder="请输入验证码"
-                    v-model="registerForm.captcha"
-                    class="input" />
+                    v-model="registerForm.captcha" />
 
                   <ScButton
                     Border
@@ -188,36 +181,33 @@
             </div>
 
             <form class="flex flex-col" @submit.prevent="handleRregister">
-              <div class="form-control w-full mb-4">
+              <div class="w-full mb-4">
                 <label class="label py-1">邮箱</label>
-                <input
+                <ScInput
                   type="email"
                   placeholder="邮箱"
-                  v-model="resetPasswordForm.email"
-                  class="input" />
+                  v-model="resetPasswordForm.email" />
               </div>
 
-              <div class="form-control w-full mb-6">
+              <div class="w-full mb-6">
                 <label class="label py-1">新密码</label>
-                <input
+                <ScInput
                   type="password"
                   placeholder="密码"
-                  v-model="resetPasswordForm.password"
-                  class="input" />
+                  v-model="resetPasswordForm.password" />
               </div>
 
-              <div class="form-control w-full mb-6">
+              <div class="w-full mb-6">
                 <label class="label py-1">验证码</label>
                 <div class="flex gap-2 items-center">
-                  <input
+                  <ScInput
                     type="text"
                     placeholder="请输入验证码"
-                    v-model="resetPasswordForm.captcha"
-                    class="input" />
+                    v-model="resetPasswordForm.captcha" />
 
                   <ScButton
                     Border
-                    class="w-44"
+                    class="w-44 py-2"
                     :disabled="isSendCode"
                     @click="getCaptcha(resetPasswordForm.email)"
                     type="button">
@@ -257,6 +247,7 @@ import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
 import ScUserCard from './ScUserCard.vue'
 import ScModal from '@/components/common/ScModal.vue'
+import ScInput from '@/components/common/ScInput.vue'
 
 const showModal = ref(false)
 const buttonLoading = ref(false)

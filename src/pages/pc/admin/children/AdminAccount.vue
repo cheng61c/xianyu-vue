@@ -380,28 +380,23 @@ const getUserList = () => {
     query.roleId = roleBarValue
   }
 
-  switch (searchTypeValue) {
-    case 0:
-      query.account = searchPostValue.value // 搜索用户名
-      break
-    case 1:
-      query.nickname = searchPostValue.value // 搜索昵称
-      break
-    case 2:
-      query.lastLoginIp = searchPostValue.value // 搜索上次登录IP
-      break
-    case 3:
-      query.email = searchPostValue.value // 搜索邮箱
-      break
-    case 4:
-      query.id = Number(searchPostValue.value) // 搜索ID
-      break
-    case 5:
-      query.remark = searchPostValue.value // 搜索备注
-      break
-    default:
-      break
-  }
+  if (searchPostValue.value && searchTypeValue == 0)
+    query.account = searchPostValue.value // 搜索用户名
+
+  if (searchPostValue.value && searchTypeValue == 1)
+    query.nickname = searchPostValue.value // 搜索昵称
+
+  if (searchPostValue.value && searchTypeValue == 2)
+    query.lastLoginIp = searchPostValue.value // 搜索上次登录IP
+
+  if (searchPostValue.value && searchTypeValue == 3)
+    query.email = searchPostValue.value // 搜索邮箱
+
+  if (searchPostValue.value && searchTypeValue == 4)
+    query.id = Number(searchPostValue.value) // 搜索ID
+
+  if (searchPostValue.value && searchTypeValue == 5)
+    query.remark = searchPostValue.value // 搜索备注
 
   // 获取用户列表
   userApi

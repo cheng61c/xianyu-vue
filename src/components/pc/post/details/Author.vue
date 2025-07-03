@@ -6,15 +6,11 @@
         :src="postData.author.headImg || ''"
         :alt="postData.author.nickname"
         :size="32" />
-      <div class="flex flex-wrap gap-x-1">
-        <span class="text-background-content font-bold">{{
-          postData.author.nickname
-        }}</span>
-        <ScTag :size="'xs'" :bgColor="postData.author.roles[0].color">
-          <span>LV</span>
-          <span class="mr-1">{{ postData.author.level }}</span>
-          <span>{{ postData.author.roles[0].name }}</span>
-        </ScTag>
+      <div class="flex flex-wrap gap-x-1 items-center">
+        <span class="text-background-content font-bold">
+          {{ postData.author.nickname }}
+        </span>
+        <ScRole :user="postData.author" size="sm"></ScRole>
       </div>
     </div>
   </Card>
@@ -25,8 +21,8 @@ import type { Post } from '@/types/Post'
 import { defineProps } from 'vue'
 import type { PropType } from 'vue'
 import Card from '@/components/common/Card.vue'
-import ScTag from '@/components/common/ScTag.vue'
 import Avatar from '@/components/common/Avatar.vue'
+import ScRole from '@/components/common/ScRole.vue'
 
 defineProps({
   postData: {

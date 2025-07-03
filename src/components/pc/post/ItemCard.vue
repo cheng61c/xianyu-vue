@@ -7,8 +7,7 @@
       <Avatar
         :src="post.creator.headImg"
         :alt="post.creator.nickname"
-        :size="24"
-        @click.stop="toUserPage(post.creator.id)" />
+        :size="24" />
       <div class="font-bold mr-auto">{{ post.title }}</div>
 
       <div class="text-sm text-gray-content">
@@ -33,19 +32,36 @@
 
     <!-- 第三行，操作按钮 -->
     <div class="flex justify-between mt-2">
+      <!-- 左侧标签 -->
       <div class="flex gap-2 items-center cursor-pointer">
         <ScTag size="sm" :icon="SquareChartGantt" status="info">
           {{ post.plate.name }}
         </ScTag>
+        <ScTag
+          v-if="post.type == 2"
+          size="sm"
+          :icon="iconMap[post.fileType as keyof typeof typeLabelMap]"
+          status="info">
+          {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
+        </ScTag>
       </div>
-      <div class="flex gap-6">
+      <!-- 右侧按钮 -->
+      <div class="flex gap-6" @click="handleClick">
+        <ScButton
+          v-if="post.type == 2"
+          noPadding
+          noBg
+          :icon="post.postVersionCount == '0' ? PackageOpen : Package">
+          {{ post.postVersionCount }}
+        </ScButton>
+
         <ScButton
           noPadding
           noBg
           :icon="ThumbsUp"
-          :activationColor="props.post.isLiked ? 'text-active' : ''"
-          @click.stop="clickGood(post.id)"
-          :class="[post.isLiked ? 'active' : '']">
+          :class="{
+            'text-like': post.isLiked,
+          }">
           {{ post.likeCount }}
         </ScButton>
 
@@ -53,9 +69,9 @@
           noPadding
           noBg
           :icon="ThumbsDown"
-          :activationColor="props.post.isBaded ? 'text-active' : ''"
-          :class="[post.isBaded ? 'active' : '']"
-          @click.stop="clickBad(post.id)">
+          :class="{
+            'text-bad': post.isBaded,
+          }">
         </ScButton>
 
         <ScButton noPadding noBg :icon="MessageCircle">
@@ -83,10 +99,13 @@ import {
   ThumbsUp,
   ThumbsDown,
   SquareChartGantt,
+  Package,
+  PackageOpen,
 } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
+import { iconMap, typeLabelMap } from '@/hook/fileType'
 
 const router = useRouter()
 
@@ -105,19 +124,5 @@ const handleClick = () => {
     'with ID:',
     props.post.id
   )
-}
-const toUserPage = (userId: number) => {
-  console.log('Redirecting to user page with ID:', userId)
-  // Implement your redirection logic here
-}
-
-const clickGood = (postId: number) => {
-  console.log('Like clicked for post with ID:', postId)
-  // Implement your like logic here
-}
-
-const clickBad = (postId: number) => {
-  console.log('Dislike clicked for post with ID:', postId)
-  // Implement your dislike logic here
 }
 </script>

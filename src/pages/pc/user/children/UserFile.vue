@@ -30,24 +30,34 @@
     </div>
   </Card>
   <Pagination
-    v-if="userStore.isLogin"
+    v-if="userStore.isLogin && pagenation.total > 0"
     :current-page="pagenation.page"
     :total-items="pagenation.total"
     :page-size="pagenation.limit"
     @page-change="toPage"
     class="w-full max-w-5xl" />
+
+  <EmptyState
+    v-if="files.length === 0 && userStore.isLogin"
+    title="暂无文件"
+    description="这里毛都没有哦~"
+    iconSize="64"
+    iconColor="#ccc"
+    :icon="Package"
+    class="mt-8" />
 </template>
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import { downloadApi, uploadApi } from '@/apis'
 import { formatFileSize, formatTime } from '@/hook/format'
-import { Download } from 'lucide-vue-next'
+import { Download, Package } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/userStore'
 import type { FileType } from '@/types/Upload'
 import { onMounted, ref } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import Pagination from '@/components/common/Pagination.vue'
+import EmptyState from '@/components/common/EmptyState.vue'
 const userStore = useUserStore()
 
 const files = ref<FileType[]>([])

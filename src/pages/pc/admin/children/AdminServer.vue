@@ -228,7 +228,7 @@ const currentLevel = ref(0) // 当前操作的服务器等级
 const postPage = ref({
   page: 1,
   total: 0,
-  limit: 3,
+  limit: 10,
 })
 
 const postList = ref<ServerPostType[]>([]) // 帖子列表数据
@@ -291,7 +291,7 @@ const getPosts = () => {
               : item.title
           return item
         })
-        postPage.value.limit = res.data.data.limit || 3
+        postPage.value.limit = res.data.data.limit || 10
         postPage.value.page = res.data.data.page || 1
         postPage.value.total = res.data.data.total || 0
       }
