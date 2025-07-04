@@ -133,7 +133,7 @@
         data-tip="请先登录后再发布内容"
         @click="submitVersiont"
         :disabled="userStore.isLogin === false || loader">
-        发布
+        {{ versionData.id ? '更新版本' : '发布版本' }}
       </button>
     </div>
   </div>
@@ -153,6 +153,7 @@ import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
+import { formatImageSrcsInHtml } from '@/hook/regex'
 
 const props = defineProps({
   post: {
@@ -172,6 +173,7 @@ const uploadedFiles = ref<{ name: string; id: number; size: number }[]>([]) // �
 
 // 帖子表单
 const versionData = ref<PostCreateVersionDto>({
+  id: 0,
   title: '',
   version: '',
   content: '',
@@ -213,8 +215,11 @@ const submitVersiont = () => {
 
   loader.value = true
 
-  postApi
-    .createVersion(versionData.value)
+  console.log('提交版本数据:', versionData.value.id)
+
+  postApi[versionData.value.id ? 'updateVersion' : 'createVersion'](
+    versionData.value
+  )
     .then((res: Api) => {
       const data = res.data
       if (data.code == 200) {
@@ -246,16 +251,15 @@ onMounted(async () => {
 
   if (router.currentRoute.value.query.resourceId) {
     const resourceId = Number(router.currentRoute.value.query.resourceId)
-    versionData.value.postId = resourceId
     const res = await postApi.getResourceDetail(resourceId)
 
-    console.log('获取资源详情:', res.data)
     if (res.data.code == 200) {
       const data = res.data.data as DocumentVersion
       versionData.value = {
+        id: data.id,
         title: data.title,
         version: data.version,
-        content: data.content,
+        content: formatImageSrcsInHtml(data.content),
         files: data.files.map((file) => file.id),
         postId: data.postId,
         gameVersionIds: data.gameVersionIds || [],

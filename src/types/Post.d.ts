@@ -55,6 +55,7 @@ export declare interface SelectedPost {
 }
 
 export declare interface PostCreateVersionDto {
+  id?: number // 版本ID
   title: string
   version: string
   content: string

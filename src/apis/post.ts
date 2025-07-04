@@ -28,9 +28,6 @@ export const getServerPostList = (dto: ServerPostListQueryDto) => {
 export const getPostDetail = (id: number) => {
   return request.get(`/post/detail?id=${id}`)
 }
-export const getResourceDetail = (id: number) => {
-  return request.get(`/post-version/info?id=${id}`)
-}
 
 export const createPost = (dto: PostDto) => {
   return request.post('/post', dto)
@@ -92,12 +89,20 @@ export const getPostDocumentList = ({ id }: { id: number }) => {
   return request.get(`/post-version/list?postId=${id}`)
 }
 
+export const getResourceDetail = (id: number) => {
+  return request.get(`/post-version/info?id=${id}`)
+}
+
 export const createVersion = (dto: PostCreateVersionDto) => {
   return request.post(`/post-version`, dto)
 }
 
 export const deleteVersion = (id: number) => {
   return request.delete(`/post-version/${id}`)
+}
+
+export const updateVersion = (dto: PostCreateVersionDto) => {
+  return request.put(`/post-version`, dto)
 }
 
 // Admin APIs
