@@ -46,7 +46,7 @@ import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import { SquareArrowOutUpRight } from 'lucide-vue-next'
 import { useConfigStore } from '@/stores/configStore'
 import ScSearch from '@/components/pc/user/ScSearch.vue'
-import { extractImageSrcs } from '@/hook/regex'
+import { extractImageSrcs, formatImageSrcsInHtml } from '@/hook/regex'
 import { formatTime } from '@/hook/format'
 
 const route = useRoute()
@@ -91,6 +91,7 @@ const getPost = (pid: number) => {
       posts.value = res.data.list.map((item: Post) => {
         // 处理图片链接
         item.images = extractImageSrcs(item.content)
+        item.content = formatImageSrcsInHtml(item.content)
         item.createdAt = formatTime(item.createdAt)
         item.updatedAt = formatTime(item.updatedAt)
         return item
