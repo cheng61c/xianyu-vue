@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ src }}
+    {{ formatLink(src) }}
     <img
       v-if="!loadError"
       class="w-full h-full object-cover"
