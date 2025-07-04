@@ -128,6 +128,7 @@ import Score from '@/components/pc/post/details/score/Score.vue'
 import { useConfigStore } from '@/stores/configStore'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
+import { formatImageSrcsInHtml } from '@/hook/regex'
 
 const route = useRoute()
 const router = useRouter()
@@ -147,7 +148,7 @@ const getPostDetails = async (postId: number) => {
     .getPostDetail(postId)
     .then((response: Api) => {
       const data = response.data.data as Post
-      data.content = lightHtml(data.content)
+      data.content = lightHtml(formatImageSrcsInHtml(data.content))
       data.createdAt = formatTime(data.createdAt)
       data.updatedAt = formatTime(data.updatedAt)
       data.commentCount = formatNumber(data.commentCount)
