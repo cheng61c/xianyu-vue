@@ -1,34 +1,32 @@
 <template>
-  <div class="article-content">
+  <div class="pb-2">
     <!-- 导航 -->
-    <div class="flex gap-4 items-center">
-      <!-- 面包屑 -->
-      <!-- <div class="breadcrumbs text-sm">
-        <ul>
-          <li>
-            <ScButton noPadding @click="goBack"> <Home :size="18" /> </ScButton>
-          </li>
-          <li>
-            <RouterLink
-              :to="{
-                name: configStore.currentPlate.pathName,
-                params: { plateId: configStore.currentPlateId },
-              }">
-              {{ configStore.currentPlate.name }}
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink
-              :to="{
-                name: postData?.type == 1 ? 'postList' : 'modList',
-                params: { plateId: postData?.plate.id },
-              }">
-              {{ postData?.plate.name }}
-            </RouterLink>
-          </li>
-          <li>{{ postData?.title }}</li>
-        </ul>
-      </div> -->
+    <!-- 面包屑 -->
+    <div class="breadcrumbs text-sm ml-4">
+      <ul>
+        <li>
+          <ScButton noPadding @click="goBack"> <Home :size="18" /> </ScButton>
+        </li>
+        <li>
+          <RouterLink
+            :to="{
+              name: configStore.currentPlate.pathName,
+              params: { plateId: configStore.currentPlateId },
+            }">
+            {{ configStore.currentPlate.name }}
+          </RouterLink>
+        </li>
+        <li>
+          <RouterLink
+            :to="{
+              name: postData?.type == 1 ? 'postList' : 'modList',
+              params: { plateId: postData?.plate.id },
+            }">
+            {{ postData?.plate.name }}
+          </RouterLink>
+        </li>
+        <li>{{ postData?.title }}</li>
+      </ul>
     </div>
 
     <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
@@ -36,8 +34,8 @@
       <ArticleActions :postData="postData" @updatePost="getPostDetails" />
 
       <!-- 文章主体 -->
-      <div class="tiptap flex-1 min-w-[70%]">
-        <div v-html="postData?.content"></div>
+      <div class="tiptap flex-1 w-7/10">
+        <div ref="htmlContainer" v-html="postData?.content"></div>
         <div class="border-t border-gray my-8"></div>
 
         <!-- 评分 -->
@@ -51,7 +49,7 @@
       </div>
 
       <!-- 右侧卡片 -->
-      <div class="w-2/5 relative">
+      <div class="min-w-2/10 relative">
         <div class="flex flex-col gap-4 no-scrollbar p-2">
           <Card v-if="postData?.status == 2 || postData?.disabled == 1">
             <div class="text-red-500 text-lg font-bold">
@@ -94,20 +92,31 @@
       </Card>
     </div>
   </div>
+
+  <ScModal v-model="imageModal">
+    <div class="relative w-[90vw] h-[90vh] overflow-hidden">
+      <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
+      <button
+        class="absolute z-[10] top-[5rem] right-[5rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
+        @click="imageModal = false">
+        <X class="mx-auto" />
+      </button>
+    </div>
+  </ScModal>
 </template>
 
 <script setup lang="ts">
 import { postApi } from '@/apis'
 import type { Api, ErrorResponse } from '@/types'
 import type { Post } from '@/types/Post'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { generateTocFromHtml, type TocItem } from '@/utils/toc'
 import { formatNumber, formatTime, lightHtml } from '@/hook/format'
 
+import { Home, X } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
-
 import Dependencies from '@/components/pc/post/details/Dependencies.vue'
 import Author from '@/components/pc/post/details/Author.vue'
 import Releases from '@/components/pc/post/details/Releases.vue'
@@ -116,12 +125,19 @@ import ArticleActions from '@/components/pc/post/details/ArticleActions.vue'
 import Card from '@/components/common/Card.vue'
 import CommentArea from '@/components/pc/post/details/comment/CommentArea.vue'
 import Score from '@/components/pc/post/details/score/Score.vue'
+import { useConfigStore } from '@/stores/configStore'
+import ScModal from '@/components/common/ScModal.vue'
+import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 
 const route = useRoute()
 const router = useRouter()
 const postData = ref<Post | null>(null)
 const toast = useToast()
 const tocList = ref<TocItem[]>([]) // 文章目录列表
+const configStore = useConfigStore() // 获取配置存储
+const imageModal = ref(false) // 图片查看模态框
+const imgurl = ref('') // 图片查看地址
+const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
 
 const errorPage = ref(false) // 错误页面标志
 
@@ -160,10 +176,30 @@ const goBack = () => {
   }
 }
 
+const bindImageClickEvents = () => {
+  const container = htmlContainer.value
+  if (!container) return
+  const images = container.querySelectorAll('img')
+  images.forEach((img) => {
+    img.style.cursor = 'pointer'
+    img.addEventListener('click', openImg)
+  })
+}
+
+const openImg = (e: MouseEvent) => {
+  console.log('Image clicked:', (e.target as HTMLImageElement).src)
+
+  imageModal.value = true
+  imgurl.value = (e.target as HTMLImageElement).src
+}
+
 onMounted(() => {
   const postId = route.params.postId
   console.log('Fetching details for post ID:', postId)
   getPostDetails(+postId)
+  nextTick(() => {
+    bindImageClickEvents()
+  })
 })
 
 onUnmounted(() => {
@@ -181,4 +217,9 @@ watch(
     getPostDetails(+postId)
   }
 )
+
+watch(postData, async () => {
+  await nextTick()
+  bindImageClickEvents()
+})
 </script>

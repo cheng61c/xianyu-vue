@@ -1,7 +1,7 @@
 <template>
-  <Card class="">
-    <div class="flex justify-between">
-      <div class="flex gap-2">
+  <Card>
+    <div class="flex justify-between flex-wrap items-center gap-4">
+      <div class="flex w-xs gap-2">
         <ScInput
           v-model="searchText"
           :placeholder="placeholder"
@@ -12,8 +12,8 @@
 
       <div
         v-if="searchType == 2"
-        class="flex gap-2 items-center text-active-content">
-        <span>搜索类型: </span>
+        class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
+        <div class="flex-shrink-0">筛选类型:</div>
         <ScButtonSelector :options="fileTypeOptions" v-model="fileType" />
       </div>
     </div>

@@ -158,6 +158,7 @@ const uploaded = () => {
 
 const removeFile = (index: number) => {
   files.value.splice(index, 1)
+  uploadedFiles.value.splice(index, 1)
   fileInput.value!.value = ''
 }
 

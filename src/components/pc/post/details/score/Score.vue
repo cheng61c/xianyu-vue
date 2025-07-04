@@ -4,7 +4,7 @@
       <div class="mr-4 w-[32%] min-w-[20rem]">
         <div class="text-lg font-bold">资源评分</div>
         <div class="flex justify-center items-center gap-4">
-          <div class="pr-10 flex flex-col">
+          <div class="pr-8 flex flex-col">
             <div :class="steamRatingLabel.colorClass">
               {{ steamRatingLabel.label }}
             </div>

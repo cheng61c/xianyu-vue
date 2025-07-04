@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex items-center justify-center text-gray-content font-bold overflow-hidden rounded-md"
+    class="flex items-center justify-center text-gray-content font-bold overflow-hidden rounded-md flex-shrink-0"
     :class="{
       'bg-gray': loadError,
     }"

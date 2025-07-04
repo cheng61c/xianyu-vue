@@ -79,7 +79,7 @@
         </ScButton>
 
         <ScButton noPadding noBg :icon="Eye">
-          {{ formatNumber(post.postVersionCount) }}
+          {{ formatNumber(post.views) }}
         </ScButton>
       </div>
     </div>

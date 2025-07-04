@@ -184,7 +184,7 @@ const getServers = () => {
     return
   }
   serverApi
-    .getServer({
+    .getCurrentUserServer({
       creatorId: userStore.userInfo.id,
       page: 1,
       limit: 10,

@@ -1,10 +1,12 @@
 <template>
   <div
-    class="flex items-center gap-1 rounded-lg flex-shrink-0"
+    class="flex space-x-1 items-center rounded-lg flex-shrink-0"
     :class="[sizeClass[size], bgClass]"
     :style="Style">
-    <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
-    <slot name="icon" />
+    <template v-if="icon">
+      <component :is="icon" :size="iconSize" />
+    </template>
+
     <span><slot /></span>
     <slot name="endIcon" />
   </div>

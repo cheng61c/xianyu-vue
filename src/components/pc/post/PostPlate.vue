@@ -1,5 +1,5 @@
 <template>
-  <ul class="flex flex-col gap-4 p-1 w-1/5">
+  <ul class="flex flex-col gap-4 p-1 min-w-40">
     <Card
       @click="handleCardClick(0)"
       class="w-full"

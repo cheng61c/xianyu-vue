@@ -8,7 +8,7 @@
           v-if="post.top == 1"
           @click="handleClick(post)"
           class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all">
-          <div class="px-2 py-0.5 rounded-md bg-warning text-sm">置顶</div>
+          <ScTag status="warning"> 置顶 </ScTag>
           <div class="font-bold">{{ post.title }}</div>
         </div>
       </div>
@@ -30,6 +30,7 @@ import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
 import { formatTime } from '@/hook/format'
+import ScTag from '@/components/common/ScTag.vue'
 
 const router = useRouter()
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-28 relative">
+  <div class="relative flex-shrink-0">
     <div class="sticky top-16 py-2 w-ful">
       <Card v-if="postData" class="mb-4" noPg>
         <ScButton isCol :icon="MessageCircleMore" :icon-size="24">
@@ -48,6 +48,28 @@
           @click="deletePost(postData.id)">
           {{ postData.disabled == 0 ? '删除' : '恢复' }}
         </ScButton>
+        <div class="w-4/5 border-1 border-gray mx-auto"></div>
+        <ScButton
+          isCol
+          noBg
+          class="group"
+          :class="{
+            'text-primary': postData.top == 0,
+            'text-warning': postData.top != 0,
+          }"
+          :icon="postData.top == 0 ? ArrowUpToLine : ArrowDownFromLine"
+          :icon-size="24"
+          @click="setTopItem(postData.id)">
+          <div
+            class="w-[4ch] break-all group-hover:text-active"
+            :class="{
+              'text-primary': postData.top == 0,
+              'text-warning': postData.top != 0,
+            }">
+            {{ postData.top == 0 ? '置顶' : '取消置顶' }}
+          </div>
+        </ScButton>
+
         <div
           v-if="postData.creatorId == userStore.userInfo.id"
           class="w-4/5 border-1 border-gray mx-auto"></div>
@@ -182,6 +204,28 @@ const unpublishItem = (postId: number) => {
     .updatePost({
       id: postId,
       visible: props.postData.visible == 1 ? 0 : 1,
+    })
+    .then((response) => {
+      if (response.data.code === 200) {
+        // 刷新帖子列表
+        emit('updatePost', props.postData?.id)
+        toast.success('操作成功')
+      }
+    })
+    .catch((error) => {
+      toast.error('请求失败: ' + error.msg)
+    })
+}
+
+const setTopItem = (postId: number) => {
+  if (props.postData?.id !== postId) {
+    toast.error('帖子不存在或已被删除')
+    return
+  }
+  postApi
+    .updatePostAsAdmin({
+      id: postId,
+      top: props.postData.top == 0 ? 1 : 0,
     })
     .then((response) => {
       if (response.data.code === 200) {
