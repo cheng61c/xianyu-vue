@@ -21,7 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatLink } from '@/hook/format'
 import { ref, defineProps, watch } from 'vue'
 
 const props = withDefaults(
