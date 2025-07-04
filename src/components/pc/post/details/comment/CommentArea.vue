@@ -325,8 +325,6 @@ const setSort = (value: string) => {
 }
 
 const getcomments = (page: number) => {
-  console.log('1. getcomments called with page:', page)
-
   if (props.postData == null) return
   if (
     commentsPage.value.page >=
@@ -335,7 +333,6 @@ const getcomments = (page: number) => {
   ) {
     return
   }
-  console.log('2. getcomments called with page:', page)
   commentApi
     .getPostComments({
       postId: props.postData.id,

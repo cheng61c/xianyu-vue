@@ -15,15 +15,9 @@ export const extractImageSrcs = (html: string): string[] => {
 
 export const formatImageSrcsInHtml = (html: string): string => {
   const regex = /<img([^>]+)src=["']([^"']+)["']/g
-  const currentProtocol = window.location.protocol // 'http:' 或 'https:'
 
-  return html.replace(regex, (match, beforeSrc, src) => {
-    if (src.startsWith(currentProtocol) || src.startsWith('//')) {
-      const formattedSrc = formatLink(src.replace(/^.*api/, '')) // 确保 src 不以斜杠开头
-      console.log('Formatted image src:', formattedSrc)
-
-      return `<img${beforeSrc}src="${formattedSrc}"`
-    }
-    return match
+  return html.replace(regex, (_, beforeSrc, src) => {
+    const formattedSrc = formatLink(src.replace(/^.*api/, '')) // 确保 src 不以斜杠开头
+    return `<img${beforeSrc}src="${formattedSrc}"`
   })
 }
