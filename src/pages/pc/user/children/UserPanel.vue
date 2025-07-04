@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { commentApi, serverApi, uploadApi, userApi } from '@/apis'
-import { formatNumber, formatTime } from '@/hook/format'
+import { formatLink, formatNumber, formatTime } from '@/hook/format'
 import { useUserStore } from '@/stores/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
@@ -82,6 +82,7 @@ import {
 
 import Card from '@/components/common/Card.vue'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
+import { formatImageSrcsInHtml } from '@/hook/regex'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
@@ -228,7 +229,10 @@ const getCurrentUserInfo = () => {
   userApi
     .getCurrentUser()
     .then((response) => {
-      userInfo.value = response.data.data as UserType
+      const data = response.data.data as UserType
+      data.headImg = formatLink(data.headImg)
+      data.signature = formatImageSrcsInHtml(data.signature)
+      userInfo.value = data
       console.log(response.data.data)
     })
     .catch((error) => {

@@ -93,6 +93,8 @@ import { useUserStore } from '@/stores/userStore'
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
+import { formatLink } from '@/hook/format'
+import { formatImageSrcsInHtml } from '@/hook/regex'
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -145,9 +147,12 @@ const getCaptcha = (email: string) => {
 const getCurrentUserInfo = () => {
   userApi
     .getCurrentUser()
-    .then((response) => {
-      userStore.userInfo = response.data.data as UserType
-      console.log(response.data.data)
+    .then((res) => {
+      const data = res.data.data as UserType
+      data.headImg = formatLink(data.headImg)
+      data.signature = formatImageSrcsInHtml(data.signature)
+      userStore.userInfo = data
+      console.log(res.data.data)
     })
     .catch((error) => {
       console.error('Error fetching user data:', error)

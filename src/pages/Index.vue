@@ -12,6 +12,8 @@ import { onMounted } from 'vue'
 import type { UserType } from '@/types'
 import PcIndex from './pc/PcIndex.vue'
 import MobileIndex from './mobile/MobileIndex.vue'
+import { formatLink } from '@/hook/format'
+import { formatImageSrcsInHtml } from '@/hook/regex'
 
 const login = async () => {
   userApi
@@ -22,7 +24,10 @@ const login = async () => {
     .then((res) => {
       if (res.data.code === 200) {
         userStore.token = res.data.data.token
-        userStore.userInfo = res.data.data.user
+        const data = res.data.data as UserType
+        data.headImg = formatLink(data.headImg)
+        data.signature = formatImageSrcsInHtml(data.signature)
+        userStore.userInfo = data
         userStore.isLogin = true
       }
     })
@@ -38,7 +43,10 @@ const getInfo = async () => {
     .getCurrentUser()
     .then((res) => {
       if (res.data.code === 200) {
-        userStore.userInfo = res.data.data
+        const data = res.data.data as UserType
+        data.headImg = formatLink(data.headImg)
+        data.signature = formatImageSrcsInHtml(data.signature)
+        userStore.userInfo = data
         userStore.isLogin = true
       }
     })

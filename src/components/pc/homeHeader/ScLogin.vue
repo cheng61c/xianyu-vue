@@ -242,12 +242,13 @@ import { onMounted, reactive, ref } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import Card from '@/components/common/Card.vue'
 import { userApi } from '@/apis'
-import type { Api, ApiUser, UserType } from '@/types'
+import type { Api, UserType } from '@/types'
 import { useUserStore } from '@/stores/userStore'
 import { useToast } from 'vue-toastification'
 import ScUserCard from './ScUserCard.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
+import { formatLink } from '@/hook/format'
 
 const showModal = ref(false)
 const buttonLoading = ref(false)
@@ -327,9 +328,10 @@ const handleLogin = () => {
     .login(loginForm)
     .then((res: Api) => {
       if (res.data.code === 200) {
-        const userInfo = res.data.data as ApiUser
-        userStore.token = userInfo.token
-        userStore.userInfo = userInfo.user
+        const user = res.data.data.user as UserType
+        user.headImg = formatLink(user.headImg)
+        userStore.userInfo = user
+        userStore.token = res.data.data.token
 
         toast.success('登录成功')
         offModal()

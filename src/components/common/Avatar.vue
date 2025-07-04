@@ -12,7 +12,7 @@
     <img
       v-if="!loadError"
       class="w-full h-full object-cover"
-      :src="formatLink(src)"
+      :src="src"
       :alt="alt"
       @error="loadError = true" />
 
