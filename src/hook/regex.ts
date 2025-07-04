@@ -26,11 +26,7 @@ export const formatImageSrcsInHtml = (html: string): string => {
   const currentProtocol = window.location.protocol // 'http:' 或 'https:'
 
   return html.replace(regex, (match, beforeSrc, src) => {
-    if (
-      src.startsWith(currentProtocol) ||
-      src.startsWith('//') ||
-      !src.startsWith('http')
-    ) {
+    if (src.startsWith(currentProtocol) || src.startsWith('//')) {
       const formattedSrc = formatLink(src.replace(/^.*api/, '')) // 确保 src 不以斜杠开头
       console.log('Formatted image src:', formattedSrc)
 
