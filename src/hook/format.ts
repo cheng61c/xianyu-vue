@@ -88,20 +88,37 @@ export const formatNumber = (
 }
 
 /**
- * 链接格式化，当前缀是一个完整域名则添加当前访问协议前缀
+ * 链接格式化
+ * - 已是完整链接 (http, https, blob) -> 返回原值
+ * - 是域名（不带协议） -> 补上当前协议
+ * - 是本地地址（IP或localhost） -> 替换为 configStore.serverAddress
+ * - 是相对路径 -> 拼接 configStore.serverAddress
  */
 export const formatLink = (link: string): string => {
   if (!link) return ''
-  const reg = /^(blob:)?(http|https):\/\//i
-  if (reg.test(link)) return link // 已经是完整链接，直接返回
-  // 查询是否有域名
-  const domainReg = /^(www|[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(\/.*)?$/
-  if (domainReg.test(link)) {
-    const { protocol } = window.location // 获取当前访问协议
-    return `${protocol}//${link}` // 添加协议前缀
+
+  const isFullUrl = /^(blob:)?https?:\/\//i
+  if (isFullUrl.test(link)) {
+    // 检查是否是本地 IP 地址或 localhost
+    const urlObj = new URL(link)
+    const isLocal = /^((localhost)|(\d{1,3}\.){3}\d{1,3})$/i.test(
+      urlObj.hostname
+    )
+    if (isLocal) {
+      // 替换为 configStore.serverAddress，保留路径和查询参数
+      return `${configStore.serverAddress}${urlObj.pathname}${urlObj.search}`
+    }
+    return link
   }
-  // 链接不完整
-  return `${configStore.serverAddress}/${link.replace(/^\//, '')}` // 添加基础链接
+
+  const isDomainOnly = /^(www|[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+)(\/.*)?$/i
+  if (isDomainOnly.test(link)) {
+    const { protocol } = window.location
+    return `${protocol}//${link}`
+  }
+
+  // 是相对路径
+  return `${configStore.serverAddress}/${link.replace(/^\//, '')}`
 }
 
 /** 高亮处理 */
