@@ -156,6 +156,7 @@ const getPostDetails = async (postId: number) => {
       data.badCount = formatNumber(data.badCount)
       data.postVersions = data.postVersions.map((item) => ({
         ...item,
+        content: lightHtml(formatImageSrcsInHtml(item.content)),
         createdAt: formatTime(item.createdAt),
       }))
       tocList.value = generateTocFromHtml(data.content)
