@@ -31,10 +31,7 @@ export const formatImageSrcsInHtml = (html: string): string => {
       src.startsWith('//') ||
       !src.startsWith('http')
     ) {
-      console.log('src:', src.replace(/\/?api/, ''))
-
       const formattedSrc = formatLink(src.replace(/\/?api/, '')) // 确保 src 不以斜杠开头
-      console.log('formattedSrc:', formattedSrc)
 
       return `<img${beforeSrc}src="${formattedSrc}"`
     }
