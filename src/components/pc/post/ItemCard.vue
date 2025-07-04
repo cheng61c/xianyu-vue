@@ -17,8 +17,6 @@
 
     <!-- 第二行，帖子部分内容 -->
     <div class="line-clamp-2 cursor-pointer" @click="handleClick">
-      {{ post.images?.length }}
-      {{ post.images && post.images[0] }}
       <div v-if="post.images" class="flex gap-2">
         <ScImage
           v-for="img in post.images"

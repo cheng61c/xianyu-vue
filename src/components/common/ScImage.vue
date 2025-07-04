@@ -1,10 +1,9 @@
 <template>
   <div>
-    {{ formatLink(src) }}
     <img
       v-if="!loadError"
       class="w-full h-full object-cover"
-      :src="formatLink(src)"
+      :src="src"
       :alt="alt"
       @error="loadError = true" />
     <img
@@ -17,7 +16,6 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
-import { formatLink } from '@/hook/format'
 import { useConfigStore } from '@/stores/configStore'
 const configStore = useConfigStore()
 
