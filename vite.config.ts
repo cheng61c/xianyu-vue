@@ -8,6 +8,12 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __INTLIFY_PROD_DEVTOOLS__: false, // 禁用生产环境 devtools
+    __VUE_I18N_FULL_INSTALL__: false, // 禁用完整安装
+    __VUE_I18N_LEGACY_API__: false,
+    __VUE_I18N_PROD_DEVTOOLS__: false,
+  },
   plugins: [
     vue(),
     svgLoader(),
@@ -35,23 +41,24 @@ export default defineConfig({
       compress: {
         dead_code: true, // 移除未使用的代码
         unused: true, // 删除未使用的变量/函数
-        arguments: true, // 优化函数参数
-        booleans_as_integers: true, // 将布尔值转为 0/1
+        keep_fnames: true, // 保留函数名
+        keep_classnames: true, // 保留类名
         drop_console: true, // 移除所有 console.log
         drop_debugger: true, // 移除 debugger
         pure_funcs: ['console.info'], // 移除特定函数（如 console.info）
-        passes: 2, // 压缩次数
-      },
-      mangle: {
-        toplevel: true, // 混淆顶层作用域
-        properties: {
-          regex: /^_/, // 只混淆以下划线开头的属性
-        },
       },
       format: {
         comments: false, // 移除注释
       },
     },
     chunkSizeWarningLimit: 2000, // 设置 chunk 大小警告限制
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          zh: ['./src/lang/zh.json'],
+          en: ['./src/lang/en.json'],
+        },
+      },
+    },
   },
 })
