@@ -38,7 +38,9 @@ import UnderlineE from '@tiptap/extension-underline'
 import BulletList from '@tiptap/extension-bullet-list'
 import CustomImageExtension from '@/extensions/CustomImageExtension'
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
-import { common, createLowlight } from 'lowlight'
+
+import { createLowlight } from 'lowlight'
+import csharp from 'highlight.js/lib/languages/csharp'
 
 import Card from '@/components/common/Card.vue'
 import ScDivider from '@/components/common/ScDivider.vue'
@@ -124,7 +126,9 @@ const editor = ref<Editor>()
 // )
 
 onMounted(() => {
-  const lowlight = createLowlight(common)
+  const lowlight = createLowlight({
+    csharp: csharp, // 只注册 C# 语言
+  })
 
   editor.value = new Editor({
     content: contentModel.value,

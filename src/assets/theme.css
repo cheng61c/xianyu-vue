@@ -84,11 +84,6 @@
   prefersdark: false; /* set as default dark mode (prefers-color-scheme:dark) */
   color-scheme: light; /* color of browser-provided UI */
 
-  --color-accent: oklch(0.47, 0.457, 137.45);
-  --color-accent-content: oklch(0.933, 0.093, 210.26);
-  --color-neutral: oklch(50% 0.05 240);
-  --color-neutral-content: oklch(98% 0.01 240);
-
   /* 已使用 */
   --color-error: #ff627d; /* 错误色：红色 */
   --color-error-content: oklch(98% 0.01 30); /* 错误色内容文本 */
@@ -110,11 +105,6 @@
   default: false; /* 暗色主题不是默认 */
   prefersdark: true; /* 设置为暗色模式 (prefers-color-scheme:dark) */
   color-scheme: dark; /* 浏览器 UI 的颜色模式为暗色 */
-
-  --color-accent: #ff6f61; /* 强调色：红色 */
-  --color-accent-content: #ffffff; /* 强调色内容文本 */
-  --color-neutral: oklch(20% 0.05 240); /* 中性色：灰色 */
-  --color-neutral-content: oklch(90% 0.1 240); /* 中性色内容文本 */
 
   /* 已使用 */
   --color-error: oklch(40% 0.3 30); /* 错误色：红色 */

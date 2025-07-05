@@ -34,6 +34,11 @@ const routes = [
         component: () => import('@/pages/pc/publish/PublishIndex.vue'),
       },
       {
+        path: 'message',
+        name: 'message',
+        component: () => import('@/pages/pc/message/MessageIndex.vue'),
+      },
+      {
         path: 'admin',
         name: 'admin',
         redirect: '/admin/panel',

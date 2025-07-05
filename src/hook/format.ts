@@ -1,7 +1,10 @@
 import { toHtml } from 'hast-util-to-html'
-import { common, createLowlight } from 'lowlight'
+import { createLowlight } from 'lowlight'
+import csharp from 'highlight.js/lib/languages/csharp'
 import { useConfigStore } from '@/stores/configStore'
-const lowlight = createLowlight(common)
+const lowlight = createLowlight({
+  csharp: csharp, // 只注册 C# 语言
+})
 const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {

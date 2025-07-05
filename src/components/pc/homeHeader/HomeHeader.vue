@@ -16,7 +16,21 @@
 
     <HomeNav />
 
-    <div class="flex gap-4 items-center"><ScLogin /><ThemeButton /></div>
+    <div class="flex gap-4 items-center">
+      <ScLogin />
+      <ScButton
+        class="hidden md:block"
+        noPd
+        :icon="Mail"
+        :iconSize="20"
+        @click="
+          $router.push({
+            name: 'message',
+          })
+        ">
+      </ScButton>
+      <ThemeButton />
+    </div>
   </header>
   <div v-if="show" class="flex justify-center w-full bg-warning/30">
     <span @click="toAnnouncement">{{ postData?.title }}</span>
@@ -42,7 +56,7 @@ import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
 import ScButton from '@/components/common/ScButton.vue'
-import { X } from 'lucide-vue-next'
+import { Mail, X } from 'lucide-vue-next'
 import { useAnnouncementStore } from '@/stores/announcementStore'
 import { useRouter } from 'vue-router'
 

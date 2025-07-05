@@ -1,23 +1,20 @@
 <template>
-  <label class="toggle text-base-content">
+  <label class="toggle toggle-sm text-base-content">
     <input
       type="checkbox"
       v-model="themeStore.darkTheme"
-      class="theme-controller"
-    />
+      class="theme-controller" />
 
     <svg
       aria-label="sun"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <g
         stroke-linejoin="round"
         stroke-linecap="round"
         stroke-width="2"
         fill="none"
-        stroke="currentColor"
-      >
+        stroke="currentColor">
         <circle cx="12" cy="12" r="4"></circle>
         <path d="M12 2v2"></path>
         <path d="M12 20v2"></path>
@@ -33,15 +30,13 @@
     <svg
       aria-label="moon"
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <g
         stroke-linejoin="round"
         stroke-linecap="round"
         stroke-width="2"
         fill="none"
-        stroke="currentColor"
-      >
+        stroke="currentColor">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
       </g>
     </svg>

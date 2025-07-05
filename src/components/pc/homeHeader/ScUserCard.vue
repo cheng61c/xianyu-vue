@@ -5,6 +5,7 @@
       size="small"
       @click.stop="togglePopup()"
       hoverable
+      noPd
       class="relative flex items-center gap-2">
       <template #icon>
         <Avatar

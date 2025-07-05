@@ -87,8 +87,6 @@ import { useToast } from 'vue-toastification'
 import type { MotdType } from '@/types/Motd'
 import Dropdown from '@/components/common/ScSelector.vue'
 import { formatTime } from '@/hook/format'
-import prettier from 'prettier/standalone'
-import parserXml from '@prettier/plugin-xml'
 import { useEditorShortcuts } from '@/utils/useEditorShortcuts'
 const toast = useToast()
 
@@ -165,74 +163,115 @@ const addMotd = () => {
     })
 }
 
+/**
+ * 纯浏览器实现的 XML 格式化（替代 prettier）
+ * @param xml 原始 XML 字符串
+ * @param indentSize 缩进空格数（取自 tabWidth.value）
+ */
+const formatXml = (
+  xml: string,
+  indentSize: number = +tabWidth.value
+): string => {
+  try {
+    xml = xml.replace(/</g, '\n<').replace(/>/g, '>\n').replace(/\n\n/g, '\n')
+
+    // 1. 用浏览器原生解析器校验 XML 结构
+    const doc = new DOMParser().parseFromString(xml, 'text/xml')
+    if (doc.querySelector('parsererror')) {
+      console.warn('Invalid XML, returning original')
+      return xml // 不是合法 XML 时返回原内容
+    }
+
+    // 2. 递归缩进格式化
+    let formatted = ''
+    const indent = (n: number) => ' '.repeat(n * indentSize)
+
+    const formatNode = (node: Node, depth: number) => {
+      // 处理元素节点
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const elem = node as Element
+
+        // 开标签
+        formatted += `${indent(depth)}<${elem.tagName}`
+
+        // 属性缩进处理（属性换行显示）
+        if (elem.hasAttributes()) {
+          formatted += Array.from(elem.attributes)
+            .map((attr) => `\n${indent(depth + 1)}${attr.name}="${attr.value}"`)
+            .join('')
+        }
+
+        // 自闭合标签
+        if (!elem.childNodes.length && !elem.textContent?.trim()) {
+          formatted += ' />\n'
+          return
+        }
+
+        formatted += '>\n'
+
+        // 递归子节点
+        Array.from(elem.childNodes).forEach((child) =>
+          formatNode(child, depth + 1)
+        )
+
+        // 闭标签
+        formatted += `${indent(depth)}</${elem.tagName}>\n`
+      }
+      // 处理文本节点（保留有意义的内容）
+      else if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
+        formatted += `${indent(depth)}${node.textContent.trim()}\n`
+      }
+    }
+
+    // 从根节点开始格式化
+    formatNode(doc.documentElement, 0)
+    return formatted.trim()
+  } catch (e) {
+    console.error('XML formatting failed:', e)
+    return xml // 解析失败时返回原内容
+  }
+}
+
+// 移除 prettier 后的 format 函数
 const format = async (isUpdate = false) => {
   const motdBarValue =
     typeof motdBar.value === 'object' ? motdBar.value.value : motdBar.value
-  // motdContent.value = formatXml(motd.value[motdBarValue]?.motd) || ''
 
+  // 获取原始内容
   motdContent.value = motd.value[motdBarValue]?.motd || ''
   motdBar.value = motdBarOptions.value[motdBarValue] || 0
 
-  // 获取输入框元素
+  // 获取输入框元素（用于光标位置恢复）
   const inputEl = document.querySelector('textarea')
-  if (!inputEl) {
-    // fallback
-    motdContent.value = await prettier.format(formatXml(motdContent.value), {
-      parser: 'xml',
-      plugins: [parserXml],
-      tabWidth: +tabWidth.value,
-      useTabs: false,
-      printWidth: 150,
-      xmlWhitespaceSensitivity: 'ignore',
-      xmlSelfClosingSpace: true,
-      xmlExpandSelfClosing: false,
-    })
-    if (isUpdate) {
-      updateMotd()
-    }
-    handleInput()
-    return
-  }
 
-  // 记录当前光标位置
-  const selectionStart = inputEl.selectionStart
-  const selectionEnd = inputEl.selectionEnd
+  // 记录原始光标位置
+  const selectionStart = inputEl?.selectionStart || 0
+  const selectionEnd = inputEl?.selectionEnd || 0
 
-  // 格式化内容
-  const formatted = await prettier.format(formatXml(motdContent.value), {
-    parser: 'xml',
-    plugins: [parserXml],
-    tabWidth: +tabWidth.value,
-    useTabs: false,
-    printWidth: 150,
-    xmlWhitespaceSensitivity: 'ignore',
-    xmlSelfClosingSpace: true,
-    xmlExpandSelfClosing: false,
-  })
+  // 使用纯本地格式化（同步操作，无需 async）
+  const originalContent = motdContent.value
+  motdContent.value = formatXml(originalContent)
 
-  // 计算格式化前后内容的差异，尽量恢复光标原位
-  // 简单做法：如果内容没变，直接恢复；否则尽量恢复到原字符位置
-  motdContent.value = formatted
-
+  // 恢复光标位置（智能处理内容长度变化）
   await nextTick()
-  if (inputEl.value.length >= selectionEnd) {
-    inputEl.setSelectionRange(selectionStart, selectionEnd)
-  } else {
-    // 如果内容变短，光标放到末尾
-    inputEl.setSelectionRange(inputEl.value.length, inputEl.value.length)
+  if (inputEl) {
+    if (motdContent.value.length >= selectionEnd) {
+      // 内容变长或不变：尝试恢复原位置
+      inputEl.setSelectionRange(selectionStart, selectionEnd)
+    } else {
+      // 内容变短：光标放到末尾
+      inputEl.setSelectionRange(
+        motdContent.value.length,
+        motdContent.value.length
+      )
+    }
   }
+
+  // 后续处理
   if (isUpdate) {
     updateMotd()
   }
   handleInput()
-}
-
-function formatXml(xml: string) {
-  const formatted = xml
-    .replace(/</g, '\n<')
-    .replace(/>/g, '>\n')
-    .replace(/\n\n/g, '\n')
-  return formatted.trim()
 }
 
 // 自动高度
