@@ -46,18 +46,18 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 import { Logo } from '@/icon.js'
 import ThemeButton from '@/components/common/ThemeButton.vue'
 import HomeNav from './HomeNav.vue'
 import ScLogin from './ScLogin.vue'
-import { useThemeStore } from '@/stores/themeStore'
+import { useThemeStore } from '@/stores/global/themeStore'
 import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
 import ScButton from '@/components/common/ScButton.vue'
 import { Mail, X } from 'lucide-vue-next'
-import { useAnnouncementStore } from '@/stores/announcementStore'
+import { useAnnouncementStore } from '@/stores/global/announcementStore'
 import { useRouter } from 'vue-router'
 
 const announcementStore = useAnnouncementStore()

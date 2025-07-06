@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { userApi } from '@/apis'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 const userStore = useUserStore()
 
 import { onMounted } from 'vue'

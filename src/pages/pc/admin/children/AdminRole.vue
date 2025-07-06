@@ -196,7 +196,7 @@ import { formatTime } from '@/hook/format'
 import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'
-import { useThemeStore } from '@/stores/themeStore'
+import { useThemeStore } from '@/stores/global/themeStore'
 
 const themeStore = useThemeStore() // 引入主题状态管理
 

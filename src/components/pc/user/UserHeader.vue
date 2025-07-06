@@ -89,7 +89,7 @@
 import { ref, watch } from 'vue'
 import { formatLink } from '@/hook/format'
 import { formatTime } from '@/hook/format'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import { uploadApi, userApi } from '@/apis'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'

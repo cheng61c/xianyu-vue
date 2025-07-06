@@ -277,7 +277,7 @@ import type { UpdateUserAsAdminDto, UserSelectDto, UserType } from '@/types'
 import { verifyPermissions } from '@/hook/verify'
 import type { Role, UserRole } from '@/types/Role'
 import { useToast } from 'vue-toastification'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import { useRouter } from 'vue-router'
 const toast = useToast()
 const userStore = useUserStore()

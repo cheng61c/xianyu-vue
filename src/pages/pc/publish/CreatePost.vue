@@ -380,14 +380,14 @@ import TipTap from '@/components/pc/tiptap/TipTap.vue'
 import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'
-import { usePostStore } from '@/stores/postStore'
-import { useConfigStore } from '@/stores/configStore'
+import { usePostStore } from '@/stores/global/postStore'
+import { useConfigStore } from '@/stores/global/configStore'
 import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/common/ScButton.vue'
 import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { verifyPermissions } from '@/hook/verify'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 
 const toast = useToast()
 const postStore = usePostStore()

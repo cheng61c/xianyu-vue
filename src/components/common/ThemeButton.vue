@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { useThemeStore } from '@/stores/themeStore'
+import { useThemeStore } from '@/stores/global/themeStore'
 import { watch } from 'vue'
 const themeStore = useThemeStore()
 

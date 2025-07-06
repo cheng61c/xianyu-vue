@@ -265,7 +265,7 @@ import {
   X,
 } from 'lucide-vue-next'
 import ScTag from '@/components/common/ScTag.vue'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import { commentApi } from '@/apis'
 import type { CommentType, SendCommentDto } from '@/types/comment'
 import { formatLink, formatTime } from '@/hook/format'

@@ -134,7 +134,7 @@ import {
   TriangleAlert,
 } from 'lucide-vue-next'
 import { postApi, reportApi } from '@/apis'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import { useToast } from 'vue-toastification'
 
 const userStore = useUserStore()

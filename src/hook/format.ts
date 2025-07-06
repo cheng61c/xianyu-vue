@@ -1,7 +1,7 @@
 import { toHtml } from 'hast-util-to-html'
 import { createLowlight } from 'lowlight'
 import csharp from 'highlight.js/lib/languages/csharp'
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 const lowlight = createLowlight({
   csharp: csharp, // 只注册 C# 语言
 })

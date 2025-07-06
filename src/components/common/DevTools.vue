@@ -68,14 +68,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 import { Minimize2, Forward, Trash2 } from 'lucide-vue-next'
 import ThemeButton from '@/components/common/ThemeButton.vue'
 import { useToast } from 'vue-toastification'
 import { notify } from '@kyvg/vue3-notification'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import type { UserType } from '@/types'
-import { useAnnouncementStore } from '@/stores/announcementStore'
+import { useAnnouncementStore } from '@/stores/global/announcementStore'
 
 const toast = useToast()
 const configStore = useConfigStore()

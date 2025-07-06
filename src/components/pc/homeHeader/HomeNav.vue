@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 import type { MenuItem } from '@/types/Config'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

@@ -10,5 +10,6 @@ export const useUserStore = defineStore('user', {
     autoLogin: false,
     isLogin: false,
   }),
+  actions: {},
   persist: true,
 })

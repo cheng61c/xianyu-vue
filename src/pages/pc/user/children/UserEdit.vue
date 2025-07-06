@@ -88,7 +88,7 @@ import ScCollapse from '@/components/common/ScCollapse.vue'
 import { userApi } from '@/apis'
 import type { UserType } from '@/types/user'
 import { onMounted, ref } from 'vue'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'

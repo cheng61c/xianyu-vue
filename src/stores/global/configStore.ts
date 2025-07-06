@@ -59,7 +59,7 @@ export const useConfigStore = defineStore('config', {
     /** 运行时加载配置 */
     async loadRuntimeConfig() {
       try {
-        const res = await import('../../config.json')
+        const res = await import('../../../config.json')
         // 将加载到的 config 合并进当前 state
         Object.assign(this.$state, res.default)
       } catch (err) {

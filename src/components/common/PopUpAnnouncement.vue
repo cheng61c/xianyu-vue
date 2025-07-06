@@ -28,7 +28,7 @@ import type { Post } from '@/types/Post'
 import ScButton from './ScButton.vue'
 import { useRouter } from 'vue-router'
 import Card from './Card.vue'
-import { useAnnouncementStore } from '@/stores/announcementStore'
+import { useAnnouncementStore } from '@/stores/global/announcementStore'
 
 const announcementStore = useAnnouncementStore()
 const router = useRouter()

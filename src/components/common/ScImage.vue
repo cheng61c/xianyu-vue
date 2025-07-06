@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 const configStore = useConfigStore()
 
 defineProps({

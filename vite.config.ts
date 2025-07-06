@@ -50,13 +50,36 @@ export default defineConfig({
       format: {
         comments: false, // 移除注释
       },
+      mangle: {
+        // 保留 Pinia 相关关键字
+        reserved: [
+          'defineStore',
+          'storeToRefs',
+          'use.*Store', // 匹配所有 Store
+        ],
+      },
     },
     chunkSizeWarningLimit: 2000, // 设置 chunk 大小警告限制
     rollupOptions: {
       output: {
-        manualChunks: {
-          zh: ['./src/lang/zh.json'],
-          en: ['./src/lang/en.json'],
+        manualChunks: (id) => {
+          // 1. 语言文件单独分包
+          if (id.includes('/lang/')) {
+            return id.includes('zh.json') ? 'zh-lang' : 'en-lang'
+          }
+
+          // 2. Pinia Store 单独分包
+          if (id.includes('/stores/')) {
+            const match = id.match(/stores\/(.+?)\.ts/)
+            return match ? `store-${match[1]}` : 'stores'
+          }
+
+          // 3. 第三方库分组
+          if (id.includes('node_modules')) {
+            if (id.includes('lucide-vue-next')) return 'vendor-lucide'
+            if (id.includes('vue-toastification')) return 'vendor-toast'
+            return 'vendor'
+          }
         },
       },
     },

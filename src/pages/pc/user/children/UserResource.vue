@@ -319,7 +319,7 @@
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
 import {

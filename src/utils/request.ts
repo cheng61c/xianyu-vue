@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
-import { useUserStore } from '@/stores/userStore'
-import { useConfigStore } from '@/stores/configStore'
+import { useUserStore } from '@/stores/user/userStore'
+import { useConfigStore } from '@/stores/global/configStore'
 import type { Api, ErrorResponse } from '@/types'
 
 const config = useConfigStore()

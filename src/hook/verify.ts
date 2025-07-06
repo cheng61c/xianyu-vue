@@ -1,4 +1,4 @@
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import type { UserRole } from '@/types/Role'
 
 const userStore = useUserStore()

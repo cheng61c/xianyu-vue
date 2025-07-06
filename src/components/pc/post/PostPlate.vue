@@ -35,7 +35,7 @@
 </template>
 <script setup lang="ts">
 import { plateApi } from '@/apis'
-import { usePostStore } from '@/stores/postStore'
+import { usePostStore } from '@/stores/global/postStore'
 import { onMounted, ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import { useRoute, useRouter } from 'vue-router'
@@ -43,7 +43,7 @@ import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
 import Card from '@/components/common/Card.vue'
 import { Signpost } from 'lucide-vue-next'
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 
 const route = useRoute()
 const router = useRouter()

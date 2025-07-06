@@ -202,7 +202,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import CommentInput from '../comment/CommentInput.vue'
 import { useToast } from 'vue-toastification'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getSteamRatingLabel } from '@/utils/steamReviewLabel'
 

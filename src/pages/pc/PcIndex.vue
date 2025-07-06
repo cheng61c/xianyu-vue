@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import HomeHeader from '@/components/pc/homeHeader/HomeHeader.vue'
 import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
-import { useConfigStore } from '@/stores/configStore'
+import { useConfigStore } from '@/stores/global/configStore'
 
 const configStore = useConfigStore()
 </script>

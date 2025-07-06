@@ -50,7 +50,7 @@ import type { UserType } from '@/types'
 import ScButton from '@/components/common/ScButton.vue'
 import Avatar from '@/components/common/Avatar.vue'
 import { userApi } from '@/apis'
-import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/user/userStore'
 import { useToast } from 'vue-toastification'
 import { verifyPermissions } from '@/hook/verify'
 

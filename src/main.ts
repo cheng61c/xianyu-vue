@@ -4,13 +4,13 @@ import { createPinia } from 'pinia'
 import router from '@/router/index.js'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import i18n from './i18n.js'
-import { useDeviceStore } from '@/stores/device.js'
+import { useDeviceStore } from '@/stores/global/device.js'
 import Notifications from '@kyvg/vue3-notification'
 import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 import '@cyhnkckali/vue3-color-picker/dist/style.css'
 import './style.css'
-import { useConfigStore } from './stores/configStore.js'
+import { useConfigStore } from './stores/global/configStore.js'
 
 const options = {
   maxToasts: 4,
