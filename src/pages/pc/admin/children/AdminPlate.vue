@@ -176,7 +176,7 @@ import ScModal from '@/components/common/ScModal.vue'
 import type { Role } from '@/types/Role'
 import type { Plate, PlateDto } from '@/types/Plate'
 
-const plateBar = ref(1)
+const plateBar = ref<number | { value: number; label: string }>(0) // 板块ID，0为全部板块
 const plateBarOptions = ref([
   { label: '交流板块', value: 1 },
   { label: '文件板块', value: 2 },
@@ -267,8 +267,17 @@ const addPlate = () => {
     newPlateBody.value.description = '' // 清空新描述
     return
   }
+  const plateBarValue =
+    typeof plateBar.value === 'object' ? plateBar.value.value : plateBar.value
+
+  const data = {
+    name: (newPlateBody.value.name ?? '').trim(),
+    type: plateBarValue,
+  }
+  console.log('data', data)
+
   plateApi
-    .createPlate(newPlateBody.value)
+    .createPlate(data)
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
@@ -289,7 +298,10 @@ const deletePlate = (index: number) => {
     return
   }
   plateApi
-    .plateDelete(item.id)
+    .plateDisabled({
+      id: item.id,
+      disabled: item.disabled == 1 ? 0 : 1, // 禁用板块
+    })
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表

@@ -66,7 +66,7 @@ export default defineConfig({
           // 1. 语言文件单独分包
           if (id.includes('/lang/')) {
             return id.includes('zh.json') ? 'zh-lang' : 'en-lang'
-          }
+          } 
 
           // 2. Pinia Store 单独分包
           if (id.includes('/stores/')) {
@@ -77,8 +77,7 @@ export default defineConfig({
           // 3. 第三方库分组
           if (id.includes('node_modules')) {
             if (id.includes('lucide-vue-next')) return 'vendor-lucide'
-            if (id.includes('vue-toastification')) return 'vendor-toast'
-            return 'vendor'
+            return 'lucide-vue-next'
           }
         },
       },
