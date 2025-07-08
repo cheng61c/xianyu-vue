@@ -189,10 +189,10 @@ import EmptyState from '@/components/common/EmptyState.vue'
 import { roleApi } from '@/apis'
 
 import { Vue3ColorPicker } from '@cyhnkckali/vue3-color-picker'
-import { verifyPermissions } from '@/hook/verify'
+import { verifyPermissions } from '@/utils/verify'
 
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'

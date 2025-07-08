@@ -170,7 +170,7 @@ import EmptyState from '@/components/common/EmptyState.vue'
 import { plateApi } from '@/apis'
 import Dropdown from '@/components/common/ScSelector.vue'
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'

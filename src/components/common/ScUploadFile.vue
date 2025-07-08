@@ -55,7 +55,7 @@ import Card from './Card.vue'
 import ScButton from './ScButton.vue'
 import ScTag from './ScTag.vue'
 import { uploadApi } from '@/apis'
-import { iconMap, typeLabelMap } from '@/hook/fileType'
+import { iconMap, typeLabelMap } from '@/utils/fileType'
 
 const props = defineProps({
   typeid: {

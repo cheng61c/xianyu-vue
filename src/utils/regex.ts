@@ -14,10 +14,15 @@ export const extractImageSrcs = (html: string): string[] => {
 }
 
 export const formatImageSrcsInHtml = (html: string): string => {
+  if (!html) return ''
   const regex = /<img([^>]+)src=["']([^"']+)["']/g
 
   return html.replace(regex, (_, beforeSrc, src) => {
     const formattedSrc = formatLink(src.replace(/^.*api/, '')) // 确保 src 不以斜杠开头
     return `<img${beforeSrc}src="${formattedSrc}"`
   })
+}
+
+export const useEmailRegex = (value: string) => {
+  return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
 }

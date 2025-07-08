@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { ThumbsUp } from 'lucide-vue-next'

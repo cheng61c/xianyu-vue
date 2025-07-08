@@ -50,9 +50,9 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import { downloadApi, uploadApi } from '@/apis'
-import { formatFileSize, formatTime } from '@/hook/format'
+import { formatFileSize, formatTime } from '@/utils/format'
 import { Download, Package } from 'lucide-vue-next'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import type { FileType } from '@/types/Upload'
 import { onMounted, ref } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'

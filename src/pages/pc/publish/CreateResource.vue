@@ -151,9 +151,9 @@ import ScUploadFile from '@/components/common/ScUploadFile.vue'
 import { postApi, versionApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
-import { formatImageSrcsInHtml } from '@/hook/regex'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const props = defineProps({
   post: {

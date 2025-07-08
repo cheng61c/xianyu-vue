@@ -37,14 +37,14 @@
           class="text-sm px-4 border border-gray hover:border-active"
           :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
           :iconSize="16"
-          @click="userServerStore.unpublishItem(postIndex)">
+          @click="unpublishItem(postIndex)">
           {{ post.visible == 1 ? '下架' : '发布' }}
         </ScButton>
         <ScButton
           class="text-sm text-error px-4 border border-gray hover:border-active"
           :icon="Trash2"
           :iconSize="16"
-          @click="userServerStore.deleteItem(postIndex)">
+          @click="deleteItem(postIndex)">
           删除
         </ScButton>
       </div>
@@ -68,7 +68,7 @@
       :current-page="userServerStore.pagination.page"
       :total-items="userServerStore.pagination.total"
       :page-size="userServerStore.pagination.limit"
-      @page-change="userServerStore.toPage" />
+      @page-change="toPage" />
   </div>
 
   <EmptyState
@@ -101,9 +101,7 @@
           @click="userServerStore.modal.isDeletePost = false">
           取消
         </ScButton>
-        <ScButton
-          class="text-sm text-error border"
-          @click="userServerStore.deletePost">
+        <ScButton class="text-sm text-error border" @click="deletePost">
           确认删除
         </ScButton>
       </div>
@@ -129,13 +127,20 @@ import ScModal from '@/components/common/ScModal.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import ScTag from '@/components/common/ScTag.vue'
-import { useUserServerStore } from '@/stores/user/userServerStore'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserServerStore } from '@/stores/module/userServer/userServerStore'
+import { useUserStore } from '@/stores/module/user/userStore'
+import {
+  getPosts,
+  deletePost,
+  deleteItem,
+  toPage,
+  unpublishItem,
+} from '@/stores/module/userServer/service'
 
 const userServerStore = useUserServerStore()
 const userStore = useUserStore()
 
 onMounted(() => {
-  userServerStore.getPosts()
+  getPosts()
 })
 </script>

@@ -68,8 +68,8 @@
 
 <script setup lang="ts">
 import { commentApi, serverApi, uploadApi, userApi } from '@/apis'
-import { formatLink, formatNumber, formatTime } from '@/hook/format'
-import { useUserStore } from '@/stores/user/userStore'
+import { formatLink, formatNumber, formatTime } from '@/utils/format'
+import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
 import {
@@ -82,7 +82,7 @@ import {
 
 import Card from '@/components/common/Card.vue'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
-import { formatImageSrcsInHtml } from '@/hook/regex'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)

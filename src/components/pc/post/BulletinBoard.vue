@@ -29,7 +29,7 @@ import Creation from './Creation.vue'
 import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import ScTag from '@/components/common/ScTag.vue'
 
 const router = useRouter()

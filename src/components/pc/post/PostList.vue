@@ -46,8 +46,8 @@ import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import { SquareArrowOutUpRight } from 'lucide-vue-next'
 import { useConfigStore } from '@/stores/global/configStore'
 import ScSearch from '@/components/pc/user/ScSearch.vue'
-import { extractImageSrcs, formatImageSrcsInHtml } from '@/hook/regex'
-import { formatTime } from '@/hook/format'
+import { extractImageSrcs, formatImageSrcsInHtml } from '@/utils/regex'
+import { formatTime } from '@/utils/format'
 
 const route = useRoute()
 const plateId = ref<string>(route.params.plateId as string)

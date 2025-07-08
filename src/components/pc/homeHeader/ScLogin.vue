@@ -243,12 +243,12 @@ import ScButton from '@/components/common/ScButton.vue'
 import Card from '@/components/common/Card.vue'
 import { userApi } from '@/apis'
 import type { Api, UserType } from '@/types'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 import ScUserCard from './ScUserCard.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
-import { formatLink } from '@/hook/format'
+import { formatLink } from '@/utils/format'
 
 const showModal = ref(false)
 const buttonLoading = ref(false)

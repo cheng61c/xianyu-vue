@@ -73,7 +73,7 @@ import { Minimize2, Forward, Trash2 } from 'lucide-vue-next'
 import ThemeButton from '@/components/common/ThemeButton.vue'
 import { useToast } from 'vue-toastification'
 import { notify } from '@kyvg/vue3-notification'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
 

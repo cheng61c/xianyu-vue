@@ -119,7 +119,7 @@
 import type { Post } from '@/types/Post'
 import { defineProps, ref } from 'vue'
 import type { PropType } from 'vue'
-import { verifyPermissions } from '@/hook/verify'
+import { verifyPermissions } from '@/utils/verify'
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'
@@ -134,7 +134,7 @@ import {
   TriangleAlert,
 } from 'lucide-vue-next'
 import { postApi, reportApi } from '@/apis'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 
 const userStore = useUserStore()

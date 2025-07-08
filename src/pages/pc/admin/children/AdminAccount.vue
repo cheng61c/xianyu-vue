@@ -271,13 +271,13 @@ import { Info } from 'lucide-vue-next'
 import Pagination from '@/components/common/Pagination.vue'
 
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { UpdateUserAsAdminDto, UserSelectDto, UserType } from '@/types'
-import { verifyPermissions } from '@/hook/verify'
+import { verifyPermissions } from '@/utils/verify'
 import type { Role, UserRole } from '@/types/Role'
 import { useToast } from 'vue-toastification'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { useRouter } from 'vue-router'
 const toast = useToast()
 const userStore = useUserStore()

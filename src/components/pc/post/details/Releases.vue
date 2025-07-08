@@ -107,7 +107,7 @@ import type { DocumentVersion } from '@/types/DocumentVersion'
 import EmptyState from '@/components/common/EmptyState.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import { Download, Minimize2 } from 'lucide-vue-next'
-import { formatFileSize, formatTime } from '@/hook/format'
+import { formatFileSize, formatTime } from '@/utils/format'
 import { downloadApi } from '@/apis'
 
 const props = defineProps({

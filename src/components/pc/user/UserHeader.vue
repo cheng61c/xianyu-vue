@@ -87,9 +87,9 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { formatLink } from '@/hook/format'
-import { formatTime } from '@/hook/format'
-import { useUserStore } from '@/stores/user/userStore'
+import { formatLink } from '@/utils/format'
+import { formatTime } from '@/utils/format'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { uploadApi, userApi } from '@/apis'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'

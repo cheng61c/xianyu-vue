@@ -192,7 +192,7 @@
 <script setup lang="ts">
 import { scoreApi } from '@/apis'
 import Card from '@/components/common/Card.vue'
-import { formatTimeAgo } from '@/hook/format'
+import { formatTimeAgo } from '@/utils/format'
 import type { ScoreSummary, ScoreType } from '@/types/score'
 import ReadonlyRating from '@/components/common/ReadonlyRating.vue'
 import { ref, onMounted, computed } from 'vue'
@@ -202,7 +202,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import CommentInput from '../comment/CommentInput.vue'
 import { useToast } from 'vue-toastification'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getSteamRatingLabel } from '@/utils/steamReviewLabel'
 

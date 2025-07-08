@@ -88,13 +88,13 @@ import ScCollapse from '@/components/common/ScCollapse.vue'
 import { userApi } from '@/apis'
 import type { UserType } from '@/types/user'
 import { onMounted, ref } from 'vue'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
-import { formatLink } from '@/hook/format'
-import { formatImageSrcsInHtml } from '@/hook/regex'
+import { formatLink } from '@/utils/format'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const toast = useToast()
 const userStore = useUserStore()

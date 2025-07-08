@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { useConfigStore } from '@/stores/global/configStore'
 import type { Api, ErrorResponse } from '@/types'
 

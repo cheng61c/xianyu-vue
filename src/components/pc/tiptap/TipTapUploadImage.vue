@@ -67,7 +67,7 @@ import Card from '@/components/common/Card.vue'
 import { Plus, X, ImageIcon } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import { uploadApi } from '@/apis'
-import { formatLink } from '@/hook/format'
+import { formatLink } from '@/utils/format'
 import { useToast } from 'vue-toastification'
 import ScImage from '@/components/common/ScImage.vue'
 const toast = useToast()

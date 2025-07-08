@@ -172,7 +172,7 @@
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
 import {
@@ -189,8 +189,8 @@ import {
   SquareArrowOutUpRight,
 } from 'lucide-vue-next'
 import { userApi, postApi } from '@/apis'
-import { extractImageSrcs } from '@/hook/regex'
-import { formatTime } from '@/hook/format'
+import { extractImageSrcs } from '@/utils/regex'
+import { formatTime } from '@/utils/format'
 import ScImage from '@/components/common/ScImage.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import type { Post } from '@/types/Post'

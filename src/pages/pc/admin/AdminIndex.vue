@@ -36,7 +36,7 @@ import {
 } from 'lucide-vue-next'
 
 import ScMenu from '@/components/pc/admin/ScMenu.vue'
-import { verifyPermissions } from '@/hook/verify'
+import { verifyPermissions } from '@/utils/verify'
 
 const route = useRoute()
 const activation = ref('')

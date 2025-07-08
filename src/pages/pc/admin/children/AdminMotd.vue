@@ -86,7 +86,7 @@ import { motdApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import type { MotdType } from '@/types/Motd'
 import Dropdown from '@/components/common/ScSelector.vue'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import { useEditorShortcuts } from '@/utils/useEditorShortcuts'
 const toast = useToast()
 

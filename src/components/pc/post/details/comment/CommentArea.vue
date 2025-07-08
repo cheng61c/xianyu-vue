@@ -265,10 +265,10 @@ import {
   X,
 } from 'lucide-vue-next'
 import ScTag from '@/components/common/ScTag.vue'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { commentApi } from '@/apis'
 import type { CommentType, SendCommentDto } from '@/types/comment'
-import { formatLink, formatTime } from '@/hook/format'
+import { formatLink, formatTime } from '@/utils/format'
 import { useToast } from 'vue-toastification'
 import CommentReplyButton from './CommentReplyButton.vue'
 import CommentMenu from './CommentMenu.vue'

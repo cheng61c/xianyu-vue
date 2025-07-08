@@ -153,7 +153,7 @@ import EmptyState from '@/components/common/EmptyState.vue'
 import { infoApi } from '@/apis'
 import Pagination from '@/components/common/Pagination.vue'
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import type { InfoType, QueryInfoDto } from '@/types/Info'
 
 const searchReportValue = ref('') // 搜索帖子内容

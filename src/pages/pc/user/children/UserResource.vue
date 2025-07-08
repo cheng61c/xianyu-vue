@@ -319,7 +319,7 @@
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
 import {
@@ -340,14 +340,14 @@ import {
   SquareArrowOutUpRight,
 } from 'lucide-vue-next'
 import { userApi, postApi, downloadApi } from '@/apis'
-import { formatTime } from '@/hook/format'
+import { formatTime } from '@/utils/format'
 import type { Post } from '@/types/Post'
 import { useToast } from 'vue-toastification'
-import { extractImageSrcs } from '@/hook/regex'
+import { extractImageSrcs } from '@/utils/regex'
 import { useRouter } from 'vue-router'
-import { iconMap, typeLabelMap } from '@/hook/fileType'
+import { iconMap, typeLabelMap } from '@/utils/fileType'
 import type { DocumentVersion } from '@/types/DocumentVersion'
-import { formatFileSize } from '@/hook/format'
+import { formatFileSize } from '@/utils/format'
 import ScImage from '@/components/common/ScImage.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'

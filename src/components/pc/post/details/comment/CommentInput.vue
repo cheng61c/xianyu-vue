@@ -58,7 +58,7 @@ import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { ImagePlus, X } from 'lucide-vue-next'
 import { uploadApi } from '@/apis'
-import { formatLink } from '@/hook/format'
+import { formatLink } from '@/utils/format'
 
 const toast = useToast()
 

@@ -5,15 +5,15 @@
 
 <script setup lang="ts">
 import { userApi } from '@/apis'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 const userStore = useUserStore()
 
 import { onMounted } from 'vue'
 import type { UserType } from '@/types'
 import PcIndex from './pc/PcIndex.vue'
 import MobileIndex from './mobile/MobileIndex.vue'
-import { formatLink } from '@/hook/format'
-import { formatImageSrcsInHtml } from '@/hook/regex'
+import { formatLink } from '@/utils/format'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const login = async () => {
   userApi

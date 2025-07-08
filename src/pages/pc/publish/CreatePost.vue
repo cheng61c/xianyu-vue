@@ -386,8 +386,8 @@ import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/common/ScButton.vue'
 import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
 import type { Version } from '@/types/version'
-import { verifyPermissions } from '@/hook/verify'
-import { useUserStore } from '@/stores/user/userStore'
+import { verifyPermissions } from '@/utils/verify'
+import { useUserStore } from '@/stores/module/user/userStore'
 
 const toast = useToast()
 const postStore = usePostStore()

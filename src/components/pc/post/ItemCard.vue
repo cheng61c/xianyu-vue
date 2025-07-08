@@ -92,7 +92,7 @@ import Avatar from '@/components/common/Avatar.vue'
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import { defineProps } from 'vue'
-import { htmlToText, formatNumber } from '@/hook/format'
+import { htmlToText, formatNumber } from '@/utils/format'
 import {
   MessageCircle,
   Eye,
@@ -105,7 +105,7 @@ import {
 import { useRouter } from 'vue-router'
 import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
-import { iconMap, typeLabelMap } from '@/hook/fileType'
+import { iconMap, typeLabelMap } from '@/utils/fileType'
 
 const router = useRouter()
 

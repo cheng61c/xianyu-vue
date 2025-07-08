@@ -113,7 +113,7 @@ import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import { generateTocFromHtml, type TocItem } from '@/utils/toc'
-import { formatNumber, formatTime, lightHtml } from '@/hook/format'
+import { formatNumber, formatTime, lightHtml } from '@/utils/format'
 
 import { Home, X } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
@@ -128,7 +128,7 @@ import Score from '@/components/pc/post/details/score/Score.vue'
 import { useConfigStore } from '@/stores/global/configStore'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
-import { formatImageSrcsInHtml } from '@/hook/regex'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const route = useRoute()
 const router = useRouter()

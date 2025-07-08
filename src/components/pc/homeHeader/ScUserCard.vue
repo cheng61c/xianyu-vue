@@ -50,9 +50,9 @@ import type { UserType } from '@/types'
 import ScButton from '@/components/common/ScButton.vue'
 import Avatar from '@/components/common/Avatar.vue'
 import { userApi } from '@/apis'
-import { useUserStore } from '@/stores/user/userStore'
+import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
-import { verifyPermissions } from '@/hook/verify'
+import { verifyPermissions } from '@/utils/verify'
 
 const isOpen = ref(false)
 const toast = useToast()

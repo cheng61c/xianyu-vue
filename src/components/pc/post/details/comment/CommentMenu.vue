@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
-import { verifyPermissions } from '@/hook/verify'
+import { verifyPermissions } from '@/utils/verify'
 import { computed, ref } from 'vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
