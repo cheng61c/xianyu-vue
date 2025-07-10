@@ -8,7 +8,7 @@
     :data-tip="tip">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot name="icon" />
-    <span><slot /></span>
+    <slot />
     <slot name="endIcon" />
 
     <span v-if="loading" class="loading loading-spinner loading-sm"></span>

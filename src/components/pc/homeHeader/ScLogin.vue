@@ -2,7 +2,7 @@
   <!-- Open the modal using ID.showModal() method -->
   <div
     v-if="!userStore.isLogin"
-    class="flex gap-4 items-center justify-between">
+    class="flex gap-4 items-center justify-between px-3">
     <ScButton noPadding @click="handleModalChange('login')">{{
       $t('login')
     }}</ScButton>

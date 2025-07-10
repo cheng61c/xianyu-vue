@@ -33,8 +33,6 @@ apiClient.interceptors.request.use(
 // 响应拦截器
 apiClient.interceptors.response.use(
   (response: Api) => {
-    console.log('Response:', response)
-
     return response
   },
   (error: AxiosError) => {

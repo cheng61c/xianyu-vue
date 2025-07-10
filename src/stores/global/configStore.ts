@@ -17,16 +17,6 @@ export const useConfigStore = defineStore('config', {
     errorImg:
       'https://r2.schub.top/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
 
-    /** 当前大板块 */
-    currentPlate: {
-      /** 当前所在的板块名称 */
-      name: '',
-      /** 当前所在的板块地址 */
-      pathName: '',
-    },
-    /** 当前小板块 */
-    currentPlateId: 0,
-
     /** 平板适配 */
     padAdaptation: false,
 

@@ -5,15 +5,16 @@
       size="small"
       @click.stop="togglePopup()"
       hoverable
-      noPd
-      class="relative flex items-center gap-2">
+      class="relative flex items-center justify-center gap-2">
       <template #icon>
         <Avatar
           :src="userStore.userInfo.headImg"
           :alt="userStore.userInfo.nickname" />
       </template>
-      <span> {{ userStore.userInfo.nickname }}</span>
-      <template #endIcon>
+      <span v-if="deviceStore.device == 2">
+        {{ userStore.userInfo.nickname }}
+      </span>
+      <template #endIcon v-if="deviceStore.device == 2">
         <ChevronUp class="transition-all" :class="{ 'rotate-180': !isOpen }" />
       </template>
     </ScButton>
@@ -53,11 +54,15 @@ import { userApi } from '@/apis'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 import { verifyPermissions } from '@/utils/verify'
+import { useDeviceStore } from '@/stores/global/deviceStore'
+import { useRouter } from 'vue-router'
 
+const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const toast = useToast()
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const logout = () => {
   userStore.isLogin = false
@@ -78,6 +83,11 @@ const logout = () => {
 }
 
 const togglePopup = () => {
+  if (deviceStore.device == 1) {
+    router.push({ name: 'user' })
+    closePopup()
+    return
+  }
   isOpen.value = !isOpen.value
 }
 

@@ -1,22 +1,35 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
+const isMobile =
+  /(android|webos|iphone|ipad|ipod|blackberry|windows phone)/i.test(
+    navigator.userAgent.toLowerCase()
+  )
+
 // 定义路由配置
 const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/postlist/0',
+    redirect: '/postList/0',
     component: () => import('@/pages/Index.vue'),
     children: [
       {
-        path: 'postlist/:plateId?',
+        path: 'postList/:plateId?',
         name: 'postList',
-        component: () => import('@/pages/pc/post/PostIndex.vue'),
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/post/MobilePostIndex.vue')
+            : import('@/pages/pc/post/PostIndex.vue')
+        },
       },
       {
         path: 'modList/:plateId?',
         name: 'modList',
-        component: () => import('@/pages/pc/post/PostIndex.vue'),
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/post/MobilePostIndex.vue')
+            : import('@/pages/pc/post/PostIndex.vue')
+        },
       },
       {
         path: 'postDetails/:postId',

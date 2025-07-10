@@ -5,17 +5,13 @@
         v-for="(item, index) in configStore.menuItems"
         :key="item.pathName"
         class="list-none"
-        :class="{ 'text-primary': isActive(item) }"
+        :class="{ 'text-primary': postStore.nav.name === item.pathName }"
         @click="setActive(index)">
-        <router-link
-          :to="{
-            name: item.pathName,
-            params: { plateId: configStore.currentPlateId },
-          }"
-          class="inline-block px-2 transition-colors"
-          :class="{ 'text-primary': isActive(item) }">
+        <button
+          class="navitem inline-block px-2 transition-colors"
+          :class="{ 'text-primary': postStore.nav.name === item.pathName }">
           {{ item.name }}
-        </router-link>
+        </button>
       </li>
       <div
         class="absolute bottom-[-2px] h-1 transition-all"
@@ -28,11 +24,12 @@
 
 <script setup lang="ts">
 import { useConfigStore } from '@/stores/global/configStore'
-import type { MenuItem } from '@/types/Config'
+import { usePostStore } from '@/stores/module/post/postStore'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const configStore = useConfigStore()
+const postStore = usePostStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -44,9 +41,8 @@ const indicatorStyle = ref({
 })
 const show = ref(true)
 
-// 使用 currentPlate.pathName 和 pathName 来判断是否高亮
-const isActive = computed(() => (item: MenuItem) => {
-  return item.pathName === configStore.currentPlate.pathName
+const isMenuItem = computed(() => {
+  return configStore.menuItems.some((item) => item.pathName === route.name)
 })
 
 const updateIndicator = () => {
@@ -57,7 +53,7 @@ const updateIndicator = () => {
     const activeElement = menuList.value.children[
       activeIndex.value
     ] as HTMLElement
-    const linkElement = activeElement.querySelector('a') as HTMLElement
+    const linkElement = activeElement.querySelector('button') as HTMLElement
 
     if (linkElement) {
       const { left: parentLeft } = menuList.value.getBoundingClientRect()
@@ -74,14 +70,12 @@ const updateIndicator = () => {
 
 const setActive = (index: number) => {
   activeIndex.value = index
-  router
-    .push({
-      name: configStore.menuItems[index].pathName,
-      params: { plateId: configStore.currentPlateId },
-    })
-    .then(() => {
-      updateIndicator()
-    })
+  postStore.nav.name = configStore.menuItems[index].pathName
+  router.push({
+    name: configStore.menuItems[index].pathName,
+    params: configStore.menuItems[index].params || {},
+  })
+  updateIndicator()
 }
 
 const updateActiveIndex = () => {
@@ -90,23 +84,14 @@ const updateActiveIndex = () => {
   )
   show.value = true
   activeIndex.value = index !== -1 ? index : 0
-  // 更新当前所选板块
-  configStore.currentPlate = {
-    name: configStore.menuItems[activeIndex.value].name,
-    pathName: configStore.menuItems[activeIndex.value].pathName,
-  }
   updateIndicator()
 }
 
-const isMenuItem = computed(() => {
-  return configStore.menuItems.some((item) => item.pathName === route.name)
-})
-
 // 初始化
 onMounted(() => {
+  postStore.nav.name = (route.name as string) || ''
   if (isMenuItem.value) {
     updateActiveIndex()
-    updateIndicator()
   } else {
     show.value = false
   }
@@ -123,7 +108,8 @@ watch(
     } else {
       show.value = false
     }
-  }
+  },
+  { immediate: true }
 )
 
 // 监听窗口变化

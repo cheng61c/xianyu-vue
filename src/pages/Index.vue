@@ -1,6 +1,6 @@
 <template>
-  <PcIndex />
-  <MobileIndex v-if="false" />
+  <PcIndex v-if="deviceStore.device == 2" />
+  <MobileIndex v-else />
 </template>
 
 <script setup lang="ts">
@@ -14,6 +14,9 @@ import PcIndex from './pc/PcIndex.vue'
 import MobileIndex from './mobile/MobileIndex.vue'
 import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
+
+import { useDeviceStore } from '@/stores/global/deviceStore'
+const deviceStore = useDeviceStore()
 
 const login = async () => {
   userApi
