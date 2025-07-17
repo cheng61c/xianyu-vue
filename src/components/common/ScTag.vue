@@ -7,7 +7,7 @@
       <component :is="icon" :size="iconSize" />
     </template>
 
-    <span><slot /></span>
+    <slot />
     <slot name="endIcon" />
   </div>
 </template>
@@ -47,7 +47,7 @@ const props = defineProps({
 })
 
 const sizeClass = {
-  xs: 'text-xs px-1 py-0.5 min-w-8',
+  xs: 'text-xs px-1.5 py-1 h-4',
   sm: 'text-sm px-1.5 py-0.5',
   md: 'text-base px-2 py-1',
   lg: 'text-lg px-2 py-1',
@@ -69,8 +69,8 @@ const Style = computed(() => {
       }
     case 'info':
       return {
-        color: 'var(--color-info-content)',
-        backgroundColor: 'var(--color-info)',
+        color: 'var(--color-active-content)',
+        backgroundColor: 'var(--color-active)',
       }
     default:
       return {

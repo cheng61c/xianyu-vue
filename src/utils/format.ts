@@ -44,6 +44,14 @@ export const formatTime = (value: string | number | Date) => {
 
   // 补零
   const pad = (n: number) => n.toString().padStart(2, '0')
+  console.log(
+    'in',
+    value,
+    'out',
+    year === new Date().getFullYear()
+      ? `${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
+      : `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
+  )
 
   return year === new Date().getFullYear()
     ? `${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`

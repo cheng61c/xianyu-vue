@@ -18,8 +18,8 @@
 
   /* 自定义颜色 */
   --color-green: #1ec041;
-  --color-pink: #fce7f3; /* 粉色 */
-  --color-pink-content: #e60076; /* 粉色内容文本 */
+  --color-pink: #e60076; /* 粉色 */
+  --color-pink-content: #fce7f3; /* 粉色内容文本 */
   --color-gray-200: #dde0e0; /* 骨架屏背景 */
 
   /* 其他效果修改 */
@@ -47,8 +47,8 @@
 
     /* 特定颜色修改 */
     --color-green: #35dc5a; /* 绿色 */
-    --color-pink: #fce7f3; /* 粉色 */
-    --color-pink-content: #e60076; /* 粉色内容文本 */
+    --color-pink: #e60076; /* 粉色 */
+    --color-pink-content: #fce7f3; /* 粉色内容文本 */
     --color-gray-200: #424a53; /* 骨架屏背景 */
 
     /* 其他效果修改 */

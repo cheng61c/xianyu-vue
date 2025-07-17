@@ -1,12 +1,21 @@
-export declare interface MessageItem {
-  send: {
-    headImg: string
-    nickname: string
-  }
+import type { UserType } from './user'
+
+export declare interface MessageType {
+  id: number
+  receiveId: number
+  type: number
+  sendId: number
+  postId: number
+  commentId: number
+  commentContent: number
   content: string
-  updatedAt: Date | string
+  readAt: number
+  createdAt: string
+  updatedAt: string
+  send: UserType
+  receive: UserType
   post: {
+    id: number
     title: string
   }
-  type: number
 }

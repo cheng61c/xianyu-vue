@@ -1,40 +1,13 @@
 <template>
-  <Card class="comment-container mx-auto">
-    <!-- 评论输入框 -->
-    <div class="comment-input flex items-start gap-3 mb-6">
-      <Avatar
-        :src="userStore.userInfo.headImg"
-        :alt="userStore.userInfo.nickname"
-        :size="40"
-        class="flex-shrink-0" />
-      <div class="flex-1">
-        <CommentInput @submit="replay" />
-      </div>
-    </div>
-
+  <div>
     <!-- 评论排序选项 -->
-    <div
-      class="flex justify-between items-center border-b border-gray mb-4 pb-2">
-      <div class="comment-sort flex items-center">
-        <span class="mr-3">排序方式：</span>
-        <ScButton
-          v-for="sort in sortOptions"
-          :key="sort.value"
-          class="px-3 py-1 mr-2 rounded-md"
-          :activation="currentSort === sort.value"
-          :icon="sort.icon"
-          Border
-          @click="setSort(sort.value)">
-          {{ sort.label }}
-        </ScButton>
-      </div>
-      <div>
-        <span>总评论: {{ commentsPage.total }}</span>
-      </div>
+    <div class="flex justify-between items-center border-gray pb-4">
+      <span class="text-lg"> 评论 ({{ commentsPage.total }})</span>
+      <ScButton :icon="ArrowDownWideNarrow"> 排序方式 </ScButton>
     </div>
 
     <!-- 评论列表 -->
-    <div class="space-y-5">
+    <div class="space-y-4">
       <!-- 单条评论 -->
       <div v-for="comment in comments" :key="comment.id">
         <div class="flex items-start gap-3">
@@ -43,33 +16,33 @@
             :src="comment.author.headImg"
             :alt="comment.author.nickname"
             :size="40"
-            class="flex-shrink-0" />
+            class="flex-shrink-0 mt-1" />
 
           <!-- 评论内容 -->
           <div class="flex-1 group/one">
             <div class="flex items-center mb-1">
-              <span class="font-medium mr-2">
-                {{ comment.author.nickname }}
-              </span>
-
-              <ScTag
-                v-if="comment.author.id == postData?.author.id"
-                size="sm"
-                bgClass="bg-error text-pink-content"
-                class="text-xs px-1 rounded">
-                帖主
-              </ScTag>
-              <span
-                class="text-gray-content text-xs ml-2"
-                @click="currentPopupBox = `${comment.id}`">
-                {{ comment.createdAt }}
-              </span>
+              <div>
+                <div class="flex gap-1 items-center">
+                  <span>{{ comment.author.nickname }}</span>
+                  <ScTag
+                    v-if="comment.author.id == postData?.author.id"
+                    size="xs"
+                    bgClass="bg-error text-pink-content">
+                    帖主
+                  </ScTag>
+                </div>
+                <p
+                  class="text-gray-content text-xs"
+                  @click="currentPopupBox = `${comment.id}`">
+                  {{ comment.createdAt }}
+                </p>
+              </div>
 
               <div
                 class="flex flex-1 justify-end"
                 @click="currentPopupBox = `${comment.id}`">
                 <PopupBox
-                  position="bottom"
+                  position="left"
                   noActivation
                   noPd
                   class="transition-opacity"
@@ -124,27 +97,26 @@
                     :src="reply.author.headImg"
                     :alt="reply.author.nickname"
                     :size="32"
-                    class="flex-shrink-0" />
+                    class="flex-shrink-0 mt-1" />
 
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
-                      <span
-                        class="font-medium mr-2"
-                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
-                        {{ reply.author.nickname }}
-                      </span>
-                      <ScTag
-                        v-if="reply.author.id == postData?.author.id"
-                        size="sm"
-                        bgClass="bg-error text-pink-content"
-                        class="text-xs px-1 rounded">
-                        帖主
-                      </ScTag>
-                      <span
-                        class="text-gray-content text-xs ml-2"
-                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
-                        {{ reply.createdAt }}
-                      </span>
+                      <div>
+                        <div class="flex gap-1 items-center">
+                          <span>{{ comment.author.nickname }}</span>
+                          <ScTag
+                            v-if="comment.author.id == postData?.author.id"
+                            size="xs"
+                            bgClass="bg-error text-pink-content">
+                            帖主
+                          </ScTag>
+                        </div>
+                        <p
+                          class="text-gray-content text-xs"
+                          @click="currentPopupBox = `${comment.id}`">
+                          {{ comment.createdAt }}
+                        </p>
+                      </div>
 
                       <div
                         class="flex flex-1 justify-end"
@@ -235,24 +207,28 @@
         {{ currentLoadButtonText }}
       </ScButton>
     </div>
+  </div>
 
-    <ScModal v-model="imageModal">
-      <div class="relative w-[90vw] h-[90vh] overflow-hidden">
-        <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
-        <button
-          class="absolute z-[10] top-[5rem] right-[5rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
-          @click="imageModal = false">
-          <X class="mx-auto" />
-        </button>
-      </div>
-    </ScModal>
-  </Card>
+  <ScModal v-model="imageModal">
+    <div class="relative w-[90vw] h-[90vh] overflow-hidden">
+      <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
+      <button
+        class="absolute z-[10] top-[5rem] right-[5rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
+        @click="imageModal = false">
+        <X class="mx-auto" />
+      </button>
+    </div>
+  </ScModal>
+
+  <!-- 评论输入框 -->
+  <div class="absolute bottom-0 left-0 right-0 bg-background flex">
+    <CommentInput @submit="replay" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import Avatar from '@/components/common/Avatar.vue'
-import Card from '@/components/common/Card.vue'
 import type { Post } from '@/types/Post'
 import ScButton from '@/components/common/ScButton.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
@@ -260,9 +236,9 @@ import {
   ArrowDown,
   EllipsisVertical,
   ArrowUp,
-  ArrowDownWideNarrow,
-  ArrowUpNarrowWide,
+  // ArrowUpNarrowWide,
   X,
+  ArrowDownWideNarrow,
 } from 'lucide-vue-next'
 import ScTag from '@/components/common/ScTag.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
@@ -270,9 +246,9 @@ import { commentApi } from '@/apis'
 import type { CommentType, SendCommentDto } from '@/types/comment'
 import { formatLink, formatTime } from '@/utils/format'
 import { useToast } from 'vue-toastification'
-import CommentReplyButton from './CommentReplyButton.vue'
-import CommentMenu from './CommentMenu.vue'
-import CommentInput from './CommentInput.vue'
+import CommentReplyButton from './MobileCommentReplyButton.vue'
+import CommentMenu from './MobileCommentMenu.vue'
+import CommentInput from './MobileCommentInput.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 
@@ -289,12 +265,12 @@ const imageModal = ref(false) // 图片查看弹窗
 const imgurl = ref('')
 
 // 排序选项
-const sortOptions = ref([
-  { value: '1', label: '时间降序', icon: ArrowDownWideNarrow },
-  { value: '2', label: '时间升序', icon: ArrowUpNarrowWide },
-  { value: '3', label: '点赞降序', icon: ArrowDownWideNarrow },
-  { value: '4', label: '点赞升序', icon: ArrowUpNarrowWide },
-])
+// const sortOptions = ref([
+//   { value: '1', label: '时间降序', icon: ArrowDownWideNarrow },
+//   { value: '2', label: '时间升序', icon: ArrowUpNarrowWide },
+//   { value: '3', label: '点赞降序', icon: ArrowDownWideNarrow },
+//   { value: '4', label: '点赞升序', icon: ArrowUpNarrowWide },
+// ])
 const currentSort = ref('1')
 
 const currentPopupBox = ref('')
@@ -318,11 +294,11 @@ const openImg = (img: string) => {
   imgurl.value = img
 }
 
-const setSort = (value: string) => {
-  currentSort.value = value
-  commentsPage.value.page = 1 // 重置页码
-  getcomments(commentsPage.value.page)
-}
+// const setSort = (value: string) => {
+//   currentSort.value = value
+//   commentsPage.value.page = 1 // 重置页码
+//   getcomments(commentsPage.value.page)
+// }
 
 const getcomments = (page: number) => {
   if (props.postData == null) return

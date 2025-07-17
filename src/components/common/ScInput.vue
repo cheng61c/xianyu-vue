@@ -8,7 +8,7 @@
       :placeholder="placeholder"
       :maxlength="maxlength"
       :class="[
-        'w-full px-4 py-2 rounded-md border transition-colors',
+        'w-full px-4 py-1.5 rounded-md border transition-colors',
         'focus:outline-none focus:ring-1 focus:border-opacity-70',
         borderColor,
         focusBorderColor,

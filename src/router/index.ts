@@ -34,17 +34,29 @@ const routes = [
       {
         path: 'postDetails/:postId',
         name: 'postDetails',
-        component: () => import('@/pages/pc/post/PostDetails.vue'),
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/post/MobilePostDetails.vue')
+            : import('@/pages/pc/post/PostDetails.vue')
+        },
       },
       {
         path: 'publish/:postId?',
         name: 'publish',
-        component: () => import('@/pages/pc/publish/PublishIndex.vue'),
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/publish/MobilePublishIndex.vue')
+            : import('@/pages/pc/publish/PublishIndex.vue')
+        },
       },
       {
         path: 'publishResource/:postId?',
         name: 'publishResource',
-        component: () => import('@/pages/pc/publish/PublishIndex.vue'),
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/publish/MobilePublishIndex.vue')
+            : import('@/pages/pc/publish/PublishIndex.vue')
+        },
       },
       {
         path: 'message',
