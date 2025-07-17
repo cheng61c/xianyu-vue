@@ -9,7 +9,7 @@
   </Card>
 
   <ScModal v-model="reportModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-6 w-[90vw]">
       <h3 class="text-xl mb-4">举报评论</h3>
       <div>你确定要举报此评论吗？请提供举报理由，我们会尽快处理。</div>
       <ScInput

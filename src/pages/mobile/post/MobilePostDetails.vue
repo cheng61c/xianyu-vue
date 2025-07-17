@@ -47,10 +47,10 @@
           <Dependencies :postData="postData" />
 
           <!-- 发布版 -->
-          <Releases :postData="postData" />
+          <MobileReleases :postData="postData" />
 
           <!-- 评分 -->
-          <Score
+          <MobileScore
             v-if="postData && postData.type == 2"
             :postId="postData?.id"
             class="mb-4" />
@@ -101,8 +101,8 @@ import ScButton from '@/components/common/ScButton.vue'
 import Dependencies from '@/components/pc/post/details/Dependencies.vue'
 import Avatar from '@/components/common/Avatar.vue'
 import ScRole from '@/components/common/ScRole.vue'
-import Releases from '@/components/pc/post/details/Releases.vue'
-import Score from '@/components/pc/post/details/score/Score.vue'
+import MobileReleases from '@/components/mobile/post/details/MobileReleases.vue'
+import MobileScore from '@/components/mobile/post/details/score/MobileScore.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { formatImageSrcsInHtml } from '@/utils/regex'

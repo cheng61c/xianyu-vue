@@ -122,7 +122,7 @@
                         class="flex flex-1 justify-end"
                         @click="currentPopupBox = `${comment.id}-${reply.id}`">
                         <PopupBox
-                          position="bottom"
+                          position="left"
                           noActivation
                           noPd
                           class="transition-opacity"
@@ -210,7 +210,7 @@
   </div>
 
   <ScModal v-model="imageModal">
-    <div class="relative w-[90vw] h-[90vh] overflow-hidden">
+    <div class="relative w-[100vw] h-[100dvh]">
       <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
       <button
         class="absolute z-[10] top-[5rem] right-[5rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
@@ -221,7 +221,7 @@
   </ScModal>
 
   <!-- 评论输入框 -->
-  <div class="absolute bottom-0 left-0 right-0 bg-background flex">
+  <div class="absolute bottom-0 left-0 right-0 bg-background flex w-full">
     <CommentInput @submit="replay" />
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <Card noCol class="overflow-hidden h-56">
-      <div class="mr-4 w-[32%] min-w-[20rem]">
+    <Card class="overflow-hidden">
+      <div class="">
         <div class="text-lg font-bold">资源评分</div>
         <div class="flex justify-center items-center gap-4">
           <div class="pr-8 flex flex-col">
@@ -30,56 +30,20 @@
           </div>
         </div>
       </div>
-
-      <div class="w-[67%]">
-        <div class="flex justify-between">
-          <span class="text-lg font-bold">最新评分</span>
-          <ScButton class="text-sm" @click="showModal = true" noBg noPd>
-            共 {{ scoreList.length }} 条评分
-            <template #endIcon>
-              <ArrowRight :size="18" />
-            </template>
-          </ScButton>
-        </div>
-        <div
-          v-if="scoreList.length"
-          class="flex flex-1 gap-2 p-1 overflow-x-auto rounded-md">
-          <Card
-            v-for="item in scoreList"
-            class="min-w-[14rem] h-full p-4 flex-shrink-0"
-            :key="item.id">
-            <div class="flex items-center gap-2">
-              <Avatar :src="item.author.headImg" />
-              <span class="">{{ item.author.nickname }}</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <ReadonlyRating
-                :value="item.score"
-                colorClass="bg-active"
-                size="xs" />
-              <span class="text-gray-content text-sm">
-                {{ item.createdAt }}
-              </span>
-            </div>
-            <div class="text-sm mb-2">
-              {{ item.content }}
-            </div>
-            <div class="text-sm flex flex-wrap gap-2 justify-between">
-              <p class="text-success">{{ item.likeCount }} 人觉得有用</p>
-              <p class="text-error">{{ item.badCount }} 人觉得没用</p>
-            </div>
-          </Card>
-        </div>
-        <div
-          v-if="scoreList.length === 0"
-          class="text-gray-content text-center py-4">
-          暂无评分
-        </div>
-      </div>
+      <ScButton
+        class="text-sm text-gray-content"
+        @click="showModal = true"
+        noBg
+        noPd>
+        共 {{ scoreList.length }} 条评分
+        <template #endIcon>
+          <ArrowRight :size="18" />
+        </template>
+      </ScButton>
     </Card>
 
     <ScModal v-model="showModal">
-      <Card class="gap-4 w-4xl h-full max-h-[80vh] overflow-y-auto">
+      <Card class="gap-4 h-full max-h-[90dvh] overflow-y-auto">
         <div class="flex justify-between items-center">
           <h3 class="text-lg font-semibold">评分详情</h3>
           <ScButton
@@ -103,35 +67,38 @@
           <CommentInput
             :post-id="props.postId"
             @submit="sendScore"
-            submitText="发表评分"
+            submitText="发表"
             placeholder="对该资源的评价是..." />
         </div>
 
         <div
           v-for="(score, index) in scoreList"
           :key="score.id"
-          class="border-t border-gray/80 py-2 flex">
-          <div class="mr-4">
+          class="border-gray/80 py-2 flex">
+          <div class="mr-4 pt-2">
             <Avatar :src="score.author.headImg" />
           </div>
           <div class="flex-1">
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-gray-content">
-                {{ score.author.nickname }}
-              </span>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <div class="mb-2">
+                <p>
+                  {{ score.author.nickname }}
+                </p>
+                <p class="text-gray text-sm">
+                  发布于 {{ score.createdAt }}
+                  {{
+                    score.updatedAt != score.createdAt
+                      ? `更新于 ${score.updatedAt}`
+                      : ''
+                  }}
+                </p>
+              </div>
               <ReadonlyRating
                 :value="score.score"
                 colorClass="bg-active"
                 size="xs" />
-              <span class="text-gray-content text-sm">
-                发布于 {{ score.createdAt }}
-                {{
-                  score.updatedAt != score.createdAt
-                    ? `更新于 ${score.updatedAt}`
-                    : ''
-                }}
-              </span>
             </div>
+
             <div class="mb-2">
               {{ score.content }}
             </div>
@@ -200,7 +167,7 @@ import Avatar from '@/components/common/Avatar.vue'
 import { ArrowRight, X } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'
-import CommentInput from '../comment/CommentInput.vue'
+import CommentInput from '../comment/MobileCommentInput.vue'
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
@@ -303,7 +270,13 @@ const getScoreSummary = () => {
     })
 }
 
-const sendScore = (content: string, image: string[]) => {
+const sendScore = (
+  content: string,
+  image: string[],
+  _commentId: any,
+  _toCommentId: any,
+  clearContent: () => void
+) => {
   if (!userStore.isLogin) {
     toast.error('请先登录')
     return
@@ -328,6 +301,7 @@ const sendScore = (content: string, image: string[]) => {
         getScoreList()
         getScoreSummary()
         scoreInput.value = 0 // 重置评分输入
+        clearContent()
       } else {
         toast.error(res.data.msg || '评分失败，请稍后再试')
       }

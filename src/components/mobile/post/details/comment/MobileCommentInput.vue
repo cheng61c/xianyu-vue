@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="w-full">
     <!-- 图片展示区 -->
     <div class="flex flex-wrap gap-3">
       <template v-for="(img, index) in imageList" :key="index">
@@ -21,13 +21,14 @@
       </template>
     </div>
     <div
-      class="comment-input flex justify-between items-center gap-1 w-full px-4 pb-4 pt-1 bg-background">
+      class="comment-input flex items-end gap-2 w-full px-4 pb-4 pt-1 bg-background">
       <!-- 上传图片按钮 -->
       <div v-if="noImg === false">
         <ScButton
           :icon="ImagePlus"
-          :icon-size="18"
-          Border
+          :icon-size="24"
+          class="text-sm mb-3 text-gray-content hover:text-active/80"
+          noPd
           @click="triggerFileInput" />
         <input
           ref="fileInput"
@@ -46,10 +47,17 @@
       <ScInput
         v-model="commentContent"
         :placeholder="placeholder"
-        :maxlength="500" />
+        :maxlength="500"
+        class="flex-1 h-full max-h-[10rem]"
+        :maxHeight="120"
+        :rows="1"
+        multiline />
 
       <!-- 提交按钮 -->
-      <ScButton @click="submitComment" activation class="hover:bg-active/60">
+      <ScButton
+        @click="submitComment"
+        activation
+        class="hover:bg-active/60 py-2 mb-1.5">
         {{ submitText }}
       </ScButton>
     </div>
@@ -133,6 +141,11 @@ const removeImage = (index: number) => {
   imageList.value.splice(index, 1)
 }
 
+const clearContent = () => {
+  commentContent.value = ''
+  imageList.value = []
+}
+
 const submitComment = () => {
   if (commentContent.value.trim() === '') {
     toast.error('评论内容不能为空')
@@ -148,10 +161,9 @@ const submitComment = () => {
     commentContent.value,
     image,
     props.commentId,
-    props.toCommentId
+    props.toCommentId,
+    clearContent
   )
-  commentContent.value = ''
-  imageList.value = []
 }
 </script>
 

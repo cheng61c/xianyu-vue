@@ -213,6 +213,10 @@ const submitVersiont = () => {
     return
   }
 
+  if (versionData.value.id == 0) {
+    delete versionData.value.id // 确保新建时不包含ID
+  }
+
   loader.value = true
 
   console.log('提交版本数据:', versionData.value.id)
