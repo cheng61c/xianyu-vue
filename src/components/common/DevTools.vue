@@ -120,7 +120,3 @@ const deleteAnnouncement = () => {
   toast.success('公告已读状态已清除')
 }
 </script>
-
-<style scoped>
-/* 自定义样式（如果需要的话） */
-</style>

@@ -186,5 +186,3 @@ defineExpose({
   clearFiles,
 })
 </script>
-
-<style scoped></style>

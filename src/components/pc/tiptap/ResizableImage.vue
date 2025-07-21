@@ -94,7 +94,7 @@ onUnmounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .resizable-image__handle {
   position: absolute;
   right: -8px;
