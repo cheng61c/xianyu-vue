@@ -48,20 +48,31 @@ export const useConfigStore = defineStore('config', {
   actions: {
     /** 运行时加载配置 */
     async loadRuntimeConfig() {
-      try {
-        const configPath = '../../../config.json'
-        let res
+      // 检查当前域名是否为本地域名或本地ip
+      const isLocal =
+        location.hostname === 'localhost' ||
+        location.hostname === '127.0.0.1' ||
+        location.hostname === '::1' ||
+        /^192\.168\.\d+\.\d+$/.test(location.hostname) ||
+        /^10\.\d+\.\d+\.\d+$/.test(location.hostname) ||
+        /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(location.hostname)
+
+      if (!isLocal) {
         try {
-          // 判断文件是否存在
-          await import(configPath)
-          res = await import(configPath)
-        } catch (e) {
-          return
+          const configPath = '../../../config.json'
+          let res
+          try {
+            // 判断文件是否存在
+            await import(configPath)
+            res = await import(configPath)
+          } catch (e) {
+            return
+          }
+          // 将加载到的 config 合并进当前 state
+          Object.assign(this.$state, res.default)
+        } catch (err) {
+          console.warn('无法加载 config.json，使用默认配置', err)
         }
-        // 将加载到的 config 合并进当前 state
-        Object.assign(this.$state, res.default)
-      } catch (err) {
-        console.warn('无法加载 config.json，使用默认配置', err)
       }
     },
   },
