@@ -55,14 +55,14 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 import { verifyPermissions } from '@/utils/verify'
 import { useDeviceStore } from '@/stores/global/deviceStore'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 
 const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const toast = useToast()
 
 const userStore = useUserStore()
-const router = useRouter()
+// const router = useRouter()
 
 const logout = () => {
   userStore.isLogin = false
