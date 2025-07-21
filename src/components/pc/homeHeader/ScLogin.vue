@@ -14,22 +14,42 @@
     <ScUserCard />
   </div>
   <ScModal v-model="showModal">
-    <Card noPg class="max-w-[48rem] h-[36rem]">
+    <Card
+      noPg
+      :class="{
+        'w-3xl h-[36rem]': deviceStore.device === 2,
+        'h-[100dvh] w-full': deviceStore.device === 1,
+      }">
       <div class="flex h-full">
-        <div class="flex-1">
+        <div v-if="deviceStore.device == 2" class="flex-1">
           <img
             src="/public/85120626_p0_master1200.jpg"
             alt="头图"
             class="w-full h-full object-cover rounded-lg" />
         </div>
 
-        <div class="flex items-center justify-center">
+        <div
+          :class="{
+            flex: deviceStore.device === 2,
+            '': deviceStore.device === 1,
+          }">
           <!-- 登录 -->
           <div
             v-if="modalType === 'login'"
             class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
             <div class="flex justify-between items-end">
-              <h3 class="text-2xl font-bold">登录</h3>
+              <ScButton
+                noPd
+                @click="deviceStore.device === 1 ? offModal() : null"
+                :icon="deviceStore.device === 1 ? ChevronLeft : null"
+                :iconSize="24"
+                class="font-bold"
+                :class="{
+                  'text-2xl': deviceStore.device === 2,
+                  'text-lg': deviceStore.device === 1,
+                }">
+                登录
+              </ScButton>
               <div class="label">
                 <span> 还没有账号？ </span>
                 <span
@@ -75,12 +95,21 @@
             </form>
 
             <div class="modal-action mt-2">
-              <ScButton Border class="px-4" @click="offModal">取消</ScButton>
+              <ScButton
+                v-if="deviceStore.device === 2"
+                Border
+                class="px-4"
+                @click="offModal">
+                取消
+              </ScButton>
 
               <ScButton
                 Border
                 activation
                 class="px-4"
+                :class="{
+                  'w-full': deviceStore.device === 1,
+                }"
                 :loading="buttonLoading"
                 @click="handleLogin">
                 {{ $t('login') }}
@@ -93,7 +122,18 @@
             v-if="modalType === 'register'"
             class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
             <div class="flex justify-between items-end">
-              <h3 class="text-2xl font-bold">注册</h3>
+              <ScButton
+                noPd
+                @click="deviceStore.device === 1 ? offModal() : null"
+                :icon="deviceStore.device === 1 ? ChevronLeft : null"
+                :iconSize="24"
+                class="font-bold"
+                :class="{
+                  'text-2xl': deviceStore.device === 2,
+                  'text-lg': deviceStore.device === 1,
+                }">
+                注册
+              </ScButton>
               <div class="label">
                 <span> 已经有账号？ </span>
                 <span
@@ -107,17 +147,19 @@
             <form class="flex flex-col" @submit.prevent="handleRregister">
               <div class="w-full mb-4">
                 <label class="label py-1">用户名</label>
+                <label class="label pl-2">(用于登录)</label>
                 <ScInput
                   type="text"
-                  placeholder="邮箱或用户名"
+                  placeholder="请输入用户名"
                   v-model="registerForm.account" />
               </div>
 
               <div class="w-full mb-4">
                 <label class="label py-1">邮箱</label>
+                <label class="label pl-2">(用于登录和接收验证码)</label>
                 <ScInput
                   type="email"
-                  placeholder="邮箱"
+                  placeholder="请输入邮箱"
                   v-model="registerForm.email" />
               </div>
 
@@ -125,7 +167,7 @@
                 <label class="label py-1">密码</label>
                 <ScInput
                   type="password"
-                  placeholder="密码"
+                  placeholder="请输入密码"
                   v-model="registerForm.password" />
               </div>
 
@@ -134,12 +176,12 @@
                 <div class="flex gap-2 items-center">
                   <ScInput
                     type="text"
-                    placeholder="请输入验证码"
+                    placeholder="请输入邮箱验证码"
                     v-model="registerForm.captcha" />
 
                   <ScButton
                     Border
-                    class="w-44"
+                    class="w-34"
                     :disabled="isSendCode"
                     @click="getCaptcha(registerForm.email)"
                     type="button">
@@ -151,12 +193,21 @@
 
             <div class="modal-action mt-2">
               <!-- if there is a button in form, it will close the modal -->
-              <ScButton Border class="px-4" @click="offModal">取消</ScButton>
+              <ScButton
+                v-if="deviceStore.device === 2"
+                Border
+                class="px-4"
+                @click="offModal">
+                取消
+              </ScButton>
 
               <ScButton
                 Border
                 activation
                 class="px-4"
+                :class="{
+                  'w-full': deviceStore.device === 1,
+                }"
                 :loading="buttonLoading"
                 @click="handleRregister">
                 {{ $t('register') }}
@@ -169,7 +220,18 @@
             v-if="modalType === 'reset_password'"
             class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
             <div class="flex justify-between items-end">
-              <h3 class="text-2xl font-bold">重置密码</h3>
+              <ScButton
+                noPd
+                @click="deviceStore.device === 1 ? offModal() : null"
+                :icon="deviceStore.device === 1 ? ChevronLeft : null"
+                :iconSize="24"
+                class="font-bold"
+                :class="{
+                  'text-2xl': deviceStore.device === 2,
+                  'text-lg': deviceStore.device === 1,
+                }">
+                重置密码
+              </ScButton>
               <div class="label">
                 <span> 想起来了？ </span>
                 <span
@@ -219,12 +281,21 @@
 
             <div class="modal-action mt-2">
               <!-- if there is a button in form, it will close the modal -->
-              <ScButton Border class="px-4" @click="offModal">取消</ScButton>
+              <ScButton
+                v-if="deviceStore.device === 2"
+                Border
+                class="px-4"
+                @click="offModal">
+                取消
+              </ScButton>
 
               <ScButton
                 Border
                 activation
                 class="px-4"
+                :class="{
+                  'w-full': deviceStore.device === 1,
+                }"
                 :loading="buttonLoading"
                 @click="handleReset">
                 确认重置
@@ -249,7 +320,10 @@ import ScUserCard from './ScUserCard.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { formatLink } from '@/utils/format'
+import { useDeviceStore } from '@/stores/global/deviceStore'
+import { ChevronLeft } from 'lucide-vue-next'
 
+const deviceStore = useDeviceStore()
 const showModal = ref(false)
 const buttonLoading = ref(false)
 const isSendCode = ref(false)

@@ -83,11 +83,11 @@ const logout = () => {
 }
 
 const togglePopup = () => {
-  if (deviceStore.device == 1) {
-    router.push({ name: 'user' })
-    closePopup()
-    return
-  }
+  // if (deviceStore.device == 1) {
+  //   router.push({ name: 'user' })
+  //   closePopup()
+  //   return
+  // }
   isOpen.value = !isOpen.value
 }
 

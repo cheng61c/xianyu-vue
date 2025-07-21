@@ -57,13 +57,17 @@ const setPage = (page: number) => {
   getPost(+plateId.value, route)
 }
 
-const handleSearch = (searchText: string) => {
+const handleSearch = (
+  searchText: string,
+  click: boolean,
+  fileTypes: string
+) => {
   postStore.searchText = searchText
   postStore.isSearch = true
   postStore.postPage.page = 1
   postStore.postPage.total = 0
   postStore.post = []
-  search(searchText, true, '0', route)
+  search(searchText, click, fileTypes, route)
 }
 
 watch(

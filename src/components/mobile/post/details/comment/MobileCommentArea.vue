@@ -213,7 +213,7 @@
     <div class="relative w-[100vw] h-[100dvh]">
       <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
       <button
-        class="absolute z-[10] top-[5rem] right-[5rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
+        class="absolute z-[10] top-[1rem] right-[1rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
         @click="imageModal = false">
         <X class="mx-auto" />
       </button>

@@ -231,7 +231,7 @@
   <ScModal v-model="logOffModal">
     <Card class="p-6 w-2xl">
       <h3 class="text-xl mb-4">强制下线</h3>
-      <div class="flex gap-2 flex-wrap">
+      <div class="flex gap-2 flex-wrap items-center">
         目标账号:
         {{ userList[currentUser].nickname }}
         <ScTag size="xs">uid: {{ userList[currentUser].id }}</ScTag>

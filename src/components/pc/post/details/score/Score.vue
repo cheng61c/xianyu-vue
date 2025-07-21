@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card noCol class="overflow-hidden h-56">
-      <div class="mr-4 w-[32%] min-w-[20rem]">
+      <div class="mr-4 w-[20rem] min-w-[20rem]">
         <div class="text-lg font-bold">资源评分</div>
         <div class="flex justify-center items-center gap-4">
           <div class="pr-8 flex flex-col">
@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <div class="w-[67%]">
+      <div class="flex-1">
         <div class="flex justify-between">
           <span class="text-lg font-bold">最新评分</span>
           <ScButton class="text-sm" @click="showModal = true" noBg noPd>

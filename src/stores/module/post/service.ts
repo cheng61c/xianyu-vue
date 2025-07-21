@@ -4,7 +4,7 @@ import { useConfigStore } from '@/stores/global/configStore'
 import { usePostStore } from '@/stores/module/post/postStore'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
-import { formatTime } from '@/utils/format'
+import { formatNumber, formatTime } from '@/utils/format'
 import { extractImageSrcs, formatImageSrcsInHtml } from '@/utils/regex'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
@@ -84,6 +84,9 @@ export const getPost = (
         item.content = formatImageSrcsInHtml(item.content)
         item.createdAt = formatTime(item.createdAt)
         item.updatedAt = formatTime(item.updatedAt)
+        item.likeCount = formatNumber(item.likeCount)
+        item.commentCount = formatNumber(item.commentCount)
+        item.views = formatNumber(item.views)
         return item
       })
       postStore.postPage.page = res.data.page

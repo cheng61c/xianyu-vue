@@ -10,7 +10,7 @@ export declare interface Post {
   id: number
   title: string
   content: string
-  views: number
+  views: string
   cover: string
   images?: string[]
   visible: number

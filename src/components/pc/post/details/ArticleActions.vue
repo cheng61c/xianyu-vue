@@ -11,7 +11,7 @@
           isCol
           :icon="ThumbsUp"
           :icon-size="24"
-          :class="{ ' text-error': postData.isLiked }"
+          :class="{ ' text-like': postData.isLiked }"
           @click="likePost(postData.id)">
           {{ postData.likeCount }}
         </ScButton>
@@ -21,7 +21,7 @@
           isCol
           :icon="ThumbsDown"
           :icon-size="24"
-          :class="{ ' text-error': postData.isBaded }"
+          :class="{ ' text-bad': postData.isBaded }"
           @click="badPost(postData.id)">
           {{ postData.badCount }}
         </ScButton>
