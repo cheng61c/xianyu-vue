@@ -13,7 +13,7 @@
       <!-- 内容面板 -->
       <div
         ref="drawerRef"
-        class="pointer-events-auto transition-transform transform fixed shadow-xl overflow-auto bg-background"
+        class="pointer-events-auto transition-transform transform fixed shadow-xl overflow-auto"
         :class="[
           position === 'bottom'
             ? 'left-0 bottom-0 w-full max-h-[90%]'

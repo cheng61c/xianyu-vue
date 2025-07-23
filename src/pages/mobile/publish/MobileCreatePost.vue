@@ -66,7 +66,7 @@
 
       <div
         v-if="mode === 'post' && verifyPermissions([1, 2, 6, 9])"
-        class="flex items-center gap-2">
+        class="flex items-center gap-2 flex-wrap">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="置顶选项，用于选择帖子在社区中的显示方式，置顶的帖子会在列表中优先显示，横幅公告和弹窗公告会在站内有特殊提示">

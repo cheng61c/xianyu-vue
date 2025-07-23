@@ -49,6 +49,10 @@ import ScButton from '@/components/common/ScButton.vue'
 import TipTapUploadImage from './TipTapUploadImage.vue'
 import { HeadingWithId } from '@/extensions/HeadingWithId'
 
+import { useDeviceStore } from '@/stores/global/deviceStore'
+
+const deviceStore = useDeviceStore()
+
 const props = defineProps({
   modelValue: {
     type: String,
@@ -217,7 +221,12 @@ function addImg(url: string) {
 </script>
 
 <template>
-  <Card>
+  <div
+    class="w-full overflow-x-hidden"
+    :class="{
+      'p-4 shadow-xl rounded-xl border border-gray/40':
+        deviceStore.device === 2,
+    }">
     <div class="flex justify-center items-center flex-wrap gap-1">
       <!-- 撤销 -->
       <ScButton
@@ -563,5 +572,5 @@ function addImg(url: string) {
     </div>
 
     <editor-content :editor="editor" class="tiptapEditor" />
-  </Card>
+  </div>
 </template>

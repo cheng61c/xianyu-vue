@@ -10,8 +10,8 @@
     <ImageIcon />
   </ScButton>
   <div
-    v-if="isOpen"
-    class="absolute z-50 w-xl top-[110%] translate-x-[-50%]"
+    v-if="isOpen && deviceStore.device === 2"
+    class="absolute z-50 w-xl max-w-[100dvw] top-[110%] translate-x-[-50%]"
     ref="ImageUploadCard">
     <Card class="p-6">
       <!-- 蚂蚁线框 -->
@@ -59,17 +59,80 @@
       </div>
     </Card>
   </div>
+
+  <template v-else>
+    <ScDrawer v-model="isOpen" position="bottom">
+      <div class="bg-background w-full p-4 rounded-t-xl">
+        <div class="flex justify-between">
+          <h3 class="text-xl">上传图片</h3>
+          <ScButton
+            noPd
+            @click="closePopup"
+            :icon="ChevronDown"
+            :iconSize="20"
+            class="text-gray-500 hover:text-gray-800" />
+        </div>
+        <!-- 蚂蚁线框 -->
+        <div class="text-gray-500 mx-auto">点击 + 上传</div>
+        <div class="text-gray-500 mb-2 mx-auto">
+          上传图片后需要点击图片才能将图片添加到编辑器中
+        </div>
+        <div
+          class="border-gray rounded-xl text-center cursor-pointer hover:border-blue-400 transition"
+          @dragover.prevent
+          @drop.prevent="handleDrop"
+          @click="triggerFileInput">
+          <input
+            ref="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            class="hidden"
+            @change="handleFileChange" />
+          <!-- 图片预览列表 -->
+          <div class="mt-6 grid grid-cols-3 md:grid-cols-4 gap-4">
+            <div
+              v-for="(img, index) in images"
+              :key="index"
+              class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
+              @click.stop>
+              <ScImage
+                :src="img.preview"
+                alt="预览图"
+                class="w-28 h-28 object-cover"
+                @click.stop="addImg(img)" />
+              <!-- 删除按钮 -->
+              <button
+                @click.stop="removeImage(index)"
+                class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow"
+                title="删除图片">
+                <X />
+              </button>
+            </div>
+            <div
+              class="relative w-28 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer">
+              <Plus :size="36" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </ScDrawer>
+  </template>
 </template>
 
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import Card from '@/components/common/Card.vue'
-import { Plus, X, ImageIcon } from 'lucide-vue-next'
+import { Plus, X, ImageIcon, ChevronDown } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'
 import { useToast } from 'vue-toastification'
 import ScImage from '@/components/common/ScImage.vue'
+import { useDeviceStore } from '@/stores/global/deviceStore'
+import ScDrawer from '@/components/common/ScDrawer.vue'
+
+const deviceStore = useDeviceStore()
 const toast = useToast()
 const emit = defineEmits(['addImg'])
 
@@ -83,6 +146,18 @@ const images = ref<{ file: File; preview: string }[]>([])
 // 触发文件选择器
 const triggerFileInput = () => {
   fileInput.value?.click()
+}
+
+// 点击添加图片
+const addImg = (img: { file: File; preview: string }) => {
+  if (uploading.value) {
+    toast.error('正在上传，请稍后再试')
+    return
+  }
+  if (deviceStore.device === 1) {
+    isOpen.value = false
+  }
+  emit('addImg', img.preview)
 }
 
 // 处理选择图片
