@@ -1,5 +1,5 @@
 <template>
-  <div class="overflow-auto w-full h-[100dvh]">
+  <div class="overflow-y-auto overflow-x-hidden w-full h-[100dvh]">
     <!-- 内容列表 - 这个区域现在会填充剩余空间 -->
     <RouterView />
   </div>
