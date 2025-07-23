@@ -42,7 +42,7 @@ import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
 import { createLowlight } from 'lowlight'
 import csharp from 'highlight.js/lib/languages/csharp'
 
-import Card from '@/components/common/Card.vue'
+// import Card from '@/components/common/Card.vue'
 import ScDivider from '@/components/common/ScDivider.vue'
 import ScDropListButtons from '@/components/common/ScDropListButtons.vue'
 import ScButton from '@/components/common/ScButton.vue'
