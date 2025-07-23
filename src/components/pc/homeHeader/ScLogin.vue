@@ -1,14 +1,23 @@
 <template>
   <!-- Open the modal using ID.showModal() method -->
   <div
-    v-if="!userStore.isLogin"
+    v-if="!userStore.isLogin && deviceStore.device === 2"
     class="flex gap-4 items-center justify-between px-3">
-    <ScButton noPadding @click="handleModalChange('login')">{{
-      $t('login')
-    }}</ScButton>
-    <ScButton noPadding @click="handleModalChange('register')">{{
-      $t('register')
-    }}</ScButton>
+    <ScButton noPadding @click="handleModalChange('login')">
+      {{ $t('login') }}
+    </ScButton>
+    <ScButton noPadding @click="handleModalChange('register')">
+      {{ $t('register') }}
+    </ScButton>
+  </div>
+  <div
+    v-if="!userStore.isLogin && deviceStore.device === 1"
+    class="flex gap-4 items-center justify-between px-3">
+    <ScButton
+      noPd
+      @click="handleModalChange('login')"
+      :icon="CircleUserRound"
+      :iconSize="20" />
   </div>
   <div v-else>
     <ScUserCard />
@@ -321,7 +330,8 @@ import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { formatLink } from '@/utils/format'
 import { useDeviceStore } from '@/stores/global/deviceStore'
-import { ChevronLeft } from 'lucide-vue-next'
+import { ChevronLeft, CircleUserRound } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
 
 const deviceStore = useDeviceStore()
 const showModal = ref(false)
@@ -331,8 +341,9 @@ const sendCodeText = ref('获取验证码')
 const note = ref(false)
 
 const toast = useToast()
-
+const router = useRouter()
 const userStore = useUserStore()
+let routerGuard: (() => void) | null = null
 
 const loginForm = reactive({
   account: '',
@@ -376,6 +387,18 @@ const modalType = ref('login') // 'login' or 'register' or 'reset_password'
 const handleModalChange = (type: string) => {
   modalType.value = type
   showModal.value = true
+  // 往前面插入两条虚假记录
+  window.history.pushState(null, '#', document.URL)
+  window.history.pushState(null, '#', document.URL)
+
+  routerGuard = router.beforeEach((_to, _from, next) => {
+    if (showModal.value) {
+      offModal()
+      next(false)
+      return
+    }
+    next(false)
+  })
 }
 
 const getCaptcha = (email: string) => {
@@ -505,6 +528,10 @@ const handleReset = () => {
 
 const offModal = () => {
   showModal.value = false
+  if (routerGuard) {
+    routerGuard() // 移除路由守卫
+    routerGuard = null
+  }
 }
 
 onMounted(() => {

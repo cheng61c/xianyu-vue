@@ -1,5 +1,6 @@
 <template>
-  <div class="flex flex-col w-full space-y-4 pb-2">
+  <div
+    class="flex flex-col w-[100dvw] h-[100dvh] space-y-4 pb-2 overflow-y-auto">
     <div class="flex gap-2 items-center">
       <ScButton
         class=""
@@ -344,11 +345,22 @@
           {{ version.name }}
         </ScButton>
       </div>
+
+      <!-- 帖子内容 -->
+      <ScButton
+        v-if="deviceStore.device == 1"
+        @click="onTipTap"
+        Border
+        class="w-full">
+        编写文章
+      </ScButton>
     </div>
 
     <!-- 编辑器 -->
     <div v-if="postContent !== null">
-      <TipTap v-model="postContent" />
+      <template v-if="deviceStore.device == 2">
+        <TipTap v-model="postContent" />
+      </template>
     </div>
 
     <!-- 发布按钮 -->
@@ -363,6 +375,14 @@
       </ScButton>
     </div>
   </div>
+
+  <ScDrawer v-model="isOpen" position="bottom">
+    <div v-if="postContent !== null" class="bg-background rounded-t-lg">
+      <TipTap
+        v-model="postContent"
+        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+    </div>
+  </ScDrawer>
 </template>
 
 <script setup lang="ts">
@@ -388,11 +408,19 @@ import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { verifyPermissions } from '@/utils/verify'
 import { useUserStore } from '@/stores/module/user/userStore'
+import { useDeviceStore } from '@/stores/global/deviceStore'
+import ScDrawer from '@/components/common/ScDrawer.vue'
 
 const toast = useToast()
 const postStore = usePostStore()
 const configStore = useConfigStore()
 const userStore = useUserStore()
+const deviceStore = useDeviceStore()
+const isOpen = ref(false)
+
+const onTipTap = () => {
+  isOpen.value = true
+}
 
 const props = defineProps({
   post: {
@@ -664,6 +692,17 @@ onMounted(() => {
     if (data.code == 200) {
       versionList.value = data.data.filter((v: any) => v.type === 'online')
     }
+  })
+
+  document.addEventListener('deviceready', () => {
+    document.addEventListener(
+      'backbutton',
+      (e) => {
+        e.preventDefault()
+        onTipTap()
+      },
+      false
+    )
   })
 })
 

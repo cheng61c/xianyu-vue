@@ -5,7 +5,7 @@
     @click.stop="togglePopup()"
     :activation="isOpen"
     hoverable
-    class="relative p-2"
+    class="relative"
     noPd>
     <ImageIcon />
   </ScButton>
@@ -63,15 +63,7 @@
   <template v-else>
     <ScDrawer v-model="isOpen" position="bottom">
       <div class="bg-background w-full p-4 rounded-t-xl">
-        <div class="flex justify-between">
-          <h3 class="text-xl">上传图片</h3>
-          <ScButton
-            noPd
-            @click="closePopup"
-            :icon="ChevronDown"
-            :iconSize="20"
-            class="text-gray-500 hover:text-gray-800" />
-        </div>
+        <h3 class="text-xl">上传图片</h3>
         <!-- 蚂蚁线框 -->
         <div class="text-gray-500 mx-auto">点击 + 上传</div>
         <div class="text-gray-500 mb-2 mx-auto">
@@ -123,7 +115,7 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import Card from '@/components/common/Card.vue'
-import { Plus, X, ImageIcon, ChevronDown } from 'lucide-vue-next'
+import { Plus, X, ImageIcon } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'

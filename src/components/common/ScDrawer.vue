@@ -13,10 +13,10 @@
       <!-- 内容面板 -->
       <div
         ref="drawerRef"
-        class="pointer-events-auto transition-transform transform fixed shadow-xl overflow-auto"
+        class="pointer-events-auto transition-transform transform fixed shadow-xl"
         :class="[
           position === 'bottom'
-            ? 'left-0 bottom-0 w-full max-h-[90%]'
+            ? 'left-0 bottom-0 w-full max-h-[95%]'
             : position === 'left'
               ? 'left-0 top-0 h-full max-w-4/5'
               : 'right-0 top-0 h-full max-w-4/5',
@@ -29,8 +29,22 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref, watch } from 'vue'
+import { useDrawertore } from '@/stores/global/drawerStore'
+import {
+  defineProps,
+  defineEmits,
+  ref,
+  watch,
+  onMounted,
+  onUnmounted,
+} from 'vue'
+import { useRouter } from 'vue-router'
+// import { useToast } from 'vue-toastification'
 
+const drawertore = useDrawertore()
+const router = useRouter()
+// const toast = useToast()
+let routerGuard: (() => void) | null = null
 const props = defineProps<{
   modelValue: boolean
   position?: 'side' | 'bottom' | 'left'
@@ -53,9 +67,26 @@ const open = () => {
   requestAnimationFrame(() => {
     animationClass.value = ''
   })
+
+  drawertore.drawers.push({
+    close: off,
+    id: Symbol().toString(),
+  })
 }
 
 const close = () => {
+  if (drawertore.drawers.length === 0) {
+    off()
+    return
+  }
+  try {
+    drawertore.drawers[drawertore.drawers.length - 1].close()
+  } catch (error) {
+    console.error('关闭抽屉时发生错误:', error)
+  }
+  drawertore.drawers.pop()
+}
+const off = () => {
   emit('update:modelValue', false)
   animationClass.value = getTranslateClass('leave')
 
@@ -75,13 +106,35 @@ const getTranslateClass = (type: 'enter' | 'leave') => {
   return map[position] || 'translate-x-full'
 }
 
+onMounted(() => {
+  drawertore.drawers = []
+  routerGuard = router.beforeEach((_to, from, next) => {
+    if (from.name === 'publish' || from.name === 'publishResource') {
+      if (drawertore.drawers.length > 0) {
+        close()
+        next(false)
+        return
+      } else {
+        next()
+        drawertore.drawers = []
+      }
+    }
+    next()
+  })
+})
+
+onUnmounted(() => {
+  if (routerGuard) {
+    routerGuard()
+    routerGuard = null
+  }
+})
+
 watch(
   () => props.modelValue,
   (val) => {
     if (val) {
       open()
-    } else {
-      close()
     }
   },
   { immediate: true }
