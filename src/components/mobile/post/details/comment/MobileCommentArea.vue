@@ -349,9 +349,10 @@ const getcomments = (page: number) => {
 
 const replay = (
   content: string,
-  image?: string[],
-  commentId?: number,
-  toCommentId?: number
+  image: string[],
+  commentId: number,
+  toCommentId: number,
+  clearContent: () => void
 ) => {
   if (!userStore.isLogin) {
     toast.error('请先登录后再发表评论')
@@ -386,6 +387,7 @@ const replay = (
         replayContent.value = ''
         getcomments(1) // 重新获取评论列表
         toast.success('评论成功')
+        clearContent() // 清空输入框内容
       }
     })
     .catch((error) => {
