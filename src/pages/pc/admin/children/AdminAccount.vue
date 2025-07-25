@@ -4,28 +4,35 @@
       <Dropdown
         v-model="searchType"
         :options="searchTypeoptions"
-        placeholder="搜索 用户名"
+        ::placeholder="$t('b.sou-suo-yong-hu-ming')"
         class="w-40" />
-      <ScInput v-model="searchPostValue" placeholder="搜索" class="w-xs" />
-      <ScButton class="px-4" Border @click="search"> 搜索 </ScButton>
-      <ScButton class="px-4" Border @click="getUserList"> 刷新 </ScButton>
+      <ScInput
+        v-model="searchPostValue"
+        ::placeholder="$t('b.sou-suo')"
+        class="w-xs" />
+      <ScButton class="px-4" Border @click="search">
+        {{ $t('b.sou-suo') }}
+      </ScButton>
+      <ScButton class="px-4" Border @click="getUserList">
+        {{ $t('b.shua-xin') }}
+      </ScButton>
     </div>
     <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
-        <span>状态:</span>
+        <span>{{ $t('b.zhuang-tai') }}</span>
         <Dropdown
           v-model="searchStatus"
           :options="searchStatusOptions"
-          placeholder="全部"
+          ::placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
 
       <label class="flex items-center gap-2 w-full">
-        <span>角色:</span>
+        <span>{{ $t('b.jiao-se') }}</span>
         <Dropdown
           v-model="roleBar"
           :options="roleBarOptions"
-          placeholder="全部角色"
+          ::placeholder="$t('b.quan-bu-jiao-se')"
           class="flex-1" />
       </label>
     </div>
@@ -38,14 +45,14 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>昵称</th>
-            <th>用户名</th>
-            <th>邮箱</th>
-            <th>注册时间</th>
-            <th>最后登录时间</th>
-            <th>最后登录IP</th>
-            <th>状态</th>
-            <th>操作</th>
+            <th>{{ $t('f.ni-cheng') }}</th>
+            <th>{{ $t('f.yong-hu-ming') }}</th>
+            <th>{{ $t('f.you-xiang') }}</th>
+            <th>{{ $t('f.zhu-ce-shi-jian') }}</th>
+            <th>{{ $t('f.zui-hou-deng-lu-shi-jian') }}</th>
+            <th>{{ $t('f.zui-hou-deng-lu-ip') }}</th>
+            <th>{{ $t('f.zhuang-tai') }}</th>
+            <th>{{ $t('f.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -71,9 +78,11 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap min-w-20">
                 <ScTag v-if="user.disabled" size="xs" status="error">
-                  封禁
+                  {{ $t('b.feng-jin') }}
                 </ScTag>
-                <ScTag v-else size="xs" status="success"> 正常 </ScTag>
+                <ScTag v-else size="xs" status="success">
+                  {{ $t('b.zheng-chang') }}
+                </ScTag>
               </div>
             </td>
 
@@ -82,25 +91,25 @@
                 <ScButton
                   @click="banned(index)"
                   class="border border-error text-error">
-                  封禁
+                  {{ $t('b.feng-jin') }}
                 </ScButton>
 
                 <ScButton @click="updateUser(index)" Border>
-                  修改信息
+                  {{ $t('b.xiu-gai-xin-xi') }}
                 </ScButton>
 
                 <ScButton
                   v-if="verifyPermissions([1, 2])"
                   @click="updateUserRole(index)"
                   Border>
-                  设置角色
+                  {{ $t('b.she-zhi-jiao-se') }}
                 </ScButton>
 
                 <ScButton
                   v-if="verifyPermissions([1, 2])"
                   @click="logOff(index)"
                   Border>
-                  强制下线
+                  {{ $t('b.qiang-zhi-xia-xian') }}
                 </ScButton>
               </div>
             </td>
@@ -116,25 +125,24 @@
     :total-items="userPage.total"
     :page-size="userPage.limit"
     @page-change="toPage" />
-
   <EmptyState
     v-else
-    title="暂无数据"
+    :title="$t('d.zan-wu-shu-ju')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="$t('b.dian-ji-shua-xin')"
     :actionIcon="RotateCcw"
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">封禁账号</h3>
-      <div>封禁原因:</div>
+      <h3 class="text-xl mb-4">{{ $t('f.feng-jin-zhang-hao') }}</h3>
+      <div>{{ $t('f.feng-jin-yuan-yin') }}</div>
       <ScInput
         v-model="updateBody.remark"
-        placeholder="什么也没有"
+        ::placeholder="$t('d.shi-mo-ye-mei-you')"
         multiline
         :rows="12"
         :resizable="false"
@@ -143,13 +151,13 @@
         <ScButton
           class="px-4 border border-error text-error"
           @click="banned(currentUser, 1)">
-          封禁
+          {{ $t('b.feng-jin') }}
         </ScButton>
         <ScButton class="px-4" @click="banned(currentUser, 0)" Border>
-          撤销封禁
+          {{ $t('d.che-xiao-feng-jin') }}
         </ScButton>
         <ScButton class="px-4" @click="bannedModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -157,35 +165,46 @@
 
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">修改用户信息</h3>
+      <h3 class="text-xl mb-4">{{ $t('f.xiu-gai-yong-hu-xin-xi') }}</h3>
       <div class="flex items-center gap-2">
-        <span> 昵称: </span>
-        <ScInput v-model="updateBody.nickname" placeholder="昵称" class="m-2" />
+        <span> {{ $t('f.ni-cheng') }} </span>
+        <ScInput
+          v-model="updateBody.nickname"
+          ::placeholder="$t('f.ni-cheng')"
+          class="m-2" />
       </div>
       <div class="flex items-center gap-2" v-if="verifyPermissions([1, 2])">
-        <span> 邮箱: </span>
-        <ScInput v-model="updateBody.email" placeholder="邮箱" class="m-2" />
+        <span> {{ $t('f.you-xiang') }} </span>
+        <ScInput
+          v-model="updateBody.email"
+          :placeholder="$t('f.you-xiang')"
+          class="m-2" />
       </div>
       <div class="flex items-center gap-2">
-        <span> 密码: </span>
-        <ScInput v-model="updateBody.password" placeholder="密码" class="m-2" />
+        <span> {{ $t('f.mi-ma') }} </span>
+        <ScInput
+          v-model="updateBody.password"
+          :placeholder="$t('f.mi-ma')"
+          class="m-2" />
         <Info :size="18" class="text-warning" />
-        <span class="text-sm text-warning"> 对自己修改密码会强制下线 </span>
+        <span class="text-sm text-warning">
+          {{ $t('d.dui-zi-ji-xiu-gai-mi-ma-hui-qiang-zhi-xia-xian') }}
+        </span>
       </div>
       <div class="flex items-center gap-2" v-if="verifyPermissions([1, 2])">
-        <span> 用户名: </span>
+        <span> {{ $t('f.yong-hu-ming') }} </span>
         <ScInput
           v-model="updateBody.account"
-          placeholder="用户名"
+          :placeholder="$t('f.yong-hu-ming')"
           class="m-2" />
       </div>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateUser(currentUser)" Border>
-          提交修改
+          {{ $t('b.ti-jiao-xiu-gai') }}
         </ScButton>
 
         <ScButton class="px-4" @click="updateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -193,8 +212,8 @@
 
   <ScModal v-model="updateRoleModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">修改用户权限</h3>
-      <div>角色池:</div>
+      <h3 class="text-xl mb-4">{{ $t('d.xiu-gai-yong-hu-quan-xian') }}</h3>
+      <div>{{ $t('d.jiao-se-chi') }}</div>
       <div class="flex items-center gap-2 flex-wrap">
         <ScTag
           v-for="(role, index) in roleList"
@@ -206,7 +225,7 @@
           {{ role.name }}
         </ScTag>
       </div>
-      <div>当前存在:</div>
+      <div>{{ $t('d.dang-qian-cun-zai') }}</div>
       <div class="flex items-center gap-2 flex-wrap">
         <ScTag
           v-for="(role, index) in userList[currentUser].roles"
@@ -220,20 +239,20 @@
       </div>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateUserRole(currentUser)" Border>
-          提交修改
+          {{ $t('b.ti-jiao-xiu-gai') }}
         </ScButton>
         <ScButton class="px-4" @click="updateRoleModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
   </ScModal>
   <ScModal v-model="logOffModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">强制下线</h3>
+      <h3 class="text-xl mb-4">{{ $t('b.qiang-zhi-xia-xian') }}</h3>
       <div class="flex gap-2 flex-wrap items-center">
-        目标账号:
-        {{ userList[currentUser].nickname }}
+        {{ $t('d.mu-biao-zhang-hao') }}
+        <span>{{ userList[currentUser].nickname }}</span>
         <ScTag size="xs">uid: {{ userList[currentUser].id }}</ScTag>
         <ScTag
           v-for="(role, roleIndex) in userList[currentUser].roles"
@@ -244,14 +263,18 @@
         </ScTag>
       </div>
       <div>
-        让该账号所有设备失去登录状态，可使用账号密码再次登录，即使目标是自己也不例外
+        {{
+          $t(
+            'd.rang-gai-zhang-hao-suo-you-she-bei-shi-qu-deng-lu-zhuang-tai-ke-shi-yong-zhang-hao-mi-ma-zai-ci-deng-lu-ji-shi-mu-biao-shi-zi-ji-ye-bu-li-wai'
+          )
+        }}
       </div>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="logOff(currentUser)" Border>
-          确定
+          {{ $t('b.que-ding') }}
         </ScButton>
         <ScButton class="px-4" @click="logOffModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -279,6 +302,9 @@ import type { Role, UserRole } from '@/types/Role'
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 const router = useRouter()
@@ -287,23 +313,23 @@ const searchPostValue = ref('') // 搜索帖子内容
 
 const searchStatus = ref<number | { value: number; label: string }>(0) // 账号状态
 const searchStatusOptions = [
-  { value: 0, label: '全部' },
-  { value: 1, label: '正常' },
-  { value: 2, label: '禁用' },
+  { value: 0, label: t('b.quan-bu') },
+  { value: 1, label: t('b.zheng-chang') },
+  { value: 2, label: t('b.jin-yong') },
 ]
 
 const searchType = ref<number | { value: number; label: string }>(0) // 搜索类型
 const searchTypeoptions = [
-  { value: 0, label: '搜索 用户名' },
-  { value: 1, label: '搜索 昵称' },
-  { value: 2, label: '搜索 上次登录ip' },
-  { value: 3, label: '搜索 邮箱' },
-  { value: 4, label: '搜索 ID' },
-  { value: 5, label: '搜索 备注' },
+  { value: 0, label: t('b.sou-suo-yong-hu-ming') },
+  { value: 1, label: t('b.sou-suo-ni-cheng') },
+  { value: 2, label: t('b.sou-suo-shang-ci-deng-lu-ip') },
+  { value: 3, label: t('b.sou-suo-you-xiang') },
+  { value: 4, label: t('b.sou-suo-id') },
+  { value: 5, label: t('b.sou-suo-bei-zhu') },
 ]
 
 const roleBar = ref<number | { value: number; label: string }>(0) // 角色ID，0为全部角色
-const roleBarOptions = ref([{ value: 0, label: '全部角色' }]) // 角色下拉选项
+const roleBarOptions = ref([{ value: 0, label: t('b.quan-bu-jiao-se') }]) // 角色下拉选项
 
 // const timeRange = ref({
 //   startTime: '',
@@ -426,7 +452,7 @@ const getRoleList = () => {
       if (response.data.code === 200) {
         roleList.value = response.data.data // 更新角色列表
         roleBarOptions.value = [
-          { value: 0, label: '全部角色' },
+          { value: 0, label: t('b.quan-bu-jiao-se') },
           ...response.data.data.map((role: any) => ({
             value: role.id,
             label: role.name,
@@ -462,7 +488,7 @@ const banned = (index: number, val?: number) => {
           if (verifyPermissions([1, 2])) {
             await userApi.updateUserKey(item.id)
           }
-          toast.success('操作成功')
+          toast.success(t('t.cao-zuo-cheng-gong'))
         } catch (error) {
           console.error('更新用户key失败:', error)
         }
@@ -499,7 +525,7 @@ const updateUser = (index: number) => {
   body.id = item.id // 设置用户ID
 
   if (Object.keys(body).length === 1) {
-    toast.warning('啥也不是，走了')
+    toast.warning(t('t.sha-ye-bu-shi-zou-le'))
     updateModal.value = false
     return
   }
@@ -512,7 +538,7 @@ const updateUser = (index: number) => {
         getUserList()
 
         updateModal.value = false
-        toast.success('更新用户信息成功')
+        toast.success(t('t.geng-xin-yong-hu-xin-xi-cheng-gong'))
         if (item.id === userStore.userInfo.id) {
           // 如果更新的是当前登录用户的信息，重新获取用户信息
           getInfo()
@@ -522,7 +548,7 @@ const updateUser = (index: number) => {
       }
     })
     .catch((error) => {
-      toast.error('更新用户信息失败: ' + error.msg)
+      toast.error(t('t.geng-xin-yong-hu-xin-xi-shi-bai') + error.msg)
       console.error('更新用户信息失败:', error.msg)
     })
 }
@@ -550,7 +576,7 @@ const updateUserRole = (index: number) => {
       }
     })
     .catch((error) => {
-      toast.error('更新角色失败:  ' + error.msg)
+      toast.error(t('t.geng-xin-jiao-se-shi-bai') + error.msg)
       console.error('请求失败:', error.msg)
     })
 }
@@ -565,13 +591,13 @@ const logOff = (index: number) => {
   userApi
     .updateUserKey(item.id)
     .then(() => {
-      toast.success('操作成功')
+      toast.success(t('t.cao-zuo-cheng-gong'))
       getUserList()
       getInfo()
       bannedModal.value = false
     })
     .catch((error) => {
-      toast.error('更新用户信息失败: ' + error.msg)
+      toast.error(t('t.geng-xin-yong-hu-xin-xi-shi-bai') + error.msg)
     })
 }
 
@@ -582,7 +608,7 @@ const getInfo = () => {
     userStore.userInfo = {} as UserType // 清除用户信息
     userStore.isLogin = false // 设置登录状态为false
     router.replace({ path: '/' })
-    toast.error('获取用户信息失败: ' + error.msg)
+    toast.error(t('t.huo-qu-yong-hu-xin-xi-shi-bai') + error.msg)
   })
 }
 

@@ -2,10 +2,10 @@
   <Card class="mb-4">
     <div class="flex gap-2">
       <ScButton @click="getVersionList" :icon="RotateCcw" Border>
-        刷新版本列表
+        {{ $t('b.shua-xin-ban-ben-lie-biao') }}
       </ScButton>
       <ScButton @click="addVersion" :icon="Plus" Border>
-        添加新版本号
+        {{ $t('b.tian-jia-xin-ban-ben-hao') }}
       </ScButton>
     </div>
   </Card>
@@ -17,12 +17,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>名称</th>
-            <th>版本号</th>
-            <th>版本类型</th>
-            <th>创建时间</th>
-            <th>最后更新时间</th>
-            <th>操作</th>
+            <th>{{ $t('b.ming-cheng') }}</th>
+            <th>{{ $t('b.hui-fu') }}</th>
+            <th>{{ $t('b.ban-ben-lei-xing') }}</th>
+            <th>{{ $t('b.chuang-jian-shi-jian') }}</th>
+            <th>{{ $t('b.zui-hou-geng-xin-shi-jian') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -35,11 +35,15 @@
             <td>{{ version.updatedAt }}</td>
             <td>
               <div class="flex items-center gap-2">
-                <ScButton @click="updateVersion(index)" Border> 编辑 </ScButton>
-                <ScButton @click="disabledVersion(index, 1)" Border>
-                  禁用
+                <ScButton @click="updateVersion(index)" Border>
+                  {{ $t('b.bian-ji') }}
                 </ScButton>
-                <ScButton @click="deleteVersion(index)" Border> 删除 </ScButton>
+                <ScButton @click="disabledVersion(index, 1)" Border>
+                  {{ $t('b.jin-yong') }}
+                </ScButton>
+                <ScButton @click="deleteVersion(index)" Border>
+                  {{ $t('b.shan-chu') }}
+                </ScButton>
               </div>
             </td>
           </tr>
@@ -50,48 +54,48 @@
 
   <EmptyState
     v-else
-    title="暂无帖子"
+    :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="$t('b.dian-ji-shua-xin')"
     :actionIcon="RotateCcw"
     @action-click="getVersionList" />
 
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">修改版本号</div>
+      <div class="text-xl mb-4">{{ $t('d.xiu-gai-ban-ben-hao') }}</div>
 
       <div class="flex items-center gap-4">
-        <span> 名称: </span>
+        <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="currentVersionBody.name"
-          placeholder="版本名称"
+          :placeholder="$t('d.ban-ben-ming-cheng')"
           class="m-2" />
       </div>
       <div class="flex items-center gap-4">
-        <span> 类型: </span>
+        <span> {{ $t('d.lei-xing') }} </span>
         <Dropdown
           v-model="typeBar"
           :options="typeBarOptions"
-          placeholder="插件版"
+          :placeholder="$t('b.cha-jian-ban')"
           class="w-53 ml-2" />
       </div>
       <div class="flex items-center gap-4">
-        <span> 版本号: </span>
+        <span> {{ $t('b.ban-ben-hao') }} </span>
         <ScInput
           v-model="currentVersionBody.version"
-          placeholder="版本号"
+          :placeholder="$t('b.hui-fu')"
           class="m-2" />
       </div>
 
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateVersion(currentVersion)" Border>
-          提交修改
+          {{ $t('b.ti-jiao-xiu-gai') }}
         </ScButton>
         <ScButton class="px-4" @click="updateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -99,35 +103,37 @@
 
   <ScModal v-model="addVersionModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">添加新版本号</div>
+      <div class="text-xl mb-4">{{ $t('b.tian-jia-xin-ban-ben-hao') }}</div>
 
       <div class="flex items-center gap-4">
-        <span> 名称: </span>
+        <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="newVersionBody.name"
-          placeholder="版本名称"
+          :placeholder="$t('d.ban-ben-ming-cheng')"
           class="m-2" />
       </div>
       <div class="flex items-center gap-4">
-        <span> 类型: </span>
+        <span> {{ $t('d.lei-xing') }} </span>
         <Dropdown
           v-model="typeBar"
           :options="typeBarOptions"
-          placeholder="插件版"
+          :placeholder="$t('b.cha-jian-ban')"
           class="w-53 ml-2" />
       </div>
       <div class="flex items-center gap-4">
-        <span> 版本号: </span>
+        <span> {{ $t('b.ban-ben-hao') }} </span>
         <ScInput
           v-model="newVersionBody.version"
-          placeholder="版本号"
+          :placeholder="$t('b.hui-fu')"
           class="m-2" />
       </div>
 
       <div class="flex gap-4 justify-end">
-        <ScButton class="px-4" @click="addVersion" Border> 确认添加 </ScButton>
+        <ScButton class="px-4" @click="addVersion" Border>
+          {{ $t('b.que-ren-tian-jia') }}
+        </ScButton>
         <ScButton class="px-4" @click="addVersionModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -135,25 +141,32 @@
 
   <ScModal v-model="deleteVersionModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">删除版本号</div>
+      <div class="text-xl mb-4">{{ $t('b.shan-chu-ban-ben-hao') }}</div>
       <div class="mb-4">
-        目标版本号: {{ versionList[currentVersion].version }}
+        {{ $t('d.mu-biao-ban-ben-hao') }}
+        <span>{{ versionList[currentVersion].version }}</span>
       </div>
 
       <div class="text-warning mb-4">
-        删除版本后，之前使用该版本的帖子将不再展示，添加新的资源时也无法选择该版本号。
+        {{
+          $t(
+            'd.shan-chu-ban-ben-hou-zhi-qian-shi-yong-gai-ban-ben-de-tie-zi-jiang-bu-zai-zhan-shi-tian-jia-xin-de-zi-yuan-shi-ye-wu-fa-xuan-ze-gai-ban-ben-hao'
+          )
+        }}
       </div>
-      <div class="text-error mb-4">删除操作不可逆，请谨慎操作。</div>
+      <div class="text-error mb-4">
+        {{ $t('d.shan-chu-cao-zuo-bu-ke-ni-qing-jin-shen-cao-zuo') }}
+      </div>
 
       <div class="flex gap-4 justify-end">
         <ScButton
           class="px-4 border border-error text-error"
           @click="deleteVersion(currentVersion)">
-          确认删除
+          {{ $t('b.que-ren-shan-chu') }}
         </ScButton>
 
         <ScButton class="px-4" @click="deleteVersionModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -161,26 +174,30 @@
 
   <ScModal v-model="disabledVersionModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">禁用版本号</div>
+      <div class="text-xl mb-4">{{ $t('d.jin-yong-ban-ben-hao') }}</div>
       <div class="text-warning mb-4">
-        禁用版本后，之前使用该版本的帖子正常显示，但无法再添加新的资源时选择该版本号。
+        {{
+          $t(
+            'd.jin-yong-ban-ben-hou-zhi-qian-shi-yong-gai-ban-ben-de-tie-zi-zheng-chang-xian-shi-dan-wu-fa-zai-tian-jia-xin-de-zi-yuan-shi-xuan-ze-gai-ban-ben-hao'
+          )
+        }}
       </div>
 
       <div class="flex gap-4 justify-end">
         <ScButton
           class="px-4 border border-error text-error"
           @click="disabledVersion(currentVersion, 2)">
-          确认禁用
+          {{ $t('b.que-ren-jin-yong') }}
         </ScButton>
 
         <ScButton
           class="px-4 border border-success text-success"
           @click="disabledVersion(currentVersion, 1)">
-          恢复
+          {{ $t('b.hui-fu') }}
         </ScButton>
 
         <ScButton class="px-4" @click="disabledVersionModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -200,6 +217,8 @@ import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ApiVersion, PutVersionDto, Version } from '@/types/version'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 const toast = useToast()
 
 const typeBar = ref<
@@ -212,14 +231,14 @@ const typeBarOptions: {
   value: 'plugin' | 'online' | 'original'
   label: string
 }[] = [
-  { value: 'plugin', label: '插件版' },
-  { value: 'online', label: '联机版' },
-  { value: 'original', label: '原版' },
+  { value: 'plugin', label: t('b.cha-jian-ban') },
+  { value: 'online', label: t('b.lian-ji-ban') },
+  { value: 'original', label: t('b.yuan-ban') },
 ]
 const typeMap: Record<string, string> = {
-  plugin: '插件版',
-  online: '联机版',
-  original: '原版',
+  plugin: t('b.cha-jian-ban'),
+  online: t('b.lian-ji-ban'),
+  original: t('b.yuan-ban'),
 }
 
 const versionList = ref<Version[]>([]) // 帖子列表数据
@@ -255,6 +274,7 @@ const getVersionList = () => {
       }
     })
     .catch((error) => {
+      toast.error(t('t.wei-zhi-cuo-wu'))
       console.error('请求错误:', error.msg)
     })
 }
@@ -294,7 +314,7 @@ const updateVersion = (index: number) => {
 
   // 如果没有修改任何内容，则不发送请求
   if (Object.keys(body).length === 0) {
-    toast.warning('啥也不是，走了')
+    toast.warning(t('t.sha-ye-bu-shi-zou-le'))
     updateModal.value = false
     return
   }
@@ -305,7 +325,7 @@ const updateVersion = (index: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getVersionList()
-        toast.success('修改成功')
+        toast.success(t('t.xiu-gai-cheng-gong'))
         currentVersion.value = -1 // 重置当前操作的帖子
         updateModal.value = false
       }
@@ -327,7 +347,7 @@ const addVersion = () => {
     typeof typeBar.value === 'object' ? typeBar.value.value : typeBar.value
 
   if (!newVersionBody.value.name || !newVersionBody.value.version) {
-    toast.warning('请填写完整的版本信息')
+    toast.warning(t('t.qing-tian-xie-wan-zheng-de-ban-ben-xin-xi'))
     return
   }
   const body = {
@@ -345,6 +365,7 @@ const addVersion = () => {
       }
     })
     .catch((error) => {
+      toast.error(t('t.wei-zhi-cuo-wu'))
       console.error('请求失败:', error.msg)
     })
 }
@@ -366,6 +387,7 @@ const deleteVersion = (index: number) => {
       }
     })
     .catch((error) => {
+      toast.error(t('t.wei-zhi-cuo-wu'))
       console.error('请求失败:', error.msg)
     })
 }
@@ -386,11 +408,12 @@ const disabledVersion = (index: number, disabled: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getVersionList()
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
         disabledVersionModal.value = false
       }
     })
     .catch((error) => {
+      toast.error(t('t.wei-zhi-cuo-wu'))
       console.error('请求失败:', error.msg)
     })
 }

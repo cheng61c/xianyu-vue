@@ -4,10 +4,10 @@
     v-if="!userStore.isLogin && deviceStore.device === 2"
     class="flex gap-4 items-center justify-between px-3">
     <ScButton noPadding @click="handleModalChange('login')">
-      {{ $t('login') }}
+      {{ $t('b.deng-lu') }}
     </ScButton>
     <ScButton noPadding @click="handleModalChange('register')">
-      {{ $t('register') }}
+      {{ $t('b.zhu-ce') }}
     </ScButton>
   </div>
   <div
@@ -33,7 +33,7 @@
         <div v-if="deviceStore.device == 2" class="flex-1">
           <img
             src="/public/85120626_p0_master1200.jpg"
-            alt="头图"
+            alt="$t('b.tou-xiang')"
             class="w-full h-full object-cover rounded-lg" />
         </div>
 
@@ -57,38 +57,38 @@
                   'text-2xl': deviceStore.device === 2,
                   'text-lg': deviceStore.device === 1,
                 }">
-                登录
+                {{ $t('b.deng-lu') }}
               </ScButton>
               <div class="label">
-                <span> 还没有账号？ </span>
+                <span> {{ $t('f.huan-mei-you-zhang-hao') }} </span>
                 <span
                   class="text-active cursor-pointer"
                   @click="handleModalChange('register')">
-                  去注册
+                  {{ $t('f.qu-zhu-ce') }}
                 </span>
               </div>
             </div>
 
             <form class="flex flex-col" @submit.prevent="handleLogin">
               <div class="w-full mb-4">
-                <label class="label py-1">账号</label>
+                <label class="label py-1">{{ $t('f.zhang-hao') }}</label>
                 <ScInput
                   type="text"
-                  placeholder="邮箱或用户名"
+                  placeholder="$t('f.you-xiang-huo-yong-hu-ming')"
                   v-model="loginForm.account" />
               </div>
 
               <div class="w-full mb-6">
-                <label class="label py-1">密码</label>
+                <label class="label py-1">{{ $t('f.mi-ma') }}</label>
                 <ScInput
                   type="password"
-                  placeholder="密码"
+                  placeholder="$t('f.mi-ma')"
                   v-model="loginForm.password" />
               </div>
 
               <div class="w-full mb-4 flex justify-between items-center">
                 <label class="label cursor-pointer">
-                  <span class="label-text">记住我</span>
+                  <span class="label-text">{{ $t('f.ji-zhu-wo') }}</span>
                   <input
                     type="checkbox"
                     class="checkbox"
@@ -98,7 +98,9 @@
                 <label
                   class="label cursor-pointer"
                   @click="handleModalChange('reset_password')">
-                  <span class="label-text text-active">忘记密码？</span>
+                  <span class="label-text text-active">{{
+                    $t('f.wang-ji-mi-ma')
+                  }}</span>
                 </label>
               </div>
             </form>
@@ -109,7 +111,7 @@
                 Border
                 class="px-4"
                 @click="offModal">
-                取消
+                {{ $t('b.qu-xiao') }}
               </ScButton>
 
               <ScButton
@@ -121,7 +123,7 @@
                 }"
                 :loading="buttonLoading"
                 @click="handleLogin">
-                {{ $t('login') }}
+                {{ $t('b.deng-lu') }}
               </ScButton>
             </div>
           </div>
@@ -141,51 +143,53 @@
                   'text-2xl': deviceStore.device === 2,
                   'text-lg': deviceStore.device === 1,
                 }">
-                注册
+                {{ $t('b.zhu-ce') }}
               </ScButton>
               <div class="label">
-                <span> 已经有账号？ </span>
+                <span> {{ $t('f.yi-jing-you-zhang-hao') }} </span>
                 <span
                   class="text-active cursor-pointer"
                   @click="handleModalChange('login')">
-                  返回登录
+                  {{ $t('f.fan-hui-deng-lu') }}
                 </span>
               </div>
             </div>
 
             <form class="flex flex-col" @submit.prevent="handleRregister">
               <div class="w-full mb-4">
-                <label class="label py-1">用户名</label>
-                <label class="label pl-2">(用于登录)</label>
+                <label class="label py-1">{{ $t('f.yong-hu-ming') }}</label>
+                <label class="label pl-2">{{ $t('f.yong-yu-deng-lu') }}</label>
                 <ScInput
                   type="text"
-                  placeholder="请输入用户名"
+                  placeholder="$t('f.qing-shu-ru-yong-hu-ming')"
                   v-model="registerForm.account" />
               </div>
 
               <div class="w-full mb-4">
-                <label class="label py-1">邮箱</label>
-                <label class="label pl-2">(用于登录和接收验证码)</label>
+                <label class="label py-1">{{ $t('f.you-xiang') }}</label>
+                <label class="label pl-2">{{
+                  $t('f.yong-yu-deng-lu-he-jie-shou-yan-zheng-ma')
+                }}</label>
                 <ScInput
                   type="email"
-                  placeholder="请输入邮箱"
+                  placeholder="$t('d.qing-shu-ru-you-xiang')"
                   v-model="registerForm.email" />
               </div>
 
               <div class="w-full mb-6">
-                <label class="label py-1">密码</label>
+                <label class="label py-1">{{ $t('f.mi-ma') }}</label>
                 <ScInput
                   type="password"
-                  placeholder="请输入密码"
+                  placeholder="$t('d.qing-shu-ru-mi-ma')"
                   v-model="registerForm.password" />
               </div>
 
               <div class="w-full mb-6">
-                <label class="label py-1">验证码</label>
+                <label class="label py-1">{{ $t('f.yan-zheng-ma') }}</label>
                 <div class="flex gap-2 items-center">
                   <ScInput
                     type="text"
-                    placeholder="请输入邮箱验证码"
+                    placeholder="{{ $t('f.qing-shu-ru-you-xiang-yan-zheng-ma') }}"
                     v-model="registerForm.captcha" />
 
                   <ScButton
@@ -207,7 +211,7 @@
                 Border
                 class="px-4"
                 @click="offModal">
-                取消
+                {{ $t('b.qu-xiao') }}
               </ScButton>
 
               <ScButton
@@ -219,7 +223,7 @@
                 }"
                 :loading="buttonLoading"
                 @click="handleRregister">
-                {{ $t('register') }}
+                {{ $t('b.zhu-ce') }}
               </ScButton>
             </div>
           </div>
@@ -239,41 +243,41 @@
                   'text-2xl': deviceStore.device === 2,
                   'text-lg': deviceStore.device === 1,
                 }">
-                重置密码
+                {{ $t('f.zhong-zhi-mi-ma') }}
               </ScButton>
               <div class="label">
-                <span> 想起来了？ </span>
+                <span> {{ $t('f.xiang-qi-lai-le') }} </span>
                 <span
                   class="text-active cursor-pointer"
                   @click="handleModalChange('login')">
-                  返回登录
+                  {{ $t('f.fan-hui-deng-lu') }}
                 </span>
               </div>
             </div>
 
             <form class="flex flex-col" @submit.prevent="handleRregister">
               <div class="w-full mb-4">
-                <label class="label py-1">邮箱</label>
+                <label class="label py-1">{{ $t('f.you-xiang') }}</label>
                 <ScInput
                   type="email"
-                  placeholder="邮箱"
+                  placeholder="$t('f.you-xiang')"
                   v-model="resetPasswordForm.email" />
               </div>
 
               <div class="w-full mb-6">
-                <label class="label py-1">新密码</label>
+                <label class="label py-1">{{ $t('f.xin-mi-ma') }}</label>
                 <ScInput
                   type="password"
-                  placeholder="密码"
+                  placeholder="$t('f.mi-ma')"
                   v-model="resetPasswordForm.password" />
               </div>
 
               <div class="w-full mb-6">
-                <label class="label py-1">验证码</label>
+                <label class="label py-1">{{ $t('f.yan-zheng-ma') }}</label>
                 <div class="flex gap-2 items-center">
                   <ScInput
                     type="text"
-                    placeholder="请输入验证码"
+                    placeholder="$t('f.qing-shu-ru-yan-zheng-ma')"
                     v-model="resetPasswordForm.captcha" />
 
                   <ScButton
@@ -295,7 +299,7 @@
                 Border
                 class="px-4"
                 @click="offModal">
-                取消
+                {{ $t('b.qu-xiao') }}
               </ScButton>
 
               <ScButton
@@ -307,7 +311,7 @@
                 }"
                 :loading="buttonLoading"
                 @click="handleReset">
-                确认重置
+                {{ $t('f.que-ren-zhong-zhi') }}
               </ScButton>
             </div>
           </div>
@@ -332,12 +336,14 @@ import { formatLink } from '@/utils/format'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import { ChevronLeft, CircleUserRound } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const deviceStore = useDeviceStore()
 const showModal = ref(false)
 const buttonLoading = ref(false)
 const isSendCode = ref(false)
-const sendCodeText = ref('获取验证码')
+const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
 const note = ref(false)
 
 const toast = useToast()
@@ -371,11 +377,11 @@ const countdown = (duration: number) => {
 
   const updateText = () => {
     if (timeLeft > 0) {
-      sendCodeText.value = `${timeLeft}秒后重发`
+      sendCodeText.value = t('f.timeleft-miao-hou-zhong-fa', [timeLeft])
       timeLeft--
     } else {
       clearInterval(timer)
-      sendCodeText.value = '获取验证码'
+      sendCodeText.value = t('f.huo-qu-yan-zheng-ma')
       isSendCode.value = false
     }
   }
@@ -408,9 +414,9 @@ const getCaptcha = (email: string) => {
     .sendCode({ email })
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('验证码已发送到您的邮箱')
+        toast.success(t('t.yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang'))
       } else {
-        toast.error('获取验证码失败: ' + res.data.msg)
+        toast.error(t('f.huo-qu-yan-zheng-ma-shi-bai') + res.data.msg)
       }
     })
     .catch((error) => {
@@ -430,7 +436,7 @@ const handleLogin = () => {
         userStore.userInfo = user
         userStore.token = res.data.data.token
 
-        toast.success('登录成功')
+        toast.success(t('t.deng-lu-cheng-gong'))
         offModal()
         buttonLoading.value = false
 
@@ -453,22 +459,22 @@ const handleLogin = () => {
 
 const handleRregister = () => {
   if (registerForm.password.length < 6 || registerForm.password.length > 20) {
-    toast.error('密码长度为6-20个字符')
+    toast.error(t('t.mi-ma-chang-du-wei-620-ge-zi-fu'))
     return
   }
   if (
     registerForm.captcha.length !== 6 ||
     !/^\d+$/.test(registerForm.captcha)
   ) {
-    toast.error('验证码为6位数字')
+    toast.error(t('t.yan-zheng-ma-wei-6-wei-shu-zi'))
     return
   }
   if (registerForm.account.length < 3 || registerForm.account.length > 20) {
-    toast.error('用户名长度为3-20个字符')
+    toast.error(t('t.yong-hu-ming-chang-du-wei-320-ge-zi-fu'))
     return
   }
   if (!/^[a-zA-Z0-9_]+$/.test(registerForm.account)) {
-    toast.error('用户名只能是字母、数字或下划线')
+    toast.error(t('tyong-hu-ming-zhi-neng-shi-zi-mu-shu-zi-huo-xia-hua-xian'))
     return
   }
 
@@ -476,7 +482,7 @@ const handleRregister = () => {
     .register(registerForm)
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('注册成功')
+        toast.success(t('t.zhu-ce-cheng-gong'))
         modalType.value = 'login'
         loginForm.account = registerForm.account
         loginForm.password = registerForm.password
@@ -497,14 +503,14 @@ const handleReset = () => {
     resetPasswordForm.password.length < 6 ||
     resetPasswordForm.password.length > 20
   ) {
-    toast.error('密码长度为6-20个字符')
+    toast.error(t('t.mi-ma-chang-du-wei-620-ge-zi-fu'))
     return
   }
   if (
     resetPasswordForm.captcha.length !== 6 ||
     !/^\d+$/.test(resetPasswordForm.captcha)
   ) {
-    toast.error('验证码为6位数字')
+    toast.error(t('t.yan-zheng-ma-wei-6-wei-shu-zi'))
     return
   }
 
@@ -512,7 +518,7 @@ const handleReset = () => {
     .updatePassword(resetPasswordForm)
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('密码重置成功')
+        toast.success(t('t.mi-ma-zhong-zhi-cheng-gong'))
         modalType.value = 'login'
         buttonLoading.value = false
       }

@@ -13,7 +13,9 @@
   <div
     v-else
     class="flex items-center justify-center h-[calc(100vh-64px)] w-full">
-    <h1 class="text-2xl font-bold">没有权限访问此页面</h1>
+    <h1 class="text-2xl font-bold">
+      {{ $t('d.mei-you-quan-xian-fang-wen-ci-ye-mian') }}
+    </h1>
   </div>
 </template>
 
@@ -37,7 +39,9 @@ import {
 
 import ScMenu from '@/components/pc/admin/ScMenu.vue'
 import { verifyPermissions } from '@/utils/verify'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const activation = ref('')
 const release = ref(true)
@@ -45,73 +49,73 @@ const release = ref(true)
 const menuItems = [
   {
     icon: Home,
-    name: '首页',
+    name: t('b.shou-ye'),
     path: '/admin/panel',
     role: verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10]),
   },
   {
     icon: UserRoundPen,
-    name: '账号管理',
+    name: t('b.zhang-hao-guan-li'),
     path: '/admin/account',
     role: verifyPermissions([1, 2, 3]),
   },
   {
     icon: UserRoundPlus,
-    name: '注册',
+    name: t('b.zhu-ce'),
     path: '/admin/reg',
     role: verifyPermissions([1]),
   },
   {
     icon: FileChartColumn,
-    name: '帖子管理',
+    name: t('b.tie-zi-guan-li'),
     path: '/admin/post',
     role: verifyPermissions([1, 2, 9]),
   },
   {
     icon: ShieldAlert,
-    name: '举报审核',
+    name: t('b.ju-bao-shen-he'),
     path: '/admin/report',
     role: verifyPermissions([1, 2, 7]),
   },
   {
     icon: Package,
-    name: '资源管理',
+    name: t('b.zi-yuan-guan-li'),
     path: '/admin/resource',
     role: verifyPermissions([1, 2, 5]),
   },
   {
     icon: Server,
-    name: '服务器管理',
+    name: t('b.fu-wu-qi-guan-li'),
     path: '/admin/server',
     role: verifyPermissions([1, 2, 4]),
   },
   {
     icon: Award,
-    name: '角色管理',
+    name: t('b.jiao-se-guan-li'),
     path: '/admin/role',
     role: verifyPermissions([1, 2]),
   },
   {
     icon: LayoutPanelTop,
-    name: '板块管理',
+    name: t('b.ban-kuai-guan-li'),
     path: '/admin/plate',
     role: verifyPermissions([1, 2, 5, 9]),
   },
   {
     icon: GitCommitHorizontal,
-    name: '游戏版本号',
+    name: t('b.you-xi-ban-ben-hao'),
     path: '/admin/version',
     role: verifyPermissions([1, 2, 3, 10]),
   },
   {
     icon: Megaphone,
-    name: '游戏公告',
+    name: t('b.you-xi-gong-gao'),
     path: '/admin/motd',
     role: verifyPermissions([1, 2, 6]),
   },
   {
     icon: Info,
-    name: '后台日志',
+    name: t('b.hou-tai-ri-zhi'),
     path: '/admin/info',
     role: verifyPermissions([1, 2]),
   },

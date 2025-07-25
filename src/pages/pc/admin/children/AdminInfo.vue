@@ -4,11 +4,18 @@
       <Dropdown
         v-model="searchType"
         :options="searchTypeoptions"
-        placeholder="搜索 操作者ID"
+        :placeholder="$t('b.sou-suo-cao-zuo-zhe-id')"
         class="w-40" />
-      <ScInput v-model="searchReportValue" placeholder="搜索" class="w-xs" />
-      <ScButton class="px-4" Border @click="search"> 搜索 </ScButton>
-      <ScButton class="px-4" Border @click="getPosts"> 刷新 </ScButton>
+      <ScInput
+        v-model="searchReportValue"
+        :placeholder="$t('b.sou-suo')"
+        class="w-xs" />
+      <ScButton class="px-4" Border @click="search">
+        {{ $t('b.sou-suo') }}
+      </ScButton>
+      <ScButton class="px-4" Border @click="getPosts">
+        {{ $t('b.shua-xin') }}
+      </ScButton>
     </div>
   </Card>
 
@@ -19,12 +26,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>操作人</th>
-            <th>目标地址</th>
-            <th>传参</th>
-            <th>操作IP</th>
-            <th>操作时间</th>
-            <th>操作</th>
+            <th>{{ $t('b.cao-zuo-ren') }}</th>
+            <th>{{ $t('b.mu-biao-di-zhi') }}</th>
+            <th>{{ $t('b.chuan-can') }}</th>
+            <th>{{ $t('b.cao-zuo-ip') }}</th>
+            <th>{{ $t('b.cao-zuo-shi-jian') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +72,7 @@
 
   <EmptyState
     v-else
-    title="暂无帖子"
+    :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
@@ -155,13 +162,16 @@ import Pagination from '@/components/common/Pagination.vue'
 import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import type { InfoType, QueryInfoDto } from '@/types/Info'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const searchReportValue = ref('') // 搜索帖子内容
 
 const searchType = ref<number | { value: number; label: string }>(0) // 搜索类型
 const searchTypeoptions = [
-  { value: 0, label: '搜索 操作者ID' },
-  { value: 1, label: '搜索 操作IP' },
+  { value: 0, label: t('b.sou-suo-cao-zuo-zhe-id') },
+  { value: 1, label: t('b.sou-suo-cao-zuo-ip') },
 ]
 
 const reportPage = ref({

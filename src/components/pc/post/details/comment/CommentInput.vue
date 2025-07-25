@@ -59,6 +59,8 @@ import { useToast } from 'vue-toastification'
 import { ImagePlus, X } from 'lucide-vue-next'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const toast = useToast()
 
@@ -73,11 +75,9 @@ const props = defineProps({
   },
   submitText: {
     type: String,
-    default: '提交评论',
   },
   placeholder: {
     type: String,
-    default: '写下你的评论...',
   },
   noImg: {
     type: Boolean,
@@ -113,7 +113,7 @@ const handleFileChange = async (event: Event) => {
       const imageUrl = formatLink(res.data.data.url)
       imageList.value[index] = { url: imageUrl, loading: false }
     } catch (error) {
-      toast.error(`图片上传失败: ${file.name}`)
+      toast.error(t('t.tu-pian-shang-chuan-shi-bai-filename', [file.name]))
       imageList.value.splice(index, 1)
     }
   }
@@ -130,7 +130,7 @@ const removeImage = (index: number) => {
 
 const submitComment = () => {
   if (commentContent.value.trim() === '') {
-    toast.error('评论内容不能为空')
+    toast.error(t('t.ping-lun-nei-rong-bu-neng-wei-kong'))
     return
   }
 

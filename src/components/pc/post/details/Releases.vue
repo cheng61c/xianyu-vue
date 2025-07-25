@@ -1,6 +1,6 @@
 <template>
   <Card v-if="versios && versios.length > 0">
-    <h3 class="text-lg font-bold mb-2">发布版</h3>
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.fa-bu-ban') }}</h3>
 
     <div>
       <div
@@ -27,7 +27,9 @@
         <div
           @click="handleModalChange(item)"
           class="flex gap-1 items-center py-2 col-start-2 row-start-1 row-span-3">
-          <ScTag v-if="vIndex == 0" size="sm" status="success"> 最新 </ScTag>
+          <ScTag v-if="vIndex == 0" size="sm" status="success">
+            {{ $t('b.zui-xin') }}
+          </ScTag>
           <ScTag size="sm">
             {{ item.version }}
           </ScTag>
@@ -57,13 +59,13 @@
         <div class="tiptap" v-html="currenPostVersion.content"></div>
         <!-- 文件列表 -->
         <Card class="mt-6">
-          <div class="text-lg font-bold">文件下载</div>
+          <div class="text-lg font-bold">{{ $t('d.wen-jian-xia-zai') }}</div>
           <!-- 表头 -->
           <div
             class="flex font-semibold py-2 px-4 border-b border-gray-content">
-            <div class="flex-[1.2]">文件名</div>
-            <div class="flex-1">文件大小</div>
-            <div class="flex-1">发布时间</div>
+            <div class="flex-[1.2]">{{ $t('d.wen-jian-ming') }}</div>
+            <div class="flex-1">{{ $t('d.wen-jian-da-xiao') }}</div>
+            <div class="flex-1">{{ $t('b.fa-bu-shi-jian') }}</div>
             <div class="flex-1"></div>
           </div>
 
@@ -82,7 +84,7 @@
                   :icon="Download"
                   :iconSize="16"
                   @click="downloadFile(file.url, currenPostVersion.id)">
-                  下载
+                  {{ $t('b.xia-zai') }}
                 </ScButton>
               </div>
             </div>

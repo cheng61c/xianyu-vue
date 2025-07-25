@@ -9,7 +9,7 @@
           class="flex gap-2 items-center justify-center text-background-content font-bold"
           :class="{ 'text-primary': activation == 0 }">
           <Signpost />
-          全部板块
+          {{ $t('b.quan-bu-ban-kuai') }}
         </span>
       </div>
     </Card>

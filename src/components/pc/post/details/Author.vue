@@ -1,6 +1,6 @@
 <template>
   <Card v-if="postData">
-    <h3 class="text-lg font-bold mb-2">作者</h3>
+    <h3 class="text-lg font-bold mb-2">{{ $t('b.zuo-zhe') }}</h3>
     <div class="flex gap-2 items-center">
       <Avatar
         :src="postData.author.headImg || ''"

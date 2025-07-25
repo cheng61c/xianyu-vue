@@ -4,28 +4,35 @@
       <Dropdown
         v-model="searchType"
         :options="searchTypeoptions"
-        placeholder="搜索 举报者ID"
+        :placeholder="$t('b.sou-suo-ju-bao-zhe-id')"
         class="w-40" />
-      <ScInput v-model="searchReportValue" placeholder="搜索" class="w-xs" />
-      <ScButton class="px-4" Border @click="search"> 搜索 </ScButton>
-      <ScButton class="px-4" Border @click="getPosts"> 刷新 </ScButton>
+      <ScInput
+        v-model="searchReportValue"
+        :placeholder="$t('b.sou-suo')"
+        class="w-xs" />
+      <ScButton class="px-4" Border @click="search">
+        {{ $t('b.sou-suo') }}
+      </ScButton>
+      <ScButton class="px-4" Border @click="getPosts">
+        {{ $t('b.shua-xin') }}
+      </ScButton>
     </div>
     <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
-        <span>举报类型:</span>
+        <span>{{ $t('d.ju-bao-lei-xing') }}</span>
         <Dropdown
           v-model="reportTypeBar"
           :options="reportTypeOptions"
-          placeholder="全部"
+          :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
 
       <label class="flex items-center gap-2 w-full">
-        <span>状态:</span>
+        <span>{{ $t('b.zhuang-tai') }}</span>
         <Dropdown
           v-model="searchStatus"
           :options="searchStatusOptions"
-          placeholder="全部"
+          :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
     </div>
@@ -38,15 +45,15 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>目标类型</th>
-            <th>目标ID</th>
-            <th>举报者</th>
-            <th>处理人</th>
-            <th>处理状态</th>
-            <th>处理备注</th>
-            <th>创建时间</th>
-            <th>更新时间</th>
-            <th>操作</th>
+            <th>{{ $t('b.mu-biao-lei-xing') }}</th>
+            <th>{{ $t('b.mu-biao-id') }}</th>
+            <th>{{ $t('b.ju-bao-zhe') }}</th>
+            <th>{{ $t('b.chu-li-ren') }}</th>
+            <th>{{ $t('b.chu-li-zhuang-tai') }}</th>
+            <th>{{ $t('b.chu-li-bei-zhu') }}</th>
+            <th>{{ $t('b.chuang-jian-shi-jian') }}</th>
+            <th>{{ $t('b.geng-xin-shi-jian') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -92,9 +99,11 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 <ScButton @click="reportInfo(index)" Border>
-                  查看详情
+                  {{ $t('b.cha-kan-xiang-qing') }}
                 </ScButton>
-                <ScButton @click="updateReport(index)" Border> 审核 </ScButton>
+                <ScButton @click="updateReport(index)" Border>
+                  {{ $t('b.shen-he') }}
+                </ScButton>
               </div>
             </td>
           </tr>
@@ -112,7 +121,7 @@
 
   <EmptyState
     v-else
-    title="暂无帖子"
+    title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
@@ -123,10 +132,10 @@
 
   <ScModal v-model="reportInfoModal">
     <Card class="p-6 w-2xl max-h-[80vh] overflow-y-auto">
-      <div class="text-xl mb-4">举报详情</div>
+      <div class="text-xl mb-4">{{ $t('d.ju-bao-xiang-qing') }}</div>
 
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报目标ID:</span>
+        <span class="text-gray-content">{{ $t('d.ju-bao-mu-biao-id') }}</span>
         <span
           class="text-active link"
           @click="
@@ -139,13 +148,15 @@
         </span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报目标类型:</span>
+        <span class="text-gray-content">{{
+          $t('d.ju-bao-mu-biao-lei-xing')
+        }}</span>
         <span class="text-gray-content">
           {{ reportTypeBarMap[reportList[currentReport].targetType] }}
         </span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报者ID:</span>
+        <span class="text-gray-content">{{ $t('d.ju-bao-zhe-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].creator.nickname }}
           <ScTag size="xs">
@@ -160,7 +171,7 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">处理人ID:</span>
+        <span class="text-gray-content">{{ $t('d.chu-li-ren-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].handler.nickname }}
           <ScTag size="xs"
@@ -175,14 +186,14 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报理由:</span>
+        <span class="text-gray-content">{{ $t('d.ju-bao-li-you') }}</span>
         <div class="text-gray-content">
           {{ reportList[currentReport].reason }}
         </div>
       </div>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="reportInfoModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -190,10 +201,10 @@
 
   <ScModal v-model="reportUpdateModal">
     <Card class="p-6 w-2xl max-h-[80vh] overflow-y-auto">
-      <div class="text-xl mb-4">审核</div>
+      <div class="text-xl mb-4">{{ $t('b.shen-he') }}</div>
 
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报目标ID:</span>
+        <span class="text-gray-content">{{ $t('d.ju-bao-mu-biao-id') }}</span>
         <span
           class="text-active link"
           @click="
@@ -206,13 +217,15 @@
         </span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报目标类型:</span>
+        <span class="text-gray-content">{{
+          $t('d.ju-bao-mu-biao-lei-xing')
+        }}</span>
         <span class="text-gray-content">
           {{ reportTypeBarMap[reportList[currentReport].targetType] }}
         </span>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报者ID:</span>
+        <span class="text-gray-content">{{ $t('d.ju-bao-zhe-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].creator.nickname }}
           <ScTag size="xs">
@@ -228,7 +241,7 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">举报理由:</span>
+        <span class="text-gray-content">{{ $t('d.ju-bao-li-you') }}</span>
         <div class="text-gray-content">
           {{ reportList[currentReport].reason }}
         </div>
@@ -237,31 +250,31 @@
       <div class="border border-gray/60 mb-4"></div>
 
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">设置状态:</span>
+        <span class="text-gray-content">{{ $t('d.she-zhi-zhuang-tai') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           <Dropdown
             v-model="currentReportStatus"
             :options="searchStatusOptions"
-            placeholder="全部"
+            :placeholder="$t('b.quan-bu')"
             class="w-40" />
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-gray-content">处理备注:</span>
+        <span class="text-gray-content">{{ $t('d.chu-li-bei-zhu') }}</span>
       </div>
       <ScInput
         v-model="currentReportRemark"
-        placeholder="请输入处理备注"
+        :placeholder="$t('d.qing-shu-ru-chu-li-bei-zhu')"
         multiline
         :rows="5"
         :resizable="false"
         class="mt-2 mb-4" />
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateReport(currentReport)" Border>
-          提交
+          {{ $t('b.ti-jiao') }}
         </ScButton>
         <ScButton class="px-4" @click="reportUpdateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -282,45 +295,47 @@ import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ReportDto, ReportType } from '@/types/Report'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const searchReportValue = ref('') // 搜索帖子内容
 
 const searchStatus = ref<number | { value: number; label: string }>(0) // 帖子状态
 const currentReportStatus = ref<number | { value: number; label: string }>(0) // 当前操作的帖子状态
 const searchStatusOptions = [
-  { value: 0, label: '全部' },
-  { value: 1, label: '未处理' },
-  { value: 2, label: '封禁' },
-  { value: 3, label: '审核通过' },
+  { value: 0, label: t('b.quan-bu') },
+  { value: 1, label: t('b.wei-chu-li') },
+  { value: 2, label: t('b.feng-jin') },
+  { value: 3, label: t('b.shen-he-tong-guo') },
 ]
 const searchStatusMap: { [key: number]: string } = {
-  0: '全部',
-  1: '未处理',
-  2: '封禁',
-  3: '审核通过',
+  0: t('b.quan-bu'),
+  1: t('b.wei-chu-li'),
+  2: t('b.feng-jin'),
+  3: t('b.shen-he-tong-guo'),
 }
 
 const searchType = ref<number | { value: number; label: string }>(0) // 搜索类型
 const searchTypeoptions = [
-  { value: 0, label: '搜索 举报者ID' },
-  { value: 1, label: '搜索 举报目标ID' },
-  { value: 2, label: '搜索 处理人ID' },
+  { value: 0, label: t('b.sou-suo-ju-bao-zhe-id') },
+  { value: 1, label: t('b.sou-suo-ju-bao-mu-biao-id') },
+  { value: 2, label: t('b.sou-suo-chu-li-ren-id') },
 ]
 
 const reportTypeBar = ref<number | { value: number; label: string }>(0) // 服务器等级
 const reportTypeOptions = [
-  { value: 0, label: '全部' },
-  { value: 1, label: '帖子' },
-  { value: 2, label: '评论' },
-  { value: 3, label: '服务器' },
-  { value: 4, label: '用户' },
+  { value: 0, label: t('b.quan-bu') },
+  { value: 1, label: t('nav.tie-zi') },
+  { value: 2, label: t('nav.ping-lun') },
+  { value: 3, label: t('nav.fu-wu-qi') },
+  { value: 4, label: t('b.yong-hu') },
 ]
 const reportTypeBarMap: { [key: number]: string } = {
-  0: '全部',
-  1: '帖子',
-  2: '评论',
-  3: '服务器',
-  4: '用户',
+  0: t('b.quan-bu'),
+  1: t('nav.tie-zi'),
+  2: t('nav.ping-lun'),
+  3: t('nav.fu-wu-qi'),
+  4: t('b.yong-hu'),
 } // 举报类型映射
 
 const reportPage = ref({

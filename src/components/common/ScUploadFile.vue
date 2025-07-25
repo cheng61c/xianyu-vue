@@ -2,9 +2,8 @@
   <div ref="uploadCardRef">
     <Card class="p-6">
       <div class="text-gray-500 mx-auto flex items-center justify-center gap-2">
-        拖动
-        <ScTag size="sm">{{ fileTypeLabel }}</ScTag>
-        到虚线框，或点击 + 上传
+        {{ $t('b.tuo-dong') }} <ScTag size="sm">{{ fileTypeLabel }}</ScTag>
+        {{ $t('b.dao-xu-xian-kuang-huo-dian-ji-shang-chuan') }}
       </div>
 
       <div
@@ -33,7 +32,7 @@
             <button
               @click.stop="removeFile(index)"
               class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow cursor-pointe"
-              title="删除">
+              :title="$t('b.shan-chu')">
               <X />
             </button>
           </div>
@@ -56,6 +55,8 @@ import ScButton from './ScButton.vue'
 import ScTag from './ScTag.vue'
 import { uploadApi } from '@/apis'
 import { iconMap, typeLabelMap } from '@/utils/fileType'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const props = defineProps({
   typeid: {
@@ -80,7 +81,8 @@ const files = ref<{ file: File }[]>([])
 const toast = useToast()
 
 const fileTypeLabel = computed(
-  () => typeLabelMap[props.typeid as keyof typeof typeLabelMap] || '文件'
+  () =>
+    typeLabelMap[props.typeid as keyof typeof typeLabelMap] || t('nav.wen-jian')
 )
 
 const triggerFileInput = () => {
@@ -103,14 +105,20 @@ const handleDrop = (e: DragEvent) => {
 
 const handleFiles = (selectedFiles: File[]) => {
   for (const file of selectedFiles) {
-    toast.info(`正在上传${fileTypeLabel.value}...`)
+    toast.info(
+      t('t.zheng-zai-shang-chuan-filetypelabelvalue', [fileTypeLabel.value])
+    )
     uploading.value = true
     uploadApi
       .uploadFile(file, props.typeid)
       .then((res) => {
         if (res.data.code === 200) {
           files.value.push({ file })
-          toast.success(`${fileTypeLabel.value}上传成功`)
+          toast.success(
+            t('t.filetypelabelvalue-shang-chuan-cheng-gong', [
+              fileTypeLabel.value,
+            ])
+          )
         }
         uploading.value = false
         console.log(res.data.data)
@@ -124,7 +132,10 @@ const handleFiles = (selectedFiles: File[]) => {
       })
       .catch((error) => {
         toast.error(
-          `${fileTypeLabel.value}上传失败,请上传对应格式的文件: ` + error.msg
+          t(
+            't.filetypelabelvalue-shang-chuan-shi-bai-qing-shang-chuan-dui-ying-ge-shi-de-wen-jian',
+            [fileTypeLabel.value]
+          ) + error.msg
         )
         uploading.value = false
       })

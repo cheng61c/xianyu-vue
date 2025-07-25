@@ -4,28 +4,35 @@
       <Dropdown
         v-model="searchType"
         :options="searchTypeoptions"
-        placeholder="搜索 标题和内容"
+        :placeholder="$t('b.sou-suo-biao-ti-he-nei-rong')"
         class="w-40" />
-      <ScInput v-model="searchPostValue" placeholder="搜索" class="w-xs" />
-      <ScButton class="px-4" Border @click="search"> 搜索 </ScButton>
-      <ScButton class="px-4" Border @click="getPosts"> 刷新 </ScButton>
+      <ScInput
+        v-model="searchPostValue"
+        :placeholder="$t('b.sou-suo')"
+        class="w-xs" />
+      <ScButton class="px-4" Border @click="search">
+        {{ $t('b.sou-suo') }}
+      </ScButton>
+      <ScButton class="px-4" Border @click="getPosts">
+        {{ $t('b.shua-xin') }}
+      </ScButton>
     </div>
     <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
-        <span>服务器级别:</span>
+        <span>{{ $t('d.fu-wu-qi-ji-bie') }}</span>
         <Dropdown
           v-model="levelBar"
           :options="levelBarOptions"
-          placeholder="全部"
+          :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
 
       <label class="flex items-center gap-2 w-full">
-        <span>状态:</span>
+        <span>{{ $t('b.zhuang-tai') }}</span>
         <Dropdown
           v-model="searchStatus"
           :options="searchStatusOptions"
-          placeholder="全部"
+          :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
     </div>
@@ -38,14 +45,14 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>标题</th>
-            <th>版本号</th>
-            <th>用户</th>
-            <th>级别</th>
-            <th>服务器地址</th>
-            <th>发布时间</th>
-            <th>状态</th>
-            <th>操作</th>
+            <th>{{ $t('b.biao-ti') }}</th>
+            <th>{{ $t('b.hui-fu') }}</th>
+            <th>{{ $t('b.yong-hu') }}</th>
+            <th>{{ $t('b.ji-bie') }}</th>
+            <th>{{ $t('b.fu-wu-qi-di-zhi') }}</th>
+            <th>{{ $t('b.fa-bu-shi-jian') }}</th>
+            <th>{{ $t('f.zhuang-tai') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -65,14 +72,16 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 <ScTag v-if="post.status == 2" size="xs" status="error">
-                  封禁
+                  {{ $t('b.feng-jin') }}
                 </ScTag>
                 <ScTag v-if="post.disabled == 1" size="xs" status="error">
-                  已删除
+                  {{ $t('b.yi-shan-chu') }}
                 </ScTag>
-                <ScTag v-else size="xs" status="success"> 正常 </ScTag>
+                <ScTag v-else size="xs" status="success">
+                  {{ $t('b.zheng-chang') }}
+                </ScTag>
                 <ScTag v-if="post.remark" size="xs" status="warning">
-                  已备注
+                  {{ $t('b.yi-bei-zhu') }}
                 </ScTag>
               </div>
             </td>
@@ -98,7 +107,7 @@
                 </ScButton>
 
                 <ScButton @click="updatePost(index)" Border>
-                  修改级别
+                  {{ $t('b.xiu-gai-ji-bie') }}
                 </ScButton>
               </div>
             </td>
@@ -117,21 +126,21 @@
 
   <EmptyState
     v-else
-    title="暂无帖子"
+    :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="$t('b.dian-ji-shua-xin')"
     :actionIcon="RotateCcw"
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">资源备注</div>
+      <div class="text-xl mb-4">{{ $t('d.zi-yuan-bei-zhu') }}</div>
       <ScInput
         v-model="currentPostRemark"
-        placeholder="什么也没有"
+        :placeholder="$t('d.shi-mo-ye-mei-you')"
         multiline
         :rows="12"
         :resizable="false"
@@ -140,13 +149,13 @@
         <ScButton
           class="px-4 border border-error text-error"
           @click="banned(currentPost, 2)">
-          封禁
+          {{ $t('b.feng-jin') }}
         </ScButton>
         <ScButton class="px-4" @click="banned(currentPost, 3)" Border>
-          撤销封禁
+          {{ $t('d.che-xiao-feng-jin') }}
         </ScButton>
         <ScButton class="px-4" @click="bannedModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -154,7 +163,7 @@
 
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">修改服务器级别</div>
+      <div class="text-xl mb-4">{{ $t('d.xiu-gai-fu-wu-qi-ji-bie') }}</div>
       <ScButton
         v-for="(option, index) in levelBarOptions"
         :key="index"
@@ -167,10 +176,10 @@
 
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updatePost(currentPost)" Border>
-          确认修改
+          {{ $t('b.que-ren-xiu-gai') }}
         </ScButton>
         <ScButton class="px-4" @click="updateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -192,31 +201,33 @@ import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ServerPostListQueryDto, ServerPostType } from '@/types/ServerPost'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const searchPostValue = ref('') // 搜索帖子内容
 
 const searchStatus = ref<number | { value: number; label: string }>(0) // 帖子状态
 const searchStatusOptions = [
-  { value: 0, label: '全部' },
-  { value: 1, label: '正常' },
-  { value: 2, label: '禁用' },
-  { value: 3, label: '已审核' },
+  { value: 0, label: t('b.quan-bu') },
+  { value: 1, label: t('b.zheng-chang') },
+  { value: 2, label: t('b.jin-yong') },
+  { value: 3, label: t('b.yi-shen-he') },
 ]
 
 const searchType = ref<number | { value: number; label: string }>(1) // 搜索类型
 const searchTypeoptions = [
-  { value: 0, label: '搜索 标题和内容' },
-  { value: 1, label: '搜索 服务器IP' },
+  { value: 0, label: t('b.sou-suo-biao-ti-he-nei-rong') },
+  { value: 1, label: t('b.sou-suo-fu-wu-qi-ip') },
 ]
 
 const levelBar = ref<number | { value: number; label: string }>(0) // 服务器等级
 const levelBarOptions = [
-  { value: 0, label: '个人服' },
-  { value: 1, label: '社区服' },
+  { value: 0, label: t('b.ge-ren-fu') },
+  { value: 1, label: t('b.she-qu-fu') },
 ]
 const levelBarMap: { [key: number]: string } = {
-  0: '个人服',
-  1: '社区服',
+  0: t('b.ge-ren-fu'),
+  1: t('b.she-qu-fu'),
 } // 服务器等级映射
 const currentLevel = ref(0) // 当前操作的服务器等级
 

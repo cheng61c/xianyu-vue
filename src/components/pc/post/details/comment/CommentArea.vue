@@ -8,7 +8,10 @@
         :size="40"
         class="flex-shrink-0" />
       <div class="flex-1">
-        <CommentInput @submit="replay" />
+        <CommentInput
+          @submit="replay"
+          :submitText="$t('b.fa-biao-ping-lun')"
+          :placeholder="$t('b.shuo-dian-shi-mo')" />
       </div>
     </div>
 
@@ -16,7 +19,7 @@
     <div
       class="flex justify-between items-center border-b border-gray mb-4 pb-2">
       <div class="comment-sort flex items-center">
-        <span class="mr-3">排序方式：</span>
+        <span class="mr-3">{{ $t('d.pai-xu-fang-shi') }}</span>
         <ScButton
           v-for="sort in sortOptions"
           :key="sort.value"
@@ -29,7 +32,9 @@
         </ScButton>
       </div>
       <div>
-        <span>总评论: {{ commentsPage.total }}</span>
+        <span>{{
+          $t('d.zong-ping-lun-commentspagetotal', [commentsPage.total])
+        }}</span>
       </div>
     </div>
 
@@ -57,7 +62,7 @@
                 size="sm"
                 bgClass="bg-error text-pink-content"
                 class="text-xs px-1 rounded">
-                帖主
+                {{ $t('b.tie-zhu') }}
               </ScTag>
               <span
                 class="text-gray-content text-xs ml-2"
@@ -96,7 +101,7 @@
                 v-for="(img, imgIndex) in comment.image"
                 :key="imgIndex"
                 :src="img"
-                alt="评论图片"
+                :alt="$t('d.ping-lun-tu-pian')"
                 class="w-20 h-20 object-cover rounded-md cursor-pointer"
                 @click="openImg(img)" />
             </div>
@@ -138,7 +143,7 @@
                         size="sm"
                         bgClass="bg-error text-pink-content"
                         class="text-xs px-1 rounded">
-                        帖主
+                        {{ $t('b.tie-zhu') }}
                       </ScTag>
                       <span
                         class="text-gray-content text-xs ml-2"
@@ -184,7 +189,7 @@
                         v-for="(img, replyImgIndex) in reply.image"
                         :key="replyImgIndex"
                         :src="img"
-                        alt="评论图片"
+                        :alt="$t('d.ping-lun-tu-pian')"
                         class="w-20 h-20 object-cover rounded-md cursor-pointer"
                         @click="openImg(img)" />
                     </div>
@@ -275,6 +280,8 @@ import CommentMenu from './CommentMenu.vue'
 import CommentInput from './CommentInput.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const toast = useToast()
 const props = defineProps<{
@@ -290,10 +297,10 @@ const imgurl = ref('')
 
 // 排序选项
 const sortOptions = ref([
-  { value: '1', label: '时间降序', icon: ArrowDownWideNarrow },
-  { value: '2', label: '时间升序', icon: ArrowUpNarrowWide },
-  { value: '3', label: '点赞降序', icon: ArrowDownWideNarrow },
-  { value: '4', label: '点赞升序', icon: ArrowUpNarrowWide },
+  { value: '1', label: t('b.shi-jian-jiang-xu'), icon: ArrowDownWideNarrow },
+  { value: '2', label: t('b.shi-jian-sheng-xu'), icon: ArrowUpNarrowWide },
+  { value: '3', label: t('b.dian-zan-jiang-xu'), icon: ArrowDownWideNarrow },
+  { value: '4', label: t('b.dian-zan-sheng-xu'), icon: ArrowUpNarrowWide },
 ])
 const currentSort = ref('1')
 
@@ -302,8 +309,8 @@ const showAllReply = ref(0)
 const currentLoadButtonText = computed(() => {
   return commentsPage.value.page >=
     Math.ceil(commentsPage.value.total / commentsPage.value.limit)
-    ? '到底了'
-    : '加载更多评论'
+    ? t('b.dao-di-le')
+    : t('b.jia-zai-geng-duo-ping-lun')
 })
 
 const comments = ref<CommentType[]>([])
@@ -366,7 +373,9 @@ const getcomments = (page: number) => {
       }
     })
     .catch((error) => {
-      toast.error('获取评论失败，请稍后再试: ' + error.msg)
+      toast.error(
+        t('t.huo-qu-ping-lun-shi-bai-qing-shao-hou-zai-shi') + error.msg
+      )
       console.error('获取评论时发生错误:', error)
     })
 }
@@ -378,14 +387,14 @@ const replay = (
   toCommentId?: number
 ) => {
   if (!userStore.isLogin) {
-    toast.error('请先登录后再发表评论')
+    toast.error(t('t.qing-xian-deng-lu-hou-zai-fa-biao-ping-lun'))
     return
   }
   if (!props.postData) {
     return
   }
   if (content.trim() === '') {
-    toast.error('评论内容不能为空')
+    toast.error(t('t.ping-lun-nei-rong-bu-neng-wei-kong'))
     return
   }
   const data: SendCommentDto = {
@@ -409,11 +418,13 @@ const replay = (
       if (res.data.code === 200) {
         replayContent.value = ''
         getcomments(1) // 重新获取评论列表
-        toast.success('评论成功')
+        toast.success(t('t.ping-lun-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('发表评论失败，请稍后再试: ' + error.msg)
+      toast.error(
+        t('t.fa-biao-ping-lun-shi-bai-qing-shao-hou-zai-shi') + error.msg
+      )
       console.error('发表评论时发生错误:', error.msg)
     })
 }

@@ -6,7 +6,7 @@
       @click="$router.push({ name: 'publish' })"
       :icon="MessageSquarePlus"
       Border>
-      发布内容
+      {{ $t('b.fa-bu-nei-rong') }}
     </ScButton>
   </Card>
 </template>

@@ -4,46 +4,53 @@
       <Dropdown
         v-model="searchTypeValue"
         :options="searchTypeoptions"
-        placeholder="搜索 标题和内容"
+        :placeholder="$t('b.sou-suo-biao-ti-he-nei-rong')"
         class="w-40" />
-      <ScInput v-model="searchPostValue" placeholder="搜索" class="w-xs" />
-      <ScButton class="px-4" Border @click="search"> 搜索 </ScButton>
-      <ScButton class="px-4" Border @click="getPosts"> 刷新 </ScButton>
+      <ScInput
+        v-model="searchPostValue"
+        :placeholder="$t('b.sou-suo')"
+        class="w-xs" />
+      <ScButton class="px-4" Border @click="search">
+        {{ $t('b.sou-suo') }}
+      </ScButton>
+      <ScButton class="px-4" Border @click="getPosts">
+        {{ $t('b.shua-xin') }}
+      </ScButton>
     </div>
     <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
-        <span>板块:</span>
+        <span>{{ $t('b.ban-kuai') }}</span>
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
-          placeholder="全部板块"
+          :placeholder="$t('b.quan-bu-ban-kuai')"
           class="flex-1" />
       </label>
 
       <label class="flex items-center gap-2 w-full">
-        <span>状态:</span>
+        <span>{{ $t('b.zhuang-tai') }}</span>
         <Dropdown
           v-model="searchStatus"
           :options="searchStatusOptions"
-          placeholder="全部"
+          :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
 
       <label class="flex items-center gap-2 w-full">
-        <span>是否置顶:</span>
+        <span>{{ $t('d.shi-fou-zhi-ding') }}</span>
         <Dropdown
           v-model="isTop"
           :options="isTopOptions"
-          placeholder="未置顶"
+          :placeholder="$t('b.wei-zhi-ding')"
           class="flex-1" />
       </label>
 
       <label class="flex items-center gap-2 w-full">
-        <span>排序方式:</span>
+        <span>{{ $t('d.pai-xu-fang-shi') }}</span>
         <Dropdown
           v-model="orderBy"
           :options="orderByOptions"
-          placeholder="类型"
+          :placeholder="$t('b.lei-xing')"
           class="flex-1" />
       </label>
     </div>
@@ -56,12 +63,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>标题</th>
-            <th>板块</th>
-            <th>用户</th>
-            <th>发布时间</th>
-            <th>状态</th>
-            <th>操作</th>
+            <th>{{ $t('b.biao-ti') }}</th>
+            <th>{{ $t('b.ban-kuai') }}</th>
+            <th>{{ $t('b.yong-hu') }}</th>
+            <th>{{ $t('t.fa-bu-shi-jiaother') }}</th>
+            <th>{{ $t('f.zhuang-tai') }}</th>
+            <th>{{ $t('f.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -87,23 +94,25 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 <ScTag v-if="post.status == 2" size="xs" status="error">
-                  封禁
+                  {{ $t('b.feng-jin') }}
                 </ScTag>
-                <ScTag v-else size="xs" status="success"> 正常 </ScTag>
+                <ScTag v-else size="xs" status="success">
+                  {{ $t('b.zheng-chang') }}
+                </ScTag>
 
                 <ScTag v-if="post.visible == 0" size="xs" status="error">
-                  已下架
+                  {{ $t('b.yi-xia-jia') }}
                 </ScTag>
 
                 <ScTag v-if="post.top == 1" size="xs" status="warning">
-                  置顶中
+                  {{ $t('b.zhi-ding-zhong') }}
                 </ScTag>
 
                 <ScTag v-if="post.disabled == 1" size="xs" status="error">
-                  已删除
+                  {{ $t('b.yi-shan-chu') }}
                 </ScTag>
                 <ScTag v-if="post.remark" size="xs" status="warning">
-                  已备注
+                  {{ $t('b.yi-bei-zhu') }}
                 </ScTag>
               </div>
             </td>
@@ -156,24 +165,23 @@
     :total-items="postPage.total"
     :page-size="postPage.limit"
     @page-change="toPage" />
-
   <EmptyState
     v-else
-    title="暂无帖子"
+    :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="$t('b.dian-ji-shua-xin')"
     :actionIcon="RotateCcw"
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
     <Card class="p-6 w-2xl">
-      <div>资源备注</div>
+      <div>{{ $t('d.zi-yuan-bei-zhu') }}</div>
       <ScInput
         v-model="currentPostRemark"
-        placeholder="什么也没有"
+        :placeholder="$t('d.shi-mo-ye-mei-you')"
         multiline
         :rows="12"
         :resizable="false"
@@ -182,13 +190,13 @@
         <ScButton
           class="px-4 border border-error text-error"
           @click="banned(currentPost, 2)">
-          封禁
+          {{ $t('b.feng-jin') }}
         </ScButton>
         <ScButton class="px-4" @click="banned(currentPost, 3)" Border>
-          撤销封禁
+          {{ $t('d.che-xiao-feng-jin') }}
         </ScButton>
         <ScButton class="px-4" @click="bannedModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -209,43 +217,46 @@ import type { Post, PostQueryDto } from '@/types/Post'
 import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const searchPostValue = ref('') // 搜索帖子内容
 
 const searchStatus = ref<number | { value: number; label: string }>(0) // 帖子状态
 const searchStatusOptions = [
-  { value: 0, label: '全部' },
-  { value: 1, label: '正常' },
-  { value: 2, label: '禁用' },
-  { value: 3, label: '已审核' },
+  { value: 0, label: t('b.quan-bu') },
+  { value: 1, label: t('b.zheng-chang') },
+  { value: 2, label: t('b.jin-yong') },
+  { value: 3, label: t('b.yi-shen-he') },
 ]
 
 const searchTypeValue = ref<number | { value: number; label: string }>(1) // 搜索类型
 const searchTypeoptions = [
-  { value: 0, label: '搜索 标题和内容' },
-  { value: 1, label: '搜索 标题' },
-  { value: 2, label: '搜索 内容' },
-  { value: 3, label: '搜索 用户ID' },
-  { value: 4, label: '搜索 帖子ID' },
+  { value: 0, label: t('b.sou-suo-biao-ti-he-nei-rong') },
+  { value: 1, label: t('b.sou-suo-biao-ti') },
+  { value: 2, label: t('b.sou-suo-nei-rong') },
+  { value: 3, label: t('b.sou-suo-yong-hu-id') },
+  { value: 4, label: t('b.sou-suo-tie-zi-id') },
 ]
 
 const orderBy = ref<number | { value: number; label: string }>(4) // 排序方式
 const orderByOptions = [
-  { value: 1, label: '按点赞降序' },
-  { value: 2, label: '按观看数降序' },
-  { value: 3, label: '按热度降序' },
-  { value: 4, label: '按发布时间降序' },
+  { value: 1, label: t('b.an-dian-zan-jiang-xu') },
+  { value: 2, label: t('b.an-guan-kan-shu-jiang-xu') },
+  { value: 3, label: t('b.an-re-du-jiang-xu') },
+  { value: 4, label: t('b.an-fa-bu-shi-jian-jiang-xu') },
 ]
 
 const isTop = ref<number | { value: number; label: string }>(2) // 是否置顶
 const isTopOptions = ref([
-  { value: 0, label: '未置顶' },
-  { value: 1, label: '已置顶' },
-  { value: 2, label: '全部' },
+  { value: 0, label: t('b.wei-zhi-ding') },
+  { value: 1, label: t('b.yi-zhi-ding') },
+  { value: 2, label: t('b.quan-bu') },
 ])
 
 const plateBar = ref<number | { value: number; label: string }>(0) // 板块ID，0为全部板块
-const plateBarOptions = ref([{ value: 0, label: '全部板块' }]) // 板块下拉选项
+const plateBarOptions = ref([{ value: 0, label: t('b.quan-bu-ban-kuai') }]) // 板块下拉选项
 
 const timeRange = ref({
   startTime: '',
@@ -368,7 +379,7 @@ const getPlateList = () => {
     .then((response) => {
       if (response.data.code === 200) {
         plateBarOptions.value = [
-          { value: 0, label: '全部板块' },
+          { value: 0, label: t('b.quan-bu-ban-kuai') },
           ...response.data.data
             .filter((plate: any) => plate.type === 2)
             .map((plate: any) => ({

@@ -29,14 +29,18 @@
         </slot>
 
         <p class="text-sm text-gray-600">
-          <span v-if="!selectedFiles.length">{{ placeholder }}</span>
+          <span v-if="!selectedFiles.length">{{ placeholderText }}</span>
           <span v-else class="font-medium">
-            {{ selectedFiles.length }} 个文件已选择
+            {{
+              $t('d.selectedfileslength-ge-wen-jian-yi-xuan-ze', [
+                selectedFiles.length,
+              ])
+            }}
           </span>
         </p>
 
         <p class="text-xs text-gray-500">
-          {{ helperText }}
+          {{ helperTextComputed }}
         </p>
       </div>
     </label>
@@ -74,8 +78,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref, onUnmounted, computed } from 'vue'
 import { UploadIcon } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 interface Props {
   modelValue?: File | File[] | null
@@ -91,11 +97,20 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   accept: '*',
   multiple: false,
-  placeholder: '拖放文件到这里或点击选择',
-  helperText: '支持 JPG, PNG, PDF 等格式',
+  placeholder: '',
+  helperText: '',
   showPreview: true,
   disabled: false,
 })
+
+const placeholderText = computed(() =>
+  props.placeholder
+    ? props.placeholder
+    : t('d.tuo-fang-wen-jian-dao-zhe-li-huo-dian-ji-xuan-ze')
+)
+const helperTextComputed = computed(() =>
+  props.helperText ? props.helperText : t('d.zhi-chi-jpg-png-pdf-deng-ge-shi')
+)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: File | File[] | null): void

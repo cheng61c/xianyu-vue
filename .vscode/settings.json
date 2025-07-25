@@ -14,5 +14,10 @@
   "idf.pythonInstallPath": "C:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "i18n-ally.extract.ignoredByFiles": {
+    "src\\pages\\pc\\user\\children\\UserResource.vue": [
+      "\r\n                v {{ pkg.version }}\r\n              "
+    ]
   }
 }

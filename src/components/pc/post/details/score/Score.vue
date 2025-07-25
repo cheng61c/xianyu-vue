@@ -2,7 +2,7 @@
   <div>
     <Card noCol class="overflow-hidden h-56">
       <div class="mr-4 w-[20rem] min-w-[20rem]">
-        <div class="text-lg font-bold">资源评分</div>
+        <div class="text-lg font-bold">{{ $t('d.zi-yuan-ping-fen') }}</div>
         <div class="flex justify-center items-center gap-4">
           <div class="pr-8 flex flex-col">
             <div :class="steamRatingLabel.colorClass">
@@ -12,7 +12,13 @@
               {{ scoreSummary.averageScore.toFixed(1) }}
             </div>
 
-            <div class="text-sm">评分人数: {{ scoreSummary.totalCount }}</div>
+            <div class="text-sm">
+              {{
+                $t('d.ping-fen-ren-shu-scoresummarytotalcount', [
+                  scoreSummary.totalCount,
+                ])
+              }}
+            </div>
           </div>
 
           <div class="flex flex-col gap-2">
@@ -33,9 +39,11 @@
 
       <div class="flex-1">
         <div class="flex justify-between">
-          <span class="text-lg font-bold">最新评分</span>
+          <span class="text-lg font-bold">{{ $t('d.zui-xin-ping-fen') }}</span>
           <ScButton class="text-sm" @click="showModal = true" noBg noPd>
-            共 {{ scoreList.length }} 条评分
+            {{
+              $t('d.gong-scorelistlength-tiao-ping-fen', [scoreList.length])
+            }}
             <template #endIcon>
               <ArrowRight :size="18" />
             </template>
@@ -65,15 +73,21 @@
               {{ item.content }}
             </div>
             <div class="text-sm flex flex-wrap gap-2 justify-between">
-              <p class="text-success">{{ item.likeCount }} 人觉得有用</p>
-              <p class="text-error">{{ item.badCount }} 人觉得没用</p>
+              <p class="text-success">
+                {{
+                  $t('d.itemlikecount-ren-jue-de-you-yong', [item.likeCount])
+                }}
+              </p>
+              <p class="text-error">
+                {{ $t('d.itembadcount-ren-jue-de-mei-yong', [item.badCount]) }}
+              </p>
             </div>
           </Card>
         </div>
         <div
           v-if="scoreList.length === 0"
           class="text-gray-content text-center py-4">
-          暂无评分
+          {{ $t('d.zan-wu-ping-fen') }}
         </div>
       </div>
     </Card>
@@ -81,7 +95,9 @@
     <ScModal v-model="showModal">
       <Card class="gap-4 w-4xl h-full max-h-[80vh] overflow-y-auto">
         <div class="flex justify-between items-center">
-          <h3 class="text-lg font-semibold">评分详情</h3>
+          <h3 class="text-lg font-semibold">
+            {{ $t('d.ping-fen-xiang-qing') }}
+          </h3>
           <ScButton
             @click="showModal = false"
             :icon="X"
@@ -93,7 +109,7 @@
 
         <div>
           <div class="flex gap-4">
-            <span>对该资源评分: </span>
+            <span>{{ $t('d.dui-gai-zi-yuan-ping-fen') }} </span>
             <ReadonlyRating
               v-model:value="scoreInput"
               :readonly="false"
@@ -104,7 +120,7 @@
             :post-id="props.postId"
             @submit="sendScore"
             submitText="发表评分"
-            placeholder="对该资源的评价是..." />
+            :placeholder="$t('d.dui-gai-zi-yuan-de-ping-jia-shi')" />
         </div>
 
         <div
@@ -124,11 +140,16 @@
                 colorClass="bg-active"
                 size="xs" />
               <span class="text-gray-content text-sm">
-                发布于 {{ score.createdAt }}
                 {{
-                  score.updatedAt != score.createdAt
-                    ? `更新于 ${score.updatedAt}`
-                    : ''
+                  $t(
+                    'd.fa-bu-yu-scorecreatedat-scoreupdatedat-scorecreatedat-geng-xin-yu-scoreupdatedat',
+                    [
+                      score.createdAt,
+                      score.updatedAt != score.createdAt
+                        ? `更新于 ${score.updatedAt}`
+                        : '',
+                    ]
+                  )
                 }}
               </span>
             </div>
@@ -141,13 +162,15 @@
                 v-for="(img, replyImgIndex) in score.image"
                 :key="replyImgIndex"
                 :src="img"
-                alt="评论图片"
+                :alt="$t('d.ping-lun-tu-pian')"
                 class="w-20 h-20 object-cover rounded-md cursor-pointer"
                 @click="openImg(img)" />
             </div>
 
             <div class="flex justify-end gap-4 items-center">
-              <div class="text-sm text-gray-content">这对你是否有帮助</div>
+              <div class="text-sm text-gray-content">
+                t('d.zhe-dui-ni-shi-fou-you-bang-zhu')
+              </div>
               <div class="flex gap-4">
                 <ScButton
                   class="text-sm border"
@@ -157,7 +180,7 @@
                   }"
                   @click="scoreAction(index, 'like')"
                   noBg>
-                  是 ({{ score.likeCount }})
+                  {{ $t('b.shi-scorelikecount', [score.likeCount]) }}
                 </ScButton>
                 <ScButton
                   class="text-sm border"
@@ -167,7 +190,7 @@
                   }"
                   @click="scoreAction(index, 'bad')"
                   noBg>
-                  否 ({{ score.badCount }})</ScButton
+                  {{ $t('b.fou-scorebadcount', [score.badCount]) }}</ScButton
                 >
               </div>
             </div>
@@ -205,6 +228,8 @@ import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getSteamRatingLabel } from '@/utils/steamReviewLabel'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const userStore = useUserStore()
 const toast = useToast()
@@ -305,11 +330,11 @@ const getScoreSummary = () => {
 
 const sendScore = (content: string, image: string[]) => {
   if (!userStore.isLogin) {
-    toast.error('请先登录')
+    toast.error(t('t.qing-xian-deng-lu'))
     return
   }
   if (scoreInput.value <= 0) {
-    toast.error('评分不能为空')
+    toast.error(t('t.ping-fen-bu-neng-wei-kong'))
     return
   }
 
@@ -324,24 +349,26 @@ const sendScore = (content: string, image: string[]) => {
     .createScore(data)
     .then((res) => {
       if (res.data.code == 200) {
-        toast.success('评分成功')
+        toast.success(t('t.ping-fen-cheng-gong'))
         getScoreList()
         getScoreSummary()
         scoreInput.value = 0 // 重置评分输入
       } else {
-        toast.error(res.data.msg || '评分失败，请稍后再试')
+        toast.error(
+          res.data.msg || t('t.ping-fen-shi-bai-qing-shao-hou-zai-shi')
+        )
       }
     })
     .catch((error) => {
       console.error('Error sending score:', error)
-      toast.error('评分失败，请稍后再试')
+      toast.error(t('t.ping-fen-shi-bai-qing-shao-hou-zai-shi'))
     })
 }
 
 const scoreAction = (index: number, actionType: 'like' | 'bad') => {
   const score = scoreList.value[index]
   if (!userStore.isLogin) {
-    toast.error('请先登录')
+    toast.error(t('t.qing-xian-deng-lu'))
     return
   }
 
@@ -355,14 +382,14 @@ const scoreAction = (index: number, actionType: 'like' | 'bad') => {
         score.isBaded = res.data.data.isBaded
         score.likeCount = res.data.data.likeCount
         score.badCount = res.data.data.badCount
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
       } else {
-        toast.error(res.data.msg || '操作失败，请稍后再试')
+        toast.error(res.data.msg || t('cao-zuo-shi-bai-qing-shao-hou-zai-shi'))
       }
     })
     .catch((error) => {
       console.error(`Error ${actionType}ing score:`, error)
-      toast.error('操作失败，请稍后再试')
+      toast.error(t('cao-zuo-shi-bai-qing-shao-hou-zai-shi'))
     })
 }
 

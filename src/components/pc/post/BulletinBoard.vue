@@ -2,19 +2,19 @@
   <div class="flex flex-col gap-4 h-full w-1/5 px-1 pt-1 no-scrollbar">
     <Creation />
     <Card class="flex flex-col gap-2">
-      <h2 class="card-title px-1.5">公告栏</h2>
+      <h2 class="card-title px-1.5">{{ $t('d.gong-gao-lan') }}</h2>
       <div v-for="post in posts">
         <div
           v-if="post.top == 1"
           @click="handleClick(post)"
           class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all">
-          <ScTag status="warning"> 置顶 </ScTag>
+          <ScTag status="warning"> {{ $t('b.zhi-ding') }} </ScTag>
           <div class="font-bold">{{ post.title }}</div>
         </div>
       </div>
       <div v-if="!posts.length">
         <div class="text-gray-content text-center text-sm px-1.5 py-2">
-          啥也没有哦
+          {{ $t('d.sha-ye-mei-you-o') }}
         </div>
       </div>
     </Card>

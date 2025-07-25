@@ -4,11 +4,11 @@
       <ScButton
         class="px-4 py-1 text-sm border border-gray"
         @click="$router.back()">
-        返回
+        {{ $t('b.fan-hui') }}
       </ScButton>
-      <div class="text-lg font-semibold">编辑资源</div>
+      <div class="text-lg font-semibold">{{ $t('b.bian-ji-zi-yuan') }}</div>
       <div v-if="!userStore.isLogin" class="text-error">
-        请先登录后再发布内容
+        {{ $t('d.qing-xian-deng-lu-hou-zai-fa-bu-nei-rong') }}
       </div>
     </div>
 
@@ -21,7 +21,7 @@
           data-tip="
             版本号，资源版本号">
           <span class="flex items-center gap-1">
-            版本号 <span><CircleHelp :size="16" /></span>
+            {{ $t('b.ban-ben-hao') }} <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -40,7 +40,7 @@
           data-tip="
             版本标题">
           <span class="flex items-center gap-1">
-            标题 <span><CircleHelp :size="16" /></span>
+            {{ $t('b.biao-ti') }} <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -49,7 +49,7 @@
           v-model="versionData.title"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="请输入标题" />
+          :placeholder="$t('d.qing-shu-ru-biao-ti')" />
       </div>
 
       <!-- 游戏版本 -->
@@ -59,14 +59,15 @@
           class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本">
           <span class="flex items-center gap-1">
-            适配的游戏版本 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.shi-pei-de-you-xi-ban-ben') }}
+            <span><CircleHelp :size="16" /></span>
           </span>
           <span>:</span>
         </label>
 
         <div class="flex flex-col gap-2">
           <div class="flex flex-wrap gap-2 items-center">
-            <span>插件版:</span>
+            <span>{{ $t('f.cha-jian-ban') }}</span>
             <template v-for="version in versionList" :key="version.id">
               <ScButton
                 v-if="version.type === 'plugin'"
@@ -79,7 +80,7 @@
             </template>
           </div>
           <div class="flex flex-wrap gap-2 items-center">
-            <span>联机版:</span>
+            <span>{{ $t('f.lian-ji-ban') }}</span>
             <template v-for="version in versionList" :key="version.id">
               <ScButton
                 v-if="version.type === 'online'"
@@ -92,7 +93,7 @@
             </template>
           </div>
           <div class="flex flex-wrap gap-2 items-center">
-            <span>原版:</span>
+            <span>{{ $t('f.yuan-ban') }}</span>
             <template v-for="version in versionList" :key="version.id">
               <ScButton
                 v-if="version.type === 'original'"
@@ -154,7 +155,9 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
 import { formatImageSrcsInHtml } from '@/utils/regex'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps({
   post: {
     type: Object as () => Post | null,
@@ -201,15 +204,15 @@ const setFileIds = (ids: number[]) => {
 // 提交
 const submitVersiont = () => {
   if (!versionData.value.title) {
-    toast.error('请输入版本标题')
+    toast.error(t('t.qing-shu-ru-ban-ben-biao-ti'))
     return
   }
   if (!versionData.value.version) {
-    toast.error('请输入版本号')
+    toast.error(t('t.qing-shu-ru-ban-ben-hao'))
     return
   }
   if (!versionData.value.content) {
-    toast.error('请输入版本内容')
+    toast.error(t('t.qing-shu-ru-ban-ben-nei-rong'))
     return
   }
 
@@ -223,7 +226,7 @@ const submitVersiont = () => {
     .then((res: Api) => {
       const data = res.data
       if (data.code == 200) {
-        toast.success('版本发布成功')
+        toast.success(t('t.ban-ben-fa-bu-cheng-gong'))
         // 清空表单
         versionData.value = {
           title: '',
@@ -238,7 +241,7 @@ const submitVersiont = () => {
       }
     })
     .catch((error) => {
-      toast.error('发布失败: ' + error.msg)
+      toast.error(t('t.fa-bu-shi-bai') + error.msg)
       loader.value = false
     })
 }

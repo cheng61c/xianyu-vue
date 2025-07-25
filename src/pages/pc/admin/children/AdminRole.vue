@@ -2,13 +2,17 @@
   <Card class="mb-4">
     <div class="flex gap-2">
       <ScButton @click="getRoleList" :icon="RotateCcw" Border>
-        刷新角色列表
+        {{ $t('b.shua-xin-jiao-se-lie-biao') }}
       </ScButton>
-      <ScButton @click="addRole" :icon="Plus" Border> 添加新角色 </ScButton>
+      <ScButton @click="addRole" :icon="Plus" Border>
+        {{ $t('b.tian-jia-xin-jiao-se') }}
+      </ScButton>
     </div>
   </Card>
 
-  <div class="text-error" v-if="!isPlusAdmin">当前权限不足, 无法进行操作</div>
+  <div class="text-error" v-if="!isPlusAdmin">
+    {{ $t('d.dang-qian-quan-xian-bu-zu-wu-fa-jin-hang-cao-zuo') }}
+  </div>
 
   <Card v-if="roleList.length" class="mb-4">
     <div class="overflow-x-auto">
@@ -17,11 +21,11 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>名称</th>
-            <th>背景色</th>
-            <th>拥有人数</th>
-            <th>状态</th>
-            <th>操作</th>
+            <th>{{ $t('b.ming-cheng') }}</th>
+            <th>{{ $t('b.bei-jing-se') }}</th>
+            <th>{{ $t('b.yong-you-ren-shu') }}</th>
+            <th>{{ $t('f.zhuang-tai') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -50,12 +54,14 @@
             </td>
             <td v-if="isPlusAdmin">
               <div class="flex items-center gap-2">
-                <ScButton @click="updateRole(index)" Border> 编辑 </ScButton>
+                <ScButton @click="updateRole(index)" Border>
+                  {{ $t('b.bian-ji') }}
+                </ScButton>
                 <ScButton
                   v-if="role.id > 10"
                   @click="deleteRole(index, 0)"
                   Border>
-                  禁用
+                  {{ $t('b.jin-yong') }}
                 </ScButton>
               </div>
             </td>
@@ -67,28 +73,28 @@
 
   <EmptyState
     v-else
-    title="暂无帖子"
+    :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="$t('b.dian-ji-shua-xin')"
     :actionIcon="RotateCcw"
     @action-click="getRoleList" />
 
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">修改角色</div>
+      <div class="text-xl mb-4">{{ $t('d.xiu-gai-jiao-se') }}</div>
       <div class="flex items-center gap-4">
-        <span> 名称: </span>
+        <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="currentRoleBody.name"
-          placeholder="角色名称"
+          :placeholder="$t('d.jiao-se-ming-cheng')"
           class="m-2" />
       </div>
 
       <div class="flex items-center gap-4 mb-2">
-        <span> 背景颜色: </span>
+        <span> {{ $t('d.bei-jing-yan-se') }} </span>
         <ScTag :bgColor="currentRoleBody.color" size="md">
           {{ currentRoleBody.name }}
         </ScTag>
@@ -104,10 +110,10 @@
 
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateRole(currentRole)" Border>
-          确认修改
+          {{ $t('b.que-ren-xiu-gai') }}
         </ScButton>
         <ScButton class="px-4" @click="updateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -115,18 +121,20 @@
 
   <ScModal v-model="addRoleModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">添加新角色</div>
-      <div class="text-warning">新添加的角色不会有任何实际权限</div>
+      <div class="text-xl mb-4">{{ $t('b.tian-jia-xin-jiao-se') }}</div>
+      <div class="text-warning">
+        {{ $t('d.xin-tian-jia-de-jiao-se-bu-hui-you-ren-he-shi-ji-quan-xian') }}
+      </div>
       <div class="flex items-center gap-4">
-        <span> 名称: </span>
+        <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="newRoleBody.name"
-          placeholder="角色名称"
+          :placeholder="$t('d.jiao-se-ming-cheng')"
           class="m-2" />
       </div>
 
       <div class="flex items-center gap-4 mb-2">
-        <span> 背景颜色: </span>
+        <span> {{ $t('d.bei-jing-yan-se') }} </span>
         <template v-if="newRoleBody.name">
           <ScTag :bgColor="newRoleBody.color" size="md">
             {{ newRoleBody.name }}
@@ -143,9 +151,11 @@
         type="RGBA" />
 
       <div class="flex gap-4 justify-end">
-        <ScButton class="px-4" @click="addRole" Border> 确认添加 </ScButton>
+        <ScButton class="px-4" @click="addRole" Border>
+          {{ $t('b.que-ren-tian-jia') }}
+        </ScButton>
         <ScButton class="px-4" @click="addRoleModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -153,26 +163,30 @@
 
   <ScModal v-model="deleteRoleModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">禁用角色</div>
+      <div class="text-xl mb-4">{{ $t('d.jin-yong-jiao-se') }}</div>
       <div class="text-warning mb-4">
-        禁用角色后，该角色将不再展示，不会删除该角色的相关数据，在账号管理中仍然可以看到该角色，但不能再赋予新用户。
+        {{
+          $t(
+            'd.jin-yong-jiao-se-hou-gai-jiao-se-jiang-bu-zai-zhan-shi-bu-hui-shan-chu-gai-jiao-se-de-xiang-guan-shu-ju-zai-zhang-hao-guan-li-zhong-reng-ran-ke-yi-kan-dao-gai-jiao-se-dan-bu-neng-zai-fu-yu-xin-yong-hu'
+          )
+        }}
       </div>
 
       <div class="flex gap-4 justify-end">
         <ScButton
           class="px-4 border border-error text-error"
           @click="deleteRole(currentRole, 0)">
-          确认禁用
+          {{ $t('b.que-ren-jin-yong') }}
         </ScButton>
 
         <ScButton
           class="px-4 border border-success text-success"
           @click="deleteRole(currentRole, 1)">
-          恢复
+          {{ $t('b.hui-fu') }}
         </ScButton>
 
         <ScButton class="px-4" @click="deleteRoleModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>

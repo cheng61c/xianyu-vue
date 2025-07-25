@@ -2,7 +2,7 @@
   <ScSearch
     v-if="userStore.isLogin"
     key="user-post-search"
-    placeholder="搜索帖子标题或内容"
+    :placeholder="$t('t.sou-suo-tie-zi-biao-ti-huo-nei-rong')"
     @search="search"
     v-model="searchText"
     class="max-w-6xl min-w-4xl w-full" />
@@ -17,7 +17,7 @@
       <div v-if="post.cover" class="relative w-40 h-24 flex-shrink-0">
         <ScImage
           :src="post.cover"
-          alt="封面图"
+          :alt="$t('t.feng-mian-tu')"
           class="w-full h-full object-cover rounded" />
         <!-- <span
           class="absolute bottom-1 right-1 bg-black/70 text-white text-xs px-1 rounded"
@@ -40,7 +40,9 @@
             :status="post.visible == 1 ? 'success' : 'warning'">
             {{ post.visible == 1 ? '发布中' : '下架' }}
           </ScTag>
-          <ScTag v-if="post.status == 2" size="sm" status="error"> 封禁 </ScTag>
+          <ScTag v-if="post.status == 2" size="sm" status="error">
+            {{ $t('b.feng-jin') }}
+          </ScTag>
         </div>
         <!-- 时间 -->
         <div class="text-sm text-gray-500">{{ post.createdAt }}</div>
@@ -97,7 +99,7 @@
           @click="
             $router.push({ name: 'publish', params: { postId: post.id } })
           ">
-          编辑
+          {{ $t('b.bian-ji') }}
         </ScButton>
         <ScButton
           class="text-sm px-4 border border-gray hover:border-active"
@@ -111,7 +113,7 @@
           :icon="Trash2"
           :iconSize="16"
           @click="deleteItem(postIndex)">
-          删除
+          {{ $t('b.shan-chu') }}
         </ScButton>
       </div>
     </div>
@@ -133,13 +135,15 @@
 
   <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="text-center text-gray-content">
-      您还未登录，请先登录后再进行操作。
+      {{
+        $t('d.nin-huan-wei-deng-lu-qing-xian-deng-lu-hou-zai-jin-hang-cao-zuo')
+      }}
     </div>
   </Card>
 
   <EmptyState
     v-if="posts.length === 0 && userStore.isLogin"
-    title="暂无帖子"
+    :title="$t('t.zan-wu-tie-zi')"
     description="你还没有发布任何帖子哦~"
     iconSize="64"
     iconColor="#ccc"
@@ -151,19 +155,24 @@
 
   <ScModal v-model="isDeletePost">
     <Card class="max-w-2xl">
-      <div class="text-lg font-bold mb-4">确认删除帖子</div>
-      <div class="">帖子标题: {{ posts[currentPostIndex].title }}</div>
+      <div class="text-lg font-bold mb-4">
+        {{ $t('t.que-ren-shan-chu-tie-zi') }}
+      </div>
+      <div class="">
+        {{ $t('t.tie-zi-biao-ti') }}
+        <span>{{ posts[currentPostIndex].title }}</span>
+      </div>
       <div class="mb-4">
-        <span>你确定要删除此帖子吗?</span>
-        <span class="text-error">此操作无法撤回</span>
+        <span>{{ $t('d.ni-que-ding-yao-shan-chu-ci-tie-zi-ma') }}</span>
+        <span class="text-error">{{ $t('d.ci-cao-zuo-wu-fa-che-hui') }}</span>
       </div>
       <ScDivider />
       <div class="flex justify-end gap-2">
         <ScButton class="text-sm border" @click="isDeletePost = false">
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
         <ScButton class="text-sm text-error border" @click="deletePost">
-          确认删除
+          {{ $t('b.que-ren-shan-chu') }}
         </ScButton>
       </div>
     </Card>
@@ -201,7 +210,9 @@ import EmptyState from '@/components/common/EmptyState.vue'
 import ScSearch from '@/components/pc/user/ScSearch.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import ScTag from '@/components/common/ScTag.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
 const toast = useToast()
@@ -250,14 +261,14 @@ const getPosts = () => {
       loading.value = false
     })
     .catch((error) => {
-      toast.error('加载失败: ' + error.msg)
+      toast.error(t('t.jia-zai-shi-bai') + error.msg)
     })
 }
 
 const unpublishItem = (postIndex: number) => {
   const item = posts.value[postIndex]
   if (!item) {
-    toast.error('帖子不存在')
+    toast.error(t('t.tie-zi-bu-cun-zai'))
     return
   }
   postApi
@@ -269,11 +280,11 @@ const unpublishItem = (postIndex: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPosts()
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
 }
 
@@ -285,7 +296,7 @@ const deleteItem = (postIndex: number) => {
 const deletePost = () => {
   const item = posts.value[currentPostIndex.value]
   if (!item) {
-    toast.error('帖子不存在')
+    toast.error(t('t.tie-zi-bu-cun-zai'))
     return
   }
   postApi
@@ -294,11 +305,11 @@ const deletePost = () => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPosts()
-        toast.success('删除成功')
+        toast.success(t('t.shan-chu-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
   isDeletePost.value = false
 }
@@ -347,7 +358,7 @@ const search = (key: string) => {
       loading.value = false
     })
     .catch((error) => {
-      toast.error('搜索失败: ' + error.msg)
+      toast.error(t('t.sou-suo-shi-bai') + error.msg)
     })
 }
 

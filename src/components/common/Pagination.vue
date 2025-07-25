@@ -9,10 +9,10 @@
         icon-size="20"
         noBg
         @click="handlePageChange(currentPage - 1)">
-        上一页
+        {{ $t('b.shang-yi-ye') }}
       </ScButton>
       <span class="text-sm text-background-content">
-        第 {{ currentPage }} / {{ totalPages }} 页
+        {{ $t('b.di-currentpage-totalpages-ye', [currentPage, totalPages]) }}
       </span>
       <ScButton
         variant="ghost"
@@ -22,7 +22,7 @@
         icon-size="20"
         noBg
         @click="handlePageChange(currentPage + 1)">
-        下一页
+        {{ $t('b.xia-yi-ye') }}
       </ScButton>
     </div>
 
@@ -30,15 +30,16 @@
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div class="pr-4">
         <p class="text-sm text-background-content">
-          显示
-          <span class="font-medium">{{
-            (currentPage - 1) * pageSize + 1
-          }}</span>
-          到
-          <span class="font-medium">{{
-            Math.min(currentPage * pageSize, totalItems)
-          }}</span>
-          条， 共 <span class="font-medium">{{ totalItems }}</span> 条
+          {{
+            $t(
+              'b.xian-shi-currentpage-1-pagesize-1-dao-mathmincurrentpage-pagesize-totalitems-tiao-gong-totalitems-tiao',
+              [
+                (currentPage - 1) * pageSize + 1,
+                Math.min(currentPage * pageSize, totalItems),
+                totalItems,
+              ]
+            )
+          }}
         </p>
       </div>
       <div>
@@ -62,7 +63,7 @@
                     type="number"
                     v-model="inputPage"
                     class="w-20 text-center border border-gray-content/50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="页码"
+                    placeholder="{{ $t('b.ye-ma') }}"
                     @keydown.enter="(handlePageChange(inputPage), close())"
                     @keydown.esc="close()"
                     min="1"
@@ -72,7 +73,7 @@
                     Border
                     noPd
                     @click="(handlePageChange(inputPage), close())">
-                    跳转
+                    {{ $t('b.tiao-zhuan') }}
                   </ScButton>
                 </Card>
               </template>

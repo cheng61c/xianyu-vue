@@ -50,6 +50,8 @@ import TipTapUploadImage from './TipTapUploadImage.vue'
 import { HeadingWithId } from '@/extensions/HeadingWithId'
 
 import { useDeviceStore } from '@/stores/global/deviceStore'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const deviceStore = useDeviceStore()
 const expanded = ref(false) // 控制是否展开
@@ -95,28 +97,34 @@ const emit = defineEmits(['update:modelValue'])
 const isMac = window.navigator.userAgent.toLowerCase().includes('mac')
 const keyboardShortcut = isMac ? '⌘' : 'Ctrl'
 const dataTip = {
-  Undo: `撤销 ${keyboardShortcut}+Z`,
-  Redo: `重做 ${keyboardShortcut}+Y`,
-  CodeBlock: `代码块 ${keyboardShortcut}+Alt+C`,
-  Code: `行内代码 ${keyboardShortcut}+E`,
-  Blockquote: `引用块 ${keyboardShortcut}+Shift+B`,
-  Heading: `标题 ${keyboardShortcut}+Alt+数字`,
-  Bold: `加粗 ${keyboardShortcut}+B`,
-  Italic: `斜体 ${keyboardShortcut}+I`,
-  Strikethrough: `删除线 ${keyboardShortcut}+Shift+S`,
-  Underline: `下划线 ${keyboardShortcut}+U`,
-  Copy: `复制 ${keyboardShortcut}+C`,
-  Paste: `粘贴 ${keyboardShortcut}+V`,
-  Highlight: `高亮 ${keyboardShortcut}+Shift+H`,
-  Subscript: `下标 ${keyboardShortcut}+[`,
-  Superscript: `上标 ${keyboardShortcut}+]`,
-  LeftAlign: `左对齐 ${keyboardShortcut}+Shift+L`,
-  CenterAlign: `居中对齐 ${keyboardShortcut}+Shift+E`,
-  RightAlign: `右对齐 ${keyboardShortcut}+Shift+R`,
-  JustifyAlign: `对齐全页 ${keyboardShortcut}+Shift+J`,
-  OrderedList: `有序列表 ${keyboardShortcut}+O`,
-  BulletList: `无序列表 ${keyboardShortcut}+L`,
-  Image: `插入图片 ${keyboardShortcut}+Shift+I`,
+  Undo: t('tip.che-xiao-keyboardshortcutz', [keyboardShortcut]),
+  Redo: t('tip.t-tip-t-tip-zhong-zuo-keyboardshortcuty-keyboardshortcut'),
+  CodeBlock: t('tip.dai-ma-kuai-keyboardshortcutaltc', [keyboardShortcut]),
+  Code: t('tip.hang-nei-dai-ma-keyboardshortcute', [keyboardShortcut]),
+  Blockquote: t('tip.yin-yong-kuai-keyboardshortcutshiftb', [keyboardShortcut]),
+  Heading: t('tip.biao-ti-keyboardshortcutalt-shu-zi', [keyboardShortcut]),
+  Bold: t('tip.jia-cu-keyboardshortcutb', [keyboardShortcut]),
+  Italic: t('tip.xie-ti-keyboardshortcuti', [keyboardShortcut]),
+  Strikethrough: t('tip.shan-chu-xian-keyboardshortcutshifts', [
+    keyboardShortcut,
+  ]),
+  Underline: t('tip.xia-hua-xian-keyboardshortcutu', [keyboardShortcut]),
+  Copy: t('tip.fu-zhi-keyboardshortcutc', [keyboardShortcut]),
+  Paste: t('tip.nian-tie-keyboardshortcutv', [keyboardShortcut]),
+  Highlight: t('tip.gao-liang-keyboardshortcutshifth', [keyboardShortcut]),
+  Subscript: t('tip.xia-biao-keyboardshortcut', [keyboardShortcut]),
+  Superscript: t('tip.shang-biao-keyboardshortcut', [keyboardShortcut]),
+  LeftAlign: t('tip.zuo-dui-qi-keyboardshortcutshiftl', [keyboardShortcut]),
+  CenterAlign: t('tip.ju-zhong-dui-qi-keyboardshortcutshifte', [
+    keyboardShortcut,
+  ]),
+  RightAlign: t('tip.you-dui-qi-keyboardshortcutshiftr', [keyboardShortcut]),
+  JustifyAlign: t('tip.dui-qi-quan-ye-keyboardshortcutshiftj', [
+    keyboardShortcut,
+  ]),
+  OrderedList: t('tip.you-xu-lie-biao-keyboardshortcuto', [keyboardShortcut]),
+  BulletList: t('tip.wu-xu-lie-biao-keyboardshortcutl', [keyboardShortcut]),
+  Image: t('tip.cha-ru-tu-pian-keyboardshortcutshifti', [keyboardShortcut]),
 }
 
 const contentModel = useVModel(props, 'modelValue', emit)

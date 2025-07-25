@@ -1,6 +1,6 @@
 <template>
   <Card v-if="tocList.length">
-    <h3 class="text-lg font-bold mb-2">目录</h3>
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.mu-lu') }}</h3>
     <ul class="space-y-1 text-sm">
       <li
         v-for="item in tocList"

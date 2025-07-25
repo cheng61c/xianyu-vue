@@ -1,7 +1,9 @@
 <template>
   <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="text-center text-gray-content">
-      您还未登录，请先登录后再进行操作。
+      {{
+        $t('d.nin-huan-wei-deng-lu-qing-xian-deng-lu-hou-zai-jin-hang-cao-zuo')
+      }}
     </div>
   </Card>
 
@@ -15,8 +17,12 @@
       <div class="flex items-center gap-2 flex-[2] max-w-md">
         <span class="w-full break-words pr-4">{{ file.filename }}</span>
       </div>
-      <div class="flex-1">发布时间: {{ file.createdAt }}</div>
-      <div class="flex-1">文件大小: {{ file.size }}</div>
+      <div class="flex-1">
+        {{ $t('t.fa-bu-shi-jiaother') }} <span>{{ file.createdAt }}</span>
+      </div>
+      <div class="flex-1">
+        {{ $t('other.wen-jian-da-xiao') }} <span>{{ file.size }}</span>
+      </div>
 
       <div class="flex gap-2 items-center flex-wrap">
         <ScButton
@@ -24,7 +30,7 @@
           :icon="Download"
           :iconSize="16"
           @click="downloadFile(file.url)">
-          下载
+          {{ $t('b.xia-zai') }}
         </ScButton>
       </div>
     </div>
@@ -39,7 +45,7 @@
 
   <EmptyState
     v-if="files.length === 0 && userStore.isLogin"
-    title="暂无文件"
+    :title="$t('t.zan-wu-wen-jian')"
     description="这里毛都没有哦~"
     iconSize="64"
     iconColor="#ccc"

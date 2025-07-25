@@ -15,9 +15,15 @@
     ref="ImageUploadCard">
     <Card class="p-6">
       <!-- 蚂蚁线框 -->
-      <div class="text-gray-500 mx-auto">拖动图片到虚线框，或点击 + 上传</div>
+      <div class="text-gray-500 mx-auto">
+        {{ $t('d.tuo-dong-tu-pian-dao-xu-xian-kuang-huo-dian-ji-shang-chuan') }}
+      </div>
       <div class="text-gray-500 mb-2 mx-auto">
-        将此处的图片拖拽至页面中添加图片
+        {{
+          $t(
+            'd.jiang-ci-chu-de-tu-pian-tuo-zhuai-zhi-ye-mian-zhong-tian-jia-tu-pian'
+          )
+        }}
       </div>
       <div
         class="border-2 border-dashed border-gray rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 transition"
@@ -40,14 +46,14 @@
             @click.stop>
             <ScImage
               :src="img.preview"
-              alt="预览图"
+              :alt="$t('d.yu-lan-tu')"
               class="w-28 h-28 object-cover"
               @click.stop="$emit('addImg', img.preview)" />
             <!-- 删除按钮 -->
             <button
               @click.stop="removeImage(index)"
               class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow"
-              title="删除图片">
+              :title="$t('b.shan-chu-tu-pian')">
               <X />
             </button>
           </div>
@@ -63,11 +69,17 @@
   <template v-else>
     <ScDrawer v-model="isOpen" position="bottom">
       <div class="bg-background w-full p-4 rounded-t-xl">
-        <h3 class="text-xl">上传图片</h3>
+        <h3 class="text-xl">{{ $t('d.shang-chuan-tu-pian') }}</h3>
         <!-- 蚂蚁线框 -->
-        <div class="text-gray-500 mx-auto">点击 + 上传</div>
+        <div class="text-gray-500 mx-auto">
+          {{ $t('d.dian-ji-shang-chuan') }}
+        </div>
         <div class="text-gray-500 mb-2 mx-auto">
-          上传图片后需要点击图片才能将图片添加到编辑器中
+          {{
+            $t(
+              'd.shang-chuan-tu-pian-hou-xu-yao-dian-ji-tu-pian-cai-neng-jiang-tu-pian-tian-jia-dao-bian-ji-qi-zhong'
+            )
+          }}
         </div>
         <div
           class="border-gray rounded-xl text-center cursor-pointer hover:border-blue-400 transition"
@@ -90,14 +102,14 @@
               @click.stop>
               <ScImage
                 :src="img.preview"
-                alt="预览图"
+                :alt="$t('d.yu-lan-tu')"
                 class="w-28 h-28 object-cover"
                 @click.stop="addImg(img)" />
               <!-- 删除按钮 -->
               <button
                 @click.stop="removeImage(index)"
                 class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow"
-                title="删除图片">
+                :title="$t('b.shan-chu-tu-pian')">
                 <X />
               </button>
             </div>
@@ -123,6 +135,8 @@ import { useToast } from 'vue-toastification'
 import ScImage from '@/components/common/ScImage.vue'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import ScDrawer from '@/components/common/ScDrawer.vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const deviceStore = useDeviceStore()
 const toast = useToast()
@@ -143,7 +157,7 @@ const triggerFileInput = () => {
 // 点击添加图片
 const addImg = (img: { file: File; preview: string }) => {
   if (uploading.value) {
-    toast.error('正在上传，请稍后再试')
+    toast.error(t('t.zheng-zai-shang-chuan-qing-shao-hou-zai-shi'))
     return
   }
   if (deviceStore.device === 1) {
@@ -172,7 +186,7 @@ const handleDrop = (e: DragEvent) => {
 const handleFiles = (files: File[]) => {
   for (const file of files) {
     if (file.type.startsWith('image/')) {
-      toast.info('正在上传图片，请稍等...')
+      toast.info(t('t.zheng-zai-shang-chuan-tu-pian-qing-shao-deng'))
       uploading.value = true
       uploadApi.uploadFile(file, 6).then((res) => {
         if (res.data.code === 200) {
@@ -182,7 +196,7 @@ const handleFiles = (files: File[]) => {
           })
         }
         uploading.value = false
-        toast.success('图片上传成功')
+        toast.success(t('t.tu-pian-shang-chuan-cheng-gong'))
       })
 
       images.value = images.value.filter(

@@ -32,7 +32,7 @@
           :icon="TriangleAlert"
           :icon-size="24"
           @click="reportModal = true">
-          举报
+          {{ $t('b.ju-bao') }}
         </ScButton>
       </Card>
 
@@ -91,24 +91,31 @@
 
   <ScModal v-model="reportModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">举报帖子</h3>
+      <h3 class="text-xl mb-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
       <div>
-        帖子标题: <span class="text-active"> {{ postData?.title }} </span>
+        {{ $t('t.tie-zi-biao-ti') }}
+        <span class="text-active"> {{ postData?.title }} </span>
       </div>
-      <div>你确定要举报此评论吗？请提供举报理由，我们会尽快处理。</div>
+      <div>
+        {{
+          $t(
+            'd.ni-que-ding-yao-ju-bao-ci-ping-lun-ma-qing-ti-gong-ju-bao-li-you-wo-men-hui-jin-kuai-chu-li'
+          )
+        }}
+      </div>
       <ScInput
         class="mt-4"
         multiline
-        placeholder="请输入举报理由"
+        :placeholder="$t('d.qing-shu-ru-ju-bao-li-you')"
         :rows="4"
         :maxlength="200"
         v-model="reportReason"></ScInput>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="handleReportSubmit" Border>
-          提交
+          {{ $t('b.ti-jiao') }}
         </ScButton>
         <ScButton class="px-4" @click="reportModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -136,6 +143,8 @@ import {
 import { postApi, reportApi } from '@/apis'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const userStore = useUserStore()
 const toast = useToast()
@@ -185,19 +194,19 @@ const deletePost = (postId: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         emit('updatePost', props.postData?.id)
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
       } else {
-        toast.error('操作失败: ' + response.data.msg)
+        toast.error(t('t.cao-zuo-shi-bai') + response.data.msg)
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
 }
 
 const unpublishItem = (postId: number) => {
   if (props.postData?.id !== postId) {
-    toast.error('帖子不存在或已被删除')
+    toast.error(t('t.tie-zi-bu-cun-zai-huo-yi-bei-shan-chu'))
     return
   }
   postApi
@@ -209,17 +218,17 @@ const unpublishItem = (postId: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         emit('updatePost', props.postData?.id)
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
 }
 
 const setTopItem = (postId: number) => {
   if (props.postData?.id !== postId) {
-    toast.error('帖子不存在或已被删除')
+    toast.error(t('t.tie-zi-bu-cun-zai-huo-yi-bei-shan-chu'))
     return
   }
   postApi
@@ -231,22 +240,22 @@ const setTopItem = (postId: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         emit('updatePost', props.postData?.id)
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
 }
 
 const handleReportSubmit = () => {
   if (!reportModal.value || !props.postData) return
   if (userStore.isLogin === false) {
-    toast.error('请先登录')
+    toast.error(t('t.qing-xian-deng-lu'))
     return
   }
   if (!reportReason.value.trim()) {
-    toast.error('举报理由不能为空')
+    toast.error(t('t.ju-bao-li-you-bu-neng-wei-kong'))
     return
   }
   reportApi
@@ -256,12 +265,12 @@ const handleReportSubmit = () => {
       reason: reportReason.value,
     })
     .then(() => {
-      toast.success('举报已提交，我们会尽快处理')
+      toast.success(t('t.ju-bao-yi-ti-jiao-wo-men-hui-jin-kuai-chu-li'))
       reportModal.value = false
       reportReason.value = ''
     })
     .catch((error) => {
-      toast.error('举报失败: ' + error.msg)
+      toast.error(t('t.ju-bao-shi-bai') + error.msg)
     })
 }
 </script>

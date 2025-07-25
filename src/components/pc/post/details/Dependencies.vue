@@ -1,11 +1,15 @@
 <template>
   <Card v-if="postData && postData.dependencies.length > 0">
-    <h3 class="text-lg font-bold mb-2">前置</h3>
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.qian-zhi-yi-lai') }}</h3>
     <div
       v-for="item in postData.dependencies"
       :key="item.id"
       class="flex gap-2 items-center">
-      <Avatar v-if="item.cover" :src="item.cover || ''" alt="!" :size="32" />
+      <Avatar
+        v-if="item.cover"
+        :src="item.cover || ''"
+        :alt="item.id"
+        :size="32" />
       <RouterLink :to="{ name: 'postDetails', params: { postId: item.id } }">
         <span class="text-blue-600">{{ item.title }}</span>
       </RouterLink>

@@ -3,6 +3,7 @@ import { useUserStore } from '../user/userStore'
 import { useUserServerStore } from './userServerStore'
 import { serverApi } from '@/apis'
 import { formatTime } from '@/utils/format'
+import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
 const userServerStore = useUserServerStore()
@@ -38,9 +39,10 @@ export const getPosts = () => {
 }
 
 export const unpublishItem = (postIndex: number) => {
+  const { t } = useI18n()
   const item = userServerStore.posts[postIndex]
   if (!item) {
-    toast.error('帖子不存在')
+    toast.error(t('t.tie-zi-bu-cun-zai'))
     return
   }
   serverApi
@@ -52,11 +54,11 @@ export const unpublishItem = (postIndex: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPosts()
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
 }
 
@@ -66,9 +68,10 @@ export const deleteItem = (postIndex: number) => {
 }
 
 export const deletePost = () => {
+  const { t } = useI18n()
   const item = userServerStore.posts[userServerStore.currentPostIndex]
   if (!item) {
-    toast.error('帖子不存在')
+    toast.error(t('t.tie-zi-bu-cun-zai'))
     return
   }
   serverApi
@@ -77,11 +80,11 @@ export const deletePost = () => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPosts()
-        toast.success('删除成功')
+        toast.success(t('t.shan-chu-cheng-gong'))
       }
     })
     .catch((error) => {
-      toast.error('请求失败: ' + error.msg)
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
   userServerStore.modal.isDeletePost = false
 }

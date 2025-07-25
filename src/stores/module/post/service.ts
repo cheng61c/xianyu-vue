@@ -10,12 +10,15 @@ import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
 import type { RouteLocationNormalizedLoadedGeneric, Router } from 'vue-router'
 
+import { useI18n } from 'vue-i18n'
+
 const toast = useToast()
 const configStore = useConfigStore()
 const postStore = usePostStore()
 
 /** 获取板块列表 */
 export const getPlate = async () => {
+  const { t } = useI18n()
   const typeId =
     configStore.menuItems.find(
       (item) => item.pathName === postStore.currentPlate.currentRouteName
@@ -25,7 +28,7 @@ export const getPlate = async () => {
     .then((res: Api) => {
       const data = res.data
       if (data.code !== 200) {
-        return toast.error('获取板块失败')
+        return toast.error(t('t.huo-qu-ban-kuai-shi-bai'))
       }
       const plates = data.data as Plate[]
 
@@ -34,7 +37,7 @@ export const getPlate = async () => {
       )
     })
     .catch((error) => {
-      toast.error('获取板块失败: ' + error.message)
+      toast.error(t('t.huo-qu-ban-kuai-shi-bai'))
       console.error('获取板块失败:', error)
     })
 }

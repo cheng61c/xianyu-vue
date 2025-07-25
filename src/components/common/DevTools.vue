@@ -14,7 +14,7 @@
     :style="popupStyle">
     <div class="flex justify-between items-center mb-4">
       <span class="font-semibold text-xl text-info no-select">{{
-        $t('gong-ju-xiang')
+        $t('d.gong-ju-xiang')
       }}</span>
       <button
         @click="toggleCard"
@@ -25,7 +25,7 @@
 
     <div class="flex flex-col space-y-4">
       <div class="flex gap-4 items-center justify-between">
-        <div>{{ $t('yu-yan-qie-huan') }}</div>
+        <div>{{ $t('d.yu-yan-qie-huan') }}</div>
         <select
           :value="configStore.lang"
           @change="changeLocale"
@@ -36,12 +36,12 @@
       </div>
 
       <div class="flex gap-4 items-center justify-between">
-        <div>{{ $t('zhou-ye-qie-huan') }}</div>
+        <div>{{ $t('d.zhou-ye-qie-huan') }}</div>
         <ThemeButton />
       </div>
 
       <div class="flex gap-4 items-center justify-between">
-        <div>平板小白条适配</div>
+        <div>{{ $t('d.ping-ban-xiao-bai-tiao-shi-pei') }}</div>
         <input
           type="checkbox"
           checked="checked"
@@ -50,15 +50,15 @@
       </div>
 
       <div class="flex gap-4 items-center justify-between">
-        <div>{{ $t('tang-chuang') }}</div>
+        <div>{{ $t('d.dan-chuang') }}</div>
         <button @click="onToast"><Forward /></button>
       </div>
       <div class="flex gap-4 items-center justify-between">
-        <div>{{ $t('qing-kong-yong-hu-huan-cun') }}</div>
+        <div>{{ $t('d.shan-chu-deng-lu-xin-xi') }}</div>
         <button @click="deleteUser"><Trash2 /></button>
       </div>
       <div class="flex gap-4 items-center justify-between">
-        <div>{{ $t('qing-kong-gong-gao-yi-du-zhuang-tai') }}</div>
+        <div>{{ $t('d.shan-chu-gong-gao-yi-du-zhuang-tai') }}</div>
         <button @click="deleteAnnouncement"><Trash2 /></button>
       </div>
     </div>
@@ -72,7 +72,6 @@ import { useConfigStore } from '@/stores/global/configStore'
 import { Minimize2, Forward, Trash2 } from 'lucide-vue-next'
 import ThemeButton from '@/components/common/ThemeButton.vue'
 import { useToast } from 'vue-toastification'
-import { notify } from '@kyvg/vue3-notification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
@@ -81,7 +80,7 @@ const toast = useToast()
 const configStore = useConfigStore()
 const userStore = useUserStore()
 const announcementStore = useAnnouncementStore()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 
 const popupVisible = ref(false)
 
@@ -105,18 +104,17 @@ const changeLocale = (e: Event) => {
 }
 
 const onToast = () => {
-  notify('Button clicked!')
   toast.success('Button clicked!')
 }
 const deleteUser = () => {
   userStore.userInfo = {} as UserType
   userStore.isLogin = false
   userStore.token = ''
-  toast.success('用户缓存已清除')
+  toast.success(t('t.yong-hu-huan-cun-yi-qing-chu'))
 }
 const deleteAnnouncement = () => {
   announcementStore.popUps = []
   announcementStore.banners = []
-  toast.success('公告已读状态已清除')
+  toast.success(t('t.gong-gao-yi-du-zhuang-tai-yi-qing-chu'))
 }
 </script>

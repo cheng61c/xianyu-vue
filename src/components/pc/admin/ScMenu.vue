@@ -9,8 +9,10 @@
         'tooltip tooltip-right': collapsed,
       }"
       @click="toggleCollapse"
-      data-tip="展开菜单">
-      <h3 v-if="!collapsed" class="whitespace-nowrap font-bold">菜单</h3>
+      :data-tip="$t('d.zhan-kai-cai-dan')">
+      <h3 v-if="!collapsed" class="whitespace-nowrap font-bold">
+        {{ $t('b.cai-dan') }}
+      </h3>
       <ScButton
         :icon="ChevronLeft"
         :icon-size="20"

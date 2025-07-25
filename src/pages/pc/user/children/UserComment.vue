@@ -1,8 +1,10 @@
 <template>
-  <div class="w-full text-center">尚未开发</div>
+  <div class="w-full text-center">{{ $t('d.shang-wei-kai-fa') }}</div>
   <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
     <div class="text-center text-gray-content">
-      您还未登录，请先登录后再进行操作。
+      {{
+        $t('d.nin-huan-wei-deng-lu-qing-xian-deng-lu-hou-zai-jin-hang-cao-zuo')
+      }}
     </div>
   </Card>
 </template>

@@ -24,20 +24,18 @@
     <Card noPg class="overflow-hidden">
       <div
         class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
-        @click="($router.push('/user/panel'), closePopup())">
-        {{ $t('yong-hu-zhu-ye') }}
-      </div>
+        @click="($router.push('/user/panel'), closePopup())"></div>
       <div
         v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7])"
         class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
         @click="($router.push('/admin/panel'), closePopup())">
-        {{ $t('hou-tai-guan-li') }}
+        {{ $t('b.hou-tai-guan-li') }}
       </div>
       <div class="border border-gray/60"></div>
       <div
         class="cursor-pointer text-error px-4 py-2 hover:bg-error hover:text-active-content"
         @click="logout">
-        登出
+        {{ $t('b.deng-chu') }}
       </div>
     </Card>
   </div>
@@ -56,7 +54,9 @@ import { useToast } from 'vue-toastification'
 import { verifyPermissions } from '@/utils/verify'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 // import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const toast = useToast()
@@ -74,11 +74,11 @@ const logout = () => {
       userStore.token = ''
       userStore.userInfo = {} as UserType
       userStore.autoLogin = false
-      toast.success('登出成功')
+      toast.success(t('t.deng-chu-cheng-gong'))
       closePopup()
     })
     .catch(() => {
-      toast.error('登出失败')
+      toast.error(t('t.deng-chu-shi-bai'))
     })
 }
 

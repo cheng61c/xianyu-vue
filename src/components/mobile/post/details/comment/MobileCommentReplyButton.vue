@@ -15,7 +15,9 @@
     <CommentInput
       :comment-id="commentId"
       :to-comment-id="toCommentId"
-      @submit="reply"></CommentInput>
+      @submit="reply"
+      :submitText="$t('b.fa-biao-ping-lun')"
+      :placeholder="$t('b.shuo-dian-shi-mo')"></CommentInput>
   </div>
 </template>
 

@@ -10,7 +10,7 @@
           fill: themeStore.darkTheme ? 'rgba(255, 255, 255, 0.9)' : '#666666',
         }" />
       <div class="text-md text-background-content font-bold">
-        {{ $t('logo') }}
+        {{ $t('other.title-logo') }}
       </div>
     </button>
 

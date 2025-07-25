@@ -20,40 +20,42 @@ import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 
 import ScButton from '@/components/common/ScButton.vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
 const routeBtns = ref([
   {
-    name: '主页',
+    name: t('nav.zhu-ye'),
     path: '/user/panel',
   },
   {
-    name: '帖子',
+    name: t('nav.tie-zi'),
     path: '/user/post',
   },
   {
-    name: '评论',
+    name: t('nav.ping-lun'),
     path: '/user/comment',
   },
   {
-    name: '资源',
+    name: t('nav.zi-yuan'),
     path: '/user/resource',
   },
   {
-    name: '文件',
+    name: t('nav.wen-jian'),
     path: '/user/file',
   },
   {
-    name: '服务器',
+    name: t('nav.fu-wu-qi'),
     path: '/user/server',
   },
   {
-    name: '编辑资料',
+    name: t('nav.bian-ji-zi-liao'),
     path: '/user/edit',
   },
 ])
-const activation = ref('主页')
+const activation = ref(t('nav.zhu-ye'))
 
 const toPage = (btn: any) => {
   if (btn.path === route.path) return

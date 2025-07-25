@@ -29,7 +29,7 @@
         <template v-else>
           <div class="flex items-center w-full gap-1">
             <span class="text-gray-content">
-              {{ selectedItem ? getLabel(selectedItem) : placeholder }}
+              {{ selectedItem ? getLabel(selectedItem) : placeholderTxt }}
             </span>
           </div>
         </template>
@@ -68,7 +68,7 @@
             v-model="searchQuery"
             type="text"
             class="w-full p-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-active focus:border-active"
-            placeholder="搜索..."
+            :placeholder="$t('b.sou-suo') + '...'"
             @click.stop />
         </div>
 
@@ -95,7 +95,7 @@
           <li
             v-if="filteredOptions.length === 0"
             class="px-3 py-2 text-sm text-center hover:text-active">
-            无匹配结果
+            {{ $t('t.wu-pi-pei-jie-guo') }}
           </li>
         </ul>
       </div>
@@ -105,6 +105,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 interface DropdownItem {
   value: any
@@ -126,13 +128,17 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   options: () => [],
-  placeholder: '请选择',
+  placeholder: '',
   multiple: false,
   searchable: false,
   labelKey: 'label',
   valueKey: 'value',
   clearable: false,
 })
+
+const placeholderTxt = computed(() =>
+  props.placeholder ? props.placeholder : t('b.qing-xuan-ze')
+)
 
 const emit = defineEmits(['update:modelValue', 'change'])
 

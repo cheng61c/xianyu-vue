@@ -2,7 +2,7 @@
   <div class="w-full h-full flex flex-1 flex-col pb-4">
     <ScSearch
       key="user-post-search"
-      placeholder="搜索帖子标题"
+      :placeholder="$t('t.sou-suo-tie-zi-biao-ti')"
       @search="handleSearch"
       v-model="postStore.searchText"
       :searchType="route.name == 'postList' ? 1 : 2"

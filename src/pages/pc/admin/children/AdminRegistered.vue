@@ -1,30 +1,43 @@
 <template>
   <Card class="mb-4">
-    <h1 class="text-lg font-bold">管理注册通道</h1>
+    <h1 class="text-lg font-bold"></h1>
   </Card>
   <Card class="mb-4">
     <div class="flex gap-4 items-center">
-      <span>昵称</span>
-      <ScInput v-model="form.nickname" placeholder="请输入昵称" type="text" />
+      <span>{{ $t('f.ni-cheng') }}</span>
+      <ScInput
+        v-model="form.nickname"
+        :placeholder="$t('f.qing-shu-ru-ni-cheng')"
+        type="text" />
     </div>
     <div class="flex gap-4 items-center">
-      <span>账号</span>
-      <ScInput v-model="form.account" placeholder="请输入账号" type="text" />
+      <span>{{ $t('f.zhang-hao') }}</span>
+      <ScInput
+        v-model="form.account"
+        :placeholder="$t('d.qing-shu-ru-zhang-hao')"
+        type="text" />
     </div>
     <div class="flex gap-4 items-center">
-      <span>邮箱</span>
-      <ScInput v-model="form.email" placeholder="请输入邮箱" type="email" />
-      <span class="text-gray"> 邮箱不限制格式 </span>
+      <span>{{ $t('f.you-xiang') }}</span>
+      <ScInput
+        v-model="form.email"
+        :placeholder="$t('d.qing-shu-ru-you-xiang')"
+        type="email" />
+      <span class="text-gray">
+        {{ $t('d.you-xiang-bu-xian-zhi-ge-shi') }}
+      </span>
     </div>
     <div class="flex gap-4 items-center">
-      <span>密码</span>
+      <span>{{ $t('f.mi-ma') }}</span>
       <ScInput
         v-model="form.password"
-        placeholder="请输入密码"
+        :placeholder="$t('d.qing-shu-ru-mi-ma')"
         type="password" />
     </div>
     <div class="flex gap-4 items-center">
-      <ScButton Border @click="register"> 提交注册 </ScButton>
+      <ScButton Border @click="register">
+        {{ $t('b.ti-jiao-zhu-ce') }}
+      </ScButton>
     </div>
   </Card>
 </template>
@@ -36,11 +49,14 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { ref } from 'vue'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const toast = useToast()
 
 const form = ref({
   account: '',
-  nickname: '机器人',
+  nickname: t('other.ji-qi-ren'),
   password: '',
   email: '',
 })
@@ -52,14 +68,14 @@ const register = () => {
     !form.value.email ||
     !form.value.nickname
   ) {
-    toast.error('请填写完整信息')
+    toast.error(t('t.qing-tian-xie-wan-zheng-xin-xi'))
     return
   }
   userApi
     .registerAsAdmin(form.value)
     .then((res) => {
       if (res.data.code === 200) {
-        toast.success('注册成功')
+        toast.success(t('t.zhu-ce-cheng-gong'))
         form.value = {
           account: '',
           nickname: '',
@@ -70,7 +86,10 @@ const register = () => {
     })
     .catch((error) => {
       console.error(error)
-      toast.error('注册失败: ' + error.msg + error.duplicates || '未知错误')
+      toast.error(
+        t('t.zhu-ce-shi-bai') + error.msg + error.duplicates ||
+          t('t.wei-zhi-cuo-wu')
+      )
     })
 }
 </script>

@@ -14,13 +14,18 @@
         <ScRole :user="userInfo" isAll size="sm"></ScRole>
       </div>
       <div class="text-sm text-background-content">
-        上次登录时间 {{ formatTime(userStore.userInfo.lastLoginTime) }}
+        {{
+          $t(
+            'd.shang-ci-deng-lu-shi-jian-formattimeuserstoreuserinfolastlogintime',
+            [formatTime(userStore.userInfo.lastLoginTime)]
+          )
+        }}
       </div>
     </div>
   </Card>
   <ScModal v-model="updateHerdImgModal">
     <Card class="w-4xl">
-      <div class="text-lg font-bold mb-4">更新头像</div>
+      <div class="text-lg font-bold mb-4">{{ $t('d.geng-xin-tou-xiang') }}</div>
 
       <div class="flex gap-4 justify-between">
         <!-- 裁剪器 -->
@@ -39,7 +44,7 @@
         <template v-else>
           <div
             class="flex w-full items-center justify-center text-gray-content">
-            请上传图片文件进行裁剪
+            {{ $t('d.qing-shang-chuan-tu-pian-wen-jian-jin-hang-cai-jian') }}
           </div>
         </template>
 
@@ -47,26 +52,32 @@
           <ScFileInput
             accept="image/*"
             @change="onFileChange"
-            placeholder="选择图片文件"
+            placeholder="{{ $t('d.xuan-ze-tu-pian-wen-jian') }}"
             class="mb-4" />
 
           <div class="mb-4">
             <label class="block mb-2">
-              背景填充色 (用于给透明背景填充颜色) :
+              {{
+                $t(
+                  'd.bei-jing-tian-chong-se-yong-yu-gei-tou-ming-bei-jing-tian-chong-yan-se'
+                )
+              }}
             </label>
             <div class="flex gap-1">
               <input
                 type="color"
                 v-model="previewBgColor"
                 class="w-10 h-10 cursor-pointer" />
-              <ScButton @click="clearColor"> 清除 </ScButton>
+              <ScButton @click="clearColor"> {{ $t('b.qing-chu') }} </ScButton>
             </div>
           </div>
 
           <!-- 裁剪预览图 -->
           <div v-if="croppedUrl" class="mb-4">
-            <div class="mb-2">预览 (实际效果背景默认灰色):</div>
-            <Avatar :src="croppedUrl" alt="预览" :size="128" />
+            <div class="mb-2">
+              {{ $t('d.yu-lan-shi-ji-xiao-guo-bei-jing-mo-ren-hui-se') }}
+            </div>
+            <Avatar :src="croppedUrl" :alt="$t('d.yu-lan')" :size="128" />
           </div>
         </div>
       </div>
@@ -74,13 +85,17 @@
       <!-- 上传裁剪区域 -->
 
       <ScButton @click="updateHerdImg" Border :disabled="loading">
-        <span>提交更改</span>
-        <span class="ml-2" v-if="loading">正在上传图片</span>
+        <span>{{ $t('f.ti-jiao-geng-gai') }}</span>
+        <span class="ml-2" v-if="loading">{{
+          $t('d.zheng-zai-shang-chuan-tu-pian')
+        }}</span>
         <template #endIcon v-if="loading">
           <span class="loading loading-spinner loading-sm"></span>
         </template>
       </ScButton>
-      <ScButton @click="updateHerdImgModal = false" Border>关闭</ScButton>
+      <ScButton @click="updateHerdImgModal = false" Border>{{
+        $t('b.guan-bi')
+      }}</ScButton>
     </Card>
   </ScModal>
 </template>
@@ -100,6 +115,9 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import Card from '@/components/common/Card.vue'
 import { useToast } from 'vue-toastification'
+
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -209,7 +227,7 @@ const updateHerdImg = async () => {
             .updateUser({ headImg: avatarUrl })
             .then((response) => {
               if (response.data.code === 200) {
-                toast.success('头像更新成功')
+                toast.success(t('t.tou-xiang-geng-xin-cheng-gong'))
                 userStore.userInfo.headImg = avatarUrl
                 emit('updateUserInfo') // 刷新用户信息
                 updateHerdImgModal.value = false // 关闭模态框
@@ -218,18 +236,18 @@ const updateHerdImg = async () => {
             })
             .catch((error) => {
               console.error('Error updating avatar:', error)
-              toast.error('头像更新失败: ' + error.msg)
+              toast.error(t('t.tou-xiang-geng-xin-shi-bai') + error.msg)
               loading.value = false // 上传失败时重置加载状态
             })
         }
       })
       .catch((error) => {
         console.error('Error uploading avatar:', error)
-        toast.error('头像上传失败: ' + error.msg)
+        toast.error(t('t.tou-xiang-shang-chuan-shi-bai') + error.msg)
         loading.value = false // 上传失败时重置加载状态
       })
   } else {
-    toast.error('裁剪后的图片为空')
+    toast.error(t('t.cai-jian-hou-de-tu-pian-wei-kong'))
   }
 }
 

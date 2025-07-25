@@ -14,13 +14,15 @@
       class="mx-auto h-12 w-12 text-gray-content flex-shrink-0" />
 
     <!-- 标题 -->
-    <h3 v-if="title" class="mt-4 text-lg font-medium background-content">
-      {{ title }}
+    <h3
+      v-if="computedTitle"
+      class="mt-4 text-lg font-medium background-content">
+      {{ computedTitle }}
     </h3>
 
     <!-- 描述 -->
-    <p v-if="description" class="mt-2 text-sm text-background-content">
-      {{ description }}
+    <p v-if="computedDescription" class="mt-2 text-sm text-background-content">
+      {{ computedDescription }}
     </p>
 
     <!-- 操作按钮 -->
@@ -38,8 +40,11 @@
 <script setup lang="ts">
 import ScButton from './ScButton.vue' // 引入 ScButton 组件
 import { PackageSearch } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+const { t } = useI18n()
 
-defineProps({
+const props = defineProps({
   icon: {
     type: [Object, Function],
     default: null, // 默认使用 PackageSearch 图标
@@ -50,11 +55,11 @@ defineProps({
   },
   title: {
     type: String,
-    default: '( º﹃º )啥也没有呀~',
+    default: '',
   },
   description: {
     type: String,
-    default: '当前没有可显示的内容，您可以尝试刷新或创建新内容。',
+    default: '',
   },
   action: {
     type: String,
@@ -64,6 +69,7 @@ defineProps({
     type: [Object, Function],
     default: null,
   },
+
   actionIconSize: {
     type: [Number, String],
     default: 16,
@@ -71,4 +77,13 @@ defineProps({
 })
 
 defineEmits(['action-click'])
+
+const computedTitle = computed(() => props.title || t('t.sha-ye-mei-you-ya'))
+const computedDescription = computed(
+  () =>
+    props.description ||
+    t(
+      'd.dang-qian-mei-you-ke-xian-shi-de-nei-rong-nin-ke-yi-chang-shi-shua-xin-huo-chuang-jian-xin-nei-rong'
+    )
+)
 </script>

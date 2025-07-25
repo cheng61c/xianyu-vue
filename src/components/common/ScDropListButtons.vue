@@ -102,7 +102,7 @@ const ScDropListButtonsListStyle: CSSProperties = {
       @click="toggleDropdown"
       noPd>
       <slot name="trigger">
-        {{ selectedLabel || '请选择' }}
+        {{ selectedLabel || $t('b.qing-xuan-ze') }}
       </slot>
     </sc-button>
     <transition name="fade">

@@ -1,16 +1,22 @@
 <template>
   <Card class="mb-4">
     <div class="flex gap-2">
-      <ScButton @click="getMotd" :icon="RotateCcw" Border> 刷新 </ScButton>
-      <ScButton @click="updateMotd" :icon="Save" Border> 保存 </ScButton>
-      <ScButton @click="addMotd" :icon="Plus" Border> 新增 </ScButton>
+      <ScButton @click="getMotd" :icon="RotateCcw" Border>
+        {{ $t('b.shua-xin') }}
+      </ScButton>
+      <ScButton @click="updateMotd" :icon="Save" Border>
+        {{ $t('b.bao-cun') }}
+      </ScButton>
+      <ScButton @click="addMotd" :icon="Plus" Border>
+        {{ $t('b.xin-zeng') }}
+      </ScButton>
     </div>
     <div class="flex gap-2 items-center">
-      <span class="text-gray-content">当前公告</span>
+      <span class="text-gray-content">{{ $t('d.dang-qian-gong-gao') }}</span>
       <Dropdown
         v-model="motdBar"
         :options="motdBarOptions"
-        placeholder="无"
+        :placeholder="$t('other.null')"
         class="w-xs" />
     </div>
   </Card>
@@ -18,26 +24,28 @@
   <Card>
     <div class="flex justify-between items-center">
       <div class="flex gap-2 items-center">
-        <span>缩进宽度:</span>
+        <span>{{ $t('d.suo-jin-kuan-du') }}:</span>
         <ScInput
           v-model="tabWidth"
           type="number"
-          placeholder="缩进宽度"
+          :placeholder="$t('d.suo-jin-kuan-du')"
           class="h-10 mb-[2px]" />
         <ScButton @click="format()" Border noPd class="h-[42px] px-3">
-          确定
+          {{ $t('b.que-ding') }}
         </ScButton>
       </div>
       <div class="flex gap-4">
         <div class="flex">
           <kbd class="kbd">Tab</kbd>
-          <span class="text-gray-content ml-1">缩进</span>
+          <span class="text-gray-content ml-1">{{ $t('b.suo-jin') }}</span>
         </div>
         <div class="flex">
           <kbd class="kbd">Ctrl</kbd>
           +
           <kbd class="kbd">S</kbd>
-          <span class="text-gray-content ml-1">格式化并保存</span>
+          <span class="text-gray-content ml-1">{{
+            $t('d.ge-shi-hua-bing-bao-cun')
+          }}</span>
         </div>
       </div>
     </div>
@@ -62,7 +70,7 @@
           v-model="motdContent"
           ref="textarea"
           class="code-input w-full px-4 py-2 text-[16px] leading-[1.5rem] resize-none overflow-auto focus:outline-none overflow-y-hidden"
-          placeholder="什么也没有"
+          :placeholder="$t('d.shi-mo-ye-mei-you')"
           :maxlength="8000"
           @input="handleInput"
           @scroll="syncScroll"
@@ -88,6 +96,9 @@ import type { MotdType } from '@/types/Motd'
 import Dropdown from '@/components/common/ScSelector.vue'
 import { formatTime } from '@/utils/format'
 import { useEditorShortcuts } from '@/utils/useEditorShortcuts'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const toast = useToast()
 
 const motd = ref<MotdType[]>([])
@@ -121,11 +132,10 @@ const getMotd = () => {
         format()
       } else {
         motd.value = []
-        toast.info('No MOTD found.')
       }
     })
     .catch((error) => {
-      toast.error('Failed to fetch MOTD.')
+      toast.error(t('t.huo-qu-gong-gao-shi-bai') + error.msg)
       console.error('Error fetching MOTD:', error)
     })
 }
@@ -141,12 +151,12 @@ const updateMotd = () => {
   motdApi
     .updateMotd(body)
     .then(() => {
-      toast.success('更新成功')
+      toast.success(t('t.geng-xin-cheng-gong'))
       getMotd()
     })
     .catch((error) => {
       console.error('Error updating MOTD:', error)
-      toast.error('更新失败: ' + error.msg)
+      toast.error(t('t.geng-xin-shi-bai') + error.msg)
     })
 }
 
@@ -154,12 +164,12 @@ const addMotd = () => {
   motdApi
     .createMotd({ motd: motdContent.value })
     .then(() => {
-      toast.success('添加成功')
+      toast.success(t('t.tian-jia-cheng-gong'))
       getMotd()
     })
     .catch((error) => {
       console.error('Error adding MOTD:', error)
-      toast.success('添加失败: ' + error.msg)
+      toast.success(t('t.tian-jia-shi-bai') + error.msg)
     })
 }
 

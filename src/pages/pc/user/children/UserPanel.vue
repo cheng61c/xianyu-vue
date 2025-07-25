@@ -7,9 +7,11 @@
       <div class="stat-figure text-primary">
         <ScrollText />
       </div>
-      <div class="stat-title">帖子</div>
+      <div class="stat-title">{{ $t('nav.tie-zi') }}</div>
       <div class="stat-value text-primary">{{ posts.count }}</div>
-      <div class="stat-desc">总获赞 {{ posts.likeCount }}</div>
+      <div class="stat-desc">
+        {{ $t('other.zong-huo-zan') }} <span>{{ posts.likeCount }}</span>
+      </div>
     </div>
 
     <div
@@ -18,11 +20,13 @@
       <div class="stat-figure text-emerald-500">
         <MessageCircle />
       </div>
-      <div class="stat-title">评论</div>
+      <div class="stat-title">{{ $t('nav.ping-lun') }}</div>
       <div class="stat-value text-emerald-500">
         {{ comments.count }}
       </div>
-      <div class="stat-desc">总获赞 {{ comments.likeCount }}</div>
+      <div class="stat-desc">
+        {{ $t('other.zong-huo-zan') }} <span>{{ comments.likeCount }}</span>
+      </div>
     </div>
 
     <div
@@ -31,11 +35,13 @@
       <div class="stat-figure text-violet-500">
         <Package />
       </div>
-      <div class="stat-title">资源</div>
+      <div class="stat-title">{{ $t('nav.zi-yuan') }}</div>
       <div class="stat-value text-violet-500">
         {{ resources.count }}
       </div>
-      <div class="stat-desc">总获赞 {{ resources.likeCount }}</div>
+      <div class="stat-desc">
+        {{ $t('other.zong-huo-zan') }} <span>{{ resources.likeCount }}</span>
+      </div>
     </div>
 
     <div
@@ -44,7 +50,7 @@
       <div class="stat-figure text-primary">
         <File />
       </div>
-      <div class="stat-title">文件</div>
+      <div class="stat-title">{{ $t('nav.wen-jian') }}</div>
       <div class="stat-value text-primary">{{ files.count }}</div>
     </div>
 
@@ -54,7 +60,7 @@
       <div class="stat-figure text-amber-500">
         <Server />
       </div>
-      <div class="stat-title">服务器</div>
+      <div class="stat-title">{{ $t('nav.fu-wu-qi') }}</div>
       <div class="stat-value text-amber-500">{{ servers.count }}</div>
     </div>
   </Card>

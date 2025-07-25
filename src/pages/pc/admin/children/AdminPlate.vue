@@ -2,9 +2,11 @@
   <Card class="mb-4">
     <div class="flex gap-2">
       <ScButton @click="getPlateList" :icon="RotateCcw" Border>
-        刷新列表
+        {{ $t('b.shua-xin-lie-biao') }}
       </ScButton>
-      <ScButton @click="addPlate" :icon="Plus" Border> 添加新板块 </ScButton>
+      <ScButton @click="addPlate" :icon="Plus" Border>
+        {{ $t('b.tian-jia-xin-ban-kuai') }}
+      </ScButton>
     </div>
   </Card>
 
@@ -15,10 +17,10 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>名称</th>
-            <th>帖子数</th>
-            <th>状态</th>
-            <th>操作</th>
+            <th>{{ $t('b.ming-cheng') }}</th>
+            <th>{{ $t('b.tie-zi-shu') }}</th>
+            <th>{{ $t('f.zhuang-tai') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -42,8 +44,12 @@
             </td>
             <td>
               <div class="flex items-center gap-2">
-                <ScButton @click="updatePlate(index)" Border> 编辑 </ScButton>
-                <ScButton @click="deletePlate(index)" Border> 禁用 </ScButton>
+                <ScButton @click="updatePlate(index)" Border>
+                  {{ $t('b.bian-ji') }}
+                </ScButton>
+                <ScButton @click="deletePlate(index)" Border>
+                  {{ $t('b.jin-yong') }}
+                </ScButton>
               </div>
             </td>
           </tr>
@@ -54,7 +60,7 @@
 
   <EmptyState
     v-else
-    title="暂无帖子"
+    title="{{ $t('t.zan-wu-tie-zi') }}"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
@@ -65,32 +71,35 @@
 
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">编辑板块</div>
+      <div class="text-xl mb-4">{{ $t('b.bian-ji-ban-kuai') }}</div>
 
-      <div>板块名称: {{ plateList[currentPlate].name }}</div>
+      <div>
+        {{ $t('d.ban-kuai-ming-cheng') }}:
+        <span>{{ plateList[currentPlate].name }}</span>
+      </div>
 
       <div class="flex items-center gap-4">
-        <span> 名称: </span>
+        <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="currentPlateBody.name"
-          placeholder="板块名称"
+          :placeholder="$t('d.ban-kuai-ming-cheng')"
           class="m-2" />
       </div>
 
       <div class="flex items-center gap-4">
-        <span> 类型: </span>
+        <span> {{ $t('d.lei-xing') }} </span>
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
-          placeholder="请选择板块类型"
+          placeholder="t('d.qing-xuan-ze-ban-kuai-lei-xing')"
           class="m-2 w-full max-w-xs" />
       </div>
 
       <div class="flex items-start justify-start gap-4">
-        <span class="mt-2"> 描述: </span>
+        <span class="mt-2"> {{ $t('d.miao-shu') }} :</span>
         <ScInput
           v-model="currentPlateBody.description"
-          placeholder="描述"
+          :placeholder="$t('d.miao-shu')"
           class="m-2 w-4/5"
           multiline
           :resizable="false" />
@@ -98,10 +107,10 @@
 
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updatePlate(currentPlate)" Border>
-          确认修改
+          {{ $t('b.que-ren-xiu-gai') }}
         </ScButton>
         <ScButton class="px-4" @click="updateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -109,27 +118,29 @@
 
   <ScModal v-model="addPlateModal">
     <Card class="p-6 w-2xl h-[18rem]">
-      <div class="text-xl mb-4">添加板块</div>
+      <div class="text-xl mb-4">{{ $t('b.tian-jia-ban-kuai') }}</div>
       <div class="flex items-center gap-4">
-        <span> 名称: </span>
+        <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="newPlateBody.name"
-          placeholder="板块名称"
+          placeholder="{{ $t('d.ban-kuai-ming-cheng') }}"
           class="m-2" />
       </div>
       <div class="flex items-center gap-4">
-        <span> 类型: </span>
+        <span> {{ $t('d.lei-xing') }} </span>
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
-          placeholder="请选择板块类型"
+          :placeholder="$t('d.qing-xuan-ze-ban-kuai-lei-xing')"
           class="m-2 w-full max-w-xs" />
       </div>
 
       <div class="flex gap-4 justify-end h-full items-end">
-        <ScButton class="px-4" @click="addPlate" Border> 确认添加 </ScButton>
+        <ScButton class="px-4" @click="addPlate" Border>
+          {{ $t('b.que-ren-tian-jia') }}
+        </ScButton>
         <ScButton class="px-4" @click="addPlateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -137,23 +148,31 @@
 
   <ScModal v-model="deletePlateModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">禁用角色</div>
+      <div class="text-xl mb-4">{{ $t('d.jin-yong-jiao-se') }}</div>
       <div class="text-warning mb-4">
-        删除板块后，该板块下所有帖子将一并删除，板块下的文件也无法下载。
+        {{
+          $t(
+            'd.shan-chu-ban-kuai-hou-gai-ban-kuai-xia-suo-you-tie-zi-jiang-yi-bing-shan-chu-ban-kuai-xia-de-wen-jian-ye-wu-fa-xia-zai'
+          )
+        }}
       </div>
       <div class="text-error mb-4">
-        删除板块是不可逆的操作，删除后将无法恢复
+        {{
+          $t(
+            'd.shan-chu-ban-kuai-shi-bu-ke-ni-de-cao-zuo-shan-chu-hou-jiang-wu-fa-hui-fu'
+          )
+        }}
       </div>
 
       <div class="flex gap-4 justify-end">
         <ScButton
           class="px-4 border border-error text-error"
           @click="deletePlate(currentPlate)">
-          确认删除
+          {{ $t('b.que-ren-shan-chu') }}
         </ScButton>
 
         <ScButton class="px-4" @click="deletePlateModal = false" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -175,11 +194,14 @@ import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'
 import type { Plate, PlateDto } from '@/types/Plate'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const plateBar = ref<number | { value: number; label: string }>(0) // 板块ID，0为全部板块
 const plateBarOptions = ref([
-  { label: '交流板块', value: 1 },
-  { label: '文件板块', value: 2 },
+  { label: t('b.jiao-liu-ban-kuai'), value: 1 },
+  { label: t('b.wen-jian-ban-kuai'), value: 2 },
 ]) // 板块类型选项
 
 const plateList = ref<Plate[]>([]) // 帖子列表数据

@@ -4,16 +4,18 @@
       <div class="flex w-xs gap-2">
         <ScInput
           v-model="searchText"
-          :placeholder="placeholder"
+          :placeholder="t('b.sou-suo')"
           type="search"
           @keyup.enter="handleSearch" />
-        <ScButton @click="handleSearch" Border> 搜索 </ScButton>
+        <ScButton @click="handleSearch" Border>
+          {{ $t('b.sou-suo') }}
+        </ScButton>
       </div>
 
       <div
         v-if="searchType == 2"
         class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
-        <div class="flex-shrink-0">筛选类型:</div>
+        <div class="flex-shrink-0">{{ $t('b.shai-xuan-lei-xing') }}</div>
         <ScButtonSelector :options="fileTypeOptions" v-model="fileType" />
       </div>
     </div>
@@ -26,15 +28,12 @@ import { defineProps, ref, watch } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   modelValue: {
     type: [String, Number],
     default: '',
-  },
-  placeholder: {
-    type: String,
-    default: '搜索...',
   },
   searchType: {
     type: Number,
@@ -42,15 +41,17 @@ const props = defineProps({
   },
 })
 
+const { t } = useI18n()
+
 const fileType = ref<number>(0)
 const fileTypeOptions = [
-  { value: 0, label: '全部' },
-  { value: 1, label: '存档' },
-  { value: 2, label: '家具' },
-  { value: 3, label: '材质' },
-  { value: 4, label: '皮肤' },
-  { value: 5, label: '模组' },
-  { value: 7, label: '其他' },
+  { value: 0, label: t('b.quan-bu') },
+  { value: 1, label: t('b.cun-dang') },
+  { value: 2, label: t('b.jia-ju') },
+  { value: 3, label: t('b.cai-zhi') },
+  { value: 4, label: t('b.pi-fu') },
+  { value: 5, label: t('b.mo-zu') },
+  { value: 7, label: t('b.qi-ta') },
 ]
 
 const emit = defineEmits<{

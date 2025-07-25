@@ -7,13 +7,13 @@
       </div>
       <div class="flex gap-4">
         <ScButton class="flex-1" @click="toAnnouncement" Border>
-          查看详情
+          {{ $t('b.cha-kan-xiang-qing') }}
         </ScButton>
         <ScButton
           class="flex-1 text-success"
           @click="offAnnouncement(postData?.id)"
           Border>
-          已阅
+          {{ $t('b.yi-yue') }}
         </ScButton>
       </div>
     </Card>

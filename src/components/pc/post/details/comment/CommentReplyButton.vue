@@ -9,13 +9,17 @@
       noPd>
       <span>{{ localLikeCount }}</span>
     </ScButton>
-    <ScButton noPd @click="openReply(commentId, toCommentId)"> 回复 </ScButton>
+    <ScButton noPd @click="openReply(commentId, toCommentId)">
+      {{ $t('b.hui-fu-0') }}
+    </ScButton>
   </div>
   <div v-if="currentInput === `${commentId}-${toCommentId ?? 0}`" class="mt-3">
     <CommentInput
       :comment-id="commentId"
       :to-comment-id="toCommentId"
-      @submit="reply"></CommentInput>
+      @submit="reply"
+      :submitText="$t('b.hui-fu-0')"
+      :placeholder="$t('b.shuo-dian-shi-mo')"></CommentInput>
   </div>
 </template>
 
@@ -27,6 +31,8 @@ import { ThumbsUp } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import CommentInput from '@/components/pc/post/details/comment/CommentInput.vue'
 import { commentApi } from '@/apis'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -56,7 +62,7 @@ const emit = defineEmits(['reply'])
 
 const openReply = (commentId: number, toCommentId?: number) => {
   if (!userStore.isLogin) {
-    toast.error('请先登录后再发表评论')
+    toast.error(t('t.qing-xian-deng-lu-hou-zai-fa-biao-ping-lun'))
     return
   }
   // 打开回复输入框
@@ -73,7 +79,7 @@ const reply = (
   toCommentId?: number
 ) => {
   if (!userStore.isLogin) {
-    toast.error('请先登录后再发表评论')
+    toast.error(t('t.qing-xian-deng-lu-hou-zai-fa-biao-ping-lun'))
     return
   }
   emit('reply', content, image, commentId, toCommentId)
@@ -82,7 +88,7 @@ const reply = (
 
 const likeItem = (commentId: number, toCommentId?: number) => {
   if (!userStore.isLogin) {
-    toast.error('请先登录后再点赞')
+    toast.error(t('t.qing-xian-deng-lu-hou-zai-dian-zan'))
     return
   }
   const body = {
@@ -98,7 +104,7 @@ const likeItem = (commentId: number, toCommentId?: number) => {
     })
     .catch((error) => {
       console.error('Error liking comment:', error)
-      toast.error('点赞失败，请稍后再试: ' + error.msg)
+      toast.error(t('t.dian-zan-shi-bai-qing-shao-hou-zai-shi') + error.msg)
     })
 }
 </script>

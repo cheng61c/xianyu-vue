@@ -1,30 +1,36 @@
 <template>
   <Card noPg class="p-2 w-28">
     <ScButton class="w-full text-error" @click="toggleReportModal">
-      举报
+      {{ $t('b.ju-bao') }}
     </ScButton>
     <ScButton v-if="isAdmin" class="w-full text-error" @click="">
-      删除评论
+      {{ $t('b.shan-chu-ping-lun') }}
     </ScButton>
   </Card>
 
   <ScModal v-model="reportModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">举报评论</h3>
-      <div>你确定要举报此评论吗？请提供举报理由，我们会尽快处理。</div>
+      <h3 class="text-xl mb-4">{{ $t('d.ju-bao-ping-lun') }}</h3>
+      <div>
+        {{
+          $t(
+            'd.ni-que-ding-yao-ju-bao-ci-ping-lun-ma-qing-ti-gong-ju-bao-li-you-wo-men-hui-jin-kuai-chu-li'
+          )
+        }}
+      </div>
       <ScInput
         class="mt-4"
         multiline
-        placeholder="请输入举报理由"
+        :placeholder="$t('d.qing-shu-ru-ju-bao-li-you')"
         :rows="4"
         :maxlength="200"
         v-model="reportReason"></ScInput>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="handleReportSubmit" Border>
-          提交
+          {{ $t('b.ti-jiao') }}
         </ScButton>
         <ScButton class="px-4" @click="toggleReportModal" Border>
-          取消
+          {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
     </Card>
@@ -40,6 +46,8 @@ import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { reportApi } from '@/apis'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const toast = useToast()
 const props = defineProps({
@@ -58,7 +66,7 @@ const toggleReportModal = () => {
 const handleReportSubmit = () => {
   if (!reportModal.value) return
   if (!reportReason.value.trim()) {
-    toast.error('举报理由不能为空')
+    toast.error(t('t.ju-bao-li-you-bu-neng-wei-kong'))
     return
   }
   reportApi
@@ -68,12 +76,12 @@ const handleReportSubmit = () => {
       reason: reportReason.value,
     })
     .then(() => {
-      toast.success('举报已提交，我们会尽快处理')
+      toast.success(t('t.ju-bao-yi-ti-jiao-wo-men-hui-jin-kuai-chu-li'))
       reportModal.value = false
       reportReason.value = ''
     })
     .catch((error) => {
-      toast.error('举报失败: ' + error.msg)
+      toast.error(t('t.ju-bao-shi-bai') + error.msg)
     })
 }
 

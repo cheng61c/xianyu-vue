@@ -2,14 +2,17 @@ import { toHtml } from 'hast-util-to-html'
 import { createLowlight } from 'lowlight'
 import csharp from 'highlight.js/lib/languages/csharp'
 import { useConfigStore } from '@/stores/global/configStore'
+import { useI18n } from 'vue-i18n'
+
 const lowlight = createLowlight({
   csharp: csharp, // 只注册 C# 语言
 })
 const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {
+  const { t } = useI18n()
   return html
-    .replace(/<img[^>]*>/gi, '[图片]') // 替换所有 <img> 标签为 "[图片]"
+    .replace(/<img[^>]*>/gi, t('d.tu-pian')) // 替换所有 <img> 标签为 "[图片]"
     .replace(/<[^>]+>/g, '') // 移除其他所有 HTML 标签
 }
 
@@ -59,20 +62,24 @@ export const formatTime = (value: string | number | Date) => {
 }
 
 export const formatTimeAgo = (dateString: string): string => {
+  const { t } = useI18n()
   const sec = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000)
   const { floor } = Math
 
   type TimeInterval = [boolean, string]
   const intervals: TimeInterval[] = [
-    [sec < 60, '刚刚'],
-    [sec < 3600, `${floor(sec / 60)}分钟前`],
-    [sec < 86400, `${floor(sec / 3600)}小时前`],
-    [sec < 2592000, `${floor(sec / 86400)}天前`],
-    [sec < 31536000, `${floor(sec / 2592000)}个月前`],
-    [true, `${floor(sec / 31536000)}年前`],
+    [sec < 60, t('b.t-b-gang-gang')],
+    [sec < 3600, t('b.floorsec-60-fen-zhong-qian', [floor(sec / 60)])],
+    [sec < 86400, t('b.floorsec-3600-xiao-shi-qian', [floor(sec / 3600)])],
+    [sec < 2592000, t('b.floorsec-86400-tian-qian', [floor(sec / 86400)])],
+    [
+      sec < 31536000,
+      t('b.floorsec-2592000-ge-yue-qian', [floor(sec / 2592000)]),
+    ],
+    [true, t('b.floorsec-31536000-nian-qian', [floor(sec / 31536000)])],
   ]
 
-  return intervals.find(([condition]) => condition)?.[1] ?? '刚刚'
+  return intervals.find(([condition]) => condition)?.[1] ?? t('b.gang-gang')
 }
 
 /**

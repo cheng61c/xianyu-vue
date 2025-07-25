@@ -7,6 +7,7 @@ import {
   ImageIcon,
   FileArchive,
 } from 'lucide-vue-next'
+import { useI18n } from 'vue-i18n'
 
 export const iconMap = {
   1: Globe,
@@ -18,12 +19,17 @@ export const iconMap = {
   7: FileArchive,
 } as const
 
-export const typeLabelMap = {
-  1: '存档',
-  2: '家具',
-  3: '材质',
-  4: '皮肤',
-  5: '模组',
-  6: '图片',
-  7: '软件',
-} as const
+export function useTypeLabelMap() {
+  const { t } = useI18n()
+  return {
+    1: t('b.cun-dang'),
+    2: t('b.jia-ju'),
+    3: t('b.cai-zhi'),
+    4: t('b.pi-fu'),
+    5: t('b.mo-zu'),
+    6: t('b.tu-pian'),
+    7: t('b.ruan-jian'),
+  } as const
+}
+
+export const typeLabelMap = useTypeLabelMap()

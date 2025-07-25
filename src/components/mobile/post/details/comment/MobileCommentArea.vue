@@ -222,7 +222,10 @@
 
   <!-- 评论输入框 -->
   <div class="absolute bottom-0 left-0 right-0 bg-background flex w-full">
-    <CommentInput @submit="replay" />
+    <CommentInput
+      @submit="replay"
+      :submitText="$t('b.fa-biao-ping-lun')"
+      :placeholder="$t('b.shuo-dian-shi-mo')" />
   </div>
 </template>
 

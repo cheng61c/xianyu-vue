@@ -23,8 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import Card from './Card.vue'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 interface Props {
   title?: string
@@ -32,9 +34,10 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  title: '点击展开',
   defaultOpen: false,
 })
+
+const title = computed(() => props.title ?? t('b.dian-ji-zhan-kai'))
 
 const isOpen = ref(props.defaultOpen)
 
