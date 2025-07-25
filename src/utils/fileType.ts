@@ -31,5 +31,3 @@ export function useTypeLabelMap() {
     7: t('b.ruan-jian'),
   } as const
 }
-
-export const typeLabelMap = useTypeLabelMap()

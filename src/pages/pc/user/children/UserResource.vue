@@ -363,7 +363,7 @@ import type { Post } from '@/types/Post'
 import { useToast } from 'vue-toastification'
 import { extractImageSrcs } from '@/utils/regex'
 import { useRouter } from 'vue-router'
-import { iconMap, typeLabelMap } from '@/utils/fileType'
+import { iconMap, useTypeLabelMap } from '@/utils/fileType'
 import type { DocumentVersion } from '@/types/DocumentVersion'
 import { formatFileSize } from '@/utils/format'
 import ScImage from '@/components/common/ScImage.vue'
@@ -381,6 +381,7 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
 const toast = useToast()
+const typeLabelMap = useTypeLabelMap()
 
 const currenPostId = ref(0)
 const currenPkgId = ref(0)

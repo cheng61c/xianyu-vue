@@ -105,7 +105,8 @@ import {
 import { useRouter } from 'vue-router'
 import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
-import { iconMap, typeLabelMap } from '@/utils/fileType'
+import { iconMap, useTypeLabelMap } from '@/utils/fileType'
+const typeLabelMap = useTypeLabelMap()
 
 const router = useRouter()
 

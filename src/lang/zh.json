@@ -22,11 +22,11 @@
     "fu-wu-qi-di-zhi": "服务器地址:",
     "qing-xian-deng-lu-hou-zai-fa-bu-tie-zi": "请先登录后再发布帖子",
     "qing-shu-ru-biao-ti": "请输入标题",
-    "shi-yong-heng-fu-gong-gao-xuan-xiang-shi-gai-tie-zi-de-biao-ti-jiang-zhi-ding-zai-zhu-ye-de-ye-mian-ding-duan": "使用\"横幅公告\"选项时，该帖子的标题将置顶在主页的页面顶端",
-    "shi-yong-dan-chuang-gong-gao-xuan-xiang-shi-gai-tie-zi-jiang-zai-ye-mian-jia-zai-wan-cheng-shi-dan-chu": "使用\"弹窗公告\"选项时，该帖子将在页面加载完成时弹出",
+    "shi-yong-heng-fu-gong-gao-xuan-xiang-shi-gai-tie-zi-de-biao-ti-jiang-zhi-ding-zai-zhu-ye-de-ye-mian-ding-duan": "使用“横幅公告”选项时，该帖子的标题将置顶在主页的页面顶端",
+    "shi-yong-dan-chuang-gong-gao-xuan-xiang-shi-gai-tie-zi-jiang-zai-ye-mian-jia-zai-wan-cheng-shi-dan-chu": "使用“弹窗公告”选项时，该帖子将在页面加载完成时弹出",
     "xuan-ze-yao-fa-song-dao-de-ban-kuai-ban-kuai-lei-xing-hui-ying-xiang-tie-zi-lei-xing-de-xuan-ze-wen-jian-lei-xing-de-tie-zi-zhi-neng-fa-song-dao-wen-jian-ban-kuai": "选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块",
     "xuan-ze-wen-jian-lei-xing-wen-jian-lei-xing-hui-ying-xiang-wen-jian-de-shang-chuan-fang-shi-he-xian-shi-fang-shi-qie-yi-ge-tie-zi-zhong-zhi-neng-cun-zai-yi-zhong-wen-jian-lei-xing-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-wen-jian-lei-xing": "选择文件类型，文件类型会影响文件的上传方式和显示方式，且一个帖子中只能存在一种文件类型，建议根据实际情况选择合适的文件类型",
-    "shi-yong-qi-ta-xuan-xiang-shi-shang-chuan-de-zi-yuan-jiang-bu-hui-zai-you-xi-zhong-xian-shi": "使用\"其他\"选项时，上传的资源将不会在游戏中显示",
+    "shi-yong-qi-ta-xuan-xiang-shi-shang-chuan-de-zi-yuan-jiang-bu-hui-zai-you-xi-zhong-xian-shi": "使用“其他”选项时，上传的资源将不会在游戏中显示",
     "guan-lian-tie-zi-dang-gai-tie-zi-suo-shi-yong-de-wen-jian-xu-yao-yi-lai-qi-ta-tie-zi-zhong-de-wen-jian-shi-shi-yong-qi-yong-hou-ke-yi-xuan-ze-qi-ta-tie-zi-jin-hang-guan-lian-bian-yu-kuai-su-cha-zhao-he-shi-yong": "关联帖子，当该帖子所使用的文件需要依赖其他帖子中的文件时使用，启用后可以选择其他帖子进行关联，便于快速查找和使用",
     "mei-you-pi-pei-de-tie-zi": "没有匹配的帖子",
     "zan-wu-yi-xuan-tie-zi": "暂无已选帖子",
@@ -118,7 +118,6 @@
     "zui-xin-ping-fen": "最新评分",
     "gong-scorelistlength-tiao-ping-fen": "共 {0} 条评分",
     "itemlikecount-ren-jue-de-you-yong": "{0} 人觉得有用",
-    "t-d-itemlikecount-ren-jue-de-you-yong-item-likecount": "t('d.itemlikecount-ren-jue-de-you-yong', [item.likeCount])",
     "itembadcount-ren-jue-de-mei-yong": "{0} 人觉得没用",
     "zan-wu-ping-fen": "暂无评分",
     "ping-fen-xiang-qing": "评分详情",
@@ -509,10 +508,6 @@
     "ji-qi-ren": "机器人",
     "title-logo": "SC 社区"
   },
-  "hui-fu": "恢复",
-  "tyong-hu-ming-zhi-neng-shi-zi-mu-shu-zi-huo-xia-hua-xian": "用户名只能是字母、数字或下划线",
-  "bhou-tai-guan-li": "后台管理",
-  "cao-zuo-shi-bai-qing-shao-hou-zai-shi": "操作失败，请稍后再试",
   "tip": {
     "che-xiao-keyboardshortcutz": "撤销 {0}+Z",
     "zhong-zuo-keyboardshortcuty": "重做 {0}+Y",
@@ -538,6 +533,5 @@
     "you-xu-lie-biao-keyboardshortcuto": "有序列表 {0}+O",
     "wu-xu-lie-biao-keyboardshortcutl": "无序列表 {0}+L",
     "cha-ru-tu-pian-keyboardshortcutshifti": "插入图片 {0}+Shift+I"
-  },
-  "tcha-ping-ru-chao": "差评如潮"
+  }
 }

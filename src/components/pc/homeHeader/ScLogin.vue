@@ -74,7 +74,7 @@
                 <label class="label py-1">{{ $t('f.zhang-hao') }}</label>
                 <ScInput
                   type="text"
-                  placeholder="$t('f.you-xiang-huo-yong-hu-ming')"
+                  :placeholder="$t('f.you-xiang-huo-yong-hu-ming')"
                   v-model="loginForm.account" />
               </div>
 
@@ -82,7 +82,7 @@
                 <label class="label py-1">{{ $t('f.mi-ma') }}</label>
                 <ScInput
                   type="password"
-                  placeholder="$t('f.mi-ma')"
+                  :placeholder="$t('f.mi-ma')"
                   v-model="loginForm.password" />
               </div>
 
@@ -161,7 +161,7 @@
                 <label class="label pl-2">{{ $t('f.yong-yu-deng-lu') }}</label>
                 <ScInput
                   type="text"
-                  placeholder="$t('f.qing-shu-ru-yong-hu-ming')"
+                  :placeholder="$t('f.qing-shu-ru-yong-hu-ming')"
                   v-model="registerForm.account" />
               </div>
 
@@ -172,7 +172,7 @@
                 }}</label>
                 <ScInput
                   type="email"
-                  placeholder="$t('d.qing-shu-ru-you-xiang')"
+                  :placeholder="$t('d.qing-shu-ru-you-xiang')"
                   v-model="registerForm.email" />
               </div>
 
@@ -180,7 +180,7 @@
                 <label class="label py-1">{{ $t('f.mi-ma') }}</label>
                 <ScInput
                   type="password"
-                  placeholder="$t('d.qing-shu-ru-mi-ma')"
+                  :placeholder="$t('d.qing-shu-ru-mi-ma')"
                   v-model="registerForm.password" />
               </div>
 
@@ -189,7 +189,7 @@
                 <div class="flex gap-2 items-center">
                   <ScInput
                     type="text"
-                    placeholder="{{ $t('f.qing-shu-ru-you-xiang-yan-zheng-ma') }}"
+                    :placeholder="$t('f.qing-shu-ru-you-xiang-yan-zheng-ma')"
                     v-model="registerForm.captcha" />
 
                   <ScButton
@@ -260,7 +260,7 @@
                 <label class="label py-1">{{ $t('f.you-xiang') }}</label>
                 <ScInput
                   type="email"
-                  placeholder="$t('f.you-xiang')"
+                  :placeholder="$t('f.you-xiang')"
                   v-model="resetPasswordForm.email" />
               </div>
 
@@ -268,7 +268,7 @@
                 <label class="label py-1">{{ $t('f.xin-mi-ma') }}</label>
                 <ScInput
                   type="password"
-                  placeholder="$t('f.mi-ma')"
+                  :placeholder="$t('f.mi-ma')"
                   v-model="resetPasswordForm.password" />
               </div>
 
@@ -277,7 +277,7 @@
                 <div class="flex gap-2 items-center">
                   <ScInput
                     type="text"
-                    placeholder="$t('f.qing-shu-ru-yan-zheng-ma')"
+                    :placeholder="$t('f.qing-shu-ru-yan-zheng-ma')"
                     v-model="resetPasswordForm.captcha" />
 
                   <ScButton
