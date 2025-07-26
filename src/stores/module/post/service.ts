@@ -4,13 +4,14 @@ import { useConfigStore } from '@/stores/global/configStore'
 import { usePostStore } from '@/stores/module/post/postStore'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
-import { formatNumber, formatTime } from '@/utils/format'
+import { formatNumber, formatTime, lightHtml } from '@/utils/format'
 import { extractImageSrcs, formatImageSrcsInHtml } from '@/utils/regex'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
 import type { RouteLocationNormalizedLoadedGeneric, Router } from 'vue-router'
 
 import { useI18n } from 'vue-i18n'
+import { generateTocFromHtml } from '@/utils/toc'
 
 const toast = useToast()
 const configStore = useConfigStore()
@@ -138,4 +139,36 @@ export const search = (
       postStore.postPage.limit = res.data.limit
     }
   })
+}
+
+export const getPostDetails = async (postId: number) => {
+  return postApi
+    .getPostDetail(postId)
+    .then((response: Api) => {
+      const data = response.data.data as Post
+      data.content = lightHtml(formatImageSrcsInHtml(data.content))
+      data.createdAt = formatTime(data.createdAt)
+      data.updatedAt = formatTime(data.updatedAt)
+      data.commentCount = formatNumber(data.commentCount)
+      data.likeCount = formatNumber(data.likeCount)
+      data.badCount = formatNumber(data.badCount)
+      data.postVersions = data.postVersions.map((item) => ({
+        ...item,
+        content: lightHtml(formatImageSrcsInHtml(item.content)),
+        createdAt: formatTime(item.createdAt),
+      }))
+      const tocList = generateTocFromHtml(data.content)
+      return {
+        post: data,
+        toc: tocList,
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching post details:', error)
+      toast.error(error.msg)
+      return {
+        post: null,
+        toc: [],
+      }
+    })
 }

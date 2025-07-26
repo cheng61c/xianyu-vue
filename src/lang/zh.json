@@ -397,7 +397,10 @@
     "t-b-gang-gang": "t('b.gang-gang')",
     "floorsec-86400-tian-qian": "{0}天前",
     "floorsec-2592000-ge-yue-qian": "{0}个月前",
-    "floorsec-31536000-nian-qian": "{0}年前"
+    "floorsec-31536000-nian-qian": "{0}年前",
+    "ge-ren-zhu-ye": "个人主页",
+    "xia-jia": "下架",
+    "fa-bu": "发布"
   },
   "t": {
     "yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang": "验证码已发送到您的邮箱",
@@ -533,5 +536,6 @@
     "you-xu-lie-biao-keyboardshortcuto": "有序列表 {0}+O",
     "wu-xu-lie-biao-keyboardshortcutl": "无序列表 {0}+L",
     "cha-ru-tu-pian-keyboardshortcutshifti": "插入图片 {0}+Shift+I"
-  }
+  },
+  "h1-h2-h3-h4-h5-h6": "h1, h2, h3, h4, h5, h6"
 }

@@ -15,10 +15,10 @@ export const login = async () => {
     .then((res) => {
       if (res.data.code === 200) {
         userStore.token = res.data.data.token
-        const data = res.data.data as UserType
+        const data = res.data.data
         data.headImg = formatLink(data.headImg)
         data.signature = formatImageSrcsInHtml(data.signature)
-        userStore.userInfo = data
+        userStore.userInfo = data.user
         userStore.isLogin = true
       }
     })

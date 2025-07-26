@@ -128,15 +128,10 @@
 </template>
 
 <script setup lang="ts">
-import { postApi } from '@/apis'
-import type { Api, ErrorResponse } from '@/types'
 import type { Post } from '@/types/Post'
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import { generateTocFromHtml, type TocItem } from '@/utils/toc'
-import { formatNumber, formatTime, lightHtml } from '@/utils/format'
-
+import { type TocItem } from '@/utils/toc'
 import { Home, X } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import Dependencies from '@/components/pc/post/details/Dependencies.vue'
@@ -149,13 +144,13 @@ import CommentArea from '@/components/pc/post/details/comment/CommentArea.vue'
 import Score from '@/components/pc/post/details/score/Score.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
-import { formatImageSrcsInHtml } from '@/utils/regex'
 import { usePostStore } from '@/stores/module/post/postStore'
+import { getPostDetails } from '@/stores/module/post/service'
 
 const route = useRoute()
 const router = useRouter()
 const postData = ref<Post | null>(null)
-const toast = useToast()
+
 const tocList = ref<TocItem[]>([]) // 文章目录列表
 const postStore = usePostStore() // 获取帖子存储
 const imageModal = ref(false) // 图片查看模态框
@@ -163,34 +158,6 @@ const imgurl = ref('') // 图片查看地址
 const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
 
 const errorPage = ref(false) // 错误页面标志
-
-/** 获取帖子详情 */
-const getPostDetails = async (postId: number) => {
-  postApi
-    .getPostDetail(postId)
-    .then((response: Api) => {
-      const data = response.data.data as Post
-      data.content = lightHtml(formatImageSrcsInHtml(data.content))
-      data.createdAt = formatTime(data.createdAt)
-      data.updatedAt = formatTime(data.updatedAt)
-      data.commentCount = formatNumber(data.commentCount)
-      data.likeCount = formatNumber(data.likeCount)
-      data.badCount = formatNumber(data.badCount)
-      data.postVersions = data.postVersions.map((item) => ({
-        ...item,
-        content: lightHtml(formatImageSrcsInHtml(item.content)),
-        createdAt: formatTime(item.createdAt),
-      }))
-      tocList.value = generateTocFromHtml(data.content)
-      postData.value = data
-    })
-    .catch((error: ErrorResponse) => {
-      console.log('Error fetching post details:', error)
-
-      toast.error(error.msg)
-      errorPage.value = true
-    })
-}
 
 const goBack = () => {
   if (window.history.length > 2) {
@@ -211,16 +178,22 @@ const bindImageClickEvents = () => {
 }
 
 const openImg = (e: MouseEvent) => {
-  console.log('Image clicked:', (e.target as HTMLImageElement).src)
-
+  // console.log('Image clicked:', (e.target as HTMLImageElement).src)
   imageModal.value = true
   imgurl.value = (e.target as HTMLImageElement).src
 }
 
-onMounted(() => {
+onMounted(async () => {
   const postId = route.params.postId
-  console.log('Fetching details for post ID:', postId)
-  getPostDetails(+postId)
+  const details = await getPostDetails(+postId)
+  if (!details.post) {
+    errorPage.value = true // 设置错误页面标志
+    return
+  } else {
+    postData.value = details.post
+    tocList.value = details.toc
+  }
+
   nextTick(() => {
     bindImageClickEvents()
   })

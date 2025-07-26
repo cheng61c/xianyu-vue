@@ -24,7 +24,9 @@
     <Card noPg class="overflow-hidden">
       <div
         class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"
-        @click="($router.push('/user/panel'), closePopup())"></div>
+        @click="($router.push('/user/panel'), closePopup())">
+        {{ $t('b.ge-ren-zhu-ye') }}
+      </div>
       <div
         v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7])"
         class="cursor-pointer px-4 py-2 hover:bg-active hover:text-active-content"

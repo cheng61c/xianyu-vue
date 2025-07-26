@@ -10,9 +10,9 @@ const lowlight = createLowlight({
 const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {
-  const { t } = useI18n()
+  if (!html) return ''
   return html
-    .replace(/<img[^>]*>/gi, t('d.tu-pian')) // 替换所有 <img> 标签为 "[图片]"
+    .replace(/<img[^>]*>/gi, `[图片]`) // 替换所有 <img> 标签为 "[图片]"
     .replace(/<[^>]+>/g, '') // 移除其他所有 HTML 标签
 }
 
@@ -47,14 +47,6 @@ export const formatTime = (value: string | number | Date) => {
 
   // 补零
   const pad = (n: number) => n.toString().padStart(2, '0')
-  console.log(
-    'in',
-    value,
-    'out',
-    year === new Date().getFullYear()
-      ? `${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
-      : `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
-  )
 
   return year === new Date().getFullYear()
     ? `${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
@@ -68,7 +60,7 @@ export const formatTimeAgo = (dateString: string): string => {
 
   type TimeInterval = [boolean, string]
   const intervals: TimeInterval[] = [
-    [sec < 60, t('b.t-b-gang-gang')],
+    [sec < 60, t('b.gang-gang')],
     [sec < 3600, t('b.floorsec-60-fen-zhong-qian', [floor(sec / 60)])],
     [sec < 86400, t('b.floorsec-3600-xiao-shi-qian', [floor(sec / 3600)])],
     [sec < 2592000, t('b.floorsec-86400-tian-qian', [floor(sec / 86400)])],

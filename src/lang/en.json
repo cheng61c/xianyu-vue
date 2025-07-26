@@ -214,7 +214,7 @@
     "fa-bu-tie-zi": "Post a message",
     "zhi-ding-mo-shi": "Pin Mode",
     "bu-zhi-ding": "Not pinned",
-    "zhi-ding": "Stick to the top",
+    "zhi-ding": "Top",
     "heng-fu-gong-gao": "Banner announcement",
     "dan-chuang-gong-gao": "Pop-up announcement",
     "yi-chu": "remove",
@@ -385,7 +385,8 @@
     "t-b-gang-gang": "t('b.gang-gang')",
     "floorsec-86400-tian-qian": "{0} days ago",
     "floorsec-2592000-ge-yue-qian": "{0} months ago",
-    "floorsec-31536000-nian-qian": "{0} years ago"
+    "floorsec-31536000-nian-qian": "{0} years ago",
+    "ge-ren-zhu-ye": "个人主页"
   },
   "t": {
     "yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang": "Verification code has been sent to your email",

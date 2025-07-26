@@ -103,7 +103,7 @@
                     'border border-green text-green': post.disabled == 1,
                     'border border-error text-error': post.disabled == 0,
                   }">
-                  {{ post.disabled == 0 ? '删除' : '恢复' }}
+                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
                 </ScButton>
 
                 <ScButton @click="updatePost(index)" Border>

@@ -11,7 +11,7 @@
           isCol
           :icon="ThumbsUp"
           :icon-size="24"
-          :class="{ ' text-like': postData.isLiked }"
+          :class="{ 'text-like': postData.isLiked }"
           @click="likePost(postData.id)">
           {{ postData.likeCount }}
         </ScButton>
@@ -46,7 +46,7 @@
           :icon="Trash2"
           :icon-size="24"
           @click="deletePost(postData.id)">
-          {{ postData.disabled == 0 ? '删除' : '恢复' }}
+          {{ postData.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
         </ScButton>
         <div class="w-4/5 border-1 border-gray mx-auto"></div>
         <ScButton
@@ -66,7 +66,9 @@
               'text-primary': postData.top == 0,
               'text-warning': postData.top != 0,
             }">
-            {{ postData.top == 0 ? '置顶' : '取消置顶' }}
+            {{
+              postData.top == 0 ? $t('b.zhi-ding') : $t('b.qu-xiao-zhi-ding')
+            }}
           </div>
         </ScButton>
 
@@ -83,7 +85,7 @@
           :icon="postData.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
           :icon-size="24"
           @click="unpublishItem(postData.id)">
-          {{ postData.visible == 1 ? '下架' : '发布' }}
+          {{ postData.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
         </ScButton>
       </Card>
     </div>
