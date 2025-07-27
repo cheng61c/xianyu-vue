@@ -68,7 +68,7 @@ const postData = ref<Post | null>(null)
 const show = ref(false)
 const router = useRouter()
 
-locale.value = configStore.lang // 设置初始语言
+locale.value = configStore.lang.value // 设置初始语言
 
 const toAnnouncement = () => {
   show.value = false

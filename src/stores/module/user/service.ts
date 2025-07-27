@@ -3,7 +3,9 @@ import { useUserStore } from './userStore'
 import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import type { UserType } from '@/types'
+import { useToast } from 'vue-toastification'
 
+const toast = useToast()
 const userStore = useUserStore()
 
 export const login = async () => {
@@ -26,6 +28,26 @@ export const login = async () => {
       userStore.userInfo = {} as UserType
       userStore.token = ''
       userStore.isLogin = false
+    })
+}
+
+export const logout = (t: any, close?: () => {}) => {
+  userStore.isLogin = false
+  // 这里可以调用登出接口
+  userApi
+    .logout()
+    .then(() => {
+      // 清除用户信息
+      userStore.token = ''
+      userStore.userInfo = {} as UserType
+      userStore.autoLogin = false
+      toast.success(t('t.deng-chu-cheng-gong'))
+      if (close) {
+        close()
+      }
+    })
+    .catch(() => {
+      toast.error(t('t.deng-chu-shi-bai'))
     })
 }
 

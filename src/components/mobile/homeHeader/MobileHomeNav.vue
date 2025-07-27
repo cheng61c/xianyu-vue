@@ -2,74 +2,82 @@
   <div class="h-12 w-full flex justify-between items-center px-4 bg-background">
     <ScButton noPd @click="leftDrawer = true" :icon="Menu" :iconSize="20" />
     <HomeNav />
-    <ScButton
+    <!-- <ScButton
       noPd
       @click="leftDrawer = true"
       :icon="CircleUserRound"
-      :iconSize="20" />
+      :iconSize="20" /> -->
+    <ScLogin />
   </div>
 
   <ScDrawer v-model="leftDrawer" position="left">
     <div class="bg-background w-64 h-full p-4">
       <h3 class="text-xl px-2">菜单</h3>
       <template v-if="postStore.plate">
-        <AccordionItem v-model:open="open1">
-          <template #title>标题 1</template>
-          <template #content> 折叠内容一段文本，你可以插入任意内容。 </template>
-        </AccordionItem>
-
         <AccordionItem v-model:open="open2">
-          <template #title>标题 2</template>
-          <template #content> 第二段内容，默认展开。 </template>
+          <template #title>测试工具箱</template>
+          <template #content>
+            <div class="flex flex-col">
+              <div class="flex gap-4 items-center justify-between py-1">
+                <div>{{ $t('d.yu-yan-qie-huan') }}</div>
+                <!-- <select
+                  :value="configStore.lang"
+                  @change="changeLocale"
+                  class="px-3 py-1 rounded border border-gray bg-gray/20">
+                  <option value="zh">简体中文</option>
+                  <option value="en">English</option>
+                </select> -->
+                <ScSelector
+                  :options="configStore.langs"
+                  v-model="configStore.lang"
+                  class="w-32" />
+              </div>
+
+              <div class="flex gap-4 items-center justify-between py-2">
+                <div>{{ $t('d.ping-ban-xiao-bai-tiao-shi-pei') }}</div>
+                <ThemeButton />
+              </div>
+
+              <div class="flex gap-4 items-center justify-between py-2">
+                <div>平板小白条适配</div>
+                <input
+                  type="checkbox"
+                  checked="checked"
+                  class="toggle"
+                  v-model="configStore.padAdaptation" />
+              </div>
+
+              <div
+                class="flex gap-4 items-center justify-between py-2"
+                @click="deleteUser">
+                <div>{{ $t('d.shan-chu-deng-lu-xin-xi') }}</div>
+                <button><Trash2 /></button>
+              </div>
+              <div
+                class="flex gap-4 items-center justify-between py-2"
+                @click="deleteAnnouncement">
+                <div>{{ $t('d.shan-chu-gong-gao-yi-du-zhuang-tai') }}</div>
+                <button><Trash2 /></button>
+              </div>
+              <div
+                class="flex gap-4 items-center justify-between py-2"
+                @click="deleteDrawer">
+                <div>清空抽屉</div>
+                <button><Trash2 /></button>
+              </div>
+            </div>
+          </template>
         </AccordionItem>
 
         <div class="flex flex-col space-y-4">
-          <div class="flex gap-4 items-center justify-between">
-            <div>{{ $t('yu-yan-qie-huan') }}</div>
-            <select
-              :value="configStore.lang"
-              @change="changeLocale"
-              class="px-3 py-2 rounded bg-base-200">
-              <option value="zh">简体中文</option>
-              <option value="en">English</option>
-            </select>
-          </div>
-
-          <div class="flex gap-4 items-center justify-between">
-            <div>{{ $t('zhou-ye-qie-huan') }}</div>
-            <ThemeButton />
-          </div>
-
-          <div class="flex gap-4 items-center justify-between">
-            <div>平板小白条适配</div>
-            <input
-              type="checkbox"
-              checked="checked"
-              class="toggle"
-              v-model="configStore.padAdaptation" />
-          </div>
-
           <div
+            v-if="userStore.isLogin"
             class="flex gap-4 items-center justify-between"
-            @click="deleteUser">
-            <div>{{ $t('qing-kong-yong-hu-huan-cun') }}</div>
-            <button><Trash2 /></button>
-          </div>
-          <div
-            class="flex gap-4 items-center justify-between"
-            @click="deleteAnnouncement">
-            <div>{{ $t('qing-kong-gong-gao-yi-du-zhuang-tai') }}</div>
-            <button><Trash2 /></button>
-          </div>
-          <div
-            class="flex gap-4 items-center justify-between"
-            @click="deleteDrawer">
-            <div>清空抽屉</div>
-            <button><Trash2 /></button>
+            @click="logout($t)">
+            <div>退出登录</div>
+            <button><LogOut /></button>
           </div>
         </div>
-
-        <ScLogin />
       </template>
     </div>
   </ScDrawer>
@@ -79,8 +87,8 @@
 import ScButton from '@/components/common/ScButton.vue'
 import ScDrawer from '@/components/common/ScDrawer.vue'
 import AccordionItem from '@/components/common/ScAccordionItem.vue'
-import { Menu, CircleUserRound } from 'lucide-vue-next'
-import { onMounted, ref } from 'vue'
+import { Menu, LogOut } from 'lucide-vue-next'
+import { onMounted, ref, watch } from 'vue'
 import { usePostStore } from '@/stores/module/post/postStore'
 import { getPlate } from '@/stores/module/post/service'
 import HomeNav from '@/components/pc/homeHeader/HomeNav.vue'
@@ -92,14 +100,15 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
 import { useI18n } from 'vue-i18n'
 import ThemeButton from '@/components/common/ThemeButton.vue'
+import { logout } from '@/stores/module/user/service'
 
 import { Trash2 } from 'lucide-vue-next'
 import { useDrawertore } from '@/stores/global/drawerStore'
+import ScSelector from '@/components/common/ScSelector.vue'
 
 const postStore = usePostStore()
 const leftDrawer = ref(false)
 
-const open1 = ref(false)
 const open2 = ref(true)
 
 const toast = useToast()
@@ -109,14 +118,7 @@ const announcementStore = useAnnouncementStore()
 const drawertore = useDrawertore()
 const { locale } = useI18n()
 
-locale.value = configStore.lang // 设置初始语言
-
-// UI 语言切换
-const changeLocale = (e: Event) => {
-  const target = e.target as HTMLSelectElement
-  configStore.lang = target.value
-  locale.value = target.value
-}
+locale.value = configStore.lang.value // 设置初始语言
 
 const deleteUser = () => {
   userStore.userInfo = {} as UserType
@@ -134,6 +136,14 @@ const deleteDrawer = () => {
   drawertore.drawers = []
   toast.success('清空弹窗')
 }
+
+watch(
+  () => configStore.lang,
+  () => {
+    locale.value = configStore.lang.value // 监听语言变化
+  },
+  { immediate: true }
+)
 
 onMounted(() => {
   // 初始化或获取数据

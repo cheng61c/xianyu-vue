@@ -54,7 +54,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const deviceStore = useDeviceStore()
-const expanded = ref(false) // 控制是否展开
+const expanded = ref(true) // 控制是否展开
 
 const props = defineProps({
   modelValue: {

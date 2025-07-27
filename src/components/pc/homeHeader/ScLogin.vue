@@ -33,7 +33,7 @@
         <div v-if="deviceStore.device == 2" class="flex-1">
           <img
             src="/public/85120626_p0_master1200.jpg"
-            alt="$t('b.tou-xiang')"
+            :alt="$t('b.tou-xiang')"
             class="w-full h-full object-cover rounded-lg" />
         </div>
 

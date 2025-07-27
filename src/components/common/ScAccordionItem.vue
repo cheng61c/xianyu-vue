@@ -59,7 +59,7 @@ const animate = (expand: boolean) => {
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full border-b border-gray/80 py-1">
     <!-- 标题 -->
     <button
       @click="toggle"

@@ -4,7 +4,11 @@ import { defineStore } from 'pinia'
 export const useConfigStore = defineStore('config', {
   state: () => ({
     /** 语言 */
-    lang: 'zh',
+    lang: { value: 'zh', label: '简体中文' },
+    langs: [
+      { value: 'zh', label: '简体中文' },
+      { value: 'en', label: 'English' },
+    ],
     /** 自动登录 */
     autoLogin: false,
     // serverAddress: 'http://119.29.147.180/api'

@@ -55,7 +55,7 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 import { verifyPermissions } from '@/utils/verify'
 import { useDeviceStore } from '@/stores/global/deviceStore'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -64,7 +64,7 @@ const isOpen = ref(false)
 const toast = useToast()
 
 const userStore = useUserStore()
-// const router = useRouter()
+const router = useRouter()
 
 const logout = () => {
   userStore.isLogin = false
@@ -85,11 +85,11 @@ const logout = () => {
 }
 
 const togglePopup = () => {
-  // if (deviceStore.device == 1) {
-  //   router.push({ name: 'user' })
-  //   closePopup()
-  //   return
-  // }
+  if (deviceStore.device == 1) {
+    router.push({ name: 'user' })
+    closePopup()
+    return
+  }
   isOpen.value = !isOpen.value
 }
 

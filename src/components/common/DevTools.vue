@@ -26,13 +26,10 @@
     <div class="flex flex-col space-y-4">
       <div class="flex gap-4 items-center justify-between">
         <div>{{ $t('d.yu-yan-qie-huan') }}</div>
-        <select
-          :value="configStore.lang"
-          @change="changeLocale"
-          class="px-3 py-2 rounded bg-base-200">
-          <option value="zh">简体中文</option>
-          <option value="en">English</option>
-        </select>
+        <ScSelector
+          :options="configStore.langs"
+          v-model="configStore.lang"
+          class="w-32" />
       </div>
 
       <div class="flex gap-4 items-center justify-between">
@@ -66,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useConfigStore } from '@/stores/global/configStore'
 import { Minimize2, Forward, Trash2 } from 'lucide-vue-next'
@@ -75,6 +72,7 @@ import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
+import ScSelector from '@/components/common/ScSelector.vue'
 
 const toast = useToast()
 const configStore = useConfigStore()
@@ -94,14 +92,16 @@ const popupStyle = ref({
   right: '20px',
 })
 
-locale.value = configStore.lang // 设置初始语言
+locale.value = configStore.lang.value // 设置初始语言
 
 // UI 语言切换
-const changeLocale = (e: Event) => {
-  const target = e.target as HTMLSelectElement
-  configStore.lang = target.value
-  locale.value = target.value
-}
+watch(
+  () => configStore.lang,
+  () => {
+    locale.value = configStore.lang.value // 监听语言变化
+  },
+  { immediate: true }
+)
 
 const onToast = () => {
   toast.success('Button clicked!')
