@@ -236,17 +236,18 @@ function addImg(url: string) {
 
 <template>
   <ScButton
+    v-if="deviceStore.device === 1"
     class="absolute top-[-1.8rem] right-1 z-3 bg-background px-2 shadow-md"
     noPd
     @click="expanded = !expanded">
     {{ expanded ? '收起工具栏' : '展开工具栏' }}
   </ScButton>
-  <div class="h-full w-full overflow-hidden rounded-t-lg">
+  <div class="h-full w-full overflow-hidden rounded-t-lg p-1">
     <div
-      class="w-full h-[95dvh] bg-background overflow-y-auto"
+      class="w-full h-[95dvh] bg-background"
       :class="{
-        'p-4 shadow-xl rounded-xl border border-gray/40':
-          deviceStore.device === 2,
+        'p-4 rounded-xl border border-gray/40': deviceStore.device === 2,
+        'overflow-y-auto': deviceStore.device === 1,
       }">
       <div
         :class="{

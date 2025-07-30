@@ -19,16 +19,35 @@
     <div class="flex gap-4 items-center">
       <ScLogin />
       <ScButton
-        class="hidden md:block"
-        noPd
+        class="relative"
+        :class="{
+          'pr-2': messageStore.replyUnread.length > 0,
+        }"
         :icon="Mail"
-        :iconSize="20"
+        :iconSize="25"
+        noPd
         @click="
           $router.push({
             name: 'message',
           })
         ">
+        <ScTag
+          v-if="messageStore.replyUnread.length"
+          size="xs"
+          status="error"
+          class="absolute top-[-4px] right-[-10%]">
+          {{
+            formatNumberWithLimit(
+              messageStore.replyUnread.length + messageStore.likesUnread.length
+            )
+          }}
+        </ScTag>
       </ScButton>
+      <ScButton
+        :icon="Trophy"
+        :iconSize="24"
+        noPd
+        @click="$router.push({ name: 'fengyunbang' })" />
       <ThemeButton />
     </div>
   </header>
@@ -45,21 +64,25 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { Logo } from '@/icon'
+import type { Post } from '@/types/Post'
+import { messageApi, postApi } from '@/apis'
+import { Mail, X, Trophy } from 'lucide-vue-next'
+import { useAnnouncementStore } from '@/stores/global/announcementStore'
+import { useMessageStore } from '@/stores/module/message/MessageStore'
 import { useConfigStore } from '@/stores/global/configStore'
-import { Logo } from '@/icon.js'
+import { useThemeStore } from '@/stores/global/themeStore'
+import { formatNumberWithLimit } from '@/utils/format'
 import ThemeButton from '@/components/common/ThemeButton.vue'
+import ScButton from '@/components/common/ScButton.vue'
+import ScTag from '@/components/common/ScTag.vue'
 import HomeNav from './HomeNav.vue'
 import ScLogin from './ScLogin.vue'
-import { useThemeStore } from '@/stores/global/themeStore'
-import type { Post } from '@/types/Post'
-import { onMounted, ref } from 'vue'
-import { postApi } from '@/apis'
-import ScButton from '@/components/common/ScButton.vue'
-import { Mail, X } from 'lucide-vue-next'
-import { useAnnouncementStore } from '@/stores/global/announcementStore'
-import { useRouter } from 'vue-router'
 
+const messageStore = useMessageStore()
 const announcementStore = useAnnouncementStore()
 const themeStore = useThemeStore()
 const configStore = useConfigStore()
@@ -106,5 +129,14 @@ onMounted(() => {
         show.value = true
       }
     })
+
+  messageApi.getUnreadMessageList().then((res) => {
+    messageStore.replyUnread = res.data.data.filter(
+      (item: any) => item.type === 1
+    )
+    messageStore.likesUnread = res.data.data.filter(
+      (item: any) => item.type === 2
+    )
+  })
 })
 </script>

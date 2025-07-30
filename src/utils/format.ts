@@ -2,7 +2,6 @@ import { toHtml } from 'hast-util-to-html'
 import { createLowlight } from 'lowlight'
 import csharp from 'highlight.js/lib/languages/csharp'
 import { useConfigStore } from '@/stores/global/configStore'
-import { useI18n } from 'vue-i18n'
 
 const lowlight = createLowlight({
   csharp: csharp, // 只注册 C# 语言
@@ -10,8 +9,8 @@ const lowlight = createLowlight({
 const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {
-  if (!html) return ''
-  return html
+  if (!html || html == '') return ''
+  return String(html)
     .replace(/<img[^>]*>/gi, `[图片]`) // 替换所有 <img> 标签为 "[图片]"
     .replace(/<[^>]+>/g, '') // 移除其他所有 HTML 标签
 }
@@ -53,8 +52,7 @@ export const formatTime = (value: string | number | Date) => {
     : `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
 }
 
-export const formatTimeAgo = (dateString: string): string => {
-  const { t } = useI18n()
+export const formatTimeAgo = (dateString: string, t: any): string => {
   const sec = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000)
   const { floor } = Math
 
@@ -95,6 +93,15 @@ export const formatNumber = (
   const decimalPlaces = scaledNum % 1 === 0 ? 0 : decimals
 
   return `${scaledNum.toFixed(decimalPlaces)}${units[exponent - 1]}`
+}
+
+/**
+ * 格式化数字, 当数字超过99时显示99+
+ * @param num 要格式化的数字
+ */
+export const formatNumberWithLimit = (num: number | string): string => {
+  const numericValue = typeof num === 'string' ? parseFloat(num) : num // 转换字符串为数字
+  return numericValue > 99 ? '99+' : numericValue.toString()
 }
 
 /**

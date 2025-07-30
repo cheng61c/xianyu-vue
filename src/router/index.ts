@@ -64,6 +64,11 @@ const routes = [
         component: () => import('@/pages/pc/message/MessageIndex.vue'),
       },
       {
+        path: 'fengyunbang',
+        name: 'fengyunbang',
+        component: () => import('@/pages/pc/fengyunbang/FengYunBangIndex.vue'),
+      },
+      {
         path: 'admin',
         name: 'admin',
         redirect: '/admin/panel',
@@ -134,6 +139,12 @@ const routes = [
             name: 'adminRegistered',
             component: () =>
               import('@/pages/pc/admin/children/AdminRegistered.vue'),
+          },
+          {
+            path: 'fengyunbang',
+            name: 'adminFengYunBang',
+            component: () =>
+              import('@/pages/pc/admin/children/AdminFengYunBang.vue'),
           },
         ],
       },

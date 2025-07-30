@@ -35,6 +35,7 @@ import {
   Home,
   ShieldAlert,
   UserRoundPlus,
+  Trophy,
 } from 'lucide-vue-next'
 
 import ScMenu from '@/components/pc/admin/ScMenu.vue'
@@ -118,6 +119,12 @@ const menuItems = [
     name: t('b.hou-tai-ri-zhi'),
     path: '/admin/info',
     role: verifyPermissions([1, 2]),
+  },
+  {
+    icon: Trophy,
+    name: '玩家风云榜',
+    path: '/admin/fengyunbang',
+    role: verifyPermissions([1, 2, 3]),
   },
 ]
 

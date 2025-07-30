@@ -1,17 +1,13 @@
+import type { FengYunBangDto, UpdateFengYunBangDto } from '@/types/FengYunBang'
 import request from '@/utils/request.ts'
-import type { HeloListQueryDto } from '@/types/HeloListQueryDto'
-import type { HeloDto } from '@/types/HeloDto'
-export const getHeloList = (dto: HeloListQueryDto) => {
-  return request({
-    url: '/hall-of-fame',
-    method: 'GET',
-    params: dto,
-  })
+
+export const getFengYunBangAll = () => {
+  return request.get('/hall-of-fame')
 }
 
-export const createHelo = (data: HeloDto) => {
+export const createFengYunBang = (data: FengYunBangDto) => {
   return request.post('/hall-of-fame', data)
 }
-export const updateHelo = (data: HeloDto) => {
+export const updateFengYunBang = (data: UpdateFengYunBangDto) => {
   return request.put('/hall-of-fame', data)
 }

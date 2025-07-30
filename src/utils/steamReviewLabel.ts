@@ -1,5 +1,3 @@
-import { useI18n } from 'vue-i18n'
-
 type ScoreDistribution = {
   [score: number]: number // 1 到 5 分
 }
@@ -17,9 +15,9 @@ type ReviewLabelResult = {
 
 export const getSteamRatingLabel = (
   totalReviews: number,
-  reviewData: ReviewData
+  reviewData: ReviewData,
+  t: any
 ): ReviewLabelResult => {
-  const { t } = useI18n()
   if (totalReviews === 0 || reviewData.totalCount === 0) {
     return {
       label: t('t.zan-wu-ping-ce'),

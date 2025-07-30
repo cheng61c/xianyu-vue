@@ -143,10 +143,12 @@ const submitComment = () => {
     commentContent.value,
     image,
     props.commentId,
-    props.toCommentId
+    props.toCommentId,
+    () => {
+      commentContent.value = ''
+      imageList.value = []
+    }
   )
-  commentContent.value = ''
-  imageList.value = []
 }
 </script>
 

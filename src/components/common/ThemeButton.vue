@@ -1,5 +1,5 @@
 <template>
-  <label class="toggle toggle-sm text-base-content">
+  <label class="toggle text-base-content">
     <input
       type="checkbox"
       v-model="themeStore.darkTheme"

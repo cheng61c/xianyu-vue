@@ -1,7 +1,7 @@
 <template>
   <div>
     <Card class="overflow-hidden">
-      <div class="">
+      <div>
         <div class="text-lg font-bold">资源评分</div>
         <div class="flex justify-center items-center gap-4">
           <div class="pr-8 flex flex-col">
@@ -172,7 +172,9 @@ import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getSteamRatingLabel } from '@/utils/steamReviewLabel'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const toast = useToast()
 const props = defineProps({
@@ -230,8 +232,8 @@ const getScoreList = () => {
         const data = res.data.data.list as ScoreType[]
         scoreList.value = data.map((item) => ({
           ...item,
-          createdAt: formatTimeAgo(item.createdAt),
-          updatedAt: formatTimeAgo(item.updatedAt),
+          createdAt: formatTimeAgo(item.createdAt, t),
+          updatedAt: formatTimeAgo(item.updatedAt, t),
         }))
       }
     })
@@ -259,7 +261,8 @@ const getScoreSummary = () => {
         }
         const { colorClass, label } = getSteamRatingLabel(
           data.totalCount,
-          scoreSummary.value
+          scoreSummary.value,
+          t
         )
         steamRatingLabel.value.colorClass = colorClass
         steamRatingLabel.value.label = label

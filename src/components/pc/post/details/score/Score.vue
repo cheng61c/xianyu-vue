@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card noCol class="overflow-hidden h-56">
+    <Card noCol class="overflow-hidden h-60">
       <div class="mr-4 w-[20rem] min-w-[20rem]">
         <div class="text-lg font-bold">{{ $t('d.zi-yuan-ping-fen') }}</div>
         <div class="flex justify-center items-center gap-4">
@@ -37,13 +37,11 @@
         </div>
       </div>
 
-      <div class="flex-1">
+      <div class="flex-1 overflow-x-auto overflow-y-hidden h-full">
         <div class="flex justify-between">
           <span class="text-lg font-bold">{{ $t('d.zui-xin-ping-fen') }}</span>
           <ScButton class="text-sm" @click="showModal = true" noBg noPd>
-            {{
-              $t('d.gong-scorelistlength-tiao-ping-fen', [scoreList.length])
-            }}
+            {{ $t('d.gong-scorelistlength-tiao-ping-fen', [scoreList.length]) }}
             <template #endIcon>
               <ArrowRight :size="18" />
             </template>
@@ -288,8 +286,8 @@ const getScoreList = () => {
         const data = res.data.data.list as ScoreType[]
         scoreList.value = data.map((item) => ({
           ...item,
-          createdAt: formatTimeAgo(item.createdAt),
-          updatedAt: formatTimeAgo(item.updatedAt),
+          createdAt: formatTimeAgo(item.createdAt, t),
+          updatedAt: formatTimeAgo(item.updatedAt, t),
         }))
       }
     })
@@ -317,7 +315,8 @@ const getScoreSummary = () => {
         }
         const { colorClass, label } = getSteamRatingLabel(
           data.totalCount,
-          scoreSummary.value
+          scoreSummary.value,
+          t
         )
         steamRatingLabel.value.colorClass = colorClass
         steamRatingLabel.value.label = label
@@ -328,7 +327,13 @@ const getScoreSummary = () => {
     })
 }
 
-const sendScore = (content: string, image: string[]) => {
+const sendScore = (
+  content: string,
+  image: string[],
+  _commentId: any,
+  _toCommentId: any,
+  clearContent: () => void
+) => {
   if (!userStore.isLogin) {
     toast.error(t('t.qing-xian-deng-lu'))
     return
@@ -353,6 +358,9 @@ const sendScore = (content: string, image: string[]) => {
         getScoreList()
         getScoreSummary()
         scoreInput.value = 0 // 重置评分输入
+        if (clearContent) {
+          clearContent() // 清空输入框
+        }
       } else {
         toast.error(
           res.data.msg || t('t.ping-fen-shi-bai-qing-shao-hou-zai-shi')

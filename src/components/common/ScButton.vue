@@ -1,13 +1,12 @@
 <template>
   <button
     :class="[
-      'flex justify-center items-center gap-1 cursor-no-drop flex-shrink-0',
+      'flex justify-center items-center  cursor-no-drop flex-shrink-0',
       className,
-      tip ? 'tooltip tooltip-' + tipPosition : '',
     ]"
     :data-tip="tip">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
-    <slot name="icon" />
+    <slot v-else name="icon" />
     <slot />
     <slot name="endIcon" />
 
@@ -71,6 +70,10 @@ const props = defineProps({
     type: String,
     default: 'top',
   },
+  noGap: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const className = computed(() =>
@@ -92,6 +95,8 @@ const className = computed(() =>
     props.loading || props.disabled
       ? 'pointer-events-none opacity-50 '
       : 'cursor-pointer',
+    props.noGap ? '' : 'gap-1',
+    props.tip ? 'tooltip tooltip-' + props.tipPosition : '',
   ].filter(Boolean)
 )
 </script>
