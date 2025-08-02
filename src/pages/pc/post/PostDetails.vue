@@ -31,7 +31,7 @@
 
     <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
       <!-- 左侧按钮 -->
-      <ArticleActions :postData="postData" @updatePost="getPostDetails" />
+      <ArticleActions :postData="postData" @updatePost="getPostData" />
 
       <!-- 文章主体 -->
       <div class="tiptap flex-1 w-7/10">
@@ -181,6 +181,12 @@ const openImg = (e: MouseEvent) => {
   // console.log('Image clicked:', (e.target as HTMLImageElement).src)
   imageModal.value = true
   imgurl.value = (e.target as HTMLImageElement).src
+}
+
+const getPostData = async (id: number) => {
+  const details = await getPostDetails(id)
+  postData.value = details.post
+  tocList.value = details.toc
 }
 
 onMounted(async () => {

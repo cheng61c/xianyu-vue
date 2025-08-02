@@ -1,6 +1,6 @@
 <template>
   <!-- 点赞回复 -->
-  <div class="comment-actions flex items-center text-gray text-sm">
+  <div class="comment-actions flex items-center text-text-gray text-sm">
     <ScButton
       :icon="ThumbsUp"
       class="flex items-center mr-3"

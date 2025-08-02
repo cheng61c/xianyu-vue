@@ -1,6 +1,13 @@
 <template>
   <template v-if="props.isAll && userInfo.roles.length > 0">
-    <ScTag :size="props.size"> LV {{ userInfo.level }} </ScTag>
+    <ScTag :size="props.size">
+      LV
+      {{
+        userInfo.level
+          ? userInfo.level
+          : levelSystem.getLevelFromExp(userInfo.exp)
+      }}
+    </ScTag>
 
     <ScTag
       v-for="role in userInfo.roles"
@@ -22,6 +29,7 @@ import { computed } from 'vue'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import ScTag from './ScTag.vue'
+import levelSystem from '@/utils/level'
 
 const userStore = useUserStore()
 

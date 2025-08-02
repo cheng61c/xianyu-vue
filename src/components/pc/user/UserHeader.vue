@@ -11,6 +11,7 @@
     <div>
       <div>{{ userStore.userInfo.nickname }}</div>
       <div class="flex items-center flex-wrap gap-2">
+        <ScTag size="sm"> uid {{ userInfo.id }} </ScTag>
         <ScRole :user="userInfo" isAll size="sm"></ScRole>
       </div>
       <div class="text-sm text-background-content">
@@ -52,7 +53,7 @@
           <ScFileInput
             accept="image/*"
             @change="onFileChange"
-            placeholder="{{ $t('d.xuan-ze-tu-pian-wen-jian') }}"
+            :placeholder="$t('d.xuan-ze-tu-pian-wen-jian')"
             class="mb-4" />
 
           <div class="mb-4">
@@ -114,6 +115,7 @@ import ScFileInput from '@/components/common/ScFileInput.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import Card from '@/components/common/Card.vue'
+import ScTag from '@/components/common/ScTag.vue'
 import { useToast } from 'vue-toastification'
 
 import { useI18n } from 'vue-i18n'

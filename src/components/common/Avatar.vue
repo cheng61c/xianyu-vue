@@ -12,7 +12,7 @@
     <img
       v-if="!loadError"
       class="w-full h-full object-cover"
-      :src="src"
+      :src="formatLink(src)"
       :alt="alt"
       @error="loadError = true" />
 
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, watch } from 'vue'
+import { formatLink } from '@/utils/format'
 
 const props = withDefaults(
   defineProps<{

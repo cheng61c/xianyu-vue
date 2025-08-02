@@ -31,6 +31,9 @@ import {
   handleCardClick,
 } from '@/stores/module/post/service'
 import ScButton from '@/components/common/ScButton.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const route = useRoute()
 const router = useRouter()
@@ -44,7 +47,7 @@ onMounted(async () => {
   activation.value = route.params.plateId
     ? +(route.params.plateId as string)
     : 0
-  getPlate()
+  getPlate(t)
   getPost(activation.value, route)
 })
 
@@ -60,7 +63,7 @@ watch(
     }
 
     postStore.currentPlate.currentRouteName = (route.name as string) || ''
-    getPlate()
+    getPlate(t)
     getPost(activation.value, route)
   },
   { immediate: true }

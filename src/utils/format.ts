@@ -113,9 +113,26 @@ export const formatNumberWithLimit = (num: number | string): string => {
  */
 export const formatLink = (link: string): string => {
   if (!link) return ''
-  const url = link.replace(/^.*api/, '')
-  // 是相对路径
-  return `${configStore.serverAddress}/${url.replace(/^\//, '')}`
+
+  // 检查是否是完整链接
+  if (/^(https?|blob):\/\//i.test(link)) {
+    return link
+  }
+
+  // 检查是否是域名（不带协议）
+  if (/^[a-zA-Z0-9.-]+$/.test(link)) {
+    return `${window.location.protocol}//${link}`
+  }
+
+  // 检查是否是本地地址（IP或localhost）
+  if (
+    /^(localhost|127\.0\.0\.1|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/.test(link)
+  ) {
+    return `${configStore.serverAddress}/${link}`
+  }
+
+  // 如果是相对路径，拼接 serverAddress
+  return `${configStore.serverAddress}${link.startsWith('/') ? '' : '/'}${link}`
 }
 
 /** 高亮处理 */

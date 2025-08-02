@@ -7,6 +7,8 @@
   --color-background: #faffff;
   --color-background-content: #555555; /*主文本颜色*/
   --color-text-white: #ffffff; /* 白色文本 */
+  --color-text-black: #000000;
+  --color-text-gray: #adb3b3;
 
   /* 主色 */
   --color-gray: #adb3b3;
@@ -33,8 +35,10 @@
   .dark {
     /* 背景 */
     --color-background: #2a2f34;
-    --color-background-content: rgba(255, 255, 255, 0.9); /*普通文字*/
-    --color-text-white: #ffffff; /* 白色文本 */
+    --color-background-content: rgba(255, 255, 255, 0.8); /*普通文字*/
+    --color-text-white: rgba(255, 255, 255, 0.8); /* 白色文本 */
+    --color-text-black: #ffffff;
+    --color-text-gray: rgba(255, 255, 255, 0.6); /* 次文本颜色 */
 
     /* 主色 */
     --color-white: #26282c;

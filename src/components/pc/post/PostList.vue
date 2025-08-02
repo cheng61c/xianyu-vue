@@ -73,12 +73,15 @@ const handleSearch = (
 watch(
   () => route.params,
   (newPlate) => {
-    if (newPlate.plateId && postStore.currentPlate.pathName === route.name) {
+    if (newPlate.plateId) {
       plateId.value = newPlate.plateId as string
       postStore.postPage.page = 1
       postStore.postPage.limit = 10
-      postStore.postPage.total = 0
-      postStore.post = []
+      console.log(
+        'newPlate',
+        newPlate,
+        newPlate.plateId && postStore.currentPlate.pathName === route.name
+      )
       getPost(+newPlate.plateId, route)
     }
   }

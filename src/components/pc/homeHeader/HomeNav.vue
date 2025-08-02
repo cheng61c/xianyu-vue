@@ -71,6 +71,7 @@ const updateIndicator = () => {
 const setActive = (index: number) => {
   activeIndex.value = index
   postStore.nav.name = configStore.menuItems[index].pathName
+  postStore.postPage.page = 1
   router.push({
     name: configStore.menuItems[index].pathName,
     params: configStore.menuItems[index].params || {},

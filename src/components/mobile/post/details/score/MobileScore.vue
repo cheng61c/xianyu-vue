@@ -84,7 +84,7 @@
                 <p>
                   {{ score.author.nickname }}
                 </p>
-                <p class="text-gray text-sm">
+                <p class="text-text-gray text-sm">
                   发布于 {{ score.createdAt }}
                   {{
                     score.updatedAt != score.createdAt

@@ -116,7 +116,7 @@ const configStore = useConfigStore()
 const userStore = useUserStore()
 const announcementStore = useAnnouncementStore()
 const drawertore = useDrawertore()
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 
 locale.value = configStore.lang.value // 设置初始语言
 
@@ -147,7 +147,7 @@ watch(
 
 onMounted(() => {
   // 初始化或获取数据
-  getPlate()
+  getPlate(t)
 })
 </script>
 

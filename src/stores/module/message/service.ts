@@ -56,6 +56,26 @@ export const getMessages = () => {
             item.updatedAt = formatTime(item.updatedAt)
             return item
           })
+
+        messageStore.likesRead = data
+          .filter((item) => item.type === 2)
+          .map((item) => {
+            item.content = htmlToText(item.content ?? '')
+            item.createdAt = formatTime(item.createdAt)
+            item.updatedAt = formatTime(item.updatedAt)
+            return item
+          })
+
+        messageStore.systemRead = data
+          .filter((item) => item.type === 3)
+          .map((item) => {
+            item.content = htmlToText(item.content ?? '')
+            item.createdAt = formatTime(item.createdAt)
+            item.updatedAt = formatTime(item.updatedAt)
+            return item
+          })
+
+        console.log('messageStore after read', messageStore)
       }
     })
 }

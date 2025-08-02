@@ -1,4 +1,4 @@
-import type { User } from './user'
+import type { UserType } from './user'
 
 export declare interface FengYunBang {
   id: number
@@ -9,18 +9,11 @@ export declare interface FengYunBang {
   status: number
   createdAt: string
   updatedAt: string
-  user: User
+  user: UserType
 }
 
 export declare interface FengYunBangDto {
-  userId?: number
-  title: string
-  headImg: string
-  content: string
-}
-
-export declare interface UpdateFengYunBangDto {
-  id: number
+  id?: number
   userId?: number
   title: string
   headImg: string

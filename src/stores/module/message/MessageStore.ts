@@ -22,6 +22,8 @@ export const useMessageStore = defineStore('message', {
     systemRead: [] as MessageType[],
 
     reolyPrompt: ['对我的帖子发表了评论', '回复了我的评论'],
+    likesPrompt: ['点赞了我的帖子', '点赞了我的评论'],
+    systemPrompt: ['系统通知'],
   }),
   persist: true,
 })

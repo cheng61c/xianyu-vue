@@ -30,7 +30,7 @@
             <td>{{ item.updatedAt }}</td>
             <td>
               <div class="flex items-center gap-2">
-                <ScButton Border>
+                <ScButton Border @click="editPlayer(item)">
                   {{ $t('b.bian-ji') }}
                 </ScButton>
                 <ScButton Border> 删除 </ScButton>
@@ -53,13 +53,16 @@
 
       <div class="flex items-center gap-4">
         <span> 头像地址: </span>
-        <ScInput v-model="forms.title" :placeholder="'头像地址'" class="m-2" />
+        <ScInput
+          v-model="forms.headImg"
+          :placeholder="'头像地址'"
+          class="m-2" />
       </div>
 
       <div class="flex items-center gap-4">
         <span> 社区id: </span>
         <ScInput
-          v-model="forms.title"
+          v-model="forms.userId"
           :placeholder="'在社区中有账号时填写'"
           class="m-2" />
       </div>
@@ -84,14 +87,20 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { Plus, RotateCcw } from 'lucide-vue-next'
 import { useFengYunBangStore } from '@/stores/module/fengyunbang/FengYunBangStore'
-import { getFengYunBangAll } from '@/stores/module/fengyunbang/service'
+import {
+  addFengYunBang,
+  getFengYunBangAll,
+} from '@/stores/module/fengyunbang/service'
 import type { FengYunBangDto } from '@/types/FengYunBang'
-import { onMounted, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
 const isOpen = ref(false)
 
 const forms = ref<FengYunBangDto>({
+  id: 0,
   title: '',
   headImg: '',
   content: '',
@@ -102,9 +111,48 @@ const addPlayer = () => {
     isOpen.value = true
     return
   }
+  addFengYunBang(forms.value, t, () => {
+    isOpen.value = false
+    forms.value = {
+      title: '',
+      headImg: '',
+      content: '',
+    }
+  })
 }
 
+const editPlayer = (item: FengYunBangDto) => {
+  forms.value = {
+    id: item.id,
+    title: item.title,
+    headImg: item.headImg,
+    content: item.content || '',
+  }
+  if (item.userId) {
+    forms.value.userId = item.userId
+  }
+  isOpen.value = true
+}
+
+const handleKeydown = (e: KeyboardEvent) => {
+  if (isOpen.value && e.ctrlKey && e.key.toLowerCase() === 's') {
+    e.preventDefault()
+    addFengYunBang(forms.value, t, () => {
+      isOpen.value = false
+      forms.value = {
+        title: '',
+        headImg: '',
+        content: '',
+      }
+    })
+  }
+}
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeydown)
+})
 onMounted(() => {
   getFengYunBangAll()
+  window.addEventListener('keydown', handleKeydown)
 })
 </script>

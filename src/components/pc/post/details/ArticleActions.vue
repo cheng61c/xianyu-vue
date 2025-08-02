@@ -166,6 +166,7 @@ const likePost = (postId: number) => {
     .postLike(postId)
     .then(() => {
       emit('updatePost', props.postData?.id)
+      toast.success(t('t.cao-zuo-cheng-gong'))
     })
     .catch((error) => {
       console.error('Error liking post:', error)
@@ -177,6 +178,7 @@ const badPost = (postId: number) => {
     .postBad(postId)
     .then(() => {
       emit('updatePost', props.postData?.id)
+      toast.success(t('t.cao-zuo-cheng-gong'))
     })
     .catch((error) => {
       console.error('Error liking post:', error)
@@ -197,8 +199,6 @@ const deletePost = (postId: number) => {
         // 刷新帖子列表
         emit('updatePost', props.postData?.id)
         toast.success(t('t.cao-zuo-cheng-gong'))
-      } else {
-        toast.error(t('t.cao-zuo-shi-bai') + response.data.msg)
       }
     })
     .catch((error) => {

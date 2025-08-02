@@ -7,7 +7,7 @@ export declare interface MessageType {
   sendId: number
   postId: number
   commentId: number
-  commentContent: number
+  commentContent: string
   content: string
   readAt: number
   createdAt: string

@@ -10,7 +10,6 @@ import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
 import type { RouteLocationNormalizedLoadedGeneric, Router } from 'vue-router'
 
-import { useI18n } from 'vue-i18n'
 import { generateTocFromHtml } from '@/utils/toc'
 
 const toast = useToast()
@@ -18,8 +17,7 @@ const configStore = useConfigStore()
 const postStore = usePostStore()
 
 /** 获取板块列表 */
-export const getPlate = async () => {
-  const { t } = useI18n()
+export const getPlate = async (t: any) => {
   const typeId =
     configStore.menuItems.find(
       (item) => item.pathName === postStore.currentPlate.currentRouteName
@@ -67,13 +65,20 @@ export const getPost = (
   pid: number,
   route: RouteLocationNormalizedLoadedGeneric
 ) => {
-  if (postStore.isSearch) {
+  console.log('pid', pid)
+  if (
+    postStore.isSearch &&
+    postStore.searchText &&
+    postStore.searchText.trim()
+  ) {
     search(postStore.searchText, false, '0', route)
     return
   }
   const query: PostListQueryDto = {
     type: route.name == 'postList' ? 1 : 2,
   }
+  console.log('pid', pid)
+
   if (pid !== 0) {
     query.plateId = pid
   }

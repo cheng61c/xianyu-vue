@@ -49,7 +49,9 @@ import {
   handleCardClick,
 } from '@/stores/module/post/service'
 import Card from '@/components/common/Card.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const postStore = usePostStore()
@@ -61,7 +63,7 @@ onMounted(async () => {
   activation.value = route.params.plateId
     ? +(route.params.plateId as string)
     : 0
-  getPlate()
+  getPlate(t)
 })
 
 watch(
@@ -76,7 +78,7 @@ watch(
     }
 
     postStore.currentPlate.currentRouteName = (route.name as string) || ''
-    getPlate()
+    getPlate(t)
     getPost(activation.value, route)
   }
 )
