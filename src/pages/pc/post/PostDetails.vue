@@ -144,7 +144,7 @@ import CommentArea from '@/components/pc/post/details/comment/CommentArea.vue'
 import Score from '@/components/pc/post/details/score/Score.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
-import { usePostStore } from '@/stores/module/post/postStore'
+// import { usePostStore } from '@/stores/module/post/postStore'
 import { getPostDetails } from '@/stores/module/post/service'
 
 const route = useRoute()
@@ -152,7 +152,7 @@ const router = useRouter()
 const postData = ref<Post | null>(null)
 
 const tocList = ref<TocItem[]>([]) // 文章目录列表
-const postStore = usePostStore() // 获取帖子存储
+// const postStore = usePostStore() // 获取帖子存储
 const imageModal = ref(false) // 图片查看模态框
 const imgurl = ref('') // 图片查看地址
 const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
