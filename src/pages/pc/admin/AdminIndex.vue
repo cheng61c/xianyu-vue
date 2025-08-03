@@ -122,7 +122,7 @@ const menuItems = [
   },
   {
     icon: Trophy,
-    name: '玩家风云榜',
+    name: '名人堂',
     path: '/admin/fengyunbang',
     role: verifyPermissions([1, 2, 3]),
   },

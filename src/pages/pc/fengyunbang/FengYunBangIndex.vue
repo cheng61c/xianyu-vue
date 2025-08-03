@@ -5,8 +5,9 @@
         <div
           class="flex gap-2 items-center justify-center text-lg font-bold border-b border-gray/40 pb-1 mb-2">
           <Trophy :size="24" />
-          <span>玩家风云榜</span>
+          <span>名人堂</span>
         </div>
+        <div class="text-gray text-sm text-center mb-2">顺序无关排名</div>
         <div class="flex flex-col">
           <div
             v-for="item in fengYunBangStore.list"

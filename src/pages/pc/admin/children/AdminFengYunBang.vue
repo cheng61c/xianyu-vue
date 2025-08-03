@@ -57,6 +57,25 @@
           v-model="forms.headImg"
           :placeholder="'头像地址'"
           class="m-2" />
+        <ScButton
+          Border
+          @dragover.prevent
+          @drop.prevent="handleDrop"
+          @click="triggerFileInput">
+          <input
+            type="file"
+            accept="image/*"
+            ref="fileInput"
+            class="hidden"
+            @change="handleFileChange" />
+          <div>将图片拖到此处，或点击上传</div>
+          <template v-if="forms.headImg" #endIcon>
+            <Avatar :src="forms.headImg" :alt="forms.title" />
+          </template>
+        </ScButton>
+        <ScButton v-if="uploadLoading" noPd>
+          <span class="loading loading-spinner"></span>
+        </ScButton>
       </div>
 
       <div class="flex items-center gap-4">
@@ -94,10 +113,16 @@ import {
 import type { FengYunBangDto } from '@/types/FengYunBang'
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
+import { uploadApi } from '@/apis'
+import Avatar from '@/components/common/Avatar.vue'
 
+const toast = useToast()
 const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
 const isOpen = ref(false)
+const fileInput = ref<HTMLInputElement | null>(null)
+const uploadLoading = ref(false)
 
 const forms = ref<FengYunBangDto>({
   id: 0,
@@ -146,6 +171,37 @@ const handleKeydown = (e: KeyboardEvent) => {
       }
     })
   }
+}
+
+const handleDrop = (event: DragEvent) => {
+  event.preventDefault()
+  const files = event.dataTransfer?.files
+  if (files && files.length > 0) {
+    handleFileChange({ target: { files } } as unknown as Event)
+  }
+}
+const handleFileChange = async (event: Event) => {
+  const files = (event.target as HTMLInputElement).files
+  if (!files) return
+  uploadLoading.value = true
+  try {
+    const file = files[0]
+    const res = await uploadApi.uploadFile(file, 6)
+    forms.value.headImg = res.data.data.url
+    uploadLoading.value = false
+  } catch (error) {
+    toast.error(t('t.tu-pian-shang-chuan-shi-bai-filename', [files[0].name]))
+    uploadLoading.value = false
+  }
+
+  // 清空 input 的值，否则无法上传同一张图两次
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
+}
+
+const triggerFileInput = () => {
+  fileInput.value?.click()
 }
 
 onBeforeUnmount(() => {
