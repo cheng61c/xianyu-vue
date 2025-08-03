@@ -244,7 +244,7 @@ function addImg(url: string) {
   </ScButton>
   <div class="h-full w-full overflow-hidden rounded-t-lg p-1">
     <div
-      class="w-full h-[95dvh] bg-background"
+      class="w-full max-h-[95dvh] bg-background"
       :class="{
         'p-4 rounded-xl border border-gray/40': deviceStore.device === 2,
         'overflow-y-auto': deviceStore.device === 1,
@@ -589,7 +589,11 @@ function addImg(url: string) {
         </ScButton>
       </div>
 
-      <editor-content :editor="editor" class="mobileTipTap" />
+      <editor-content
+        :editor="editor"
+        :class="{
+          mobileTipTap: deviceStore.device === 1,
+        }" />
     </div>
   </div>
 </template>

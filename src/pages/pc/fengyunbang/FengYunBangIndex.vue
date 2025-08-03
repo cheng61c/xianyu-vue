@@ -48,7 +48,7 @@
                 }}
               </span>
             </div>
-            <div>
+            <div class="ml-auto">
               <Card v-if="item.user" noPg class="">
                 <div class="flex gap-4 items-center p-1">
                   <Avatar :src="item.user.headImg" :size="46" />

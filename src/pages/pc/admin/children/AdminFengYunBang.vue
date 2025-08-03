@@ -79,6 +79,14 @@
       </div>
 
       <div class="flex items-center gap-4">
+        <span> 使用QQ头像: http://q1.qlogo.cn/g?b=qq&s=4&nk=</span>
+        <ScInput v-model="qid" :placeholder="'填入QQ号做为头像'" class="m-2" />
+        <template v-if="qid != ''">
+          <Avatar :src="getQQAvatar(qid)" :alt="forms.title" />
+        </template>
+      </div>
+
+      <div class="flex items-center gap-4">
         <span> 社区id: </span>
         <ScInput
           v-model="forms.userId"
@@ -130,11 +138,15 @@ const forms = ref<FengYunBangDto>({
   headImg: '',
   content: '',
 })
+const qid = ref('')
 
 const addPlayer = () => {
   if (!isOpen.value) {
     isOpen.value = true
     return
+  }
+  if (qid.value !== '') {
+    forms.value.headImg = `http://q1.qlogo.cn/g?b=qq&s=4&nk=${qid.value.trim()}`
   }
   addFengYunBang(forms.value, t, () => {
     isOpen.value = false
@@ -143,7 +155,12 @@ const addPlayer = () => {
       headImg: '',
       content: '',
     }
+    qid.value = ''
   })
+}
+
+const getQQAvatar = (qq: string) => {
+  return `http://q1.qlogo.cn/g?b=qq&s=4&nk=${qq.trim()}`
 }
 
 const editPlayer = (item: FengYunBangDto) => {
@@ -155,6 +172,9 @@ const editPlayer = (item: FengYunBangDto) => {
   }
   if (item.userId) {
     forms.value.userId = item.userId
+  }
+  if (qid.value !== '') {
+    forms.value.headImg = `http://q1.qlogo.cn/g?b=qq&s=4&nk=${qid.value.trim()}`
   }
   isOpen.value = true
 }
@@ -169,6 +189,7 @@ const handleKeydown = (e: KeyboardEvent) => {
         headImg: '',
         content: '',
       }
+      qid.value = ''
     })
   }
 }
