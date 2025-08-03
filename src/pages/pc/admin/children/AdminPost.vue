@@ -87,7 +87,9 @@
             <td>
               <div class="flex items-center gap-2">
                 {{ post.creator.nickname }}
-                <ScTag size="xs">uid: {{ post.creator.id }}</ScTag>
+                <ScTag size="xs" status="info"
+                  >uid: {{ post.creator.id }}</ScTag
+                >
               </div>
             </td>
             <td>{{ post.createdAt }}</td>

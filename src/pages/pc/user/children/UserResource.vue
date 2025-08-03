@@ -42,7 +42,7 @@
             router.push({ name: 'postDetails', params: { postId: post.id } })
           ">
           {{ post.title }}
-          <ScTag size="sm">
+          <ScTag size="sm" status="info">
             {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
           </ScTag>
           <ScTag
@@ -212,7 +212,7 @@
           :key="index">
           <div class="flex items-center mb-2">
             <div class="flex-1 flex">
-              <ScTag :type="pkg.fileType" size="sm">
+              <ScTag :type="pkg.fileType" size="sm" status="info">
                 v {{ pkg.version }}
               </ScTag>
             </div>
@@ -310,7 +310,10 @@
       </div>
       <div class="flex gap-2">
         {{ $t('b.ban-ben-hao') }}
-        <ScTag :type="packageList[currenPkgId].fileType" size="sm">
+        <ScTag
+          :type="packageList[currenPkgId].fileType"
+          size="sm"
+          status="info">
           v {{ packageList[currenPkgId].version }}
         </ScTag>
       </div>

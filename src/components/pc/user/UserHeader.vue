@@ -9,9 +9,9 @@
       :size="64"
       @click="updateHerdImg" />
     <div>
-      <div>{{ userStore.userInfo.nickname }}</div>
+      <div class="text-lg font-bold">{{ userStore.userInfo.nickname }}</div>
       <div class="flex items-center flex-wrap gap-2">
-        <ScTag size="sm"> uid {{ userInfo.id }} </ScTag>
+        <ScTag size="sm" status="info"> uid {{ userInfo.id }} </ScTag>
         <ScRole :user="userInfo" isAll size="sm"></ScRole>
       </div>
       <div class="text-sm text-background-content">
@@ -31,16 +31,18 @@
       <div class="flex gap-4 justify-between">
         <!-- 裁剪器 -->
         <template v-if="imageUrl">
-          <Cropper
-            ref="cropperRef"
-            class="cropper mb-4"
-            :minWidth="240"
-            :minHeight="240"
-            :background="'#fff'"
-            :src="imageUrl"
-            autoZoom
-            :stencil-props="{ aspectRatio: 1, width: 240, height: 240 }"
-            @change="onCropChange" />
+          <div class="w-2xl max-h-[42rem] overflow-hidden">
+            <Cropper
+              ref="cropperRef"
+              class="cropper mb-4"
+              :minWidth="240"
+              :minHeight="240"
+              :background="'#fff'"
+              :src="imageUrl"
+              autoZoom
+              :stencil-props="{ aspectRatio: 1, maxWidth: 120, maxHeight: 120 }"
+              @change="onCropChange" />
+          </div>
         </template>
         <template v-else>
           <div
@@ -78,7 +80,11 @@
             <div class="mb-2">
               {{ $t('d.yu-lan-shi-ji-xiao-guo-bei-jing-mo-ren-hui-se') }}
             </div>
-            <Avatar :src="croppedUrl" :alt="$t('d.yu-lan')" :size="128" />
+            <Avatar
+              isLocal
+              :src="croppedUrl"
+              :alt="$t('d.yu-lan')"
+              :size="128" />
           </div>
         </div>
       </div>

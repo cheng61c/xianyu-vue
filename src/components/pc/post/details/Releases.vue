@@ -30,7 +30,7 @@
           <ScTag v-if="vIndex == 0" size="sm" status="success">
             {{ $t('b.zui-xin') }}
           </ScTag>
-          <ScTag size="sm">
+          <ScTag size="sm" status="info">
             {{ item.version }}
           </ScTag>
           {{ item.title }}

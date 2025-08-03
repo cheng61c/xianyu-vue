@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { adjustColor } from '@/utils/color'
 import { computed, type PropType } from 'vue'
 
 const props = defineProps({
@@ -22,7 +23,7 @@ const props = defineProps({
   },
   color: {
     type: String,
-    default: '#fff',
+    default: '',
   },
   bgColor: {
     type: String,
@@ -41,7 +42,7 @@ const props = defineProps({
     default: 16,
   },
   status: {
-    type: String as PropType<'success' | 'error' | 'warning' | 'info'>,
+    type: String as PropType<'success' | 'error' | 'warning' | 'info' | ''>,
     default: '',
   },
 })
@@ -74,7 +75,8 @@ const Style = computed(() => {
       }
     default:
       return {
-        color: props.color,
+        color:
+          props.color != '' ? props.color : adjustColor(props.bgColor, 1, 0.5),
         ...{ background: props.bgClass == '' ? props.bgColor : undefined },
       }
   }

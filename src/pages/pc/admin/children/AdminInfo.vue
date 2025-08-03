@@ -40,7 +40,9 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ info.creator.nickname }}
-                <ScTag size="xs">uid: {{ info.creator.id }}</ScTag>
+                <ScTag size="xs" status="info"
+                  >uid: {{ info.creator.id }}</ScTag
+                >
                 <template v-if="info.creator.roles">
                   <ScTag
                     size="xs"

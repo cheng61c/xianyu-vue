@@ -70,7 +70,9 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ report.handler.nickname }}
-                <ScTag size="xs">uid: {{ report.handler.id }}</ScTag>
+                <ScTag size="xs" status="info">
+                  uid: {{ report.handler.id }}</ScTag
+                >
                 <ScTag
                   size="xs"
                   v-if="report.handler.roles"

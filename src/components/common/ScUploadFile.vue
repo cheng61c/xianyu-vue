@@ -2,7 +2,8 @@
   <div ref="uploadCardRef">
     <Card class="p-6">
       <div class="text-gray-500 mx-auto flex items-center justify-center gap-2">
-        {{ $t('b.tuo-dong') }} <ScTag size="sm">{{ fileTypeLabel }}</ScTag>
+        {{ $t('b.tuo-dong') }}
+        <ScTag size="sm" status="info">{{ fileTypeLabel }}</ScTag>
         {{ $t('b.dao-xu-xian-kuang-huo-dian-ji-shang-chuan') }}
       </div>
 

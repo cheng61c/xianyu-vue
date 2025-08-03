@@ -10,10 +10,10 @@
         <li>
           <RouterLink
             :to="{
-              name: postStore.currentPlate.pathName,
-              params: { plateId: postStore.currentPlate.activation },
+              name: postData?.type == 1 ? 'postList' : 'modList',
+              params: { plateId: postData?.plate.id },
             }">
-            {{ postStore.currentPlate.name }}
+            {{ postData?.type == 1 ? '交流帖子' : '资源下载' }}
           </RouterLink>
         </li>
         <li>

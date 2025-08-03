@@ -253,7 +253,9 @@
       <div class="flex gap-2 flex-wrap items-center">
         {{ $t('d.mu-biao-zhang-hao') }}
         <span>{{ userList[currentUser].nickname }}</span>
-        <ScTag size="xs">uid: {{ userList[currentUser].id }}</ScTag>
+        <ScTag size="xs" status="info"
+          >uid: {{ userList[currentUser].id }}</ScTag
+        >
         <ScTag
           v-for="(role, roleIndex) in userList[currentUser].roles"
           :key="roleIndex"

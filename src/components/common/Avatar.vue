@@ -12,7 +12,7 @@
     <img
       v-if="!loadError"
       class="w-full h-full object-cover"
-      :src="formatLink(src)"
+      :src="isLocal ? src : formatLink(src)"
       :alt="alt"
       @error="loadError = true" />
 
@@ -29,9 +29,11 @@ const props = withDefaults(
     src: string
     alt?: string
     size?: number
+    isLocal: boolean
   }>(),
   {
     size: 26,
+    isLocal: false,
   }
 )
 

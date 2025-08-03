@@ -19,7 +19,7 @@
           <ScTag v-if="post.status == 2" size="sm" status="error">
             {{ $t('b.feng-jin') }}
           </ScTag>
-          <ScTag size="sm">
+          <ScTag size="sm" status="info">
             {{ post.level == 1 ? '个人服' : '社区服' }}
           </ScTag>
         </div>

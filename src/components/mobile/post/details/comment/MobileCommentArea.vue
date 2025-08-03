@@ -27,7 +27,7 @@
                   <ScTag
                     v-if="comment.author.id == postData?.author.id"
                     size="xs"
-                    bgClass="bg-error text-pink-content">
+                    bgColor="#FFADBB">
                     帖主
                   </ScTag>
                 </div>
@@ -107,7 +107,7 @@
                           <ScTag
                             v-if="comment.author.id == postData?.author.id"
                             size="xs"
-                            bgClass="bg-error text-pink-content">
+                            bgColor="#FFADBB">
                             帖主
                           </ScTag>
                         </div>
