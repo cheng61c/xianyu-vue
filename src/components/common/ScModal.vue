@@ -5,7 +5,7 @@
     :class="{ 'opacity-0 pointer-events-none': !showing }"
     @click.self="handleClick">
     <div
-      class="rounded-lg transition-all transform"
+      class="rounded-lg transition-all transform w-screen"
       :class="{
         'scale-95 opacity-0': !showing,
         'scale-100 opacity-100': showing,

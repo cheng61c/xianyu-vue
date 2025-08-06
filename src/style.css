@@ -83,3 +83,22 @@ body {
 .ck-cp-input-container .ck-cp-input-content .ck-cp-input-label {
   background: var(--color-background);
 }
+
+.Vue-Toastification__toast.Mobile-toast-class {
+  min-width: 70vw;
+  max-width: 70vw;
+  min-height: 3rem;
+  padding: 0 1rem;
+  margin: 1rem 0;
+  left: -35vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 0;
+  border-radius: var(--radius-lg);
+}
+
+.Vue-Toastification__container.Mobile-Toast-container {
+  padding: 0 50vw;
+}

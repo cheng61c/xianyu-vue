@@ -69,10 +69,10 @@
           </template>
         </AccordionItem>
 
-        <div class="flex flex-col space-y-4">
+        <div class="flex flex-col space-y-4 py-2 px-2">
           <div
             v-if="userStore.isLogin"
-            class="flex gap-4 items-center justify-between"
+            class="flex gap-4 items-center justify-between py-2"
             @click="logout($t)">
             <div>退出登录</div>
             <button><LogOut /></button>
@@ -109,7 +109,7 @@ import ScSelector from '@/components/common/ScSelector.vue'
 const postStore = usePostStore()
 const leftDrawer = ref(false)
 
-const open2 = ref(true)
+const open2 = ref(false)
 
 const toast = useToast()
 const configStore = useConfigStore()

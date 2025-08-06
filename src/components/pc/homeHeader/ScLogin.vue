@@ -27,9 +27,9 @@
       noPg
       :class="{
         'w-3xl h-[36rem]': deviceStore.device === 2,
-        'h-[100dvh] w-full': deviceStore.device === 1,
+        'h-[100dvh]  w-screen rounded-none ': deviceStore.device === 1,
       }">
-      <div class="flex h-full">
+      <div class="flex h-full justify-center">
         <div v-if="deviceStore.device == 2" class="flex-1">
           <img
             src="/public/85120626_p0_master1200.jpg"
@@ -45,7 +45,11 @@
           <!-- 登录 -->
           <div
             v-if="modalType === 'login'"
-            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
+            class="py-8 mx-4 flex-1 flex flex-col justify-center gap-4"
+            :class="{
+              'w-[22rem]  px-4': deviceStore.device === 2,
+              'w-screen max-w-4xl px-8': deviceStore.device === 1,
+            }">
             <div class="flex justify-between items-end">
               <ScButton
                 noPd
@@ -131,7 +135,11 @@
           <!-- 注册 -->
           <div
             v-if="modalType === 'register'"
-            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
+            class="py-8 mx-4 flex-1 flex flex-col justify-center gap-4"
+            :class="{
+              'w-[22rem]  px-4': deviceStore.device === 2,
+              'w-screen max-w-4xl px-8': deviceStore.device === 1,
+            }">
             <div class="flex justify-between items-end">
               <ScButton
                 noPd
@@ -231,7 +239,11 @@
           <!-- 忘记密码 -->
           <div
             v-if="modalType === 'reset_password'"
-            class="px-4 py-8 mx-4 flex-1 flex flex-col justify-center gap-4 w-[22rem]">
+            class="py-8 mx-4 flex-1 flex flex-col justify-center gap-4"
+            :class="{
+              'w-[22rem]  px-4': deviceStore.device === 2,
+              'w-screen max-w-4xl px-8': deviceStore.device === 1,
+            }">
             <div class="flex justify-between items-end">
               <ScButton
                 noPd

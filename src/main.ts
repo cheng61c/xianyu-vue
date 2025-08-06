@@ -14,9 +14,11 @@ import './style.css'
 
 const options = {
   maxToasts: 4,
+  position: 'top-right',
   newestOnTop: true,
-  containerClassName: ['text-white', 'mt-6'],
-  timeout: 3000,
+  containerClassName: ['Toast-container'],
+  toastClassName: 'Toast-class',
+  timeout: 2000,
 }
 
 const pinia = createPinia()
@@ -34,6 +36,9 @@ if (
   userAgent.match(/(android|webos|iphone|ipad|ipod|blackberry|windows phone)/i)
 ) {
   deviceStore.device = 1
+  options.position = 'top-center'
+  options.toastClassName = 'Mobile-toast-class'
+  options.containerClassName = ['Mobile-Toast-container']
 } else {
   deviceStore.device = 2
 }

@@ -9,8 +9,7 @@
       <ScInput
         v-model="postStore.searchText"
         class="flex-1"
-        placeholder="搜索帖子标题"
-        @input="postStore.searchText = $event.target.value" />
+        placeholder="搜索帖子标题" />
       <ScButton :icon="Funnel" noPd>筛选</ScButton>
     </div>
     <template v-if="postStore.post.length">
