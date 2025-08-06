@@ -85,12 +85,13 @@ body {
 }
 
 .Vue-Toastification__toast.Mobile-toast-class {
-  min-width: 70vw;
-  max-width: 70vw;
+  min-width: 18rem;
+  max-width: 18rem;
   min-height: 3rem;
   padding: 0 1rem;
   margin: 1rem 0;
-  left: -35vw;
+  position: relative;
+  left: -9rem;
   display: flex;
   align-items: center;
   justify-content: center;
