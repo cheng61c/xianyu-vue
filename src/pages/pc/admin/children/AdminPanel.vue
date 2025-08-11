@@ -99,12 +99,10 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import EChartsWrapper from '@/components/common/EChartsWrapper.vue'
-import { useAdminPageStore } from '@/stores/module/admin/AdminPageStore'
 import { getPanelInfo } from '@/stores/module/admin/service'
 import type { AdminPanelInfo } from '@/types/PanelInfo'
 import { onMounted, ref } from 'vue'
 
-const adminPageStore = useAdminPageStore()
 const loading = ref(true)
 const panelInfo = ref<AdminPanelInfo>()
 onMounted(async () => {

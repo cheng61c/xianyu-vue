@@ -211,7 +211,6 @@
       <div
         v-if="postData.type === 2 && mode === 'post' && enablePostRelation"
         class="flex items-start gap-2">
-        <label class="w-24 text-right mt-2"></label>
         <div class="flex gap-6 w-full max-w-3xl">
           <!-- 左侧搜索与结果 -->
           <div class="flex-1">
