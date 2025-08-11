@@ -1,17 +1,20 @@
 <template>
   <div
     ref="container"
-    class="relative flex rounded-md border border-gray bg-background flex-shrink-0">
+    class="relative rounded-md border border-gray bg-background flex-shrink-0"
+    :class="[col ? 'flex-col' : 'flex']">
     <div
-      class="absolute h-full rounded-[5px] bg-active transition-all flex-shrink-0"
+      class="absolute rounded-[5px] bg-active transition-all flex-shrink-0"
       :style="highlightStyle"></div>
     <div
       v-for="option in options"
       :key="option.value"
       ref="optionItems"
-      class="relative z-1 flex-1 px-4 py-2 text-center cursor-pointer select-none flex-shrink-0"
+      class="relative z-1 px-4 py-2 cursor-pointer select-none flex-shrink-0"
       :class="{
         'text-active-content': modelValue === option.value,
+        'text-center': !col,
+        'text-left': col,
       }"
       @click="handleSelect(option.value)">
       {{ option.label }}
@@ -27,10 +30,16 @@ interface Option {
   label: string
 }
 
-const props = defineProps<{
-  options: Option[]
-  modelValue: number | string
-}>()
+const props = withDefaults(
+  defineProps<{
+    options: Option[]
+    modelValue: number | string
+    col?: boolean // 新增垂直布局参数
+  }>(),
+  {
+    col: false,
+  }
+)
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: number | string): void
@@ -40,7 +49,9 @@ const container = ref<HTMLElement>()
 const optionItems = ref<HTMLElement[]>([])
 const highlightStyle = ref({
   width: '0px',
+  height: '0px',
   left: '0px',
+  top: '0px',
 })
 
 const handleSelect = (value: number | string) => {
@@ -59,12 +70,25 @@ const updateHighlightPosition = () => {
     const activeElement = optionItems.value[activeIndex]
     if (!activeElement) return
 
-    const { left: containerLeft } = container.value.getBoundingClientRect()
-    const { width, left } = activeElement.getBoundingClientRect()
+    const containerRect = container.value.getBoundingClientRect()
+    const elementRect = activeElement.getBoundingClientRect()
 
-    highlightStyle.value = {
-      width: `${width}px`,
-      left: `${left - containerLeft - 1}px`,
+    if (props.col) {
+      // 垂直布局样式
+      highlightStyle.value = {
+        width: `${containerRect.width}px`,
+        height: `${elementRect.height}px`,
+        left: '0px',
+        top: `${elementRect.top - containerRect.top - 1}px`,
+      }
+    } else {
+      // 水平布局样式
+      highlightStyle.value = {
+        width: `${elementRect.width}px`,
+        height: `${containerRect.height}px`,
+        left: `${elementRect.left - containerRect.left - 1}px`,
+        top: '0px',
+      }
     }
   })
 }
@@ -76,4 +100,5 @@ onMounted(() => {
 
 watch(() => props.modelValue, updateHighlightPosition)
 watch(() => props.options, updateHighlightPosition, { deep: true })
+watch(() => props.col, updateHighlightPosition)
 </script>

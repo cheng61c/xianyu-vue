@@ -34,12 +34,12 @@
               </div>
 
               <div class="flex gap-4 items-center justify-between py-2">
-                <div>{{ $t('d.ping-ban-xiao-bai-tiao-shi-pei') }}</div>
+                <div>昼夜切换</div>
                 <ThemeButton />
               </div>
 
               <div class="flex gap-4 items-center justify-between py-2">
-                <div>平板小白条适配</div>
+                <div>{{ $t('d.ping-ban-xiao-bai-tiao-shi-pei') }}</div>
                 <input
                   type="checkbox"
                   checked="checked"

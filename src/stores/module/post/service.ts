@@ -177,3 +177,15 @@ export const getPostDetails = async (postId: number) => {
       }
     })
 }
+
+export const getFileTypeOptions = (t: any) => {
+  return [
+    { value: 0, label: t('b.quan-bu') },
+    { value: 1, label: t('b.cun-dang') },
+    { value: 2, label: t('b.jia-ju') },
+    { value: 3, label: t('b.cai-zhi') },
+    { value: 4, label: t('b.pi-fu') },
+    { value: 5, label: t('b.mo-zu') },
+    { value: 7, label: t('b.qi-ta') },
+  ]
+}

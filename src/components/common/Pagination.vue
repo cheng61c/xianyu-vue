@@ -11,9 +11,27 @@
         @click="handlePageChange(currentPage - 1)">
         {{ $t('b.shang-yi-ye') }}
       </ScButton>
-      <span class="text-sm text-background-content">
-        {{ $t('b.di-currentpage-totalpages-ye', [currentPage, totalPages]) }}
-      </span>
+      <PopupBox
+        ref="popupBox"
+        :buttonText="
+          $t('b.di-currentpage-totalpages-ye', [currentPage, totalPages])
+        "
+        position="top">
+        <template #default="{ close }">
+          <Card noCol noPg class="p-2">
+            <ScInput
+              v-model="inputPage"
+              class="w-20 text-center"
+              type="number"
+              :placeholder="$t('b.ye-ma')"
+              min="1"
+              :max="totalPages" />
+            <ScButton Border @click="(handlePageChange(inputPage), close())">
+              {{ $t('b.tiao-zhuan') }}
+            </ScButton>
+          </Card>
+        </template>
+      </PopupBox>
       <ScButton
         variant="ghost"
         :disabled="currentPage >= totalPages"
@@ -58,6 +76,7 @@
               <template #default="{ close }">
                 <Card
                   noCol
+                  noPd
                   class="flex items-center justify-center w-40 p-2 gap-2 rounded-md">
                   <input
                     type="number"
@@ -108,6 +127,7 @@ import { computed, ref } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
 import Card from '@/components/common/Card.vue'
+import ScInput from './ScInput.vue'
 
 const props = defineProps({
   currentPage: {

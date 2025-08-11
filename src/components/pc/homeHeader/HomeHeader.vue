@@ -17,7 +17,6 @@
     <HomeNav />
 
     <div class="flex gap-4 items-center">
-      <ScLogin />
       <ScButton
         class="relative"
         :class="{
@@ -49,6 +48,7 @@
         noPd
         @click="$router.push({ name: 'fengyunbang' })" />
       <ThemeButton />
+      <ScLogin />
     </div>
   </header>
   <div v-if="show" class="flex justify-center w-full bg-warning/30">

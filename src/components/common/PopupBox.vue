@@ -7,7 +7,7 @@
         :activation="noActivation ? false : isOpen"
         :icon="icon"
         :no-pd="noPd"
-        class="">
+        :class="className">
         {{ buttonText }}
       </ScButton>
     </template>
@@ -27,6 +27,7 @@
           'bottom-[110%]': position === 'top',
           'left-[110%] top-0': position === 'right',
           'right-[110%] top-0': position === 'left',
+          'top-[110%] right-0': position === 'bottom-left',
         }">
         <slot :close="closePopup" />
       </div>
@@ -41,7 +42,7 @@ import ScButton from './ScButton.vue'
 defineProps<{
   buttonText?: string
   icon?: any
-  position?: 'top' | 'bottom' | 'left' | 'right'
+  position?: 'top' | 'bottom' | 'left' | 'right' | 'bottom-left'
   className?: string
   noActivation?: boolean
   noPd?: boolean

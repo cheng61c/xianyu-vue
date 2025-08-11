@@ -43,6 +43,8 @@ export const usePostStore = defineStore('post', {
     searchText: '',
     /** 是否搜索状态 */
     isSearch: false,
+    /** 页面按钮当前位置 */
+    buttonBottom: 60,
   }),
   persist: true,
 })

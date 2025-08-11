@@ -7,7 +7,9 @@
           <Trophy :size="24" />
           <span>名人堂</span>
         </div>
-        <div class="text-gray text-sm text-center mb-2">顺序无关排名</div>
+        <div class="text-gray-content text-sm text-center mb-2">
+          顺序无关排名
+        </div>
         <div class="flex flex-col">
           <div
             v-for="item in fengYunBangStore.list"

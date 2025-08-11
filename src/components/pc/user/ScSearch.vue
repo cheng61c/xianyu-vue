@@ -29,6 +29,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
 import { useI18n } from 'vue-i18n'
+import { getFileTypeOptions } from '@/stores/module/post/service'
 
 const props = defineProps({
   modelValue: {
@@ -44,15 +45,7 @@ const props = defineProps({
 const { t } = useI18n()
 
 const fileType = ref<number>(0)
-const fileTypeOptions = [
-  { value: 0, label: t('b.quan-bu') },
-  { value: 1, label: t('b.cun-dang') },
-  { value: 2, label: t('b.jia-ju') },
-  { value: 3, label: t('b.cai-zhi') },
-  { value: 4, label: t('b.pi-fu') },
-  { value: 5, label: t('b.mo-zu') },
-  { value: 7, label: t('b.qi-ta') },
-]
+const fileTypeOptions = getFileTypeOptions(t)
 
 const emit = defineEmits<{
   (e: 'search', value: string, click: boolean, type: string): void
