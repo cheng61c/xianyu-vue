@@ -1,6 +1,6 @@
 <template>
   <!-- 头像 -->
-  <UserHeader @updateUserInfo="getCurrentUserInfo" />
+  <MobileUserHeader @updateUserInfo="getCurrentUserInfo" />
   <!-- 概览 -->
   <Card class="stats w-full" noCol noPg>
     <div
@@ -89,7 +89,7 @@ import {
 } from 'lucide-vue-next'
 
 import Card from '@/components/common/Card.vue'
-import UserHeader from '@/components/pc/user/UserHeader.vue'
+import MobileUserHeader from '@/components/mobile/user/MobileUserHeader.vue'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const userStore = useUserStore()

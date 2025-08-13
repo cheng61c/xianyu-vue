@@ -28,7 +28,10 @@
     </div>
   </Card>
   <ScModal v-model="updateHerdImgModal">
-    <Card class="w-4xl">
+    <Card
+      :class="{
+        'w-4xl': deviceStore.device == 2,
+      }">
       <div class="text-lg font-bold mb-4">{{ $t('d.geng-xin-tou-xiang') }}</div>
 
       <div class="flex gap-4 justify-between">

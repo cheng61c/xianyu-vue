@@ -1,5 +1,5 @@
 <template>
-  <UserHeader @updateUserInfo="getCurrentUserInfo" />
+  <MobileUserHeader @updateUserInfo="getCurrentUserInfo" />
 
   <Card v-if="userStore.isLogin" class="w-full">
     <div class="mb-4 text-xl font-bold">{{ $t('f.ji-chu-xin-xi') }}</div>
@@ -13,7 +13,6 @@
       <span>{{ $t('f.ni-cheng') }}</span>
       <ScInput
         v-model="userInfo.nickname"
-        class="w-1/3"
         type="text"
         :placeholder="$t('f.qing-shu-ru-ni-cheng')" />
     </div>
@@ -40,7 +39,6 @@
       <span>{{ $t('f.xin-mi-ma') }}</span>
       <ScInput
         v-model="resetPassword.newPassword"
-        class="w-1/3"
         type="password"
         :placeholder="$t('f.qing-shu-ru-xin-mi-ma')" />
     </div>
@@ -49,7 +47,6 @@
       <span>{{ $t('f.que-ren-mi-ma') }}</span>
       <ScInput
         v-model="resetPassword.confirmPassword"
-        class="w-1/3"
         type="password"
         :placeholder="$t('f.qing-zai-ci-shu-ru-xin-mi-ma')" />
     </div>
@@ -58,7 +55,6 @@
       <span>{{ $t('f.you-xiang-yan-zheng-ma') }}</span>
       <ScInput
         v-model="resetPassword.captcha"
-        class="w-1/3"
         :placeholder="$t('f.qing-shu-ru-yan-zheng-ma')" />
       <ScButton
         :disabled="isSendCode"
@@ -105,7 +101,7 @@ import { useUserStore } from '@/stores/module/user/userStore'
 
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
-import UserHeader from '@/components/pc/user/UserHeader.vue'
+import MobileUserHeader from '@/components/mobile/user/MobileUserHeader.vue'
 import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
