@@ -5,9 +5,9 @@
     @search="search"
     v-model="searchText"
     :searchType="2"
-    class="max-w-6xl min-w-4xl w-full" />
+    class="w-full" />
 
-  <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
+  <Card v-if="!userStore.isLogin" class="w-full">
     <div class="text-center text-gray-content">
       {{
         $t('d.nin-huan-wei-deng-lu-qing-xian-deng-lu-hou-zai-jin-hang-cao-zuo')
@@ -19,10 +19,10 @@
     v-if="userStore.isLogin"
     v-for="(post, postIndex) in posts"
     :key="post.id"
-    class="stats max-w-6xl min-w-4xl w-full">
-    <div class="flex justify-center items-center">
+    class="w-full">
+    <div class="flex gap-2">
       <!-- 左侧封面图 -->
-      <div v-if="post.cover" class="relative w-40 h-24 flex-shrink-0">
+      <div v-if="post.cover" class="relative w-28 flex-shrink-0">
         <ScImage
           :src="post.cover"
           :alt="$t('t.feng-mian-tu')"
@@ -34,118 +34,116 @@
       </div>
 
       <!-- 右侧文字信息 -->
-      <div class="ml-4 flex flex-col justify-between flex-grow h-24">
+      <div class="flex flex-col gap-2 w-full">
         <!-- 标题 -->
         <div
-          class="flex items-center gap-2"
+          class="flex items-center gap-2 flex-grow"
           @click.stop="
-            router.push({ name: 'postDetails', params: { postId: post.id } })
+            $router.push({ name: 'postDetails', params: { postId: post.id } })
           ">
-          {{ post.title }}
-          <ScTag size="sm" status="info">
-            {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
-          </ScTag>
-          <ScTag
-            v-if="post.status == 1 || post.status == 3"
-            size="sm"
-            :status="post.visible == 1 ? 'success' : 'warning'">
-            {{ post.visible == 1 ? '发布中' : '下架' }}
-          </ScTag>
-          <ScTag v-if="post.status == 2" size="sm" status="error">
-            {{ $t('b.feng-jin') }}
-          </ScTag>
+          <span class="font-bold">{{ post.title }}</span>
+          <div class="flex items-center gap-1 flex-shrink-0">
+            <ScTag size="sm" status="info">
+              {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
+            </ScTag>
+            <ScTag
+              v-if="post.status == 1 || post.status == 3"
+              size="sm"
+              :status="post.visible == 1 ? 'success' : 'warning'">
+              {{ post.visible == 1 ? '发布中' : '下架' }}
+            </ScTag>
+            <ScTag v-if="post.status == 2" size="sm" status="error">
+              {{ $t('b.feng-jin') }}
+            </ScTag>
+          </div>
         </div>
-        <!-- 时间 -->
-        <div class="text-sm text-gray-500">{{ post.createdAt }}</div>
-        <!-- 底部数据 -->
-        <div class="flex items-center text-sm text-gray-500 space-x-4 mt-2">
-          <ScButton
-            class="flex items-center"
-            :icon="Eye"
-            iconSize="16"
-            noBg
-            noPd>
-            {{ post.views }}
-          </ScButton>
-          <ScButton
-            class="flex items-center"
-            :icon="MessageSquare"
-            iconSize="16"
-            noBg
-            noPd>
-            {{ post.commentCount }}
-          </ScButton>
-          <ScButton
-            class="flex items-center"
-            :icon="ThumbsUp"
-            iconSize="16"
-            noBg
-            noPd>
-            {{ post.likeCount }}
-          </ScButton>
-          <ScButton
-            class="flex items-center"
-            :icon="ThumbsDown"
-            iconSize="16"
-            noBg
-            noPd>
-            {{ post.badCount }}
-          </ScButton>
-          <ScButton
-            class="flex items-center"
-            :icon="Flame"
-            iconSize="16"
-            noBg
-            noPd>
-            {{ post.heat }} </ScButton
-          ><ScButton
-            class="flex items-center"
-            :icon="Package"
-            iconSize="16"
-            noBg
-            noPd>
-            {{ post.postVersionCount }}
-          </ScButton>
-        </div>
-      </div>
 
-      <!-- 操作按钮 -->
-      <div class="flex gap-2 h-24 items-center justify-end flex-wrap">
-        <ScButton
-          class="text-sm px-4 border border-gray hover:border-active"
-          :icon="SquarePen"
-          :iconSize="16"
-          @click="
-            $router.push({ name: 'publish', params: { postId: post.id } })
-          ">
-          {{ $t('b.bian-ji') }}
-        </ScButton>
-        <ScButton
-          class="text-sm px-4 border border-gray hover:border-active"
-          :icon="iconMap[post.fileType as keyof typeof iconMap]"
-          :iconSize="16"
-          @click="onPackageModal(post.id)">
-          {{ $t('b.ban-ben') }}
-        </ScButton>
-        <ScButton
-          class="text-sm px-4 border border-gray hover:border-active"
-          :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
-          :iconSize="16"
-          @click="unpublishItem(postIndex)">
-          {{ post.visible == 1 ? '下架' : '发布' }}
-        </ScButton>
-        <ScButton
-          class="text-sm text-error px-4 border border-gray hover:border-active"
-          :icon="Trash2"
-          :iconSize="16"
-          @click="deleteItem(postIndex)">
-          {{ $t('b.shan-chu') }}
-        </ScButton>
+        <div class="flex w-full items-center gap-2 justify-between">
+          <!-- 时间 -->
+          <div class="text-end text-sm text-gray-content">
+            {{ post.createdAt }}
+          </div>
+        </div>
+        <div>
+          {{ post.content }}
+        </div>
       </div>
+    </div>
+    <!-- 底部数据 -->
+    <div
+      class="flex justify-between items-center space-x-4 pt-2 border-t border-gray/40">
+      <ScButton class="flex items-center" noBg noPd>
+        <div class="flex gap-1 items-center text-gray-content">
+          <Eye :size="18" />
+          <span>{{ post.views }}</span>
+        </div>
+      </ScButton>
+      <ScButton class="flex items-center" noBg noPd>
+        <div class="flex gap-1 items-center text-gray-content">
+          <MessageSquare :size="18" />
+          <span>{{ post.commentCount }}</span>
+        </div>
+      </ScButton>
+      <ScButton class="flex items-center" noBg noPd>
+        <div class="flex gap-1 items-center text-gray-content">
+          <ThumbsUp :size="18" />
+          <span>{{ post.likeCount }}</span>
+        </div>
+      </ScButton>
+      <ScButton class="flex items-center" noBg noPd>
+        <div class="flex gap-1 items-center text-gray-content">
+          <ThumbsDown :size="18" />
+          <span>{{ post.badCount }}</span>
+        </div>
+      </ScButton>
+      <ScButton noBg noPd>
+        <div class="flex gap-1 items-center text-gray-content">
+          <Flame :size="18" />
+          <span>{{ post.heat }}</span>
+        </div>
+      </ScButton>
+      <ScButton noBg noPd>
+        <div class="flex gap-1 items-center text-gray-content">
+          <Package :size="18" />
+          <span>{{ post.postVersionCount }}</span>
+        </div>
+      </ScButton>
+    </div>
+
+    <div
+      class="flex gap-1 items-center justify-end flex-wrap border-t border-gray/40 pt-2 w-full">
+      <ScButton
+        class="text-sm px-4 border border-gray hover:border-active"
+        :icon="SquarePen"
+        :iconSize="16"
+        @click="$router.push({ name: 'publish', params: { postId: post.id } })">
+        {{ $t('b.bian-ji') }}
+      </ScButton>
+      <ScButton
+        class="text-sm px-4 border border-gray hover:border-active"
+        :icon="iconMap[post.fileType as keyof typeof iconMap]"
+        :iconSize="16"
+        @click="onPackageModal(post.id)">
+        {{ $t('b.ban-ben') }}
+      </ScButton>
+      <ScButton
+        class="text-sm px-4 border border-gray hover:border-active"
+        :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
+        :iconSize="16"
+        @click="unpublishItem(postIndex)">
+        {{ post.visible == 1 ? '下架' : '发布' }}
+      </ScButton>
+      <ScButton
+        class="text-sm text-error px-4 border border-gray hover:border-active"
+        :icon="Trash2"
+        :iconSize="16"
+        @click="deleteItem(postIndex)">
+        {{ $t('b.shan-chu') }}
+      </ScButton>
     </div>
   </Card>
 
-  <div v-if="userStore.isLogin" class="max-w-6xl min-w-4xl w-full">
+  <div v-if="userStore.isLogin" class="w-full">
     <div v-if="loading" class="flex flex-col gap-4">
       <div class="skeleton w-full h-20"></div>
       <div class="skeleton w-full h-20"></div>
@@ -172,7 +170,7 @@
     @action-click="$router.push({ name: 'publish' })" />
 
   <ScModal v-model="openPackageList">
-    <Card class="gap-4 w-4xl h-full max-h-[80vh] overflow-y-auto">
+    <Card class="gap-4 w-[95vw] h-full max-h-[95dvh] overflow-y-auto">
       <div class="flex justify-between items-center">
         <h3 class="text-lg font-semibold">
           {{ $t('d.tie-zi-ban-ben-lie-biao') }}
@@ -196,47 +194,40 @@
       </div>
 
       <div v-if="packageList.length" class="w-full">
-        <!-- 表头 -->
-        <div class="flex font-semibold py-2 px-4 border-b border-gray-content">
-          <div class="flex-1">{{ $t('b.ban-ben') }}</div>
-          <div class="flex-[1.2]">{{ $t('b.biao-ti') }}</div>
-          <div class="flex-1">{{ $t('b.wen-jian-shu') }}</div>
-          <div class="flex-1">{{ $t('b.chuang-jian-shi-jian') }}</div>
-          <div class="flex-[1.1]">{{ $t('b.cao-zuo') }}</div>
-        </div>
-
         <!-- 表格行 -->
         <div
-          class="w-full py-2 px-4 border-b border-gray-content"
+          class="w-full py-2 border-b border-gray-content"
           v-for="(pkg, index) in packageList"
           :key="index">
-          <div class="flex items-center mb-2">
-            <div class="flex-1 flex">
-              <ScTag :type="pkg.fileType" size="sm" status="info">
-                v {{ pkg.version }}
-              </ScTag>
-            </div>
-            <div class="flex-[1.2]">{{ pkg.title }}</div>
-            <div class="flex-1">{{ pkg.files.length }}</div>
-            <div class="flex-1">{{ pkg.createdAt }}</div>
-            <div class="flex-[1.1] flex gap-2 justify-end flex-wrap">
-              <ScButton
-                class="text-sm px-4 border border-gray"
-                :icon="SquarePen"
-                :iconSize="16"
-                @click="toEditResource(pkg.id)">
-                {{ $t('b.bian-ji') }}
-              </ScButton>
+          <div class="flex items-center gap-2 mb-2">
+            <ScTag :type="pkg.fileType" size="sm" status="info">
+              v {{ pkg.version }}
+            </ScTag>
 
-              <ScButton
-                class="text-sm text-error px-4 border hover:border-active"
-                :icon="Trash2"
-                :iconSize="16"
-                @click="deletePkg(index)">
-                {{ $t('b.shan-chu') }}
-              </ScButton>
+            <div class="flex-1">{{ pkg.title }}</div>
+            <div class="text-gray-content flex-shrink-0 text-end">
+              {{ pkg.createdAt }}
             </div>
           </div>
+
+          <div class="flex gap-2 justify-end flex-wrap">
+            <ScButton
+              class="text-sm px-4 border border-gray"
+              :icon="SquarePen"
+              :iconSize="16"
+              @click="toEditResource(pkg.id)">
+              {{ $t('b.bian-ji') }}
+            </ScButton>
+
+            <ScButton
+              class="text-sm text-error px-4 border hover:border-active"
+              :icon="Trash2"
+              :iconSize="16"
+              @click="deletePkg(index)">
+              {{ $t('b.shan-chu') }}
+            </ScButton>
+          </div>
+
           <!-- 文件列表 -->
           <div
             v-for="(file, fileIndex) in pkg.files"
@@ -249,17 +240,13 @@
                 {{ formatFileSize(file.size) }}
               </div>
             </div>
-            <div class="flex-1">
-              {{ $t('d.xia-zai-ci-shu') }} <span>{{ file.downloadCount }}</span>
-            </div>
-            <div class="flex-[1.1] flex gap-2 py-1 justify-end">
+            <div class="flex gap-2 py-1 justify-end">
               <ScButton
-                class="text-sm px-4 border hover:border-active"
+                class="px-4"
                 :icon="Download"
-                :iconSize="16"
-                noPd
+                :iconSize="18"
                 @click="downloadFile(file.url, pkg.id)">
-                {{ $t('b.xia-zai') }}
+                {{ file.downloadCount }}
               </ScButton>
             </div>
           </div>
@@ -361,7 +348,7 @@ import {
   SquareArrowOutUpRight,
 } from 'lucide-vue-next'
 import { userApi, postApi, downloadApi } from '@/apis'
-import { formatTime } from '@/utils/format'
+import { formatTime, htmlToText } from '@/utils/format'
 import type { Post } from '@/types/Post'
 import { useToast } from 'vue-toastification'
 import { extractImageSrcs } from '@/utils/regex'
@@ -424,10 +411,10 @@ const getPosts = () => {
     })
     .then((response) => {
       posts.value = response.data.data.list.map((item: any) => {
-        //
         const imgs = extractImageSrcs(item.content)
         item.cover = imgs.length > 0 ? imgs[0] : ''
         item.createdAt = formatTime(item.createdAt)
+        item.content = htmlToText(item.content)
         return item
       })
       pagination.value = {
@@ -589,12 +576,17 @@ const search = (key: string, click = true, fileTypes?: string) => {
   const query: any = {
     userId: userInfo.value.id,
     type: 2,
-    key: key,
     page: pagination.value.page,
     limit: pagination.value.limit,
   }
 
-  if (fileTypes && fileTypes.length > 0) {
+  if (searchText.value !== '') {
+    query.key = searchText.value
+  }
+
+  if (fileTypes && fileTypes != '0') {
+    console.log('fileTypes', fileTypes)
+
     query.fileTypes = fileTypes
   }
 
@@ -605,6 +597,7 @@ const search = (key: string, click = true, fileTypes?: string) => {
         const imgs = extractImageSrcs(item.content)
         item.cover = imgs.length > 0 ? imgs[0] : ''
         item.createdAt = formatTime(item.createdAt)
+        item.content = htmlToText(item.content)
         return item
       })
       pagination.value = {

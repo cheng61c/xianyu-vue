@@ -1,41 +1,19 @@
 <template>
   <Card>
-    <div
-      class="flex flex-wrap items-center gap-4"
-      :class="{
-        'justify-center': deviceStore.device == 1,
-        'justify-between': deviceStore.device == 2,
-      }">
-      <div class="flex w-xs gap-2 flex-shrink-0 items-center">
+    <div class="flex justify-between flex-wrap items-center gap-4">
+      <div class="flex w-xs gap-2">
         <ScInput
           v-model="searchText"
           :placeholder="t('b.sou-suo')"
           type="search"
-          @keyup.enter="handleSearch"
-          class="flex-1" />
+          @keyup.enter="handleSearch" />
         <ScButton @click="handleSearch" Border>
           {{ $t('b.sou-suo') }}
         </ScButton>
-        <PopupBox
-          v-if="searchType == 2 && deviceStore.device == 1"
-          ref="popupBox"
-          position="bottom-left"
-          Border
-          buttonText="筛选">
-          <template #default="{ close }">
-            <Card noPg class="p-2 w-22 items-center">
-              <ScButtonSelector
-                col
-                :options="fileTypeOptions"
-                v-model="fileType"
-                @click="close()" />
-            </Card>
-          </template>
-        </PopupBox>
       </div>
 
       <div
-        v-if="searchType == 2 && deviceStore.device == 2"
+        v-if="searchType == 2"
         class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
         <div class="flex-shrink-0">{{ $t('b.shai-xuan-lei-xing') }}</div>
         <ScButtonSelector :options="fileTypeOptions" v-model="fileType" />
@@ -52,8 +30,6 @@ import ScInput from '@/components/common/ScInput.vue'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
 import { useI18n } from 'vue-i18n'
 import { getFileTypeOptions } from '@/stores/module/post/service'
-import { useDeviceStore } from '@/stores/global/deviceStore'
-import PopupBox from '@/components/common/PopupBox.vue'
 
 const props = defineProps({
   modelValue: {
@@ -67,7 +43,7 @@ const props = defineProps({
 })
 
 const { t } = useI18n()
-const deviceStore = useDeviceStore()
+
 const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
 

@@ -1,16 +1,15 @@
 <template>
   <button
-    :class="[
-      'flex justify-center items-center  cursor-no-drop flex-shrink-0',
-      className,
-    ]"
+    :class="['flex justify-center items-center flex-shrink-0', className]"
     :data-tip="tip">
     <component :is="icon" v-if="icon" :size="iconSize" class="flex-shrink-0" />
     <slot v-else name="icon" />
     <slot />
     <slot name="endIcon" />
 
-    <span v-if="loading" class="loading loading-spinner loading-sm"></span>
+    <span
+      v-if="loading"
+      class="loading loading-spinner loading-sm flex-shrink-0"></span>
   </button>
 </template>
 

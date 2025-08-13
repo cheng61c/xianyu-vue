@@ -5,7 +5,7 @@
     <EmptyState
       :title="$t('t.jia-zai-shi-bai')"
       :description="$t('t.qing-shua-xin-ye-mian-huo-dian-ji-xia-fang-fan-hui')"
-      action="返回"
+      :action="'返回'"
       :actionIcon="Undo2"
       @action-click="$router.back()" />
   </div>

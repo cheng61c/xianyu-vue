@@ -27,7 +27,10 @@
 </template>
 
 <script setup lang="ts">
+import { useDeviceStore } from '@/stores/global/deviceStore'
 import { ref, computed } from 'vue'
+
+const deviceStore = useDeviceStore()
 
 defineProps<{
   src: string
@@ -59,8 +62,11 @@ const mergedStyle = computed(() => {
   const baseTransform = `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`
   const fitSizeStyle =
     fitMode.value === 'fit-width'
-      ? { maxWidth: '90vw', height: 'auto' }
-      : { maxHeight: '90vh', width: 'auto' }
+      ? { maxWidth: deviceStore.device == 1 ? '100vw' : '90vw', height: 'auto' }
+      : {
+          maxHeight: deviceStore.device == 1 ? '100dvh' : '90dvh',
+          width: 'auto',
+        }
 
   return {
     transform: baseTransform,

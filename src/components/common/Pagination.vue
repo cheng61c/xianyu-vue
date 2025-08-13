@@ -6,7 +6,6 @@
         variant="ghost"
         :disabled="currentPage <= 1"
         :icon="ChevronLeft"
-        icon-size="20"
         noBg
         @click="handlePageChange(currentPage - 1)">
         {{ $t('b.shang-yi-ye') }}
@@ -37,7 +36,6 @@
         :disabled="currentPage >= totalPages"
         :icon="ChevronRight"
         icon-position="right"
-        icon-size="20"
         noBg
         @click="handlePageChange(currentPage + 1)">
         {{ $t('b.xia-yi-ye') }}
@@ -65,9 +63,8 @@
           <ScButton
             class="rounded-l-md w-10"
             :disabled="currentPage <= 1"
-            icon-size="20"
+            :icon="ChevronLeft"
             @click="handlePageChange(currentPage - 1)">
-            <ChevronLeft />
           </ScButton>
 
           <!-- 页码按钮 -->
@@ -110,10 +107,9 @@
           <ScButton
             class="rounded-r-md w-8"
             :disabled="currentPage >= totalPages"
-            icon-size="20"
             noBg
+            :icon="ChevronRight"
             @click="handlePageChange(+currentPage + 1)">
-            <ChevronRight />
           </ScButton>
         </nav>
       </div>

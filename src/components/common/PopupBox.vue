@@ -6,7 +6,9 @@
         @click="togglePopup"
         :activation="noActivation ? false : isOpen"
         :icon="icon"
+        :icon-size="iconSize"
         :no-pd="noPd"
+        :Border="Border"
         :class="className">
         {{ buttonText }}
       </ScButton>
@@ -42,10 +44,12 @@ import ScButton from './ScButton.vue'
 defineProps<{
   buttonText?: string
   icon?: any
+  iconSize?: number
   position?: 'top' | 'bottom' | 'left' | 'right' | 'bottom-left'
   className?: string
   noActivation?: boolean
   noPd?: boolean
+  Border?: boolean
 }>()
 
 const emit = defineEmits(['close'])

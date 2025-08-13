@@ -1,10 +1,12 @@
 <template>
-  <div class="flex flex-col w-full space-y-4 pb-2">
+  <div
+    class="flex flex-col w-[100dvw] h-[100dvh] space-y-4 pb-2 overflow-y-auto">
     <div class="flex gap-2 items-center">
       <ScButton
-        class="px-4 py-1 text-sm border border-gray"
+        class=""
+        :icon="ChevronLeft"
+        :iconSize="22"
         @click="$router.back()">
-        返回
       </ScButton>
       <div class="text-lg font-semibold">编辑资源</div>
       <div v-if="!userStore.isLogin" class="text-error">
@@ -12,148 +14,155 @@
       </div>
     </div>
 
-    <!-- 表单部分 -->
-    <div class="space-y-4 text-sm">
-      <!-- 标题 -->
-      <div class="flex items-center gap-2">
-        <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
+    <div class="space-y-4 text-sm px-4">
+      <div class="flex flex-col w-full space-y-4 pb-2">
+        <!-- 标题 -->
+        <div class="flex items-center gap-2">
+          <label
+            class="w-24 flex justify-between items-center tooltip tooltip-right"
+            data-tip="
             版本号，资源版本号">
-          <span class="flex items-center gap-1">
-            版本号 <span><CircleHelp :size="16" /></span>
-          </span>
+            <span class="flex items-center gap-1">
+              版本号 <span><CircleHelp :size="16" /></span>
+            </span>
 
-          <span>:</span>
-        </label>
-        <input
-          v-model="versionData.version"
-          type="text"
-          class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="1.0.0" />
-      </div>
+            <span>:</span>
+          </label>
+          <input
+            v-model="versionData.version"
+            type="text"
+            class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
+            placeholder="1.0.0" />
+        </div>
 
-      <!-- 标题 -->
-      <div class="flex items-center gap-2">
-        <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
+        <!-- 标题 -->
+        <div class="flex items-center gap-2">
+          <label
+            class="w-24 flex justify-between items-center tooltip tooltip-right"
+            data-tip="
             版本标题">
-          <span class="flex items-center gap-1">
-            标题 <span><CircleHelp :size="16" /></span>
-          </span>
+            <span class="flex items-center gap-1">
+              标题 <span><CircleHelp :size="16" /></span>
+            </span>
 
-          <span>:</span>
-        </label>
-        <input
-          v-model="versionData.title"
-          type="text"
-          class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="请输入标题" />
-      </div>
+            <span>:</span>
+          </label>
+          <input
+            v-model="versionData.title"
+            type="text"
+            class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
+            placeholder="请输入标题" />
+        </div>
 
-      <!-- 游戏版本 -->
-      <!-- 游戏版本 -->
-      <div class="flex items-center gap-2">
-        <label
-          class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本">
-          <span class="flex items-center gap-1">
-            适配的游戏版本 <span><CircleHelp :size="16" /></span>
-          </span>
-          <span>:</span>
-        </label>
-
+        <!-- 游戏版本 -->
         <div class="flex flex-col gap-2">
-          <div class="flex flex-wrap gap-2 items-center">
-            <span>插件版:</span>
-            <template v-for="version in versionList" :key="version.id">
-              <ScButton
-                v-if="version.type === 'plugin'"
-                class="px-4 py-1 text-sm"
-                Border
-                :activation="versionData.gameVersionIds.includes(version.id)"
-                @click="toggleVersion(version.id)">
-                {{ version.name }}
-              </ScButton>
-            </template>
-          </div>
-          <div class="flex flex-wrap gap-2 items-center">
-            <span>联机版:</span>
-            <template v-for="version in versionList" :key="version.id">
-              <ScButton
-                v-if="version.type === 'online'"
-                class="px-4 py-1 text-sm"
-                Border
-                :activation="versionData.gameVersionIds.includes(version.id)"
-                @click="toggleVersion(version.id)">
-                {{ version.name }}
-              </ScButton>
-            </template>
-          </div>
-          <div class="flex flex-wrap gap-2 items-center">
-            <span>原版:</span>
-            <template v-for="version in versionList" :key="version.id">
-              <ScButton
-                v-if="version.type === 'original'"
-                class="px-4 py-1 text-sm"
-                Border
-                :activation="versionData.gameVersionIds.includes(version.id)"
-                @click="toggleVersion(version.id)">
-                {{ version.name }}
-              </ScButton>
-            </template>
+          <label
+            class="w-32 flex items-center tooltip tooltip-right"
+            data-tip="游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本">
+            <span class="flex items-center gap-1">
+              适配的游戏版本 <span><CircleHelp :size="16" /></span>
+            </span>
+            <span>:</span>
+          </label>
+
+          <div class="flex gap-2 flex-col">
+            <div class="flex flex-wrap gap-2">
+              <span>插件版:</span>
+              <template v-for="version in versionList" :key="version.id">
+                <ScButton
+                  v-if="version.type === 'plugin'"
+                  Border
+                  :activation="versionData.gameVersionIds.includes(version.id)"
+                  @click="toggleVersion(version.id)">
+                  {{ version.name }}
+                </ScButton>
+              </template>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span>联机版:</span>
+              <template v-for="version in versionList" :key="version.id">
+                <ScButton
+                  v-if="version.type === 'online'"
+                  Border
+                  :activation="versionData.gameVersionIds.includes(version.id)"
+                  @click="toggleVersion(version.id)">
+                  {{ version.name }}
+                </ScButton>
+              </template>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span>原版:</span>
+              <template v-for="version in versionList" :key="version.id">
+                <ScButton
+                  v-if="version.type === 'original'"
+                  Border
+                  :activation="versionData.gameVersionIds.includes(version.id)"
+                  @click="toggleVersion(version.id)">
+                  {{ version.name }}
+                </ScButton>
+              </template>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="!loaderData">
-      <ScUploadFile
-        :typeid="postInfo.fileType"
-        :loadFiles="uploadedFiles"
-        @uploaded="setFileIds" />
-    </div>
+      <div v-if="!loaderData">
+        <ScUploadFile
+          :typeid="postInfo.fileType"
+          :loadFiles="uploadedFiles"
+          @uploaded="setFileIds" />
+      </div>
 
-    <!-- 编辑器 -->
-    <div v-if="!loaderData">
-      <TipTap v-model="versionData.content" />
-    </div>
+      <!-- 帖子内容 -->
+      <ScButton
+        v-if="deviceStore.device == 1"
+        @click="isOpen = true"
+        Border
+        class="w-full">
+        编写介绍
+      </ScButton>
 
-    <!-- 发布按钮 -->
-    <div class="text-right">
-      <button
-        class="px-6 py-2 rounded-lg"
-        :class="{
-          'bg-active text-active-content hover:bg-active/80  cursor-pointer':
-            userStore.isLogin === true,
-          'bg-active/60 text-active-content/60  cursor-not-allowed tooltip tooltip-left':
-            userStore.isLogin === false,
-        }"
-        data-tip="请先登录后再发布内容"
-        @click="submitVersiont"
-        :disabled="userStore.isLogin === false || loader">
-        {{ versionData.id ? '更新版本' : '发布版本' }}
-      </button>
+      <!-- 发布按钮 -->
+      <div class="flex justify-end my-2 px-4">
+        <ScButton
+          activation
+          :disabled="userStore.isLogin === false || loader"
+          class="px-6 py-2 hover:bg-active/80"
+          @click="submitVersiont"
+          :loading="loader">
+          {{ versionData.id ? '更新版本' : '发布版本' }}
+        </ScButton>
+      </div>
     </div>
   </div>
+
+  <ScDrawer v-model="isOpen" position="bottom">
+    <div v-if="versionData.content !== null" class="bg-background rounded-t-lg">
+      <TipTap
+        v-model="versionData.content"
+        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+    </div>
+  </ScDrawer>
 </template>
 
 <script setup lang="ts">
 import type { Api } from '@/types'
 import { onMounted, ref } from 'vue'
-import { CircleHelp } from 'lucide-vue-next'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import { CircleHelp, ChevronLeft } from 'lucide-vue-next'
 import type { Post, PostCreateVersionDto } from '@/types/Post'
 import { useToast } from 'vue-toastification'
-import ScButton from '@/components/common/ScButton.vue'
-import ScUploadFile from '@/components/common/ScUploadFile.vue'
 import { postApi, versionApi } from '@/apis'
 import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
 import { formatImageSrcsInHtml } from '@/utils/regex'
+import { useDeviceStore } from '@/stores/global/deviceStore'
+
+import ScButton from '@/components/common/ScButton.vue'
+import ScUploadFile from '@/components/common/ScUploadFile.vue'
+import ScDrawer from '@/components/common/ScDrawer.vue'
+import TipTap from '@/components/pc/tiptap/TipTap.vue'
 
 const props = defineProps({
   post: {
@@ -170,6 +179,8 @@ const postInfo = ref<Post>({} as Post) // 帖子详情
 const loader = ref(false) // 加载状态
 const loaderData = ref(true) // 编辑器加载状态
 const uploadedFiles = ref<{ name: string; id: number; size: number }[]>([]) // 已上传的文件ID
+const isOpen = ref(false) // 抽屉状态
+const deviceStore = useDeviceStore()
 
 // 帖子表单
 const versionData = ref<PostCreateVersionDto>({

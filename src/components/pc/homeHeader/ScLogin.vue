@@ -22,7 +22,7 @@
   <div v-else>
     <ScUserCard />
   </div>
-  <ScModal v-model="showModal">
+  <ScModal v-model="userStore.showLoginModal">
     <Card
       noPg
       :class="{
@@ -352,7 +352,6 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const deviceStore = useDeviceStore()
-const showModal = ref(false)
 const buttonLoading = ref(false)
 const isSendCode = ref(false)
 const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
@@ -404,13 +403,13 @@ const countdown = (duration: number) => {
 const modalType = ref('login') // 'login' or 'register' or 'reset_password'
 const handleModalChange = (type: string) => {
   modalType.value = type
-  showModal.value = true
+  userStore.showLoginModal = true
   // 往前面插入两条虚假记录
   window.history.pushState(null, '#', document.URL)
   window.history.pushState(null, '#', document.URL)
 
   routerGuard = router.beforeEach((_to, _from, next) => {
-    if (showModal.value) {
+    if (userStore.showLoginModal) {
       offModal()
       next(false)
       return
@@ -545,7 +544,7 @@ const handleReset = () => {
 }
 
 const offModal = () => {
-  showModal.value = false
+  userStore.showLoginModal = false
   if (routerGuard) {
     routerGuard() // 移除路由守卫
     routerGuard = null

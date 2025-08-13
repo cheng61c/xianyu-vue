@@ -29,7 +29,7 @@ const props = withDefaults(
     src: string
     alt?: string
     size?: number
-    isLocal: boolean
+    isLocal?: boolean
   }>(),
   {
     size: 26,

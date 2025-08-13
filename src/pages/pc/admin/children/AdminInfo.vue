@@ -79,7 +79,7 @@
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="'点击刷新'"
     :actionIcon="RotateCcw"
     @action-click="toPage" />
 

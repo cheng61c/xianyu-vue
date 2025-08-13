@@ -34,14 +34,6 @@
             </Card>
           </template>
         </PopupBox>
-
-        <ScButton
-          v-else
-          :icon="Search"
-          noPd
-          @click="search(postStore.searchText, true, '0', route)">
-          搜索
-        </ScButton>
       </div>
     </div>
 

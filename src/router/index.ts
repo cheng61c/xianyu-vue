@@ -151,7 +151,7 @@ const routes = [
       {
         path: 'user',
         name: 'user',
-        redirect: '/user/panel',
+        redirect: isMobile ? '/mobile/user' : '/user/panel',
         component: () => import('@/pages/pc/user/UserIndex.vue'),
         children: [
           {
@@ -189,6 +189,57 @@ const routes = [
             path: 'edit',
             name: 'userEdit',
             component: () => import('@/pages/pc/user/children/UserEdit.vue'),
+          },
+        ],
+      },
+
+      {
+        path: 'mobile/user',
+        name: 'mobileUser',
+        redirect: '/mobile/user/panel',
+        component: () => import('@/pages/mobile/user/MobileUserIndex.vue'),
+        children: [
+          {
+            path: 'panel',
+            name: 'mobileUserPanel',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserPanel.vue'),
+          },
+          {
+            path: 'post',
+            name: 'mobileUserPost',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserPost.vue'),
+          },
+          {
+            path: 'resource',
+            name: 'mobileUserResource',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserResource.vue'),
+          },
+          {
+            path: 'file',
+            name: 'mobileUserFile',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserFile.vue'),
+          },
+          {
+            path: 'server',
+            name: 'mobileUserServer',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserServer.vue'),
+          },
+          {
+            path: 'comment',
+            name: 'mobileUserComment',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserComment.vue'),
+          },
+          {
+            path: 'edit',
+            name: 'mobileUserEdit',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileUserEdit.vue'),
           },
         ],
       },

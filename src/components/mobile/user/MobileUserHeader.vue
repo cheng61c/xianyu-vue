@@ -1,11 +1,5 @@
 <template>
-  <Card
-    v-if="userStore.isLogin"
-    class="stats w-full items-center"
-    :class="{
-      'max-w-6xl min-w-4xl ': deviceStore.device == 2,
-    }"
-    noCol>
+  <Card v-if="userStore.isLogin" class="w-full items-center" noCol>
     <Avatar
       :src="formatLink(userStore.userInfo.headImg) || ''"
       :alt="userStore.userInfo.nickname"
@@ -128,9 +122,8 @@ import ScTag from '@/components/common/ScTag.vue'
 import { useToast } from 'vue-toastification'
 
 import { useI18n } from 'vue-i18n'
-import { useDeviceStore } from '@/stores/global/deviceStore'
 const { t } = useI18n()
-const deviceStore = useDeviceStore()
+
 const toast = useToast()
 const userStore = useUserStore()
 const userInfo = ref(userStore.userInfo)

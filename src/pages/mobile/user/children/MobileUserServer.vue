@@ -3,10 +3,10 @@
     v-if="userStore.isLogin"
     v-for="(post, postIndex) in userServerStore.posts"
     :key="post.id"
-    class="stats max-w-5xl min-w-4xl w-full">
+    class="w-full">
     <div class="flex justify-between items-center">
       <!-- 右侧文字信息 -->
-      <div class="ml-4 flex flex-col">
+      <div class="flex flex-col">
         <!-- 标题 -->
         <div class="flex items-center gap-2">
           {{ post.title }}
@@ -24,40 +24,40 @@
           </ScTag>
         </div>
       </div>
-      <div>
-        {{ $t('d.fa-bu-shi-jian') }} <span>{{ post.createdAt }}</span>
-      </div>
-      <div>
-        {{ $t('d.fu-wu-qi-di-zhi') }} <span>{{ post.url }}</span>
-      </div>
+    </div>
+    <div>
+      {{ $t('d.fa-bu-shi-jian') }} <span>{{ post.createdAt }}</span>
+    </div>
+    <div>
+      {{ $t('d.fu-wu-qi-di-zhi') }} <span>{{ post.url }}</span>
+    </div>
 
-      <div class="flex gap-2 items-center flex-wrap">
-        <ScButton
-          class="text-sm px-4 border border-gray hover:border-active"
-          :icon="SquarePen"
-          :iconSize="16"
-          disabled>
-          {{ $t('b.bian-ji') }}
-        </ScButton>
-        <ScButton
-          class="text-sm px-4 border border-gray hover:border-active"
-          :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
-          :iconSize="16"
-          @click="unpublishItem(postIndex)">
-          {{ post.visible == 1 ? '下架' : '发布' }}
-        </ScButton>
-        <ScButton
-          class="text-sm text-error px-4 border border-gray hover:border-active"
-          :icon="Trash2"
-          :iconSize="16"
-          @click="deleteItem(postIndex)">
-          {{ $t('b.shan-chu') }}
-        </ScButton>
-      </div>
+    <div class="flex gap-2 items-center flex-wrap border-t border-gray/40 pt-2">
+      <ScButton
+        class="text-sm px-4 border border-gray hover:border-active"
+        :icon="SquarePen"
+        :iconSize="16"
+        disabled>
+        {{ $t('b.bian-ji') }}
+      </ScButton>
+      <ScButton
+        class="text-sm px-4 border border-gray hover:border-active"
+        :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
+        :iconSize="16"
+        @click="unpublishItem(postIndex)">
+        {{ post.visible == 1 ? '下架' : '发布' }}
+      </ScButton>
+      <ScButton
+        class="text-sm text-error px-4 border border-gray hover:border-active"
+        :icon="Trash2"
+        :iconSize="16"
+        @click="deleteItem(postIndex)">
+        {{ $t('b.shan-chu') }}
+      </ScButton>
     </div>
   </Card>
 
-  <Card v-if="!userStore.isLogin" class="stats max-w-5xl min-w-4xl w-full">
+  <Card v-if="!userStore.isLogin" class="w-full">
     <div class="text-center text-gray-content">
       {{
         $t('d.nin-huan-wei-deng-lu-qing-xian-deng-lu-hou-zai-jin-hang-cao-zuo')
@@ -65,7 +65,7 @@
     </div>
   </Card>
 
-  <div v-if="userStore.isLogin" class="max-w-5xl min-w-4xl w-full">
+  <div v-if="userStore.isLogin" class="w-full">
     <div v-if="userServerStore.resLoding" class="flex flex-col gap-4">
       <div class="skeleton w-full h-20"></div>
       <div class="skeleton w-full h-20"></div>

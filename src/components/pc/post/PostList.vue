@@ -27,7 +27,7 @@
     <EmptyState
       v-else
       class="w-full px-auto"
-      action="前往发帖"
+      :action="'前往发帖'"
       :actionIcon="SquareArrowOutUpRight"
       @action-click="$router.push({ name: 'publish' })" />
   </div>

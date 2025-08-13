@@ -11,7 +11,7 @@ export declare interface QueryPostCommentsDto {
   page?: number
   limit?: number
   postId: number
-  orderType?: string // 排序方式
+  orderType?: number // 排序方式
 }
 
 export declare interface CommentType {

@@ -363,7 +363,7 @@
     </div>
 
     <!-- 发布按钮 -->
-    <div class="flex justify-end my-2">
+    <div class="flex justify-end my-2 px-4">
       <ScButton
         activation
         :disabled="userStore.isLogin === false || loader"

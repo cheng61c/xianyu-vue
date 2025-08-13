@@ -3,7 +3,23 @@
     <!-- 评论排序选项 -->
     <div class="flex justify-between items-center border-gray pb-4">
       <span class="text-lg"> 评论 ({{ commentsPage.total }})</span>
-      <ScButton :icon="ArrowDownWideNarrow"> 排序方式 </ScButton>
+      <PopupBox
+        :button-text="sortOptions[currentSort - 1].label"
+        :icon="sortOptions[currentSort].icon">
+        <template #default="{ close }">
+          <Card noPg>
+            <ScButton
+              v-for="sort in sortOptions"
+              :key="sort.value"
+              class="px-3 py-1 mr-2 rounded-md"
+              :activation="currentSort === sort.value"
+              :icon="sort.icon"
+              @click="(setSort(sort.value), close())">
+              {{ sort.label }}
+            </ScButton>
+          </Card>
+        </template>
+      </PopupBox>
     </div>
 
     <!-- 评论列表 -->
@@ -207,6 +223,7 @@
         {{ currentLoadButtonText }}
       </ScButton>
     </div>
+    <div class="h-20"></div>
   </div>
 
   <ScModal v-model="imageModal">
@@ -235,14 +252,8 @@ import Avatar from '@/components/common/Avatar.vue'
 import type { Post } from '@/types/Post'
 import ScButton from '@/components/common/ScButton.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
-import {
-  ArrowDown,
-  EllipsisVertical,
-  ArrowUp,
-  // ArrowUpNarrowWide,
-  X,
-  ArrowDownWideNarrow,
-} from 'lucide-vue-next'
+import Card from '@/components/common/Card.vue'
+import { ArrowDown, EllipsisVertical, ArrowUp, X } from 'lucide-vue-next'
 import ScTag from '@/components/common/ScTag.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { commentApi } from '@/apis'
@@ -254,7 +265,10 @@ import CommentMenu from './MobileCommentMenu.vue'
 import CommentInput from './MobileCommentInput.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
+import { getSortOptions } from '@/stores/module/post/service'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 const props = defineProps<{
   postData: Post | null
@@ -267,14 +281,10 @@ const replayContent = ref('') // 评论内容
 const imageModal = ref(false) // 图片查看弹窗
 const imgurl = ref('')
 
-// 排序选项
-// const sortOptions = ref([
-//   { value: '1', label: '时间降序', icon: ArrowDownWideNarrow },
-//   { value: '2', label: '时间升序', icon: ArrowUpNarrowWide },
-//   { value: '3', label: '点赞降序', icon: ArrowDownWideNarrow },
-//   { value: '4', label: '点赞升序', icon: ArrowUpNarrowWide },
-// ])
-const currentSort = ref('1')
+const sortOptions = computed(() => {
+  return getSortOptions(t)
+})
+const currentSort = ref(1)
 
 const currentPopupBox = ref('')
 const showAllReply = ref(0)
@@ -297,11 +307,11 @@ const openImg = (img: string) => {
   imgurl.value = img
 }
 
-// const setSort = (value: string) => {
-//   currentSort.value = value
-//   commentsPage.value.page = 1 // 重置页码
-//   getcomments(commentsPage.value.page)
-// }
+const setSort = (value: number) => {
+  currentSort.value = value
+  commentsPage.value.page = 1 // 重置页码
+  getcomments(commentsPage.value.page)
+}
 
 const getcomments = (page: number) => {
   if (props.postData == null) return

@@ -1,5 +1,5 @@
 <template>
-  <Card v-if="!userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
+  <Card v-if="!userStore.isLogin" class="stats w-full">
     <div class="text-center text-gray-content">
       {{
         $t('d.nin-huan-wei-deng-lu-qing-xian-deng-lu-hou-zai-jin-hang-cao-zuo')
@@ -7,21 +7,14 @@
     </div>
   </Card>
 
-  <Card
-    v-else
-    v-for="(file, index) in files"
-    :key="index"
-    class="stats max-w-6xl min-w-4xl w-full">
+  <Card v-else v-for="(file, index) in files" :key="index" class="stats w-full">
     <div class="flex justify-between items-center">
       <!-- 标题 -->
       <div class="flex items-center gap-2 flex-[2] max-w-md">
         <span class="w-full break-words pr-4">{{ file.filename }}</span>
       </div>
       <div class="flex-1">
-        {{ $t('t.fa-bu-shi-jiaother') }} <span>{{ file.createdAt }}</span>
-      </div>
-      <div class="flex-1">
-        {{ $t('other.wen-jian-da-xiao') }} <span>{{ file.size }}</span>
+        <span>{{ file.createdAt }}</span>
       </div>
 
       <div class="flex gap-2 items-center flex-wrap">
@@ -30,7 +23,7 @@
           :icon="Download"
           :iconSize="16"
           @click="downloadFile(file.url)">
-          {{ $t('b.xia-zai') }}
+          {{ file.size }}
         </ScButton>
       </div>
     </div>

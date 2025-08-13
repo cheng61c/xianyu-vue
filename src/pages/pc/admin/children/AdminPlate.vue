@@ -60,12 +60,12 @@
 
   <EmptyState
     v-else
-    title="{{ $t('t.zan-wu-tie-zi') }}"
+    :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
-    action="点击刷新"
+    :action="'点击刷新'"
     :actionIcon="RotateCcw"
     @action-click="getPlateList" />
 

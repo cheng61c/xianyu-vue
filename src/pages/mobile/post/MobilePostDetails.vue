@@ -1,12 +1,75 @@
 <template>
   <div class="px-4">
     <!-- 导航 -->
-    <div class="flex justify-between text-sm h-12">
+    <div class="flex justify-between items-center text-sm h-12">
       <ScButton noPd :icon="ChevronLeft" :icon-size="22" @click="goBack">
       </ScButton>
-      <ScButton noPd :icon="Settings" :icon-size="22" @click="goBack">
-        管理
-      </ScButton>
+      <PopupBox
+        :icon="Menu"
+        :icon-size="22"
+        position="bottom-left"
+        noPd
+        className="p-1.5">
+        <template #default="{ close }">
+          <Card noPg class="p-1 w-26">
+            <template v-if="postData">
+              <ScButton noBg @click="reportModal = true" class="break-all">
+                {{ $t('b.ju-bao') }}
+              </ScButton>
+
+              <ScButton
+                v-if="postData.author.id == userStore.userInfo.id"
+                noBg
+                @click="
+                  ($router.push({
+                    name: 'publish',
+                    params: { postId: postData?.id },
+                  }),
+                  close())
+                ">
+                编辑
+              </ScButton>
+              <ScButton
+                v-if="postData && verifyPermissions([1, 2, 5])"
+                noBg
+                :class="{
+                  ' text-green': postData.disabled == 1,
+                  ' text-error': postData.disabled == 0,
+                }"
+                @click="adminDeletePost(postData.id, postData.disabled)">
+                {{ postData.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
+              </ScButton>
+
+              <ScButton
+                v-if="postData && verifyPermissions([1, 2, 5])"
+                noBg
+                class="group"
+                :class="{
+                  'text-primary': postData.top == 0,
+                  'text-warning': postData.top != 0,
+                }"
+                @click="setTopItem(postData.id, postData.top)">
+                {{
+                  postData.top == 0
+                    ? $t('b.zhi-ding')
+                    : $t('b.qu-xiao-zhi-ding')
+                }}
+              </ScButton>
+
+              <ScButton
+                v-if="postData.creatorId == userStore.userInfo.id"
+                :class="{
+                  'text-error': postData.visible == 1,
+                  'text-success': postData.visible == 2,
+                }"
+                :icon-size="24"
+                @click="unpublishItem(postData.id, postData.visible)">
+                {{ postData.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
+              </ScButton>
+            </template>
+          </Card>
+        </template>
+      </PopupBox>
     </div>
 
     <!-- 提示词 -->
@@ -43,6 +106,10 @@
         <div class="border-t border-gray my-8"></div>
 
         <div class="flex flex-col gap-2">
+          <!-- 互动 -->
+          <MobileArticleActions
+            :postData="postData"
+            @updatePost="getPostData" />
           <!-- 前置 -->
           <Dependencies :postData="postData" />
 
@@ -75,7 +142,7 @@
   </div>
 
   <ScModal v-model="imageModal">
-    <div class="relative w-[90vw] h-[90vh] overflow-hidden">
+    <div class="relative w-screen h-[100dvh] overflow-hidden">
       <ZoomableImage :src="imgurl" @click-outside="imageModal = false" />
       <button
         class="absolute z-[10] top-[1rem] right-[1rem] rounded-full w-10 h-10 border border-error hover:border-active/80 text-error hover:text-active/80"
@@ -84,19 +151,45 @@
       </button>
     </div>
   </ScModal>
+  <ScModal v-model="reportModal">
+    <Card class="p-6">
+      <h3 class="text-xl mb-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
+      <div>
+        {{ $t('t.tie-zi-biao-ti') }}
+        <span class="text-active"> {{ postData?.title }} </span>
+      </div>
+      <div>
+        {{
+          $t(
+            'd.ni-que-ding-yao-ju-bao-ci-ping-lun-ma-qing-ti-gong-ju-bao-li-you-wo-men-hui-jin-kuai-chu-li'
+          )
+        }}
+      </div>
+      <ScInput
+        class="mt-4"
+        multiline
+        :placeholder="$t('d.qing-shu-ru-ju-bao-li-you')"
+        :rows="4"
+        :maxlength="200"
+        v-model="reportReason"></ScInput>
+      <div class="flex gap-4 justify-end">
+        <ScButton class="px-4" @click="handleReportSubmit" Border>
+          {{ $t('b.ti-jiao') }}
+        </ScButton>
+        <ScButton class="px-4" @click="reportModal = false" Border>
+          {{ $t('b.qu-xiao') }}
+        </ScButton>
+      </div>
+    </Card>
+  </ScModal>
 </template>
 
 <script setup lang="ts">
-import { postApi } from '@/apis'
-import type { Api, ErrorResponse } from '@/types'
 import type { Post } from '@/types/Post'
 import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useToast } from 'vue-toastification'
-import { generateTocFromHtml, type TocItem } from '@/utils/toc'
-import { formatNumber, formatTime, lightHtml } from '@/utils/format'
-
-import { ChevronLeft, X, Settings } from 'lucide-vue-next'
+import { type TocItem } from '@/utils/toc'
+import { ChevronLeft, X, Menu } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import Dependencies from '@/components/pc/post/details/Dependencies.vue'
 import Avatar from '@/components/common/Avatar.vue'
@@ -105,48 +198,74 @@ import MobileReleases from '@/components/mobile/post/details/MobileReleases.vue'
 import MobileScore from '@/components/mobile/post/details/score/MobileScore.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
-import { formatImageSrcsInHtml } from '@/utils/regex'
-// import { usePostStore } from '@/stores/module/post/postStore'
 import MobileCommentArea from '@/components/mobile/post/details/comment/MobileCommentArea.vue'
+import PopupBox from '@/components/common/PopupBox.vue'
+import Card from '@/components/common/Card.vue'
+import ScInput from '@/components/common/ScInput.vue'
+import MobileArticleActions from '@/components/mobile/post/details/MobileArticleActions.vue'
+import {
+  deletePost,
+  downPost,
+  getPostDetails,
+  reportPost,
+  setTop,
+} from '@/stores/module/post/service'
+import { useUserStore } from '@/stores/module/user/userStore'
+import { verifyPermissions } from '@/utils/verify'
+import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 const route = useRoute()
 const router = useRouter()
 const postData = ref<Post | null>(null)
-const toast = useToast()
 const tocList = ref<TocItem[]>([]) // 文章目录列表
 // const postStore = usePostStore() // 获取帖子存储
 const imageModal = ref(false) // 图片查看模态框
 const imgurl = ref('') // 图片查看地址
 const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
-
+const userStore = useUserStore() // 用户存储
 const errorPage = ref(false) // 错误页面标志
+const reportModal = ref(false) // 举报模态框
+const reportReason = ref('')
+const { t } = useI18n() // 国际化函数
+const toast = useToast()
 
-/** 获取帖子详情 */
-const getPostDetails = async (postId: number) => {
-  postApi
-    .getPostDetail(postId)
-    .then((response: Api) => {
-      const data = response.data.data as Post
-      data.content = lightHtml(formatImageSrcsInHtml(data.content))
-      data.createdAt = formatTime(data.createdAt)
-      data.updatedAt = formatTime(data.updatedAt)
-      data.commentCount = formatNumber(data.commentCount)
-      data.likeCount = formatNumber(data.likeCount)
-      data.badCount = formatNumber(data.badCount)
-      data.postVersions = data.postVersions.map((item) => ({
-        ...item,
-        content: lightHtml(formatImageSrcsInHtml(item.content)),
-        createdAt: formatTime(item.createdAt),
-      }))
-      tocList.value = generateTocFromHtml(data.content)
-      postData.value = data
-    })
-    .catch((error: ErrorResponse) => {
-      console.log('Error fetching post details:', error)
+const adminDeletePost = (postId: number, disabled: number) => {
+  if (!verifyPermissions([1, 2, 5])) {
+    return
+  }
+  deletePost(t, postId, disabled == 1 ? 0 : 1, () => {
+    // 刷新帖子列表
+    getPostData(postId)
+  })
+}
 
-      toast.error(error.msg)
-      errorPage.value = true
-    })
+const unpublishItem = (postId: number, visible: number) => {
+  downPost(t, postId, visible == 1 ? 0 : 1, () => {
+    getPostData(postId) // 刷新帖子数据
+  })
+}
+
+const setTopItem = (postId: number, top: number) => {
+  setTop(t, postId, top == 0 ? 1 : 0, () => {
+    getPostData(postId) // 刷新帖子数据
+  })
+}
+
+const handleReportSubmit = () => {
+  if (!reportModal.value || !postData.value) return
+  if (userStore.isLogin === false) {
+    toast.error(t('t.qing-xian-deng-lu'))
+    return
+  }
+  if (!reportReason.value.trim()) {
+    toast.error(t('t.ju-bao-li-you-bu-neng-wei-kong'))
+    return
+  }
+  reportPost(t, 1, postData.value.id, reportReason.value, () => {
+    reportModal.value = false
+    reportReason.value = ''
+  })
 }
 
 const goBack = () => {
@@ -168,16 +287,28 @@ const bindImageClickEvents = () => {
 }
 
 const openImg = (e: MouseEvent) => {
-  console.log('Image clicked:', (e.target as HTMLImageElement).src)
-
+  // console.log('Image clicked:', (e.target as HTMLImageElement).src)
   imageModal.value = true
   imgurl.value = (e.target as HTMLImageElement).src
 }
 
-onMounted(() => {
+const getPostData = async (id: number) => {
+  const details = await getPostDetails(id)
+  postData.value = details.post
+  tocList.value = details.toc
+}
+
+onMounted(async () => {
   const postId = route.params.postId
-  console.log('Fetching details for post ID:', postId)
-  getPostDetails(+postId)
+  const details = await getPostDetails(+postId)
+  if (!details.post) {
+    errorPage.value = true // 设置错误页面标志
+    return
+  } else {
+    postData.value = details.post
+    tocList.value = details.toc
+  }
+
   nextTick(() => {
     bindImageClickEvents()
   })

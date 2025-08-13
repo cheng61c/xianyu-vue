@@ -1,5 +1,5 @@
 import { useToast } from 'vue-toastification'
-import { plateApi, postApi } from '@/apis'
+import { plateApi, postApi, reportApi } from '@/apis'
 import { useConfigStore } from '@/stores/global/configStore'
 import { usePostStore } from '@/stores/module/post/postStore'
 import type { Api } from '@/types'
@@ -9,6 +9,7 @@ import { extractImageSrcs, formatImageSrcsInHtml } from '@/utils/regex'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
 import type { RouteLocationNormalizedLoadedGeneric, Router } from 'vue-router'
+import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-vue-next'
 
 import { generateTocFromHtml } from '@/utils/toc'
 
@@ -145,7 +146,7 @@ export const search = (
     }
   })
 }
-
+/** 获取帖子详情 */
 export const getPostDetails = async (postId: number) => {
   return postApi
     .getPostDetail(postId)
@@ -177,7 +178,7 @@ export const getPostDetails = async (postId: number) => {
       }
     })
 }
-
+/** 获取文件标签 */
 export const getFileTypeOptions = (t: any) => {
   return [
     { value: 0, label: t('b.quan-bu') },
@@ -188,4 +189,117 @@ export const getFileTypeOptions = (t: any) => {
     { value: 5, label: t('b.mo-zu') },
     { value: 7, label: t('b.qi-ta') },
   ]
+}
+
+export const getSortOptions = (t: any) => {
+  return [
+    { value: 1, label: t('b.shi-jian-jiang-xu'), icon: ArrowDownWideNarrow },
+    { value: 2, label: t('b.shi-jian-sheng-xu'), icon: ArrowUpNarrowWide },
+    { value: 3, label: t('b.dian-zan-jiang-xu'), icon: ArrowDownWideNarrow },
+    { value: 4, label: t('b.dian-zan-sheng-xu'), icon: ArrowUpNarrowWide },
+  ]
+}
+
+/** 删除帖子 */
+export const deletePost = (
+  t: any,
+  postId: number,
+  disabled: number,
+  close?: () => void
+) => {
+  postApi
+    .deletePostAsAdmin({
+      id: postId,
+      disabled: disabled,
+    })
+    .then((response) => {
+      if (response.data.code === 200) {
+        if (close) {
+          close()
+        }
+        toast.success(t('t.cao-zuo-cheng-gong'))
+      }
+    })
+    .catch((error) => {
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
+    })
+}
+
+/** 下架帖子 */
+export const downPost = (
+  t: any,
+  postId: number,
+  visible: number,
+  close?: () => void
+) => {
+  postApi
+    .updatePost({
+      id: postId,
+      visible: visible,
+    })
+    .then((response) => {
+      if (response.data.code === 200) {
+        // 刷新帖子列表
+        if (close) {
+          close()
+        }
+        toast.success(t('t.cao-zuo-cheng-gong'))
+      }
+    })
+    .catch((error) => {
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
+    })
+}
+
+/** 置顶 */
+export const setTop = (
+  t: any,
+  postId: number,
+  top: number,
+  close?: () => void
+) => {
+  postApi
+    .updatePostAsAdmin({
+      id: postId,
+      top: top,
+    })
+    .then((response) => {
+      if (response.data.code === 200) {
+        // 刷新帖子列表
+        if (close) {
+          close()
+        }
+        toast.success(t('t.cao-zuo-cheng-gong'))
+      }
+    })
+    .catch((error) => {
+      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
+    })
+}
+
+/** 举报 */
+export const reportPost = (
+  t: any,
+  targetType: number,
+  targetId: number,
+  reason: string,
+  close?: () => void
+) => {
+  reportApi
+    .createReport({
+      targetType: targetType,
+      targetId: targetId,
+      reason: reason,
+    })
+    .then((response) => {
+      if (response.data.code === 200) {
+        if (close) {
+          close()
+        }
+        toast.success(t('t.ju-bao-yi-ti-jiao-wo-men-hui-jin-kuai-chu-li'))
+      }
+    })
+    .catch((error) => {
+      toast.error(t('t.ju-bao-shi-bai') + error.msg)
+    })
 }

@@ -32,9 +32,9 @@
         </ScButton>
       </div>
       <div>
-        <span>{{
-          $t('d.zong-ping-lun-commentspagetotal', [commentsPage.total])
-        }}</span>
+        <span>
+          {{ $t('d.zong-ping-lun-commentspagetotal', [commentsPage.total]) }}
+        </span>
       </div>
     </div>
 
@@ -261,14 +261,7 @@ import Card from '@/components/common/Card.vue'
 import type { Post } from '@/types/Post'
 import ScButton from '@/components/common/ScButton.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
-import {
-  ArrowDown,
-  EllipsisVertical,
-  ArrowUp,
-  ArrowDownWideNarrow,
-  ArrowUpNarrowWide,
-  X,
-} from 'lucide-vue-next'
+import { ArrowDown, EllipsisVertical, ArrowUp, X } from 'lucide-vue-next'
 import ScTag from '@/components/common/ScTag.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { commentApi } from '@/apis'
@@ -281,6 +274,7 @@ import CommentInput from './CommentInput.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { useI18n } from 'vue-i18n'
+import { getSortOptions } from '@/stores/module/post/service'
 const { t } = useI18n()
 
 const toast = useToast()
@@ -296,13 +290,10 @@ const imageModal = ref(false) // 图片查看弹窗
 const imgurl = ref('')
 
 // 排序选项
-const sortOptions = ref([
-  { value: '1', label: t('b.shi-jian-jiang-xu'), icon: ArrowDownWideNarrow },
-  { value: '2', label: t('b.shi-jian-sheng-xu'), icon: ArrowUpNarrowWide },
-  { value: '3', label: t('b.dian-zan-jiang-xu'), icon: ArrowDownWideNarrow },
-  { value: '4', label: t('b.dian-zan-sheng-xu'), icon: ArrowUpNarrowWide },
-])
-const currentSort = ref('1')
+const sortOptions = computed(() => {
+  return getSortOptions(t)
+})
+const currentSort = ref(1)
 
 const currentPopupBox = ref('')
 const showAllReply = ref(0)
@@ -325,7 +316,7 @@ const openImg = (img: string) => {
   imgurl.value = img
 }
 
-const setSort = (value: string) => {
+const setSort = (value: number) => {
   currentSort.value = value
   commentsPage.value.page = 1 // 重置页码
   getcomments(commentsPage.value.page)
