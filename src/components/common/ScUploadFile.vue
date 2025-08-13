@@ -8,7 +8,11 @@
       </div>
 
       <div
-        class="border-2 border-dashed border-gray rounded-xl p-10 text-center cursor-pointer hover:border-blue-400 transition"
+        class="border-2 border-dashed border-gray rounded-xltext-center cursor-pointer hover:border-blue-400 transition"
+        :class="{
+          'p-10': deviceStore.device == 2,
+          'p-2': deviceStore.device == 1,
+        }"
         @dragover.prevent
         @drop.prevent="handleDrop"
         @click="triggerFileInput">
@@ -18,7 +22,7 @@
           multiple
           class="hidden"
           @change="handleFileChange" />
-        <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div
             v-for="(file, index) in uploadedFiles"
             :key="index"
@@ -57,6 +61,7 @@ import ScTag from './ScTag.vue'
 import { uploadApi } from '@/apis'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
 import { useI18n } from 'vue-i18n'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 const { t } = useI18n()
 const typeLabelMap = useTypeLabelMap()
 
@@ -73,6 +78,8 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: 'uploaded', ids: number[]): void
 }>()
+
+const deviceStore = useDeviceStore()
 
 const uploadedFiles = ref<{ name: string; id: number; size: number }[]>([])
 

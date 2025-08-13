@@ -137,9 +137,9 @@
   </div>
 
   <ScDrawer v-model="isOpen" position="bottom">
-    <div v-if="versionData.content !== null" class="bg-background rounded-t-lg">
+    <div v-if="versionContent" class="bg-background rounded-t-lg">
       <TipTap
-        v-model="versionData.content"
+        v-model="versionContent"
         :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
     </div>
   </ScDrawer>
@@ -156,7 +156,7 @@ import type { Version } from '@/types/version'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
-import { formatImageSrcsInHtml } from '@/utils/regex'
+
 import { useDeviceStore } from '@/stores/global/deviceStore'
 
 import ScButton from '@/components/common/ScButton.vue'
@@ -192,6 +192,7 @@ const versionData = ref<PostCreateVersionDto>({
   postId: 0,
   gameVersionIds: [],
 })
+const versionContent = ref<string | null>(null) // 帖子内容
 
 // 切换某个版本的选中状态
 const toggleVersion = (id: number) => {
@@ -223,10 +224,19 @@ const submitVersiont = () => {
     toast.error('请输入版本内容')
     return
   }
+  if (!versionContent.value) {
+    toast.error('内容不能为空')
+    return
+  }
+  if (!versionContent.value.trim()) {
+    toast.error('内容不能为空')
+    return
+  }
 
   if (versionData.value.id == 0) {
     delete versionData.value.id // 确保新建时不包含ID
   }
+  versionData.value.content = versionContent.value
 
   loader.value = true
 
@@ -248,6 +258,7 @@ const submitVersiont = () => {
           postId: 0,
           gameVersionIds: [],
         }
+        versionContent.value = ''
         loader.value = false
         router.back()
       }
@@ -274,11 +285,12 @@ onMounted(async () => {
         id: data.id,
         title: data.title,
         version: data.version,
-        content: formatImageSrcsInHtml(data.content),
+        content: data.content,
         files: data.files.map((file) => file.id),
         postId: data.postId,
         gameVersionIds: data.gameVersionIds || [],
       }
+      versionContent.value = data.content
       uploadedFiles.value = data.files.map((file) => ({
         name: file.filename,
         id: file.id,
