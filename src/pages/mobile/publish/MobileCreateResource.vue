@@ -1,14 +1,14 @@
 <template>
   <div
     class="flex flex-col w-[100dvw] h-[100dvh] space-y-4 pb-2 overflow-y-auto">
-    <div class="flex gap-2 items-center">
+    <div class="flex h-12 gap-2 items-center">
       <ScButton
         class=""
         :icon="ChevronLeft"
         :iconSize="22"
         @click="$router.back()">
       </ScButton>
-      <div class="text-lg font-semibold">编辑资源</div>
+      <div class="text-lg font-semibold" @click="$router.back()">编辑资源</div>
       <div v-if="!userStore.isLogin" class="text-error">
         请先登录后再发布内容
       </div>

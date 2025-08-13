@@ -1,18 +1,27 @@
 <template>
   <div class="h-12 w-full flex justify-between items-center px-4 bg-background">
-    <ScButton
-      noPd
-      class=""
-      :icon="ChevronLeft"
-      :iconSize="22"
-      @click="$router.back()">
-      主页
-    </ScButton>
+    <div class="flex gap-4">
+      <ScButton
+        noPd
+        class=""
+        :icon="ChevronLeft"
+        :iconSize="22"
+        @click="$router.back()">
+        {{ activation }}
+      </ScButton>
+      <ScButton
+        noPd
+        class=""
+        :icon="Home"
+        :iconSize="22"
+        @click="$router.push('/')">
+      </ScButton>
+    </div>
     <div v-if="!userStore.isLogin" class="text-error">请先登录</div>
     <ScLogin />
   </div>
   <div
-    class="flex gap-2 px-4 py-1 min-w-full min-h-10 overflow-x-auto overflow-y-hidden">
+    class="flex gap-2 px-4 py-2 min-w-full min-h-10 overflow-x-auto overflow-y-hidden">
     <ScButton
       v-for="btn in routeBtns"
       :key="btn.name"
@@ -31,7 +40,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
-import { ChevronLeft } from 'lucide-vue-next'
+import { ChevronLeft, Home } from 'lucide-vue-next'
 
 import ScButton from '@/components/common/ScButton.vue'
 import { useI18n } from 'vue-i18n'

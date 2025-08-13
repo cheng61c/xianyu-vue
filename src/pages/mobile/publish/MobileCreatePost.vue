@@ -1,14 +1,14 @@
 <template>
   <div
     class="flex flex-col w-[100dvw] h-[100dvh] space-y-4 pb-2 overflow-y-auto">
-    <div class="flex gap-2 items-center">
+    <div class="flex h-12 gap-2 items-center">
       <ScButton
         class=""
         :icon="ChevronLeft"
         :iconSize="22"
         @click="$router.back()">
       </ScButton>
-      <div class="text-lg font-semibold">
+      <div class="text-lg font-semibold" @click="$router.back()">
         {{ isEdit ? '编辑' : '创建' }}帖子
       </div>
       <div v-if="!userStore.isLogin" class="text-error">
@@ -77,7 +77,7 @@
 
           <span>:</span>
         </label>
-        <div class="flex gap-2">
+        <div class="flex gap-2 flex-wrap">
           <ScButton
             class="px-4 py-1 text-sm"
             :activation="postData.top === 0"
