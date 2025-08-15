@@ -1,7 +1,7 @@
 <template>
   <div
     ref="containerRef"
-    class="overflow-y-auto overflow-x-hidden w-full h-[100vh]">
+    class="overflow-y-auto overflow-x-hidden w-full h-[100dvh]">
     <!-- 内容列表 - 这个区域现在会填充剩余空间 -->
     <div class="home-content">
       <RouterView />

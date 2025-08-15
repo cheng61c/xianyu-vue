@@ -16,7 +16,7 @@
 
     <div
       ref="rightContainer"
-      class="flex-1 h-[100vh-68px] overflow-y-auto p-2 space-y-4">
+      class="flex-1 h-[100dvh-68px] overflow-y-auto p-2 space-y-4">
       <template v-if="fengYunBangStore.list.length">
         <Card
           v-for="item in fengYunBangStore.list"
