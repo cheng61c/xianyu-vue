@@ -1,31 +1,31 @@
 <template>
-  <Card v-if="versios && versios.length > 0">
-    <h3 class="text-lg font-bold mb-2">{{ $t('d.fa-bu-ban') }}</h3>
+  <Card v-if="versios && versios.length > 0" class="mb-4">
+    <h3 class="text-lg font-bold mb-2">资源下载</h3>
 
-    <div>
+    <div class="w-full">
       <div
-        class="flex gap-x-2"
+        class="flex gap-x-2 w-full hover:bg-active/15 px-4 rounded-md cursor-pointer"
         v-for="(item, vIndex) in versios"
-        :key="item.id">
+        :key="item.id"
+        @click="handleModalChange(item)">
         <div class="flex flex-col items-center w-4">
           <div
             class="h-1/3 w-1 flex-1"
             :class="{
-              'bg-gray': vIndex != 0,
+              'bg-active/30': vIndex != 0,
             }"></div>
           <div
-            class="bg-secondary h-4 w-4 rounded-full tooltip tooltip-left z-2"
+            class="bg-active h-4 w-4 rounded-full tooltip tooltip-left z-2"
             :data-tip="item.createdAt"></div>
           <div
             class="h-1/3 w-1 flex-1"
             :class="{
-              'bg-gray': vIndex != versios.length - 1,
+              'bg-active/30': vIndex != versios.length - 1,
             }"></div>
         </div>
 
         <!-- 内容 -->
         <div
-          @click="handleModalChange(item)"
           class="flex gap-1 items-center py-2 col-start-2 row-start-1 row-span-3">
           <ScTag v-if="vIndex == 0" size="sm" status="success">
             {{ $t('b.zui-xin') }}

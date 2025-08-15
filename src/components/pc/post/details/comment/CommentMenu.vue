@@ -10,7 +10,11 @@
 
   <ScModal v-model="reportModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">{{ $t('d.ju-bao-ping-lun') }}</h3>
+      <div class="flex">
+        <h3 class="text-xl mb-4 mr-4">{{ $t('d.ju-bao-ping-lun') }}</h3>
+        <div v-if="!userStore.isLogin" class="text-error">请先登录后再操作</div>
+      </div>
+
       <div>
         {{
           $t(
@@ -47,9 +51,11 @@ import ScInput from '@/components/common/ScInput.vue'
 import { reportApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '@/stores/module/user/userStore'
 const { t } = useI18n()
 
 const toast = useToast()
+const userStore = useUserStore()
 const props = defineProps({
   commentId: {
     type: Number,
@@ -64,6 +70,10 @@ const toggleReportModal = () => {
   reportModal.value = !reportModal.value
 }
 const handleReportSubmit = () => {
+  if (!userStore.isLogin) {
+    toast.error(t('t.qing-xian-deng-lu'))
+    return
+  }
   if (!reportModal.value) return
   if (!reportReason.value.trim()) {
     toast.error(t('t.ju-bao-li-you-bu-neng-wei-kong'))

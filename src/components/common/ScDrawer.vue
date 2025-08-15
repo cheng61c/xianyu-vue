@@ -22,14 +22,14 @@
               : 'right-0 top-0 h-full max-w-4/5',
           animationClass,
         ]">
-        <slot />
+        <slot :close="close" />
       </div>
     </div>
   </Teleport>
 </template>
 
 <script setup lang="ts">
-import { useDrawertore } from '@/stores/global/drawerStore'
+import { useDrawerStore } from '@/stores/global/drawerStore'
 import {
   defineProps,
   defineEmits,
@@ -41,13 +41,13 @@ import {
 import { useRouter } from 'vue-router'
 // import { useToast } from 'vue-toastification'
 
-const drawertore = useDrawertore()
+const drawerStore = useDrawerStore()
 const router = useRouter()
 // const toast = useToast()
 let routerGuard: (() => void) | null = null
 const props = defineProps<{
   modelValue: boolean
-  position?: 'side' | 'bottom' | 'left'
+  position?: 'side' | 'bottom' | 'left' | 'right'
 }>()
 
 const emit = defineEmits<{
@@ -68,23 +68,23 @@ const open = () => {
     animationClass.value = ''
   })
 
-  drawertore.drawers.push({
+  drawerStore.drawers.push({
     close: off,
     id: Symbol().toString(),
   })
 }
 
 const close = () => {
-  if (drawertore.drawers.length === 0) {
+  if (drawerStore.drawers.length === 0) {
     off()
     return
   }
   try {
-    drawertore.drawers[drawertore.drawers.length - 1].close()
+    drawerStore.drawers[drawerStore.drawers.length - 1].close()
   } catch (error) {
     console.error('关闭抽屉时发生错误:', error)
   }
-  drawertore.drawers.pop()
+  drawerStore.drawers.pop()
 }
 const off = () => {
   emit('update:modelValue', false)
@@ -107,16 +107,28 @@ const getTranslateClass = (type: 'enter' | 'leave') => {
 }
 
 onMounted(() => {
-  drawertore.drawers = []
-  routerGuard = router.beforeEach((_to, from, next) => {
-    if (from.name === 'publish' || from.name === 'publishResource') {
-      if (drawertore.drawers.length > 0) {
+  drawerStore.drawers = []
+
+  routerGuard = router.beforeEach((to, from, next) => {
+    if (to.path !== from.path) {
+      // 如果当前路由不是抽屉组件所在的路由，则关闭抽屉
+      next()
+      drawerStore.drawers = []
+    }
+
+    if (
+      ['publish', 'publishResource', 'postList', 'modList'].includes(
+        from.name as string
+      )
+    ) {
+      console.log('drawerStore.drawers.length', drawerStore.drawers.length)
+      if (drawerStore.drawers.length > 0) {
         close()
         next(false)
         return
       } else {
         next()
-        drawertore.drawers = []
+        drawerStore.drawers = []
       }
     }
     next()

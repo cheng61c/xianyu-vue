@@ -61,12 +61,20 @@ const routes = [
       {
         path: 'message',
         name: 'message',
-        component: () => import('@/pages/pc/message/MessageIndex.vue'),
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/message/MobileMessageIndex.vue')
+            : import('@/pages/pc/message/MessageIndex.vue')
+        },
       },
       {
-        path: 'fengyunbang',
-        name: 'fengyunbang',
-        component: () => import('@/pages/pc/fengyunbang/FengYunBangIndex.vue'),
+        path: 'mingrentang',
+        name: 'mingrentang',
+        component: () => {
+          return isMobile
+            ? import('@/pages/mobile/fengyunbang/MobileFengYunBangIndex.vue')
+            : import('@/pages/pc/fengyunbang/FengYunBangIndex.vue')
+        },
       },
       {
         path: 'admin',
@@ -141,7 +149,7 @@ const routes = [
               import('@/pages/pc/admin/children/AdminRegistered.vue'),
           },
           {
-            path: 'fengyunbang',
+            path: 'mingrentang',
             name: 'adminFengYunBang',
             component: () =>
               import('@/pages/pc/admin/children/AdminFengYunBang.vue'),

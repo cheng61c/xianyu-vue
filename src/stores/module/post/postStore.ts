@@ -1,5 +1,6 @@
 import type { Plate } from '@/types/Plate'
 import type { Post } from '@/types/Post'
+import type { TocItem } from '@/utils/toc'
 import { defineStore } from 'pinia'
 
 export const usePostStore = defineStore('post', {
@@ -45,6 +46,13 @@ export const usePostStore = defineStore('post', {
     isSearch: false,
     /** 页面按钮当前位置 */
     buttonBottom: 60,
+
+    /** 当前帖子详情信息 */
+    postData: {} as Post | null,
+    /** 当前帖子目录列表 */
+    tocList: [] as TocItem[],
+    /** 页面加载是否出错 */
+    errorPage: false,
   }),
   persist: true,
 })

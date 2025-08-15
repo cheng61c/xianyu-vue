@@ -153,7 +153,13 @@
   </ScModal>
   <ScModal v-model="reportModal">
     <Card class="p-6">
-      <h3 class="text-xl mb-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
+      <div class="flex">
+        <h3 class="text-xl mb-4 mr-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
+        <div v-if="!userStore.isLogin" class="text-error pt-1">
+          请先登录后再操作
+        </div>
+      </div>
+
       <div>
         {{ $t('t.tie-zi-biao-ti') }}
         <span class="text-active"> {{ postData?.title }} </span>
@@ -293,9 +299,9 @@ const openImg = (e: MouseEvent) => {
 }
 
 const getPostData = async (id: number) => {
-  const details = await getPostDetails(id)
-  postData.value = details.post
-  tocList.value = details.toc
+  const { post, toc } = await getPostDetails(id)
+  postData.value = post
+  tocList.value = toc
 }
 
 onMounted(async () => {
@@ -318,15 +324,12 @@ onUnmounted(() => {
   postData.value = null // 清理数据
   tocList.value = [] // 清理目录列表
   errorPage.value = false // 重置错误页面标志
-  console.log('Post details component unmounted, data cleared.')
 })
 
 watch(
   () => route.params,
-  (newParams) => {
-    const postId = newParams.postId
-    console.log('Fetching details for post ID:', postId)
-    getPostDetails(+postId)
+  async (newParams) => {
+    getPostData(+newParams.postId)
   }
 )
 

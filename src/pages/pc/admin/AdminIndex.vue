@@ -123,7 +123,7 @@ const menuItems = [
   {
     icon: Trophy,
     name: '名人堂',
-    path: '/admin/fengyunbang',
+    path: '/admin/mingrentang',
     role: verifyPermissions([1, 2, 3]),
   },
 ]

@@ -12,10 +12,12 @@ import type { RouteLocationNormalizedLoadedGeneric, Router } from 'vue-router'
 import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-vue-next'
 
 import { generateTocFromHtml } from '@/utils/toc'
+import { useUserStore } from '../user/userStore'
 
 const toast = useToast()
 const configStore = useConfigStore()
 const postStore = usePostStore()
+const userStore = useUserStore()
 
 /** 获取板块列表 */
 export const getPlate = async (t: any) => {
@@ -62,7 +64,7 @@ export const toPage = (
 }
 
 /** 获取帖子 */
-export const getPost = (
+export const getPost = async (
   pid: number,
   route: RouteLocationNormalizedLoadedGeneric
 ) => {
@@ -148,6 +150,9 @@ export const search = (
 }
 /** 获取帖子详情 */
 export const getPostDetails = async (postId: number) => {
+  postStore.postData = null // 清理数据
+  postStore.tocList = [] // 清理目录列表
+  postStore.errorPage = false // 重置错误页面标志
   return postApi
     .getPostDetail(postId)
     .then((response: Api) => {
@@ -164,6 +169,9 @@ export const getPostDetails = async (postId: number) => {
         createdAt: formatTime(item.createdAt),
       }))
       const tocList = generateTocFromHtml(data.content)
+      postStore.tocList = tocList
+      postStore.postData = data
+      postStore.errorPage = false // 重置错误页面标志
       return {
         post: data,
         toc: tocList,
@@ -172,6 +180,7 @@ export const getPostDetails = async (postId: number) => {
     .catch((error) => {
       console.error('Error fetching post details:', error)
       toast.error(error.msg)
+      postStore.errorPage = true
       return {
         post: null,
         toc: [],
@@ -190,7 +199,7 @@ export const getFileTypeOptions = (t: any) => {
     { value: 7, label: t('b.qi-ta') },
   ]
 }
-
+/** 获取排序选项 */
 export const getSortOptions = (t: any) => {
   return [
     { value: 1, label: t('b.shi-jian-jiang-xu'), icon: ArrowDownWideNarrow },
@@ -301,5 +310,38 @@ export const reportPost = (
     })
     .catch((error) => {
       toast.error(t('t.ju-bao-shi-bai') + error.msg)
+    })
+}
+
+/** 帖子点赞 */
+export const likePost = (t: any, postId: number) => {
+  if (!userStore.isLogin) {
+    toast.error(t('t.qing-xian-deng-lu'))
+    return
+  }
+  postApi
+    .postLike(postId)
+    .then(() => {
+      getPostDetails(postId)
+      toast.success(t('t.cao-zuo-cheng-gong'))
+    })
+    .catch((error) => {
+      console.error('Error liking post:', error)
+    })
+}
+
+export const badPost = (t: any, postId: number) => {
+  if (!userStore.isLogin) {
+    toast.error(t('t.qing-xian-deng-lu'))
+    return
+  }
+  postApi
+    .postBad(postId)
+    .then(() => {
+      getPostDetails(postId)
+      toast.success(t('t.cao-zuo-cheng-gong'))
+    })
+    .catch((error) => {
+      console.error('Error liking post:', error)
     })
 }

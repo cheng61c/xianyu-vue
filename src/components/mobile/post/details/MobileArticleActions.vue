@@ -9,7 +9,7 @@
       :icon="ThumbsUp"
       :icon-size="24"
       :class="{ 'text-like': postData.isLiked }"
-      @click="likePost(postData.id)">
+      @click="likePost($t, postData.id)">
       {{ postData.likeCount }}
     </ScButton>
 
@@ -18,7 +18,7 @@
       :icon="ThumbsDown"
       :icon-size="24"
       :class="{ 'text-bad': postData.isBaded }"
-      @click="badPost(postData.id)">
+      @click="badPost($t, postData.id)">
       {{ postData.badCount }}
     </ScButton>
   </Card>
@@ -31,42 +31,13 @@ import type { PropType } from 'vue'
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import { MessageCircleMore, ThumbsUp, ThumbsDown } from 'lucide-vue-next'
-import { postApi } from '@/apis'
-import { useToast } from 'vue-toastification'
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import { likePost, badPost } from '@/stores/module/post/service'
 
-const toast = useToast()
-
-const props = defineProps({
+defineProps({
   postData: {
     type: Object as PropType<Post | null>,
     required: true,
   },
 })
 const emit = defineEmits(['updatePost'])
-
-const likePost = (postId: number) => {
-  postApi
-    .postLike(postId)
-    .then(() => {
-      emit('updatePost', props.postData?.id)
-      toast.success(t('t.cao-zuo-cheng-gong'))
-    })
-    .catch((error) => {
-      console.error('Error liking post:', error)
-    })
-}
-
-const badPost = (postId: number) => {
-  postApi
-    .postBad(postId)
-    .then(() => {
-      emit('updatePost', props.postData?.id)
-      toast.success(t('t.cao-zuo-cheng-gong'))
-    })
-    .catch((error) => {
-      console.error('Error liking post:', error)
-    })
-}
 </script>

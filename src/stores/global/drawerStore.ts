@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useDrawertore = defineStore('drawer', {
+export const useDrawerStore = defineStore('drawer', {
   state: () => ({
     drawers: [] as Array<{
       close: () => void

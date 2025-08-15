@@ -10,7 +10,7 @@
         <ScInput
           v-model="postStore.searchText"
           class="flex-1"
-          placeholder="搜索帖子标题" />
+          :placeholder="'搜索帖子标题'" />
         <ScButton
           :icon="Search"
           noPd
@@ -46,16 +46,26 @@
       </template>
     </div>
   </div>
-  <button
+
+  <div
     ref="draggableButton"
-    class="absolute bg-active right-6 w-12 h-12 text-active-content rounded-full flex items-center justify-center shadow-md z-3"
-    :style="buttonStyle"
-    @click="handleClick"
     @touchstart.passive="startDrag"
     @touchmove="onDrag"
-    @touchend="stopDrag">
-    <Plus :size="24" />
-  </button>
+    @touchend="stopDrag"
+    class="absolute right-6 flex items-center justify-centerz-3"
+    :style="buttonStyle">
+    <button
+      ref="toTopButton"
+      class="absolute scale-10 bg-active w-12 h-12 text-active-content rounded-full flex items-center justify-center shadow-md"
+      @click="toTop">
+      <ArrowUpToLine :size="24" />
+    </button>
+    <button
+      class="relative bg-active w-12 h-12 text-active-content rounded-full flex items-center justify-center shadow-md"
+      @click="handleClick">
+      <Plus :size="24" />
+    </button>
+  </div>
 
   <Pagination
     :current-page="postStore.postPage.page"
@@ -81,12 +91,16 @@ import {
   search,
 } from '@/stores/module/post/service'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
-import { Funnel, Plus, Search } from 'lucide-vue-next'
+import { Funnel, Plus, Search, ArrowUpToLine } from 'lucide-vue-next'
 import Pagination from '@/components/common/Pagination.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
 import Card from '@/components/common/Card.vue'
 import { useI18n } from 'vue-i18n'
+import { inject } from 'vue'
+import { gsap } from 'gsap'
 
+const progress = inject('refreshScroll', ref(0))
+const containerRef = inject('containerRef', ref<HTMLElement | null>(null))
 const postStore = usePostStore()
 const { t } = useI18n()
 const route = useRoute()
@@ -96,6 +110,7 @@ const fileTypeOptions = getFileTypeOptions(t)
 
 const router = useRouter()
 const draggableButton: Ref<HTMLButtonElement | null> = ref(null)
+const toTopButton: Ref<HTMLButtonElement | null> = ref(null)
 const isDragging = ref<boolean>(false)
 const startY = ref<number>(0)
 const startBottom = ref<number>(0)
@@ -105,6 +120,15 @@ const buttonStyle = computed(() => ({
   bottom: `${postStore.buttonBottom}px`,
   touchAction: 'none',
 }))
+
+const toTop = () => {
+  if (containerRef && containerRef.value) {
+    containerRef.value.scrollTo({
+      top: 0, // 滚动到顶部
+      behavior: 'smooth', // 可选：平滑滚动
+    })
+  }
+}
 
 const handleClick = (e: MouseEvent | TouchEvent) => {
   if (isDragging.value) {
@@ -141,9 +165,10 @@ const stopDrag = () => {
   isDragging.value = false
 }
 
-const setPage = (page: number) => {
+const setPage = async (page: number) => {
   postStore.postPage.page = page
-  getPost(+plateId.value, route)
+  toTop()
+  await getPost(+plateId.value, route)
 }
 
 watch(
@@ -161,6 +186,14 @@ watch(
 )
 watch(fileType, () => {
   search(postStore.searchText, true, String(fileType.value), route)
+})
+
+watch(progress, () => {
+  if (progress.value > 0.2) {
+    gsap.to(toTopButton.value, { scale: 1, bottom: '4rem', duration: 0.3 })
+  } else {
+    gsap.to(toTopButton.value, { scale: 0, bottom: '0', duration: 0.3 })
+  }
 })
 
 onMounted(() => {

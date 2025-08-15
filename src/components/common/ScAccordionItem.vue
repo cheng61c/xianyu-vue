@@ -67,7 +67,7 @@ const animate = (expand: boolean) => {
       <slot name="title" />
       <ChevronRight
         :class="[
-          'w-4 h-4 transform transition-transform duration-300',
+          ' transform transition-transform',
           isOpen ? 'rotate-90' : 'rotate-0',
         ]" />
     </button>

@@ -10,7 +10,12 @@
 
   <ScModal v-model="reportModal">
     <Card class="p-6 w-[90vw]">
-      <h3 class="text-xl mb-4">举报评论</h3>
+      <div class="flex">
+        <h3 class="text-xl mb-4 mr-4">举报评论</h3>
+        <div v-if="!userStore.isLogin" class="text-error pt-1">
+          请先登录后再操作
+        </div>
+      </div>
       <div>你确定要举报此评论吗？请提供举报理由，我们会尽快处理。</div>
       <ScInput
         class="mt-4"
@@ -40,8 +45,10 @@ import ScModal from '@/components/common/ScModal.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { reportApi } from '@/apis'
 import { useToast } from 'vue-toastification'
+import { useUserStore } from '@/stores/module/user/userStore'
 
 const toast = useToast()
+const userStore = useUserStore()
 const props = defineProps({
   commentId: {
     type: Number,
@@ -56,6 +63,10 @@ const toggleReportModal = () => {
   reportModal.value = !reportModal.value
 }
 const handleReportSubmit = () => {
+  if (!userStore.isLogin) {
+    toast.error('请先登录后再操作')
+    return
+  }
   if (!reportModal.value) return
   if (!reportReason.value.trim()) {
     toast.error('举报理由不能为空')

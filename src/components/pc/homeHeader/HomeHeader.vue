@@ -14,11 +14,15 @@
       </div>
     </button>
 
-    <HomeNav />
+    <HomeNav
+      :menuItems="configStore.menuItems"
+      :activeNavName="activeNavName"
+      :updateNav="updateNav"
+      :updatePage="updatePage" />
 
     <div class="flex gap-4 items-center">
       <ScButton
-        class="relative"
+        class="relative cursor-pointer"
         :class="{
           'pr-2': messageStore.replyUnread.length > 0,
         }"
@@ -46,7 +50,7 @@
         :icon="Trophy"
         :iconSize="24"
         noPd
-        @click="$router.push({ name: 'fengyunbang' })" />
+        @click="$router.push({ name: 'mingrentang' })" />
       <ThemeButton />
       <ScLogin />
     </div>
@@ -81,17 +85,28 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScTag from '@/components/common/ScTag.vue'
 import HomeNav from './HomeNav.vue'
 import ScLogin from './ScLogin.vue'
+import { usePostStore } from '@/stores/module/post/postStore'
 
 const messageStore = useMessageStore()
 const announcementStore = useAnnouncementStore()
 const themeStore = useThemeStore()
 const configStore = useConfigStore()
+const postStore = usePostStore()
 const { locale } = useI18n()
 const postData = ref<Post | null>(null)
 const show = ref(false)
 const router = useRouter()
+const activeNavName = ref('')
 
 locale.value = configStore.lang.value // 设置初始语言
+
+const updateNav = (name: string) => {
+  postStore.nav.name = name
+  activeNavName.value = name
+}
+const updatePage = (page: number) => {
+  postStore.postPage.page = page
+}
 
 const toAnnouncement = () => {
   show.value = false

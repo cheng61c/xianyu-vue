@@ -1,12 +1,11 @@
 <template>
   <div class="h-12 w-full flex justify-between items-center px-4 bg-background">
     <ScButton noPd @click="leftDrawer = true" :icon="Menu" :iconSize="20" />
-    <HomeNav />
-    <!-- <ScButton
-      noPd
-      @click="leftDrawer = true"
-      :icon="CircleUserRound"
-      :iconSize="20" /> -->
+    <HomeNav
+      :menuItems="configStore.menuItems"
+      :activeNavName="activeNavName"
+      :updateNav="updateNav"
+      :updatePage="updatePage" />
     <ScLogin />
   </div>
 
@@ -18,51 +17,30 @@
           <template #title>测试工具箱</template>
           <template #content>
             <div class="flex flex-col">
-              <div class="flex gap-4 items-center justify-between py-1">
-                <div>{{ $t('d.yu-yan-qie-huan') }}</div>
-                <!-- <select
-                  :value="configStore.lang"
-                  @change="changeLocale"
-                  class="px-3 py-1 rounded border border-gray bg-gray/20">
-                  <option value="zh">简体中文</option>
-                  <option value="en">English</option>
-                </select> -->
-                <ScSelector
-                  :options="configStore.langs"
-                  v-model="configStore.lang"
-                  class="w-32" />
-              </div>
-
-              <div class="flex gap-4 items-center justify-between py-2">
-                <div>昼夜切换</div>
-                <ThemeButton />
-              </div>
-
-              <div class="flex gap-4 items-center justify-between py-2">
-                <div>{{ $t('d.ping-ban-xiao-bai-tiao-shi-pei') }}</div>
-                <input
-                  type="checkbox"
-                  checked="checked"
-                  class="toggle"
-                  v-model="configStore.padAdaptation" />
-              </div>
-
               <div
                 class="flex gap-4 items-center justify-between py-2"
                 @click="deleteUser">
-                <div>{{ $t('d.shan-chu-deng-lu-xin-xi') }}</div>
+                <div>
+                  {{ $t('d.shan-chu-deng-lu-xin-xi') }} ({{
+                    userStore.isLogin ? '已登录' : '未登录'
+                  }})
+                </div>
                 <button><Trash2 /></button>
               </div>
               <div
                 class="flex gap-4 items-center justify-between py-2"
                 @click="deleteAnnouncement">
-                <div>{{ $t('d.shan-chu-gong-gao-yi-du-zhuang-tai') }}</div>
+                <div>
+                  {{ $t('d.shan-chu-gong-gao-yi-du-zhuang-tai') }} ({{
+                    announcementStore.popUps.length
+                  }}) / ({{ announcementStore.banners.length }})
+                </div>
                 <button><Trash2 /></button>
               </div>
               <div
                 class="flex gap-4 items-center justify-between py-2"
                 @click="deleteDrawer">
-                <div>清空抽屉</div>
+                <div>清空抽屉 ({{ drawerStore.drawers.length }})</div>
                 <button><Trash2 /></button>
               </div>
             </div>
@@ -71,11 +49,43 @@
 
         <div class="flex flex-col space-y-4 py-2 px-2">
           <div
+            class="flex items-center justify-between py-2"
+            @click="$router.push({ name: 'message' })">
+            <div>消息</div>
+            <ChevronRight />
+          </div>
+
+          <div
+            class="flex items-center justify-between py-2"
+            @click="$router.push({ name: 'mingrentang' })">
+            <div>名人堂</div>
+            <ChevronRight />
+          </div>
+
+          <div class="flex gap-4 items-center justify-between py-2">
+            <div>昼夜切换</div>
+            <ThemeButton />
+          </div>
+          <div class="flex gap-4 items-center justify-between py-1">
+            <div>{{ $t('d.yu-yan-qie-huan') }}</div>
+            <!-- <select
+                  :value="configStore.lang"
+                  @change="changeLocale"
+                  class="px-3 py-1 rounded border border-gray bg-gray/20">
+                  <option value="zh">简体中文</option>
+                  <option value="en">English</option>
+                </select> -->
+            <ScSelector
+              :options="configStore.langs"
+              v-model="configStore.lang"
+              class="w-32" />
+          </div>
+          <div
             v-if="userStore.isLogin"
-            class="flex gap-4 items-center justify-between py-2"
+            class="flex gap-4 items-center justify-between py-2 text-error"
             @click="logout($t)">
-            <div>退出登录</div>
-            <button><LogOut /></button>
+            <span>退出登录</span>
+            <ScButton :icon="LogOut" :iconSize="22" noPd class="text-error" />
           </div>
         </div>
       </template>
@@ -87,7 +97,7 @@
 import ScButton from '@/components/common/ScButton.vue'
 import ScDrawer from '@/components/common/ScDrawer.vue'
 import AccordionItem from '@/components/common/ScAccordionItem.vue'
-import { Menu, LogOut } from 'lucide-vue-next'
+import { Menu, LogOut, ChevronRight, Trash2 } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 import { usePostStore } from '@/stores/module/post/postStore'
 import { getPlate } from '@/stores/module/post/service'
@@ -102,23 +112,30 @@ import { useI18n } from 'vue-i18n'
 import ThemeButton from '@/components/common/ThemeButton.vue'
 import { logout } from '@/stores/module/user/service'
 
-import { Trash2 } from 'lucide-vue-next'
-import { useDrawertore } from '@/stores/global/drawerStore'
+import { useDrawerStore } from '@/stores/global/drawerStore'
 import ScSelector from '@/components/common/ScSelector.vue'
 
 const postStore = usePostStore()
 const leftDrawer = ref(false)
-
+const activeNavName = ref('')
 const open2 = ref(false)
 
 const toast = useToast()
 const configStore = useConfigStore()
 const userStore = useUserStore()
 const announcementStore = useAnnouncementStore()
-const drawertore = useDrawertore()
+const drawerStore = useDrawerStore()
 const { locale, t } = useI18n()
 
 locale.value = configStore.lang.value // 设置初始语言
+
+const updateNav = (name: string) => {
+  postStore.nav.name = name
+  activeNavName.value = name
+}
+const updatePage = (page: number) => {
+  postStore.postPage.page = page
+}
 
 const deleteUser = () => {
   userStore.userInfo = {} as UserType
@@ -133,8 +150,8 @@ const deleteAnnouncement = () => {
 }
 
 const deleteDrawer = () => {
-  drawertore.drawers = []
-  toast.success('清空弹窗')
+  drawerStore.drawers = []
+  toast.success('清空抽屉')
 }
 
 watch(

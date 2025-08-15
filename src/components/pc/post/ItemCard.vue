@@ -61,8 +61,9 @@
           :icon="ThumbsUp"
           :class="{
             'text-like': post.isLiked,
-          }">
-          {{ post.likeCount }}
+          }"
+          @click.stop="likePost($t, post.id)">
+          {{ formatNumber(post.likeCount) }}
         </ScButton>
 
         <ScButton
@@ -71,7 +72,9 @@
           :icon="ThumbsDown"
           :class="{
             'text-bad': post.isBaded,
-          }">
+          }"
+          @click.stop="badPost($t, post.id)">
+          {{ formatNumber(post.badCount) }}
         </ScButton>
 
         <ScButton noPadding noBg :icon="MessageCircle">
@@ -106,6 +109,8 @@ import { useRouter } from 'vue-router'
 import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
+import { likePost, badPost } from '@/stores/module/post/service'
+
 const typeLabelMap = useTypeLabelMap()
 
 const router = useRouter()

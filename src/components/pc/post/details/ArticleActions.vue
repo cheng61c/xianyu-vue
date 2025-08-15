@@ -12,7 +12,7 @@
           :icon="ThumbsUp"
           :icon-size="24"
           :class="{ 'text-like': postData.isLiked }"
-          @click="likePost(postData.id)">
+          @click="likePost($t, postData.id)">
           {{ postData.likeCount }}
         </ScButton>
 
@@ -22,7 +22,7 @@
           :icon="ThumbsDown"
           :icon-size="24"
           :class="{ ' text-bad': postData.isBaded }"
-          @click="badPost(postData.id)">
+          @click="badPost($t, postData.id)">
           {{ postData.badCount }}
         </ScButton>
 
@@ -93,7 +93,12 @@
 
   <ScModal v-model="reportModal">
     <Card class="p-6 w-2xl">
-      <h3 class="text-xl mb-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
+      <div class="flex">
+        <h3 class="text-xl mb-4 mr-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
+        <div v-if="!userStore.isLogin" class="text-error pt-1">
+          请先登录后再操作
+        </div>
+      </div>
       <div>
         {{ $t('t.tie-zi-biao-ti') }}
         <span class="text-active"> {{ postData?.title }} </span>
@@ -146,8 +151,9 @@ import { postApi, reportApi } from '@/apis'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import { likePost, badPost } from '@/stores/module/post/service'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const toast = useToast()
 
@@ -160,30 +166,6 @@ const props = defineProps({
 const emit = defineEmits(['updatePost'])
 const reportModal = ref(false)
 const reportReason = ref('')
-
-const likePost = (postId: number) => {
-  postApi
-    .postLike(postId)
-    .then(() => {
-      emit('updatePost', props.postData?.id)
-      toast.success(t('t.cao-zuo-cheng-gong'))
-    })
-    .catch((error) => {
-      console.error('Error liking post:', error)
-    })
-}
-
-const badPost = (postId: number) => {
-  postApi
-    .postBad(postId)
-    .then(() => {
-      emit('updatePost', props.postData?.id)
-      toast.success(t('t.cao-zuo-cheng-gong'))
-    })
-    .catch((error) => {
-      console.error('Error liking post:', error)
-    })
-}
 
 const deletePost = (postId: number) => {
   if (!verifyPermissions([1, 2, 5])) {

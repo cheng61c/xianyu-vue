@@ -1,7 +1,9 @@
 <template>
   <Card class="comment-container mx-auto">
     <!-- 评论输入框 -->
-    <div class="comment-input flex items-start gap-3 mb-6">
+    <div
+      v-if="userStore.isLogin"
+      class="comment-input flex items-start gap-3 mb-6">
       <Avatar
         :src="userStore.userInfo.headImg"
         :alt="userStore.userInfo.nickname"

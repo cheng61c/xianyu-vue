@@ -1,8 +1,9 @@
 <template>
-  <div class="pb-2">
+  <div v-if="!loading" class="pb-2">
     <!-- 导航 -->
     <!-- 面包屑 -->
-    <div class="breadcrumbs text-sm ml-4">
+
+    <div v-if="postData" class="breadcrumbs text-sm ml-4">
       <ul>
         <li>
           <ScButton noPadding @click="goBack"> <Home :size="18" /> </ScButton>
@@ -29,14 +30,17 @@
       </ul>
     </div>
 
-    <div v-if="!errorPage" class="flex gap-6 pr-1 pt-4">
+    <div v-if="!errorPage && postData" class="flex gap-6 pr-1 pt-4">
       <!-- 左侧按钮 -->
-      <ArticleActions :postData="postData" @updatePost="getPostData" />
+      <ArticleActions :postData="postData" @updatePost="getPostDetails" />
 
       <!-- 文章主体 -->
       <div class="tiptap flex-1 w-7/10">
         <div ref="htmlContainer" v-html="postData?.content"></div>
         <div class="border-t border-gray my-8"></div>
+
+        <!-- 发布版 -->
+        <Releases :postData="postData" />
 
         <!-- 评分 -->
         <Score
@@ -128,10 +132,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Post } from '@/types/Post'
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { type TocItem } from '@/utils/toc'
 import { Home, X } from 'lucide-vue-next'
 import ScButton from '@/components/common/ScButton.vue'
 import Dependencies from '@/components/pc/post/details/Dependencies.vue'
@@ -144,20 +146,21 @@ import CommentArea from '@/components/pc/post/details/comment/CommentArea.vue'
 import Score from '@/components/pc/post/details/score/Score.vue'
 import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
-// import { usePostStore } from '@/stores/module/post/postStore'
 import { getPostDetails } from '@/stores/module/post/service'
+import type { Post } from '@/types/Post'
+import type { TocItem } from '@/utils/toc'
 
 const route = useRoute()
 const router = useRouter()
-const postData = ref<Post | null>(null)
 
-const tocList = ref<TocItem[]>([]) // 文章目录列表
-// const postStore = usePostStore() // 获取帖子存储
+const postData = ref<Post | null>(null) // 获取帖子数据
+const tocList = ref<TocItem[]>([]) // 获取目录列表
+const errorPage = ref(false) // 获取错误页面标志
+
 const imageModal = ref(false) // 图片查看模态框
 const imgurl = ref('') // 图片查看地址
 const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
-
-const errorPage = ref(false) // 错误页面标志
+const loading = ref(false) // 加载状态
 
 const goBack = () => {
   if (window.history.length > 2) {
@@ -183,41 +186,29 @@ const openImg = (e: MouseEvent) => {
   imgurl.value = (e.target as HTMLImageElement).src
 }
 
-const getPostData = async (id: number) => {
-  const details = await getPostDetails(id)
-  postData.value = details.post
-  tocList.value = details.toc
-}
-
 onMounted(async () => {
+  loading.value = true
   const postId = route.params.postId
-  const details = await getPostDetails(+postId)
-  if (!details.post) {
-    errorPage.value = true // 设置错误页面标志
-    return
-  } else {
-    postData.value = details.post
-    tocList.value = details.toc
+  const { post, toc } = await getPostDetails(+postId)
+  postData.value = post
+  tocList.value = toc
+  if (post) {
+    nextTick(() => {
+      bindImageClickEvents()
+    })
+
+    loading.value = false
   }
-
-  nextTick(() => {
-    bindImageClickEvents()
-  })
-})
-
-onUnmounted(() => {
-  postData.value = null // 清理数据
-  tocList.value = [] // 清理目录列表
-  errorPage.value = false // 重置错误页面标志
-  console.log('Post details component unmounted, data cleared.')
 })
 
 watch(
   () => route.params,
-  (newParams) => {
+  async (newParams) => {
     const postId = newParams.postId
     console.log('Fetching details for post ID:', postId)
-    getPostDetails(+postId)
+    const { post, toc } = await getPostDetails(+postId)
+    postData.value = post
+    tocList.value = toc
   }
 )
 

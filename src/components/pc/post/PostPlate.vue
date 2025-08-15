@@ -2,7 +2,7 @@
   <ul class="flex flex-col gap-4 p-1 min-w-40">
     <Card
       @click="handleCardClick(0, route, router)"
-      class="w-full"
+      class="w-full cursor-pointer"
       :activation="activation == 0">
       <div class="flex gap-2 text-background-content justify-between">
         <span
@@ -21,7 +21,7 @@
       :key="plate.id">
       <Card
         @click="handleCardClick(plate.id, route, router)"
-        class="w-full"
+        class="w-full cursor-pointer"
         :activation="
           activation == plate.id ||
           postStore.currentPlate.currentRouteName == plate.name

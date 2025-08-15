@@ -29,6 +29,7 @@
           :icon-size="24"
           class="text-sm mb-3 text-gray-content hover:text-active/80"
           noPd
+          :disabled="!userStore.isLogin"
           @click="triggerFileInput" />
         <input
           ref="fileInput"
@@ -46,17 +47,19 @@
       class="px-3 border flex-1 border-gray rounded-md focus:outline-none focus:ring-1 focus:ring-active focus:border-transparent"></textarea> -->
       <ScInput
         v-model="commentContent"
-        :placeholder="placeholder"
+        :placeholder="userStore.isLogin ? placeholder : '请登录后评论'"
         :maxlength="500"
         class="flex-1 h-full max-h-[10rem]"
         :maxHeight="120"
         :rows="1"
+        disabled
         multiline />
 
       <!-- 提交按钮 -->
       <ScButton
         @click="submitComment"
         activation
+        :disabled="!userStore.isLogin"
         class="hover:bg-active/60 py-2 mb-1.5">
         {{ submitText }}
       </ScButton>
@@ -72,8 +75,10 @@ import { ImagePlus, X } from 'lucide-vue-next'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'
 import ScInput from '@/components/common/ScInput.vue'
+import { useUserStore } from '@/stores/module/user/userStore'
 
 const toast = useToast()
+const userStore = useUserStore()
 
 const props = defineProps({
   commentId: {

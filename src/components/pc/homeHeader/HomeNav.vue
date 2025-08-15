@@ -2,14 +2,14 @@
   <nav>
     <ul v-if="show" ref="menuList" class="flex gap-4 relative p-0">
       <li
-        v-for="(item, index) in configStore.menuItems"
+        v-for="(item, index) in menuItems"
         :key="item.pathName"
-        class="list-none"
-        :class="{ 'text-primary': postStore.nav.name === item.pathName }"
+        class="list-none cursor-pointer"
+        :class="{ 'text-primary': activeNavName === item.pathName }"
         @click="setActive(index)">
         <button
-          class="navitem inline-block px-2 transition-colors"
-          :class="{ 'text-primary': postStore.nav.name === item.pathName }">
+          class="navitem inline-block px-2 transition-colors cursor-pointer"
+          :class="{ 'text-primary': activeNavName === item.pathName }">
           {{ item.name }}
         </button>
       </li>
@@ -23,13 +23,25 @@
 </template>
 
 <script setup lang="ts">
-import { useConfigStore } from '@/stores/global/configStore'
-import { usePostStore } from '@/stores/module/post/postStore'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-const configStore = useConfigStore()
-const postStore = usePostStore()
+interface MenuItem {
+  name: string
+  params?: {
+    plateId: number
+  }
+  pathName?: string
+}
+
+interface HomeNavProps {
+  menuItems: MenuItem[]
+  activeNavName: string
+  updateNav?: (name: string) => void
+  updatePage: (page: number) => void
+}
+
+const props = defineProps<HomeNavProps>()
 
 const route = useRoute()
 const router = useRouter()
@@ -42,7 +54,7 @@ const indicatorStyle = ref({
 const show = ref(true)
 
 const isMenuItem = computed(() => {
-  return configStore.menuItems.some((item) => item.pathName === route.name)
+  return props.menuItems.some((item) => item.pathName === route.name)
 })
 
 const updateIndicator = () => {
@@ -70,17 +82,19 @@ const updateIndicator = () => {
 
 const setActive = (index: number) => {
   activeIndex.value = index
-  postStore.nav.name = configStore.menuItems[index].pathName
-  postStore.postPage.page = 1
+  if (props.menuItems[index].pathName && props.updateNav) {
+    props.updateNav(props.menuItems[index].pathName)
+  }
+  props.updatePage(index)
   router.push({
-    name: configStore.menuItems[index].pathName,
-    params: configStore.menuItems[index].params || {},
+    name: props.menuItems[index].pathName,
+    params: props.menuItems[index].params || {},
   })
   updateIndicator()
 }
 
 const updateActiveIndex = () => {
-  const index = configStore.menuItems.findIndex(
+  const index = props.menuItems.findIndex(
     (item) => item.pathName === route.name
   )
   show.value = true
@@ -90,7 +104,9 @@ const updateActiveIndex = () => {
 
 // 初始化
 onMounted(() => {
-  postStore.nav.name = (route.name as string) || ''
+  if (props.updateNav) {
+    props.updateNav((route.name as string) || '')
+  }
   if (isMenuItem.value) {
     updateActiveIndex()
   } else {

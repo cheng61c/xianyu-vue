@@ -1,5 +1,22 @@
 <template>
   <div>
+    <Card v-if="userStore.isLogin" class="mb-4">
+      <div>
+        <div class="flex gap-4">
+          <span>{{ $t('d.dui-gai-zi-yuan-ping-fen') }} </span>
+          <ReadonlyRating
+            v-model:value="scoreInput"
+            :readonly="false"
+            colorClass="bg-active"
+            class="mb-4" />
+        </div>
+        <CommentInput
+          :post-id="props.postId"
+          @submit="sendScore"
+          submitText="发表评分"
+          :placeholder="$t('d.dui-gai-zi-yuan-de-ping-jia-shi')" />
+      </div>
+    </Card>
     <Card noCol class="overflow-hidden h-60">
       <div class="mr-4 w-[20rem] min-w-[20rem]">
         <div class="text-lg font-bold">{{ $t('d.zi-yuan-ping-fen') }}</div>
@@ -103,22 +120,6 @@
             noBg
             noPd>
           </ScButton>
-        </div>
-
-        <div>
-          <div class="flex gap-4">
-            <span>{{ $t('d.dui-gai-zi-yuan-ping-fen') }} </span>
-            <ReadonlyRating
-              v-model:value="scoreInput"
-              :readonly="false"
-              colorClass="bg-active"
-              class="mb-4" />
-          </div>
-          <CommentInput
-            :post-id="props.postId"
-            @submit="sendScore"
-            submitText="发表评分"
-            :placeholder="$t('d.dui-gai-zi-yuan-de-ping-jia-shi')" />
         </div>
 
         <div
