@@ -277,6 +277,7 @@ import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { useI18n } from 'vue-i18n'
 import { getSortOptions } from '@/stores/module/post/service'
+import { sendComment } from '@/stores/module/comment/service'
 const { t } = useI18n()
 
 const toast = useToast()
@@ -286,7 +287,7 @@ const props = defineProps<{
 
 // 当前用户
 const userStore = useUserStore()
-const replayContent = ref('') // 评论内容
+// const replayContent = ref('') // 评论内容
 // 图片查看弹窗相关
 const imageModal = ref(false) // 图片查看弹窗
 const imgurl = ref('')
@@ -405,21 +406,9 @@ const replay = (
   }
   console.log(data)
 
-  commentApi
-    .sendComment(data)
-    .then((res) => {
-      if (res.data.code === 200) {
-        replayContent.value = ''
-        getcomments(1) // 重新获取评论列表
-        toast.success(t('t.ping-lun-cheng-gong'))
-      }
-    })
-    .catch((error) => {
-      toast.error(
-        t('t.fa-biao-ping-lun-shi-bai-qing-shao-hou-zai-shi') + error.msg
-      )
-      console.error('发表评论时发生错误:', error.msg)
-    })
+  sendComment(t, data, () => {
+    console.log('评论发送成功')
+  })
 }
 
 watch(

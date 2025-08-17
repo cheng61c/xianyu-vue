@@ -3,7 +3,10 @@
     <ScButton class="w-full text-error" @click="toggleReportModal">
       {{ $t('b.ju-bao') }}
     </ScButton>
-    <ScButton v-if="isAdmin" class="w-full text-error" @click="">
+    <ScButton
+      v-if="isAdmin"
+      class="w-full text-error"
+      @click="deleteComment(commentId)">
       {{ $t('b.shan-chu-ping-lun') }}
     </ScButton>
   </Card>
@@ -93,6 +96,18 @@ const handleReportSubmit = () => {
     .catch((error) => {
       toast.error(t('t.ju-bao-shi-bai') + error.msg)
     })
+}
+
+const deleteComment = (_id: number) => {
+  if (!userStore.isLogin) {
+    toast.error(t('t.qing-xian-deng-lu'))
+    return
+  }
+  toast.error('还没做')
+  // reportApi.deleteComment(id).then(() => {
+  //   toast.success(t('t.shan-chu-cheng-gong'))
+  //   emit('updateComment')
+  // })
 }
 
 const emit = defineEmits(['updateComment'])

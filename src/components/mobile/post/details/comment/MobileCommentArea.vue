@@ -113,32 +113,33 @@
                     :src="reply.author.headImg"
                     :alt="reply.author.nickname"
                     :size="32"
-                    class="flex-shrink-0 mt-1" />
+                    class="flex-shrink-0" />
 
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
-                      <div>
-                        <div class="flex gap-1 items-center">
-                          <span>{{ comment.author.nickname }}</span>
-                          <ScTag
-                            v-if="comment.author.id == postData?.author.id"
-                            size="xs"
-                            bgColor="#FFADBB">
-                            帖主
-                          </ScTag>
-                        </div>
-                        <p
-                          class="text-gray-content text-xs"
-                          @click="currentPopupBox = `${comment.id}`">
-                          {{ comment.createdAt }}
-                        </p>
-                      </div>
+                      <span
+                        class="font-medium mr-2"
+                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
+                        {{ reply.author.nickname }}
+                      </span>
+                      <ScTag
+                        v-if="reply.author.id == postData?.author.id"
+                        size="sm"
+                        bgColor="#FFADBB"
+                        class="text-xs px-1 rounded">
+                        {{ $t('b.tie-zhu') }}
+                      </ScTag>
+                      <span
+                        class="text-gray-content text-xs ml-2"
+                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
+                        {{ reply.createdAt }}
+                      </span>
 
                       <div
                         class="flex flex-1 justify-end"
                         @click="currentPopupBox = `${comment.id}-${reply.id}`">
                         <PopupBox
-                          position="left"
+                          position="bottom"
                           noActivation
                           noPd
                           class="transition-opacity"
@@ -172,7 +173,7 @@
                         v-for="(img, replyImgIndex) in reply.image"
                         :key="replyImgIndex"
                         :src="img"
-                        alt="评论图片"
+                        :alt="$t('d.ping-lun-tu-pian')"
                         class="w-20 h-20 object-cover rounded-md cursor-pointer"
                         @click="openImg(img)" />
                     </div>
@@ -400,12 +401,12 @@ const replay = (
         replayContent.value = ''
         getcomments(1) // 重新获取评论列表
         toast.success('评论成功')
-        clearContent() // 清空输入框内容
+        if (clearContent) clearContent()
       }
     })
     .catch((error) => {
-      toast.error('发表评论失败，请稍后再试: ' + error.msg)
-      console.error('发表评论时发生错误:', error.msg)
+      toast.error('发表评论失败，请稍后再试: ' + error)
+      console.error('发表评论时发生错误:', error)
     })
 }
 

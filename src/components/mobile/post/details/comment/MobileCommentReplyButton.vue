@@ -96,6 +96,7 @@ const likeItem = (commentId: number, toCommentId?: number) => {
       if (res.data.code === 200) {
         localLikeCount.value = res.data.data.likeCount
         localIsLike.value = res.data.data.liked ? 1 : 0
+        toast.success('点赞成功')
       }
     })
     .catch((error) => {
