@@ -137,10 +137,9 @@
   </div>
 
   <ScDrawer v-model="isOpen" position="bottom">
-    {{ String(versionContent) }}
-    <div v-if="versionContent !== null" class="bg-background rounded-t-lg">
+    <div v-if="versionData.content !== null" class="bg-background rounded-t-lg">
       <TipTap
-        v-model="versionContent"
+        v-model="versionData.content"
         :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
     </div>
   </ScDrawer>
