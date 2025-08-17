@@ -1,5 +1,5 @@
 <template>
-  <UserHeader @updateUserInfo="getCurrentUserInfo" />
+  <UserHeader @updateUserInfo="getPanel" :isEdit="isCurrentUser" />
   <Card class="stats max-w-6xl min-w-4xl w-full" noCol noPg>
     <div
       class="stat cursor-pointer"
@@ -73,11 +73,10 @@
 </template>
 
 <script setup lang="ts">
-import { commentApi, serverApi, uploadApi, userApi } from '@/apis'
 import { formatLink, formatNumber, formatTime } from '@/utils/format'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import {
   ScrollText,
   MessageCircle,
@@ -88,10 +87,16 @@ import {
 
 import Card from '@/components/common/Card.vue'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
-import { formatImageSrcsInHtml } from '@/utils/regex'
+import { getUserPanel } from '@/stores/module/user/service'
+import { useRoute } from 'vue-router'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
+const route = useRoute()
+const isCurrentUser = computed(() => {
+  const userId = route.query.userId
+  return Number(userId) === userStore.userInfo.id
+})
 
 // 个人信息
 const posts = ref({
@@ -118,143 +123,54 @@ const servers = ref({
   count: 0,
 })
 
-const getPosts = () => {
-  if (!userStore.isLogin) {
-    return
-  }
-  userApi
-    .getUserPosts({
-      userId: userStore.userInfo.id,
-      type: 1,
-    })
-    .then((response) => {
-      posts.value.likeCount = formatNumber(
-        response.data.data.list.reduce(
-          (acc: number, item: any) => acc + item.likeCount,
-          0
-        )
-      )
-      posts.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-      })
-      posts.value.count = response.data.data.count
-    })
-    .catch((error) => {
-      console.error('Error fetching posts:', error)
-    })
-}
+const getPanel = async (userId: number) => {
+  const panel = await getUserPanel(userId)
 
-const getResources = () => {
-  if (!userStore.isLogin) {
-    return
-  }
-  userApi
-    .getUserPosts({
-      userId: userStore.userInfo.id,
-      type: 2,
-    })
-    .then((response) => {
-      resources.value.likeCount = formatNumber(
-        response.data.data.list.reduce(
-          (acc: number, item: any) => acc + item.likeCount,
-          0
-        )
-      )
-      resources.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-      })
-      resources.value.count = response.data.data.count
-    })
-    .catch((error) => {
-      console.error('Error fetching resources:', error)
-    })
-}
+  // 头像
+  panel.user.headImg = formatLink(panel.user.headImg)
+  userInfo.value = panel.user
 
-const getFiles = () => {
-  if (!userStore.isLogin) {
-    return
-  }
-  uploadApi
-    .getFilesList({
-      types: '1,2,3,4,5,7',
-      page: 1,
-      limit: 10,
-    })
-    .then((response) => {
-      files.value.count = response.data.data.total
-      console.log(files.value)
-    })
-}
+  // 帖子
+  posts.value.likeCount = formatNumber(
+    posts.value.data.reduce((acc: number, item: any) => acc + item.likeCount, 0)
+  )
+  posts.value.data = panel.posts.list.map((item: any) => {
+    item.createdAt = formatTime(item.createdAt)
+  })
+  posts.value.count = panel.posts.count
 
-const getServers = () => {
-  if (!userStore.isLogin) {
-    return
-  }
-  serverApi
-    .getCurrentUserServer({
-      creatorId: userStore.userInfo.id,
-      page: 1,
-      limit: 10,
-    })
-    .then((response) => {
-      servers.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-      })
-      servers.value.count = response.data.data.count
-    })
-}
+  // 资源
+  resources.value.likeCount = formatNumber(
+    panel.resources.list.reduce(
+      (acc: number, item: any) => acc + item.likeCount,
+      0
+    )
+  )
+  resources.value.data = panel.resources.list.map((item: any) => {
+    item.createdAt = formatTime(item.createdAt)
+  })
+  resources.value.count = panel.resources.count
 
-const getComments = () => {
-  if (!userStore.isLogin) {
-    return
-  }
-  commentApi
-    .getCommentList({
-      uid: userStore.userInfo.id,
-      page: 1,
-      limit: 10,
-    })
-    .then((response) => {
-      comments.value.likeCount = formatNumber(
-        response.data.data.list.reduce(
-          (acc: number, item: any) => acc + item.likeCount,
-          0
-        )
-      )
-      comments.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-      })
-      comments.value.count = response.data.data.count
-    })
-    .catch((error) => {
-      console.error('Error fetching comments:', error)
-    })
-}
+  // 文件
+  files.value.count = panel.files.count
 
-const getCurrentUserInfo = () => {
-  userApi
-    .getCurrentUser()
-    .then((response) => {
-      const data = response.data.data as UserType
-      data.headImg = formatLink(data.headImg)
-      data.signature = formatImageSrcsInHtml(data.signature)
-      userInfo.value = data
-      console.log(response.data.data)
-    })
-    .catch((error) => {
-      console.error('Error fetching user data:', error)
-      userStore.userInfo = {} as UserType
-      userStore.token = ''
-      userStore.isLogin = false
-    })
+  // 服务器
+  servers.value.data = panel.servers.list.map((item: any) => {
+    item.createdAt = formatTime(item.createdAt)
+  })
+  servers.value.count = panel.servers.count
+
+  // 评论
+  comments.value.data = panel.comments.list.map((item: any) => {
+    item.createdAt = formatTime(item.createdAt)
+  })
+  comments.value.count = panel.comments.count
 }
 
 onMounted(() => {
-  getCurrentUserInfo()
-  getPosts()
-  getResources()
-  getFiles()
-  getServers()
-  getComments()
+  const userId = route.query.userId
+    ? Number(route.query.userId)
+    : userStore.userInfo.id
+  getPanel(userId ?? userStore.userInfo.id)
 })
 </script>

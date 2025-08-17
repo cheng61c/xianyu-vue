@@ -1,7 +1,7 @@
 <template>
   <Card class="mb-4">
     <div class="flex gap-2">
-      <ScButton @click="getRoleList" :icon="RotateCcw" Border>
+      <ScButton @click="getRoleList(true)" :icon="RotateCcw" Border>
         {{ $t('b.shua-xin-jiao-se-lie-biao') }}
       </ScButton>
       <ScButton @click="addRole" :icon="Plus" Border>
@@ -80,7 +80,7 @@
     class="mt-8"
     :action="$t('b.dian-ji-shua-xin')"
     :actionIcon="RotateCcw"
-    @action-click="getRoleList" />
+    @action-click="getRoleList(true)" />
 
   <ScModal v-model="updateModal">
     <Card class="p-6 w-2xl">
@@ -211,9 +211,10 @@ import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'
 import { useThemeStore } from '@/stores/global/themeStore'
+import { useToast } from 'vue-toastification'
 
 const themeStore = useThemeStore() // 引入主题状态管理
-
+const toast = useToast()
 const roleList = ref<Role[]>([]) // 帖子列表数据
 const currentRole = ref(-1) // 当前操作的帖子ID
 const updateModal = ref(false) // 更新帖子模态框状态
@@ -231,7 +232,7 @@ const currentRoleBody = ref({
   name: '',
 }) // 当前操作的角色信息
 
-const getRoleList = () => {
+const getRoleList = (click = false) => {
   roleApi
     .getRoleListAsAdmin()
     .then((res) => {
@@ -242,6 +243,9 @@ const getRoleList = () => {
           item.updatedAt = formatTime(item.updatedAt)
           return item
         })
+        if (click) {
+          toast.success('角色列表刷新成功')
+        }
       }
     })
     .catch((error) => {
@@ -269,10 +273,12 @@ const updateRole = (index: number) => {
         // 刷新帖子列表
         getRoleList()
         updateModal.value = false
+        toast.success('角色更新成功')
       }
     })
     .catch((error) => {
       console.error('请求失败:', error.msg)
+      toast.error('角色更新失败: ' + error.msg)
     })
 }
 
@@ -282,6 +288,10 @@ const addRole = () => {
     addRoleModal.value = true
     return
   }
+  if (!newRoleBody.value.name) {
+    toast.error('角色名称不能为空')
+    return
+  }
   roleApi
     .createRoleAsAdmin(newRoleBody.value)
     .then((response) => {
@@ -289,10 +299,12 @@ const addRole = () => {
         // 刷新帖子列表
         getRoleList()
         addRoleModal.value = false
+        toast.success('角色添加成功')
       }
     })
     .catch((error) => {
       console.error('请求失败:', error.msg)
+      toast.error('角色添加失败: ' + error.msg)
     })
 }
 
@@ -313,6 +325,7 @@ const deleteRole = (index: number, val: number) => {
         // 刷新帖子列表
         getRoleList()
         deleteRoleModal.value = false
+        toast.success('角色删除成功')
       }
     })
     .catch((error) => {

@@ -32,7 +32,7 @@
 
     <div v-if="!errorPage && postData" class="flex gap-6 pr-1 pt-4">
       <!-- 左侧按钮 -->
-      <ArticleActions :postData="postData" @updatePost="getPostDetails" />
+      <ArticleActions :postData="postData" @updatePost="getPost" />
 
       <!-- 文章主体 -->
       <div class="tiptap flex-1 w-7/10">
@@ -162,6 +162,12 @@ const imgurl = ref('') // 图片查看地址
 const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
 const loading = ref(false) // 加载状态
 
+const getPost = async (postId: number) => {
+  const { post, toc } = await getPostDetails(postId)
+  postData.value = post
+  tocList.value = toc
+}
+
 const goBack = () => {
   if (window.history.length > 2) {
     window.history.back()
@@ -206,9 +212,7 @@ watch(
   async (newParams) => {
     const postId = newParams.postId
     console.log('Fetching details for post ID:', postId)
-    const { post, toc } = await getPostDetails(+postId)
-    postData.value = post
-    tocList.value = toc
+    // getPost(+postId)
   }
 )
 

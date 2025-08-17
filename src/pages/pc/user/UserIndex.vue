@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col w-full items-center gap-4 py-2">
-    <div class="flex gap-2 justify-center items-center">
+    <div v-if="isCurrentUser" class="flex gap-2 justify-center items-center">
       <ScButton
         v-for="btn in routeBtns"
         :key="btn.name"
@@ -17,11 +17,18 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import ScButton from '@/components/common/ScButton.vue'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '@/stores/module/user/userStore'
+
 const { t } = useI18n()
+const userStore = useUserStore()
+const isCurrentUser = computed(() => {
+  const userId = route.query.userId
+  return Number(userId) === userStore.userInfo.id
+})
 
 const route = useRoute()
 const router = useRouter()

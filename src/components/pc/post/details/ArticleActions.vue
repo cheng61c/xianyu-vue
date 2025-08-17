@@ -12,7 +12,7 @@
           :icon="ThumbsUp"
           :icon-size="24"
           :class="{ 'text-like': postData.isLiked }"
-          @click="likePost($t, postData.id)">
+          @click="like(postData.id)">
           {{ postData.likeCount }}
         </ScButton>
 
@@ -22,7 +22,7 @@
           :icon="ThumbsDown"
           :icon-size="24"
           :class="{ ' text-bad': postData.isBaded }"
-          @click="badPost($t, postData.id)">
+          @click="bad(postData.id)">
           {{ postData.badCount }}
         </ScButton>
 
@@ -45,7 +45,7 @@
           isCol
           :icon="Trash2"
           :icon-size="24"
-          @click="deletePost(postData.id)">
+          @click="del(postData.id)">
           {{ postData.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
         </ScButton>
         <div class="w-4/5 border-1 border-gray mx-auto"></div>
@@ -151,7 +151,14 @@ import { postApi, reportApi } from '@/apis'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
-import { likePost, badPost } from '@/stores/module/post/service'
+import {
+  likePost,
+  badPost,
+  deletePost,
+  downPost,
+  setTop,
+  reportPost,
+} from '@/stores/module/post/service'
 
 const { t } = useI18n()
 const userStore = useUserStore()
@@ -167,25 +174,25 @@ const emit = defineEmits(['updatePost'])
 const reportModal = ref(false)
 const reportReason = ref('')
 
-const deletePost = (postId: number) => {
+const like = (postId: number) => {
+  likePost(t, postId, () => {
+    emit('updatePost', postId)
+  })
+}
+
+const bad = (postId: number) => {
+  badPost(t, postId, () => {
+    emit('updatePost', postId)
+  })
+}
+
+const del = (postId: number) => {
   if (!verifyPermissions([1, 2, 5])) {
     return
   }
-  postApi
-    .deletePostAsAdmin({
-      id: postId,
-      disabled: props.postData?.disabled == 1 ? 0 : 1,
-    })
-    .then((response) => {
-      if (response.data.code === 200) {
-        // 刷新帖子列表
-        emit('updatePost', props.postData?.id)
-        toast.success(t('t.cao-zuo-cheng-gong'))
-      }
-    })
-    .catch((error) => {
-      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
-    })
+  deletePost(t, postId, props.postData?.disabled == 1 ? 0 : 1, () => {
+    emit('updatePost', postId)
+  })
 }
 
 const unpublishItem = (postId: number) => {
@@ -193,21 +200,9 @@ const unpublishItem = (postId: number) => {
     toast.error(t('t.tie-zi-bu-cun-zai-huo-yi-bei-shan-chu'))
     return
   }
-  postApi
-    .updatePost({
-      id: postId,
-      visible: props.postData.visible == 1 ? 0 : 1,
-    })
-    .then((response) => {
-      if (response.data.code === 200) {
-        // 刷新帖子列表
-        emit('updatePost', props.postData?.id)
-        toast.success(t('t.cao-zuo-cheng-gong'))
-      }
-    })
-    .catch((error) => {
-      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
-    })
+  downPost(t, postId, props.postData?.disabled == 1 ? 0 : 1, () => {
+    emit('updatePost', postId)
+  })
 }
 
 const setTopItem = (postId: number) => {
@@ -215,21 +210,9 @@ const setTopItem = (postId: number) => {
     toast.error(t('t.tie-zi-bu-cun-zai-huo-yi-bei-shan-chu'))
     return
   }
-  postApi
-    .updatePostAsAdmin({
-      id: postId,
-      top: props.postData.top == 0 ? 1 : 0,
-    })
-    .then((response) => {
-      if (response.data.code === 200) {
-        // 刷新帖子列表
-        emit('updatePost', props.postData?.id)
-        toast.success(t('t.cao-zuo-cheng-gong'))
-      }
-    })
-    .catch((error) => {
-      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
-    })
+  setTop(t, postId, props.postData?.top == 0 ? 1 : 0, () => {
+    emit('updatePost', postId)
+  })
 }
 
 const handleReportSubmit = () => {
@@ -242,19 +225,9 @@ const handleReportSubmit = () => {
     toast.error(t('t.ju-bao-li-you-bu-neng-wei-kong'))
     return
   }
-  reportApi
-    .createReport({
-      targetType: 1,
-      targetId: props.postData.id,
-      reason: reportReason.value,
-    })
-    .then(() => {
-      toast.success(t('t.ju-bao-yi-ti-jiao-wo-men-hui-jin-kuai-chu-li'))
-      reportModal.value = false
-      reportReason.value = ''
-    })
-    .catch((error) => {
-      toast.error(t('t.ju-bao-shi-bai') + error.msg)
-    })
+  reportPost(t, 1, props.postData?.id, reportReason.value, () => {
+    reportModal.value = false
+    reportReason.value = ''
+  })
 }
 </script>

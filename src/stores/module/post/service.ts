@@ -314,7 +314,7 @@ export const reportPost = (
 }
 
 /** 帖子点赞 */
-export const likePost = (t: any, postId: number) => {
+export const likePost = (t: any, postId: number, close?: () => void) => {
   if (!userStore.isLogin) {
     toast.error(t('t.qing-xian-deng-lu'))
     return
@@ -322,7 +322,7 @@ export const likePost = (t: any, postId: number) => {
   postApi
     .postLike(postId)
     .then(() => {
-      getPostDetails(postId)
+      if (close) close()
       toast.success(t('t.cao-zuo-cheng-gong'))
     })
     .catch((error) => {
@@ -330,7 +330,8 @@ export const likePost = (t: any, postId: number) => {
     })
 }
 
-export const badPost = (t: any, postId: number) => {
+/** 帖子点踩 */
+export const badPost = (t: any, postId: number, close?: () => void) => {
   if (!userStore.isLogin) {
     toast.error(t('t.qing-xian-deng-lu'))
     return
@@ -338,7 +339,7 @@ export const badPost = (t: any, postId: number) => {
   postApi
     .postBad(postId)
     .then(() => {
-      getPostDetails(postId)
+      if (close) close()
       toast.success(t('t.cao-zuo-cheng-gong'))
     })
     .catch((error) => {
