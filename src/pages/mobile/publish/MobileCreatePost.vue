@@ -533,13 +533,18 @@ const sendPsot = () => {
   )
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('发布成功')
+        toast.success('发布成功' + res.data.data.id)
         loader.value = false
-        window.history.back()
+        router.back()
         if (!props.isEdit && postData.value.type == 2) {
           router.push({
             name: 'publishResource',
-            params: { postId: res.data.data.id },
+            query: {
+              postId: res.data.data.id,
+            },
+            params: {
+              postId: res.data.data.id,
+            },
           })
           toast.success('请上传资源文件')
         }
