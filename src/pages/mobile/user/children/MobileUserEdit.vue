@@ -19,7 +19,7 @@
 
     <div class="">
       <ScButton @click="onTipTap" Border class="w-full">
-        编写文章
+        编辑主页
         {{
           signature == userInfo.signature ? '' : '已修改, 请点击提交保存修改'
         }}

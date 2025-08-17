@@ -409,6 +409,7 @@ import { verifyPermissions } from '@/utils/verify'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import ScDrawer from '@/components/common/ScDrawer.vue'
+import { useRouter } from 'vue-router'
 
 const toast = useToast()
 const postStore = usePostStore()
@@ -416,6 +417,7 @@ const configStore = useConfigStore()
 const userStore = useUserStore()
 const deviceStore = useDeviceStore()
 const isOpen = ref(false)
+const router = useRouter()
 
 const onTipTap = () => {
   isOpen.value = true
@@ -524,10 +526,7 @@ const sendPsot = () => {
   postData.value.title = title.value
   postData.value.content = postContent.value
   postData.value.dependencies = selectedPosts.value.map((p) => p.id)
-
   loader.value = true
-
-  console.log('postData', postData.value)
 
   postApi[props.isEdit ? 'updatePost' : 'createPost'](
     formatPostBody(postData.value)
@@ -537,6 +536,13 @@ const sendPsot = () => {
         toast.success('发布成功')
         loader.value = false
         window.history.back()
+        if (!props.isEdit && postData.value.type == 2) {
+          router.push({
+            name: 'publishResource',
+            params: { postId: res.data.data.id },
+          })
+          toast.success('请上传资源文件')
+        }
       }
     })
     .catch((err) => {

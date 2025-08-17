@@ -116,7 +116,7 @@
       <!-- 帖子内容 -->
       <ScButton
         v-if="deviceStore.device == 1"
-        @click="isOpen = true"
+        @click="onTipTap"
         Border
         class="w-full">
         编写介绍
@@ -137,7 +137,8 @@
   </div>
 
   <ScDrawer v-model="isOpen" position="bottom">
-    <div v-if="versionContent" class="bg-background rounded-t-lg">
+    {{ String(versionContent) }}
+    <div v-if="versionContent !== null" class="bg-background rounded-t-lg">
       <TipTap
         v-model="versionContent"
         :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
@@ -193,6 +194,11 @@ const versionData = ref<PostCreateVersionDto>({
   gameVersionIds: [],
 })
 const versionContent = ref<string | null>(null) // 帖子内容
+
+const onTipTap = () => {
+  versionContent.value = versionContent.value ?? ''
+  isOpen.value = true
+}
 
 // 切换某个版本的选中状态
 const toggleVersion = (id: number) => {
