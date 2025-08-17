@@ -13,11 +13,13 @@
       Progress: {{ (progress * 100).toFixed(1) }}%
     </div> -->
   </div>
+  <PopUpAnnouncement />
   <!-- <div class="absolute top-1"><DevTools /></div> -->
 </template>
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
 // import DevTools from '@/components/common/DevTools.vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'

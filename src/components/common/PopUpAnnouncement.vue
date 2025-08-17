@@ -1,6 +1,10 @@
 <template>
   <ScModal v-model="show">
-    <Card class="w-2xl h-[36rem] flex flex-col">
+    <Card
+      class="h-[36rem] flex flex-col"
+      :class="{
+        'w-2xl ': deviceStore.device == 2,
+      }">
       <div class="text-2xl">{{ postData?.title }}</div>
       <div class="flex-1 overflow-auto">
         <div v-html="postData?.content" class="tiptap w-full h-full p-4"></div>
@@ -29,8 +33,10 @@ import ScButton from './ScButton.vue'
 import { useRouter } from 'vue-router'
 import Card from './Card.vue'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 
 const announcementStore = useAnnouncementStore()
+const deviceStore = useDeviceStore()
 const router = useRouter()
 const show = ref(false)
 

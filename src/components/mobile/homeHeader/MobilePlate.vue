@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-w-full min-h-10 mt-10 overflow-x-auto overflow-y-hidden">
+  <div class="flex min-w-full min-h-10 overflow-x-auto overflow-y-hidden">
     <ScButton
       @click="handleCardClick(0, route, router)"
       :activation="activation == 0">

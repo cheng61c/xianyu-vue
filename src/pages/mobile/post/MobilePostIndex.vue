@@ -3,6 +3,18 @@
     <MobileHomeNav />
   </div>
 
+  <div class="h-12"></div>
+  <div v-if="show" class="flex justify-center w-full bg-warning/30">
+    <span @click="toAnnouncement">{{ announcementPostData?.title }}</span>
+    <ScButton
+      class="ml-4"
+      :icon="X"
+      @click="offAnnouncement(announcementPostData?.id)"
+      noPd
+      noBg>
+    </ScButton>
+  </div>
+
   <div class="flex flex-col px-4 pt-2">
     <div class="space-y-4 pb-4">
       <MobilePlate />
@@ -86,13 +98,16 @@ import {
   search,
 } from '@/stores/module/post/service'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
-import { Funnel, Plus, Search, ArrowUpToLine } from 'lucide-vue-next'
+import { Funnel, Plus, Search, ArrowUpToLine, X } from 'lucide-vue-next'
 import Pagination from '@/components/common/Pagination.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
 import Card from '@/components/common/Card.vue'
 import { useI18n } from 'vue-i18n'
 import { inject } from 'vue'
 import { gsap } from 'gsap'
+import { useAnnouncementStore } from '@/stores/global/announcementStore'
+import type { Post } from '@/types/Post'
+import { postApi } from '@/apis'
 
 const progress = inject('refreshScroll', ref(0))
 const containerRef = inject('containerRef', ref<HTMLElement | null>(null))
@@ -102,6 +117,10 @@ const route = useRoute()
 const plateId = ref<string>(route.params.plateId as string)
 const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
+const show = ref(false) // 显示置顶公告
+const announcementStore = useAnnouncementStore()
+
+const announcementPostData = ref<Post | null>(null)
 
 const router = useRouter()
 const draggableButton: Ref<HTMLButtonElement | null> = ref(null)
@@ -123,6 +142,31 @@ const toTop = () => {
       behavior: 'smooth', // 可选：平滑滚动
     })
   }
+}
+
+const offAnnouncement = (id?: number) => {
+  if (id) {
+    announcementStore.popUps.push(id)
+    announcementStore.popUps = Array.from(new Set(announcementStore.popUps)) // 去重
+  }
+  show.value = false
+}
+
+const toAnnouncement = () => {
+  show.value = false
+  if (!announcementPostData.value) return
+  router.push({
+    name: 'postDetails',
+    params: {
+      postId: announcementPostData.value.id,
+    },
+  })
+}
+
+const getAnnouncement = (postList: Post[]): Post | null => {
+  const popUpIds = new Set(announcementStore.popUps)
+  const diffPost = postList.find((post) => !popUpIds.has(post.id))
+  return diffPost ?? null
 }
 
 const handleClick = (e: MouseEvent | TouchEvent) => {
@@ -209,5 +253,16 @@ onMounted(() => {
   // 初始化或获取数据
   postStore.currentPlate.currentRouteName = (route.name as string) || ''
   postStore.searchText = ''
+
+  postApi
+    .getPostList({
+      top: 2,
+    })
+    .then((res) => {
+      announcementPostData.value = getAnnouncement(res.data.data.list)
+      if (announcementPostData.value) {
+        show.value = true
+      }
+    })
 })
 </script>
