@@ -5,7 +5,7 @@
   <Card class="stats w-full" noCol noPg>
     <div
       class="stat cursor-pointer"
-      @click="$router.push({ name: 'userPost' })">
+      @click="$router.push({ name: 'mobileUserPost' })">
       <div class="stat-figure text-primary">
         <ScrollText />
       </div>
@@ -18,7 +18,7 @@
 
     <div
       class="stat cursor-pointer"
-      @click="$router.push({ name: 'userComment' })">
+      @click="$router.push({ name: 'mobileUserComment' })">
       <div class="stat-figure text-emerald-500">
         <MessageCircle />
       </div>
@@ -33,7 +33,7 @@
 
     <div
       class="stat cursor-pointer"
-      @click="$router.push({ name: 'userResource' })">
+      @click="$router.push({ name: 'mobileUserResource' })">
       <div class="stat-figure text-violet-500">
         <Package />
       </div>
@@ -48,7 +48,7 @@
 
     <div
       class="stat cursor-pointer"
-      @click="$router.push({ name: 'userFile' })">
+      @click="$router.push({ name: 'mobileUserFile' })">
       <div class="stat-figure text-primary">
         <File />
       </div>
@@ -58,7 +58,7 @@
 
     <div
       class="stat cursor-pointer"
-      @click="$router.push({ name: 'userServer' })">
+      @click="$router.push({ name: 'mobileUserServer' })">
       <div class="stat-figure text-amber-500">
         <Server />
       </div>

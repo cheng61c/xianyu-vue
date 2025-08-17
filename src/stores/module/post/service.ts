@@ -68,7 +68,6 @@ export const getPost = async (
   pid: number,
   route: RouteLocationNormalizedLoadedGeneric
 ) => {
-  console.log('pid', pid)
   if (
     postStore.isSearch &&
     postStore.searchText &&
@@ -80,7 +79,6 @@ export const getPost = async (
   const query: PostListQueryDto = {
     type: route.name == 'postList' ? 1 : 2,
   }
-  console.log('pid', pid)
 
   if (pid !== 0) {
     query.plateId = pid

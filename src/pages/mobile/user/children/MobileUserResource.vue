@@ -32,6 +32,13 @@
           >00:25</span
         > -->
       </div>
+      <div
+        v-else
+        class="relative w-28 flex-shrink-0 flex justify-center items-center">
+        <ScButton
+          :icon="iconMap[post.fileType as keyof typeof iconMap]"
+          :icon-size="40"></ScButton>
+      </div>
 
       <!-- 右侧文字信息 -->
       <div class="flex flex-col gap-2 w-full">

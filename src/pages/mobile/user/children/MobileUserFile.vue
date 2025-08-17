@@ -10,14 +10,14 @@
   <Card v-else v-for="(file, index) in files" :key="index" class="stats w-full">
     <div class="flex justify-between items-center">
       <!-- 标题 -->
-      <div class="flex items-center gap-2 flex-[2] max-w-md">
+      <div class="flex items-center gap-2 max-w-[60%]">
         <span class="w-full break-words pr-4">{{ file.filename }}</span>
       </div>
-      <div class="flex-1">
+      <div>
         <span>{{ file.createdAt }}</span>
       </div>
 
-      <div class="flex gap-2 items-center flex-wrap">
+      <div class="flex gap-2 items-center flex-wrap flex-shrink-0">
         <ScButton
           class="text-sm text-error px-4 border border-gray hover:border-active"
           :icon="Download"

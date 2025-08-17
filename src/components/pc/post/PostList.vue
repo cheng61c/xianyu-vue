@@ -77,11 +77,6 @@ watch(
       plateId.value = newPlate.plateId as string
       postStore.postPage.page = 1
       postStore.postPage.limit = 10
-      console.log(
-        'newPlate',
-        newPlate,
-        newPlate.plateId && postStore.currentPlate.pathName === route.name
-      )
       getPost(+newPlate.plateId, route)
     }
   }

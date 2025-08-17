@@ -11,12 +11,7 @@
           v-model="postStore.searchText"
           class="flex-1"
           :placeholder="'搜索帖子标题'" />
-        <ScButton
-          :icon="Search"
-          noPd
-          @click="search(postStore.searchText, true, '0', route)">
-          搜索
-        </ScButton>
+        <ScButton :icon="Search" noPd @click="handleSearch"> 搜索 </ScButton>
 
         <PopupBox
           v-if="route.name == 'modList'"
@@ -171,15 +166,29 @@ const setPage = async (page: number) => {
   await getPost(+plateId.value, route)
 }
 
+const handleSearch = (
+  searchText: string,
+  click: boolean,
+  fileTypes: string
+) => {
+  postStore.searchText = searchText
+  postStore.isSearch = true
+  postStore.postPage.page = 1
+  postStore.postPage.total = 0
+  postStore.post = []
+  search(searchText, click, fileTypes, route)
+}
+
 watch(
   () => route.params,
   (newPlate) => {
-    if (newPlate.plateId && postStore.currentPlate.pathName === route.name) {
+    console.log(newPlate)
+
+    if (newPlate.plateId) {
       plateId.value = newPlate.plateId as string
       postStore.postPage.page = 1
       postStore.postPage.limit = 10
-      postStore.postPage.total = 0
-      postStore.post = []
+      getPost(+newPlate.plateId, route)
     }
   },
   { immediate: true }

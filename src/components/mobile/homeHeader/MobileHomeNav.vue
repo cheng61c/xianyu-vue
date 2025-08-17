@@ -49,6 +49,7 @@
 
         <div class="flex flex-col space-y-4 py-2 px-2">
           <div
+            v-if="userStore.isLogin"
             class="flex items-center justify-between py-2"
             @click="$router.push({ name: 'message' })">
             <div>消息</div>
