@@ -533,10 +533,10 @@ const sendPsot = () => {
   )
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('发布成功' + res.data.data.id)
+        toast.success('发布成功')
         loader.value = false
         router.back()
-        if (!props.isEdit && postData.value.type == 2) {
+        if (!props.isEdit && postData.value.type == 2 && res.data.data) {
           router.push({
             name: 'publishResource',
             query: {
@@ -552,6 +552,7 @@ const sendPsot = () => {
     })
     .catch((err) => {
       toast.error('发布失败' + err.msg)
+      console.error('发布失败', err)
       loader.value = false
     })
 }

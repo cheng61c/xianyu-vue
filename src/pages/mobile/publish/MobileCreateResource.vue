@@ -195,7 +195,7 @@ const versionData = ref<PostCreateVersionDto>({
 const versionContent = ref<string | null>(null) // 帖子内容
 
 const onTipTap = () => {
-  versionContent.value = versionContent.value ?? ''
+  versionData.value.content = versionData.value.content ?? ''
   isOpen.value = true
 }
 
@@ -229,11 +229,11 @@ const submitVersiont = () => {
     toast.error('请输入版本内容')
     return
   }
-  if (!versionContent.value) {
+  if (!versionData.value.content) {
     toast.error('内容不能为空')
     return
   }
-  if (!versionContent.value.trim()) {
+  if (!versionData.value.content.trim()) {
     toast.error('内容不能为空')
     return
   }
@@ -241,10 +241,7 @@ const submitVersiont = () => {
   if (versionData.value.id == 0) {
     delete versionData.value.id // 确保新建时不包含ID
   }
-  versionData.value.content = versionContent.value
-
   loader.value = true
-
   console.log('提交版本数据:', versionData.value.id)
 
   postApi[versionData.value.id ? 'updateVersion' : 'createVersion'](
@@ -295,7 +292,7 @@ onMounted(async () => {
         postId: data.postId,
         gameVersionIds: data.gameVersionIds || [],
       }
-      versionContent.value = data.content
+      versionData.value.content = data.content
       uploadedFiles.value = data.files.map((file) => ({
         name: file.filename,
         id: file.id,
