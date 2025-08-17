@@ -64,7 +64,9 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ report.creator.nickname }}
-                <ScTag size="xs">uid: {{ report.creator.id }}</ScTag>
+                <ScTag size="xs" status="info"
+                  >uid: {{ report.creator.id }}</ScTag
+                >
               </div>
             </td>
             <td>

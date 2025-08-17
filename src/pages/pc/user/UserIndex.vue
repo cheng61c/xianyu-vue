@@ -27,7 +27,7 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const isCurrentUser = computed(() => {
   const userId = route.query.userId
-  return Number(userId) === userStore.userInfo.id
+  return Number(userId) !== userStore.userInfo.id
 })
 
 const route = useRoute()
