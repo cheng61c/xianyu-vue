@@ -40,7 +40,10 @@
     </Card>
 
     <Card
-      v-if="userStore.isLogin || (userInfo && !isCurrentUser)"
+      v-if="
+        (!userStore.isLogin && userInfo && !isCurrentUser) ||
+        (userStore.isLogin && userInfo && !isCurrentUser)
+      "
       class="stats w-full"
       noCol>
       <div
