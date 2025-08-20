@@ -17,7 +17,9 @@
         @click="$router.push('/')">
       </ScButton>
     </div>
-    <div v-if="!userStore.isLogin" class="text-error">请先登录</div>
+    <div v-if="!route.query.userId && !userStore.isLogin" class="text-error">
+      请先登录
+    </div>
     <ScLogin />
   </div>
   <div
@@ -107,7 +109,7 @@ onMounted(() => {
   if (currentBtn) {
     activation.value = currentBtn.name
   }
-  if (userStore.isLogin === false) {
+  if (userStore.isLogin === false && !route.query.userId) {
     userStore.showLoginModal = true
   }
 })

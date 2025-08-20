@@ -1,75 +1,11 @@
 <template>
   <template v-if="!loading">
     <!-- 头像 -->
-    <MobileUserHeader
-      @updateUserInfo="getCurrentUserInfo"
-      :userInfo="userInfo" />
-    <!-- 概览 -->
-    <!-- <Card class="stats w-full" noCol noPg>
-    <div
-      class="stat cursor-pointer"
-      @click="$router.push({ name: 'mobileUserPost' })">
-      <div class="stat-figure text-primary">
-        <ScrollText />
-      </div>
-      <div class="stat-title">{{ $t('nav.tie-zi') }}</div>
-      <div class="stat-value text-primary">{{ posts.count }}</div>
-      <div class="stat-desc">
-        {{ $t('other.zong-huo-zan') }} <span>{{ posts.likeCount }}</span>
-      </div>
-    </div>
-
-    <div
-      class="stat cursor-pointer"
-      @click="$router.push({ name: 'mobileUserComment' })">
-      <div class="stat-figure text-emerald-500">
-        <MessageCircle />
-      </div>
-      <div class="stat-title">{{ $t('nav.ping-lun') }}</div>
-      <div class="stat-value text-emerald-500">
-        {{ comments.count }}
-      </div>
-      <div class="stat-desc">
-        {{ $t('other.zong-huo-zan') }} <span>{{ comments.likeCount }}</span>
-      </div>
-    </div>
-
-    <div
-      class="stat cursor-pointer"
-      @click="$router.push({ name: 'mobileUserResource' })">
-      <div class="stat-figure text-violet-500">
-        <Package />
-      </div>
-      <div class="stat-title">{{ $t('nav.zi-yuan') }}</div>
-      <div class="stat-value text-violet-500">
-        {{ resources.count }}
-      </div>
-      <div class="stat-desc">
-        {{ $t('other.zong-huo-zan') }} <span>{{ resources.likeCount }}</span>
-      </div>
-    </div>
-
-    <div
-      class="stat cursor-pointer"
-      @click="$router.push({ name: 'mobileUserFile' })">
-      <div class="stat-figure text-primary">
-        <File />
-      </div>
-      <div class="stat-title">{{ $t('nav.wen-jian') }}</div>
-      <div class="stat-value text-primary">{{ files.count }}</div>
-    </div>
-
-    <div
-      class="stat cursor-pointer"
-      @click="$router.push({ name: 'mobileUserServer' })">
-      <div class="stat-figure text-amber-500">
-        <Server />
-      </div>
-      <div class="stat-title">{{ $t('nav.fu-wu-qi') }}</div>
-      <div class="stat-value text-amber-500">{{ servers.count }}</div>
-    </div>
-  </Card> -->
-
+    <template v-if="userStore.isLogin || !isCurrentUser">
+      <MobileUserHeader
+        @updateUserInfo="getCurrentUserInfo"
+        :userInfo="userInfo" />
+    </template>
     <!-- 概览 -->
     <Card
       v-if="userStore.isLogin && isCurrentUser"
@@ -103,7 +39,10 @@
       </div>
     </Card>
 
-    <Card v-if="userStore.isLogin && !isCurrentUser" class="stats w-full" noCol>
+    <Card
+      v-if="userStore.isLogin || (userInfo && !isCurrentUser)"
+      class="stats w-full"
+      noCol>
       <div
         v-html="userInfo.signature || '<p>这个人很懒，什么都没有留下</p>'"
         class="tiptap w-full"></div>
@@ -156,6 +95,18 @@
         <ChevronRight />
       </div>
     </Card>
+    <Card
+      v-if="userStore.isLogin && isCurrentUser"
+      noPg
+      class="w-full justify-center mt-4 p-3"
+      @click="
+        () => {
+          logout($t)
+          router.push({ name: 'Home' })
+        }
+      ">
+      <p class="text-center text-error">退出登录</p>
+    </Card>
   </template>
 </template>
 
@@ -178,6 +129,7 @@ import MobileUserHeader from '@/components/mobile/user/MobileUserHeader.vue'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useRoute, useRouter } from 'vue-router'
 import { deepClone } from '@/utils/copy'
+import { logout } from '@/stores/module/user/service'
 
 const route = useRoute()
 const router = useRouter()
@@ -353,9 +305,6 @@ const getCurrentUserInfo = () => {
 }
 
 const getUserInfo = (uid: number) => {
-  if (!userStore.isLogin) {
-    return
-  }
   userApi
     .getUser(uid)
     .then((response) => {
@@ -374,6 +323,7 @@ const getUserInfo = (uid: number) => {
 onMounted(() => {
   loading.value = true
   if (route.query.userId) {
+    console.log('route.query.userId', route.query.userId)
     getUserInfo(Number(route.query.userId))
     return
   }
