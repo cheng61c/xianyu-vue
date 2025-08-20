@@ -142,6 +142,12 @@ const loading = ref(false) // 上传状态
 const previewBgColor = ref('#00000000')
 const cropperRef = ref<any>(null)
 const emit = defineEmits(['updateUserInfo'])
+const props = defineProps({
+  isEdit: {
+    type: Boolean,
+    default: false,
+  },
+})
 
 const clearColor = () => {
   previewBgColor.value = '#00000000'
@@ -210,6 +216,7 @@ const onCropChange = ({ canvas }: { canvas: HTMLCanvasElement }) => {
 }
 
 const updateHerdImg = async () => {
+  if (!props.isEdit) return
   if (!userStore.isLogin) {
     return
   }

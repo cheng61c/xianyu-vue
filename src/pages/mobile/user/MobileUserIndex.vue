@@ -21,6 +21,7 @@
     <ScLogin />
   </div>
   <div
+    v-if="false"
     class="flex gap-2 px-4 py-2 min-w-full min-h-10 overflow-x-auto overflow-y-hidden">
     <ScButton
       v-for="btn in routeBtns"
@@ -39,13 +40,14 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { ChevronLeft, Home } from 'lucide-vue-next'
 
 import ScButton from '@/components/common/ScButton.vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/module/user/userStore'
 import ScLogin from '@/components/pc/homeHeader/ScLogin.vue'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 const { t } = useI18n()
 
 const route = useRoute()
@@ -79,9 +81,17 @@ const routeBtns = ref([
     name: t('nav.bian-ji-zi-liao'),
     path: '/mobile/user/edit',
   },
+  {
+    name: '账号安全',
+    path: '/mobile/user/account-security',
+  },
 ])
 const activation = ref(t('nav.zhu-ye'))
 const userStore = useUserStore()
+const deviceStore = useDeviceStore()
+const isCurrentUser = computed(() => {
+  return !route.query.userId
+})
 
 const toPage = (btn: any) => {
   if (btn.path === route.path) return
@@ -90,6 +100,9 @@ const toPage = (btn: any) => {
 }
 
 onMounted(() => {
+  if (deviceStore.device == 2) {
+    router.push(route.path.replace('/mobile/', '/'))
+  }
   const currentBtn = routeBtns.value.find((btn) => btn.path === route.path)
   if (currentBtn) {
     activation.value = currentBtn.name

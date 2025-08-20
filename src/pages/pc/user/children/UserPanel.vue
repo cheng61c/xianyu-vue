@@ -94,8 +94,7 @@ const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
 const route = useRoute()
 const isCurrentUser = computed(() => {
-  const userId = route.query.userId
-  return Number(userId) === userStore.userInfo.id
+  return !route.query.userId
 })
 
 // 个人信息

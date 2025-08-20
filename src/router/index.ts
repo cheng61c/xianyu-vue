@@ -249,6 +249,12 @@ const routes = [
             component: () =>
               import('@/pages/mobile/user/children/MobileUserEdit.vue'),
           },
+          {
+            path: 'account-security',
+            name: 'mobileAccountSecurity',
+            component: () =>
+              import('@/pages/mobile/user/children/MobileAccountSecurity.vue'),
+          },
         ],
       },
     ],

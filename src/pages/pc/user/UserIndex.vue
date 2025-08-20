@@ -10,7 +10,6 @@
         {{ btn.name }}
       </ScButton>
     </div>
-
     <RouterView></RouterView>
   </div>
 </template>
@@ -22,16 +21,18 @@ import { computed, onMounted, ref, watch } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/module/user/userStore'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 
 const { t } = useI18n()
 const userStore = useUserStore()
-const isCurrentUser = computed(() => {
-  const userId = route.query.userId
-  return Number(userId) !== userStore.userInfo.id
-})
-
 const route = useRoute()
 const router = useRouter()
+const isCurrentUser = computed(() => {
+  const route = useRoute() // 获取当前路由对象
+  return !route.query.userId
+})
+const deviceStore = useDeviceStore()
+
 const routeBtns = ref([
   {
     name: t('nav.zhu-ye'),
@@ -72,6 +73,9 @@ const toPage = (btn: any) => {
 
 onMounted(() => {
   const currentBtn = routeBtns.value.find((btn) => btn.path === route.path)
+  if (deviceStore.device == 1) {
+    router.push(route.path.replace('/user/', '/mobile/user/'))
+  }
   if (currentBtn) {
     activation.value = currentBtn.name
   }

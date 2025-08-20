@@ -1,43 +1,40 @@
 <template>
-  <MobileUserHeader
-    ref="mobileUserHeader"
-    @updateUserInfo="getCurrentUserInfo"
-    :userInfo="userInfo"
-    isEdit />
-
   <Card v-if="userStore.isLogin" class="w-full">
-    <div class="mb-4 text-xl font-bold">{{ $t('f.ji-chu-xin-xi') }}</div>
-    <div class="flex gap-4 items-center">
-      {{ $t('f.you-xiang') }} <span>{{ userInfo.email ?? 'null' }}</span>
-    </div>
-    <div class="flex gap-4 items-center">
-      {{ $t('f.zhang-hao') }} <span>{{ userInfo.account ?? 'null' }}</span>
-    </div>
-    <div class="flex gap-4 items-center">
-      <span>{{ $t('f.ni-cheng') }}</span>
+    <div class="mb-4 text-xl font-bold">{{ $t('f.zhong-zhi-mi-ma') }}</div>
+    <div class="flex gap-4 iems-center">
+      <span>{{ $t('f.xin-mi-ma') }}</span>
       <ScInput
-        v-model="userInfo.nickname"
-        type="text"
-        :placeholder="$t('f.qing-shu-ru-ni-cheng')" />
+        v-model="resetPassword.newPassword"
+        type="password"
+        :placeholder="$t('f.qing-shu-ru-xin-mi-ma')" />
     </div>
 
-    <div class="space-y-2">
-      <ScButton @click="onUpdateAvatar" Border class="w-full">
-        修改头像
-      </ScButton>
+    <div class="flex gap-4 items-center">
+      <span>{{ $t('f.que-ren-mi-ma') }}</span>
+      <ScInput
+        v-model="resetPassword.confirmPassword"
+        type="password"
+        :placeholder="$t('f.qing-zai-ci-shu-ru-xin-mi-ma')" />
+    </div>
 
-      <ScButton @click="onTipTap" Border class="w-full">
-        编辑主页
-        {{
-          signature == userInfo.signature ? '' : '已修改, 请点击提交保存修改'
-        }}
+    <div class="flex gap-4 items-center">
+      <span>{{ $t('f.you-xiang-yan-zheng-ma') }}</span>
+      <ScInput
+        v-model="resetPassword.captcha"
+        :placeholder="$t('f.qing-shu-ru-yan-zheng-ma')" />
+      <ScButton
+        :disabled="isSendCode"
+        @click="getCaptcha(userStore.userInfo.email)"
+        Border
+        class="py-2">
+        {{ sendCodeText }}
       </ScButton>
     </div>
 
     <div class="flex gap-4 items-center">
-      <ScButton @click="updateInfo" Border>{{
-        $t('f.ti-jiao-geng-gai')
-      }}</ScButton>
+      <ScButton @click="updatePassword" Border class="py-2">
+        {{ $t('b.ti-jiao') }}
+      </ScButton>
     </div>
   </Card>
 
@@ -48,39 +45,24 @@
       }}
     </div>
   </Card>
-
-  <ScDrawer v-model="isOpen" position="bottom">
-    <div v-if="userInfo.signature !== null" class="bg-background rounded-t-lg">
-      <TipTap
-        v-model="userInfo.signature"
-        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
-    </div>
-  </ScDrawer>
 </template>
 
 <script setup lang="ts">
 import ScButton from '@/components/common/ScButton.vue'
-
 import Card from '@/components/common/Card.vue'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
 import { userApi } from '@/apis'
 import type { UserType } from '@/types/user'
 import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/module/user/userStore'
-
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
-import MobileUserHeader from '@/components/mobile/user/MobileUserHeader.vue'
 import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
-import { useDeviceStore } from '@/stores/global/deviceStore'
-import ScDrawer from '@/components/common/ScDrawer.vue'
 const { t } = useI18n()
 
 const toast = useToast()
 const userStore = useUserStore()
-const userInfo = userStore.userInfo as UserType
 const resetPassword = ref({
   newPassword: '',
   confirmPassword: '',
@@ -88,20 +70,8 @@ const resetPassword = ref({
 })
 const isSendCode = ref(false)
 const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
-const deviceStore = useDeviceStore()
-const isOpen = ref(false)
 const signature = ref('')
-const mobileUserHeader = ref<InstanceType<typeof MobileUserHeader> | null>(null)
 
-const onUpdateAvatar = () => {
-  if (mobileUserHeader.value) {
-    mobileUserHeader.value.triggerFileInput()
-  }
-}
-const onTipTap = () => {
-  signature.value = userInfo.signature || ''
-  isOpen.value = true
-}
 // 计时x秒
 const countdown = (duration: number) => {
   let timer: ReturnType<typeof setInterval>
@@ -180,28 +150,6 @@ const updatePassword = () => {
     .catch((error) => {
       console.error('Error updating password:', error)
       toast.error(t('t.mi-ma-geng-xin-shi-bai') + error.msg)
-    })
-}
-
-const updateInfo = () => {
-  userApi
-    .updateUser({
-      nickname: userInfo.nickname,
-      signature: userInfo.signature,
-    })
-    .then((response) => {
-      if (response.data.code === 200) {
-        toast.success(t('t.xin-xi-geng-xin-cheng-gong'))
-        userStore.userInfo.nickname = userInfo.nickname
-        userStore.userInfo.signature = userInfo.signature
-        getCurrentUserInfo() // 刷新用户信息
-      } else {
-        toast.error(t('t.xin-xi-geng-xin-shi-bai') + response.data.msg)
-      }
-    })
-    .catch((error) => {
-      console.error('Error updating user info:', error)
-      toast.error(t('t.xin-xi-geng-xin-shi-bai') + error.msg)
     })
 }
 

@@ -4,6 +4,7 @@
       class="h-[36rem] flex flex-col"
       :class="{
         'w-2xl ': deviceStore.device == 2,
+        'w-full': deviceStore.device == 1,
       }">
       <div class="text-2xl">{{ postData?.title }}</div>
       <div class="flex-1 overflow-auto">

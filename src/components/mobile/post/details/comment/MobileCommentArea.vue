@@ -32,13 +32,21 @@
             :src="comment.author.headImg"
             :alt="comment.author.nickname"
             :size="40"
-            class="flex-shrink-0 mt-1" />
+            class="flex-shrink-0 mt-1"
+            @click.stop="openImg(comment.author.headImg)" />
 
           <!-- 评论内容 -->
           <div class="flex-1 group/one">
             <div class="flex items-center mb-1">
               <div>
-                <div class="flex gap-1 items-center">
+                <div
+                  class="flex gap-1 items-center"
+                  @click="
+                    $router.push({
+                      name: 'mobileUserPanel',
+                      query: { userId: comment.author.id },
+                    })
+                  ">
                   <span>{{ comment.author.nickname }}</span>
                   <ScTag
                     v-if="comment.author.id == postData?.author.id"
@@ -113,10 +121,18 @@
                     :src="reply.author.headImg"
                     :alt="reply.author.nickname"
                     :size="32"
-                    class="flex-shrink-0" />
+                    class="flex-shrink-0"
+                    @click.stop="openImg(reply.author.headImg)" />
 
                   <div class="flex-1">
-                    <div class="flex items-center mb-1">
+                    <div
+                      class="flex items-center mb-1"
+                      @click="
+                        $router.push({
+                          name: 'mobileUserPanel',
+                          query: { userId: reply.author.id },
+                        })
+                      ">
                       <span
                         class="font-medium mr-2"
                         @click="currentPopupBox = `${comment.id}-${reply.id}`">
@@ -158,7 +174,15 @@
                     </div>
 
                     <div class="mb-1">
-                      <span v-if="reply.toAuthor" class="text-active mr-2">
+                      <span
+                        v-if="reply.toAuthor"
+                        class="text-active mr-2"
+                        @click="
+                          $router.push({
+                            name: 'mobileUserPanel',
+                            query: { userId: reply.toAuthor.id },
+                          })
+                        ">
                         @{{ reply.toAuthor.nickname }}
                       </span>
                       <span
@@ -304,6 +328,7 @@ const commentsPage = ref({
 })
 
 const openImg = (img: string) => {
+  if (!img) return
   imageModal.value = true
   imgurl.value = img
 }

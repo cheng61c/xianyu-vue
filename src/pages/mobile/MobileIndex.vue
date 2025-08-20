@@ -6,23 +6,18 @@
     <div class="home-content">
       <RouterView />
     </div>
-    <!-- 滚动进度显示 -->
-    <!-- <div
-      v-if="progress !== undefined"
-      class="fixed bottom-4 right-4 bg-black text-white px-3 py-1 rounded-md z-50">
-      Progress: {{ (progress * 100).toFixed(1) }}%
-    </div> -->
   </div>
   <PopUpAnnouncement />
   <!-- <div class="absolute top-1"><DevTools /></div> -->
 </template>
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
 // import DevTools from '@/components/common/DevTools.vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 gsap.registerPlugin(ScrollTrigger)
 
 const containerRef = ref<HTMLElement | null>(null)
@@ -31,11 +26,11 @@ provide('refreshScroll', progress)
 provide('containerRef', containerRef)
 
 const route = useRoute()
+const router = useRouter()
 const routeName = ref('')
 
 onMounted(() => {
   if (!containerRef.value) return
-
   // 确保内容高度大于容器高度
   const content = containerRef.value.querySelector(
     '.home-content'

@@ -1,8 +1,8 @@
 <template>
-  <Card v-if="userStore.isLogin" class="w-full items-center" noCol>
+  <Card class="w-full items-center" noCol>
     <Avatar
-      :src="formatLink(userStore.userInfo.headImg) || ''"
-      :alt="userStore.userInfo.nickname"
+      :src="formatLink(userInfo.headImg) || ''"
+      :alt="userInfo.nickname"
       :size="64"
       @click="triggerFileInput" />
     <input
@@ -12,7 +12,7 @@
       style="display: none"
       @change="onFileChange" />
     <div>
-      <div class="text-lg font-bold">{{ userStore.userInfo.nickname }}</div>
+      <div class="text-lg font-bold">{{ userInfo.nickname }}</div>
       <div class="flex items-center flex-wrap gap-2">
         <ScTag size="sm" status="info"> uid {{ userInfo.id }} </ScTag>
         <ScRole :user="userInfo" isAll size="sm"></ScRole>
@@ -21,7 +21,7 @@
         {{
           $t(
             'd.shang-ci-deng-lu-shi-jian-formattimeuserstoreuserinfolastlogintime',
-            [formatTime(userStore.userInfo.lastLoginTime)]
+            [formatTime(userInfo.lastLoginTime)]
           )
         }}
       </div>
@@ -42,15 +42,27 @@ import ScTag from '@/components/common/ScTag.vue'
 import Card from '@/components/common/Card.vue'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
+import type { UserType } from '@/types'
 const { t } = useI18n()
 
 const toast = useToast()
 const userStore = useUserStore()
-const userInfo = ref(userStore.userInfo)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const emit = defineEmits(['updateUserInfo'])
 
+const props = defineProps({
+  isEdit: {
+    type: Boolean,
+    default: false,
+  },
+  userInfo: {
+    type: Object as () => UserType,
+    default: () => ({}),
+  },
+})
+
 const triggerFileInput = () => {
+  if (!props.isEdit) return
   fileInputRef.value?.click()
 }
 
@@ -76,4 +88,8 @@ const onFileChange = async (e: Event) => {
     toast.error(t('t.tou-xiang-shang-chuan-shi-bai') + (error?.msg || ''))
   }
 }
+
+defineExpose({
+  triggerFileInput,
+})
 </script>

@@ -87,11 +87,20 @@
       <!-- 标题 -->
       <h3 class="text-lg font-bold">{{ postData?.title }}</h3>
       <!-- 作者 -->
-      <div v-if="postData" class="flex gap-2 items-center">
+      <div
+        v-if="postData"
+        class="flex gap-2 items-center"
+        @click="
+          $router.push({
+            name: 'mobileUserPanel',
+            query: { userId: postData.author.id },
+          })
+        ">
         <Avatar
           :src="postData.author.headImg || ''"
           :alt="postData.author.nickname"
-          :size="28" />
+          :size="28"
+          @click.stop="openImg(postData.author.headImg)" />
         <div class="flex flex-wrap gap-x-1 items-center">
           <span class="text-background-content">
             {{ postData.author.nickname }}
@@ -151,6 +160,7 @@
       </button>
     </div>
   </ScModal>
+
   <ScModal v-model="reportModal">
     <Card class="p-6">
       <div class="flex">
@@ -220,6 +230,7 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { verifyPermissions } from '@/utils/verify'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
+import { formatLink } from '@/utils/format'
 
 const route = useRoute()
 const router = useRouter()
@@ -288,14 +299,14 @@ const bindImageClickEvents = () => {
   const images = container.querySelectorAll('img')
   images.forEach((img) => {
     img.style.cursor = 'pointer'
-    img.addEventListener('click', openImg)
+    img.addEventListener('click', () => openImg(img.src))
   })
 }
 
-const openImg = (e: MouseEvent) => {
+const openImg = (src: string) => {
   // console.log('Image clicked:', (e.target as HTMLImageElement).src)
   imageModal.value = true
-  imgurl.value = (e.target as HTMLImageElement).src
+  imgurl.value = formatLink(src)
 }
 
 const getPostData = async (id: number) => {
