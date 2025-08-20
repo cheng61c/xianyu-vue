@@ -81,13 +81,6 @@ const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 const userInfo = userStore.userInfo as UserType
-const resetPassword = ref({
-  newPassword: '',
-  confirmPassword: '',
-  captcha: '',
-})
-const isSendCode = ref(false)
-const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
 const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const signature = ref('')
@@ -101,42 +94,6 @@ const onUpdateAvatar = () => {
 const onTipTap = () => {
   signature.value = userInfo.signature || ''
   isOpen.value = true
-}
-// 计时x秒
-const countdown = (duration: number) => {
-  let timer: ReturnType<typeof setInterval>
-  let timeLeft = duration
-
-  const updateText = () => {
-    if (timeLeft > 0) {
-      sendCodeText.value = t('b.resend', { seconds: timeLeft })
-      timeLeft--
-    } else {
-      clearInterval(timer)
-      sendCodeText.value = t('f.huo-qu-yan-zheng-ma')
-      isSendCode.value = false
-    }
-  }
-
-  timer = setInterval(updateText, 1000)
-}
-
-const getCaptcha = (email: string) => {
-  isSendCode.value = true
-  countdown(30)
-  userApi
-    .sendCode({ email })
-    .then((res) => {
-      if (res.data.code === 200) {
-        toast.success(t('t.yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang'))
-      } else {
-        toast.error(t('t.huo-qu-yan-zheng-ma-shi-bai') + res.data.msg)
-      }
-    })
-    .catch((error) => {
-      // 处理获取验证码错误
-      toast.error(error.msg)
-    })
 }
 
 const getCurrentUserInfo = () => {
@@ -152,34 +109,6 @@ const getCurrentUserInfo = () => {
     })
     .catch((error) => {
       console.error('Error fetching user data:', error)
-    })
-}
-
-const updatePassword = () => {
-  if (resetPassword.value.newPassword !== resetPassword.value.confirmPassword) {
-    toast.error(t('t.liang-ci-shu-ru-de-mi-ma-bu-yi-zhi'))
-    return
-  }
-  userApi
-    .updatePassword({
-      password: resetPassword.value.newPassword,
-      email: userStore.userInfo.email,
-      captcha: resetPassword.value.captcha,
-    })
-    .then((response) => {
-      if (response.data.code === 200) {
-        toast.success(t('t.mi-ma-geng-xin-cheng-gong'))
-        resetPassword.value.newPassword = ''
-        resetPassword.value.confirmPassword = ''
-        resetPassword.value.captcha = ''
-        getCurrentUserInfo() // 刷新用户信息
-      } else {
-        toast.error(t('t.mi-ma-geng-xin-shi-bai') + response.data.msg)
-      }
-    })
-    .catch((error) => {
-      console.error('Error updating password:', error)
-      toast.error(t('t.mi-ma-geng-xin-shi-bai') + error.msg)
     })
 }
 

@@ -20,11 +20,11 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 import ScButton from '@/components/common/ScButton.vue'
 import { useI18n } from 'vue-i18n'
-import { useUserStore } from '@/stores/module/user/userStore'
+// import { useUserStore } from '@/stores/module/user/userStore'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 
 const { t } = useI18n()
-const userStore = useUserStore()
+// const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
 const isCurrentUser = computed(() => {

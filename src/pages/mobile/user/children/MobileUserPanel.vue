@@ -177,7 +177,6 @@ import Card from '@/components/common/Card.vue'
 import MobileUserHeader from '@/components/mobile/user/MobileUserHeader.vue'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useRoute, useRouter } from 'vue-router'
-import ScButton from '@/components/common/ScButton.vue'
 import { deepClone } from '@/utils/copy'
 
 const route = useRoute()

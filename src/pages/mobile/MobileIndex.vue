@@ -12,12 +12,11 @@
 </template>
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
 // import DevTools from '@/components/common/DevTools.vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useDeviceStore } from '@/stores/global/deviceStore'
 gsap.registerPlugin(ScrollTrigger)
 
 const containerRef = ref<HTMLElement | null>(null)
@@ -26,7 +25,6 @@ provide('refreshScroll', progress)
 provide('containerRef', containerRef)
 
 const route = useRoute()
-const router = useRouter()
 const routeName = ref('')
 
 onMounted(() => {

@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { ChevronLeft, Home } from 'lucide-vue-next'
 
 import ScButton from '@/components/common/ScButton.vue'
@@ -89,9 +89,9 @@ const routeBtns = ref([
 const activation = ref(t('nav.zhu-ye'))
 const userStore = useUserStore()
 const deviceStore = useDeviceStore()
-const isCurrentUser = computed(() => {
-  return !route.query.userId
-})
+// const isCurrentUser = computed(() => {
+//   return !route.query.userId
+// })
 
 const toPage = (btn: any) => {
   if (btn.path === route.path) return
