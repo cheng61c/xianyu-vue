@@ -45,24 +45,5 @@
 
 <script setup lang="ts">
 import { useThemeStore } from '@/stores/global/themeStore'
-import { watch } from 'vue'
 const themeStore = useThemeStore()
-
-// 初始化
-document.documentElement.setAttribute(
-  'data-theme',
-  themeStore.darkTheme ? 'dark' : 'light'
-)
-document.documentElement.classList.toggle('dark', themeStore.darkTheme)
-
-watch(
-  () => themeStore.darkTheme,
-  (newTheme) => {
-    document.documentElement.setAttribute(
-      'data-theme',
-      newTheme ? 'dark' : 'light'
-    )
-    document.documentElement.classList.toggle('dark', newTheme)
-  }
-)
 </script>

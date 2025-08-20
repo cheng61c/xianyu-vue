@@ -92,9 +92,18 @@ export function adjustColor(
 }
 
 // 使用示例
-console.log(adjustColor('#FFEE92', 0.8)) // 增加饱和度
-console.log(adjustColor('rgba(255,171,69,0.8)', 0.5, 0.1)) // 增加饱和度并稍微变暗
-console.log(adjustColor('invalid-color', 0.5)) // 原样返回 "invalid-color"
-console.log(adjustColor('rgb(300,0,0)', 0.5)) // 原样返回 "rgb(300,0,0)"（值超出范围）
-console.log(adjustColor('#abc', 0.3)) // 支持3位HEX
-console.log(adjustColor('#aabbcc', 0.3)) // 支持6位HEX
+// console.log(adjustColor('#FFEE92', 0.8)) // 增加饱和度
+// console.log(adjustColor('rgba(255,171,69,0.8)', 0.5, 0.1)) // 增加饱和度并稍微变暗
+// console.log(adjustColor('invalid-color', 0.5)) // 原样返回 "invalid-color"
+// console.log(adjustColor('rgb(300,0,0)', 0.5)) // 原样返回 "rgb(300,0,0)"（值超出范围）
+// console.log(adjustColor('#abc', 0.3)) // 支持3位HEX
+// console.log(adjustColor('#aabbcc', 0.3)) // 支持6位HEX
+
+/**
+ * 应用主题
+ * @param isDark 是否为暗色主题
+ */
+export function applyTheme(isDark: boolean) {
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light')
+  document.documentElement.classList.toggle('dark', isDark)
+}
