@@ -78,6 +78,7 @@ export const getPost = async (
   }
   const query: PostListQueryDto = {
     type: route.name == 'postList' ? 1 : 2,
+    orderType: postStore.orderType.toString(),
   }
 
   if (pid !== 0) {
@@ -115,10 +116,11 @@ export const search = (
   if (click) {
     postStore.postPage.page = 1
   }
-  postStore.searchText = key.trim()
+  postStore.searchText = key == '' ? '' : key.trim()
   postStore.isSearch = true
   const query: PostListQueryDto = {
     type: route.name == 'postList' ? 1 : 2,
+    orderType: postStore.orderType.toString(),
   }
   if (postStore.plateId && postStore.plateId !== 0) {
     query.plateId = postStore.plateId
@@ -127,7 +129,10 @@ export const search = (
   if (fileTypes && fileTypes != '0' && fileTypes.length > 0) {
     query.fileTypes = fileTypes
   }
-  query.title = postStore.searchText
+  if (postStore.searchText != '') {
+    query.title = postStore.searchText
+  }
+
   query.page = postStore.postPage.page
   query.limit = postStore.postPage.limit
   postApi.getPostList(query).then((response: Api) => {

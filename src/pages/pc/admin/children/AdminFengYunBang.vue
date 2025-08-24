@@ -33,7 +33,7 @@
                 <ScButton Border @click="editPlayer(item)">
                   {{ $t('b.bian-ji') }}
                 </ScButton>
-                <ScButton Border> 删除 </ScButton>
+                <ScButton Border @click="deletePlayer(item)"> 删除 </ScButton>
               </div>
             </td>
           </tr>
@@ -43,7 +43,7 @@
   </Card>
 
   <ScModal v-model="isOpen" offOverflow>
-    <Card class="max-h-[80vh] overflow-y-auto w-6xl">
+    <Card class="max-h-[80vh] overflow-y-auto w-5xl">
       <span class="text-xl">添加玩家</span>
 
       <div class="flex items-center gap-4">
@@ -99,8 +99,31 @@
       </div>
 
       <div class="flex justify-end mt-1 gap-4">
-        <ScButton @click="addPlayer" Border> 确认添加 </ScButton>
+        <ScButton @click="addPlayer" Border>
+          {{ forms.id != 0 ? '确认修改' : '确认添加' }}
+        </ScButton>
         <ScButton @click="isOpen = false" Border> 取消 </ScButton>
+      </div>
+    </Card>
+  </ScModal>
+
+  <ScModal v-model="isOpenDel" offOverflow>
+    <Card class="max-h-[80vh] overflow-y-auto w-2xl">
+      <span class="text-xl">删除</span>
+
+      <div class="flex items-center gap-4">
+        <span> {{ $t('d.ming-cheng') }} </span>
+        <span class="font-bold"> {{ forms.title }} </span>
+      </div>
+
+      <div class="flex justify-end mt-1 gap-4">
+        <ScButton
+          @click="deletePlayer()"
+          Border
+          class="text-error border-error">
+          确认删除
+        </ScButton>
+        <ScButton @click="isOpenDel = false" Border> 取消 </ScButton>
       </div>
     </Card>
   </ScModal>
@@ -117,6 +140,7 @@ import { useFengYunBangStore } from '@/stores/module/fengyunbang/FengYunBangStor
 import {
   addFengYunBang,
   getFengYunBangAll,
+  deleteFengYunBang,
 } from '@/stores/module/fengyunbang/service'
 import type { FengYunBangDto } from '@/types/FengYunBang'
 import { onMounted, onBeforeUnmount, ref } from 'vue'
@@ -129,6 +153,7 @@ const toast = useToast()
 const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
 const isOpen = ref(false)
+const isOpenDel = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploadLoading = ref(false)
 
@@ -143,6 +168,12 @@ const qid = ref('')
 const addPlayer = () => {
   if (!isOpen.value) {
     isOpen.value = true
+    forms.value = {
+      id: 0,
+      title: '',
+      headImg: '',
+      content: '',
+    }
     return
   }
   if (qid.value !== '') {
@@ -157,6 +188,33 @@ const addPlayer = () => {
     }
     qid.value = ''
   })
+}
+
+const deletePlayer = (item?: FengYunBangDto) => {
+  if (item) {
+    forms.value = {
+      id: item.id,
+      title: item.title,
+      headImg: item.headImg,
+      content: item.content || '',
+    }
+    isOpenDel.value = true
+    return
+  }
+  console.log('forms.value.id', forms.value.id)
+
+  if (forms.value.id) {
+    deleteFengYunBang(forms.value.id, t, () => {
+      forms.value = {
+        id: 0,
+        title: '',
+        headImg: '',
+        content: '',
+      }
+      qid.value = ''
+      isOpenDel.value = false
+    })
+  }
 }
 
 const getQQAvatar = (qq: string) => {

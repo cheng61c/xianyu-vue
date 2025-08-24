@@ -98,7 +98,7 @@
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
-// import EChartsWrapper from '@/components/common/EChartsWrapper.vue'
+import EChartsWrapper from '@/components/common/EChartsWrapper.vue'
 import { getPanelInfo } from '@/stores/module/admin/service'
 import type { AdminPanelInfo } from '@/types/PanelInfo'
 import { onMounted, ref } from 'vue'

@@ -47,6 +47,16 @@ export const usePostStore = defineStore('post', {
     /** 页面按钮当前位置 */
     buttonBottom: 60,
 
+    /** 排序方式 */
+    orderType: 0,
+    /** 排序选项 */
+    orderTypeOptions: [
+      { label: '点赞', value: 1 },
+      { label: '查看数', value: 2 },
+      { label: '热度', value: 3 },
+      { label: '发布时间', value: 4 },
+    ],
+
     /** 当前帖子详情信息 */
     postData: {} as Post | null,
     /** 当前帖子目录列表 */

@@ -16,22 +16,6 @@
         <ScButton @click="handleSearch" Border>
           {{ $t('b.sou-suo') }}
         </ScButton>
-        <PopupBox
-          v-if="searchType == 2 && deviceStore.device == 1"
-          ref="popupBox"
-          position="bottom-left"
-          Border
-          buttonText="筛选">
-          <template #default="{ close }">
-            <Card noPg class="p-2 w-22 items-center">
-              <ScButtonSelector
-                col
-                :options="fileTypeOptions"
-                v-model="fileType"
-                @click="close()" />
-            </Card>
-          </template>
-        </PopupBox>
       </div>
 
       <div
@@ -40,20 +24,28 @@
         <div class="flex-shrink-0">{{ $t('b.shai-xuan-lei-xing') }}</div>
         <ScButtonSelector :options="fileTypeOptions" v-model="fileType" />
       </div>
+
+      <div
+        class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
+        <div class="flex-shrink-0">排序方式:</div>
+        <ScButtonSelector
+          :options="orderTypeOptions"
+          v-model="postStore.orderType" />
+      </div>
     </div>
   </Card>
 </template>
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
-import { defineProps, ref, watch } from 'vue'
+import { computed, defineProps, ref, watch } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
 import { useI18n } from 'vue-i18n'
 import { getFileTypeOptions } from '@/stores/module/post/service'
 import { useDeviceStore } from '@/stores/global/deviceStore'
-import PopupBox from '@/components/common/PopupBox.vue'
+import { usePostStore } from '@/stores/module/post/postStore'
 
 const props = defineProps({
   modelValue: {
@@ -68,8 +60,10 @@ const props = defineProps({
 
 const { t } = useI18n()
 const deviceStore = useDeviceStore()
+const postStore = usePostStore()
 const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
+const orderTypeOptions = computed(() => postStore.orderTypeOptions)
 
 const emit = defineEmits<{
   (e: 'search', value: string, click: boolean, type: string): void
@@ -92,7 +86,12 @@ watch(searchText, (val) => {
 watch(fileType, () => {
   handleSearch()
 })
-
+watch(
+  () => postStore.orderType,
+  () => {
+    handleSearch()
+  }
+)
 const handleSearch = () => {
   emit('search', String(searchText.value), true, String(fileType.value))
 }

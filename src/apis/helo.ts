@@ -16,3 +16,6 @@ export const createFengYunBang = (data: FengYunBangDto) => {
 export const updateFengYunBang = (data: FengYunBangDto) => {
   return request.put('/hall-of-fame', data)
 }
+export const deleteFengYunBang = (id: number) => {
+  return request.delete(`/hall-of-fame/${id}`)
+}

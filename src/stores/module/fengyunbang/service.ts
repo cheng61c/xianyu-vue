@@ -57,3 +57,15 @@ export const addFengYunBang = (
     }
   })
 }
+
+export const deleteFengYunBang = (id: number, _t: any, close?: () => void) => {
+  heloApi.deleteFengYunBang(id).then(async (res: any) => {
+    if (res.data.code === 200) {
+      toast.success('删除成功')
+      await getFengYunBangAll()
+      if (close) {
+        close()
+      }
+    }
+  })
+}

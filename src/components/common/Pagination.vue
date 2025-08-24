@@ -79,7 +79,7 @@
                     type="number"
                     v-model="inputPage"
                     class="w-20 text-center border border-gray-content/50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="{{ $t('b.ye-ma') }}"
+                    :placeholder="$t('b.ye-ma')"
                     @keydown.enter="(handlePageChange(inputPage), close())"
                     @keydown.esc="close()"
                     min="1"

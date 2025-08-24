@@ -23,20 +23,43 @@
           v-model="postStore.searchText"
           class="flex-1"
           :placeholder="'搜索帖子标题'" />
-        <ScButton :icon="Search" noPd @click="handleSearch"> 搜索 </ScButton>
+        <ScButton
+          :icon="Search"
+          noPd
+          @click="handleSearch(postStore.searchText, true, String(fileType))">
+          搜索
+        </ScButton>
 
         <PopupBox
           v-if="route.name == 'modList'"
           ref="popupBox"
           position="bottom-left"
           :icon="Funnel"
-          className="mt-1">
+          className="mt-1 py-1.5 px-1"
+          noPd>
           <template #default="{ close }">
             <Card noPg class="p-2 w-22 items-center">
               <ScButtonSelector
                 col
                 :options="fileTypeOptions"
                 v-model="fileType"
+                @click="close()" />
+            </Card>
+          </template>
+        </PopupBox>
+
+        <PopupBox
+          ref="popupBox"
+          position="bottom-left"
+          :icon="ArrowDownWideNarrow"
+          className="mt-1 py-1.5 px-1"
+          noPd>
+          <template #default="{ close }">
+            <Card noPg class="p-2 w-22 items-center">
+              <ScButtonSelector
+                col
+                :options="orderTypeOptions"
+                v-model="postStore.orderType"
                 @click="close()" />
             </Card>
           </template>
@@ -98,7 +121,14 @@ import {
   search,
 } from '@/stores/module/post/service'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
-import { Funnel, Plus, Search, ArrowUpToLine, X } from 'lucide-vue-next'
+import {
+  Funnel,
+  Plus,
+  Search,
+  ArrowUpToLine,
+  X,
+  ArrowDownWideNarrow,
+} from 'lucide-vue-next'
 import Pagination from '@/components/common/Pagination.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
 import Card from '@/components/common/Card.vue'
@@ -119,6 +149,7 @@ const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
 const show = ref(false) // 显示置顶公告
 const announcementStore = useAnnouncementStore()
+const orderTypeOptions = computed(() => postStore.orderTypeOptions)
 
 const announcementPostData = ref<Post | null>(null)
 
@@ -215,6 +246,8 @@ const handleSearch = (
   click: boolean,
   fileTypes: string
 ) => {
+  console.log('searchText', searchText)
+
   postStore.searchText = searchText
   postStore.isSearch = true
   postStore.postPage.page = 1
@@ -240,6 +273,12 @@ watch(
 watch(fileType, () => {
   search(postStore.searchText, true, String(fileType.value), route)
 })
+watch(
+  () => postStore.orderType,
+  () => {
+    search(postStore.searchText, true, String(fileType.value), route)
+  }
+)
 
 watch(progress, () => {
   if (progress.value > 0.2) {

@@ -14,4 +14,10 @@
     ],
     "description": "Vue 3 component with script setup",
   },
+
+  "消息弹窗": {
+    "prefix": "toast",
+    "body": ["const toast = useToast()"],
+    "description": "const toast = useToast()",
+  },
 }

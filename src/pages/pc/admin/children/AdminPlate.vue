@@ -16,7 +16,7 @@
         <!-- head -->
         <thead>
           <tr>
-            <th>ID</th>
+            <th>序号</th>
             <th>{{ $t('b.ming-cheng') }}</th>
             <th>{{ $t('b.tie-zi-shu') }}</th>
             <th>{{ $t('f.zhuang-tai') }}</th>
@@ -25,7 +25,7 @@
         </thead>
         <tbody>
           <tr v-for="(plate, index) in plateList" :key="plate.id">
-            <th>{{ plate.id }}</th>
+            <th>{{ plate.sort }}</th>
             <td>
               {{ plate.name }}
             </td>
@@ -34,11 +34,14 @@
             </td>
 
             <td>
-              <div class="flex">
+              <div class="flex gap-2">
                 <ScTag
                   :status="plate.disabled === 0 ? 'success' : 'error'"
                   size="sm">
                   {{ plate.disabled === 0 ? '启用' : '禁用' }}
+                </ScTag>
+                <ScTag v-if="plate.admin" status="info" size="sm">
+                  管理员
                 </ScTag>
               </div>
             </td>
@@ -47,8 +50,17 @@
                 <ScButton @click="updatePlate(index)" Border>
                   {{ $t('b.bian-ji') }}
                 </ScButton>
-                <ScButton @click="deletePlate(index)" Border>
-                  {{ $t('b.jin-yong') }}
+                <ScButton
+                  @click="deletePlate(index)"
+                  :class="{
+                    'text-error border-error': plateList[index].disabled == 0,
+                    'text-success border-success':
+                      plateList[index].disabled == 1,
+                  }"
+                  Border>
+                  {{
+                    plateList[index].disabled === 0 ? $t('b.jin-yong') : '启用'
+                  }}
                 </ScButton>
               </div>
             </td>
@@ -60,7 +72,7 @@
 
   <EmptyState
     v-else
-    :title="$t('t.zan-wu-tie-zi')"
+    :title="'暂无数据'"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
@@ -79,6 +91,24 @@
       </div>
 
       <div class="flex items-center gap-4">
+        <span> 排序 </span>
+        <ScInput
+          v-model="currentPlateBody.sort"
+          :placeholder="'排序'"
+          type="number"
+          class="m-2" />
+      </div>
+
+      <div class="flex items-center gap-4">
+        <span> 仅允许管理员发布 </span>
+        <ScInput
+          v-model="currentPlateBody.admin"
+          :placeholder="'仅允许管理员发布'"
+          type="number"
+          class="m-2" />
+      </div>
+
+      <div class="flex items-center gap-4">
         <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="currentPlateBody.name"
@@ -91,7 +121,7 @@
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
-          placeholder="t('d.qing-xuan-ze-ban-kuai-lei-xing')"
+          :placeholder="t('d.qing-xuan-ze-ban-kuai-lei-xing')"
           class="m-2 w-full max-w-xs" />
       </div>
 
@@ -123,7 +153,7 @@
         <span> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="newPlateBody.name"
-          placeholder="{{ $t('d.ban-kuai-ming-cheng') }}"
+          :placeholder="$t('d.ban-kuai-ming-cheng')"
           class="m-2" />
       </div>
       <div class="flex items-center gap-4">
@@ -148,27 +178,19 @@
 
   <ScModal v-model="deletePlateModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">{{ $t('d.jin-yong-jiao-se') }}</div>
-      <div class="text-warning mb-4">
-        {{
-          $t(
-            'd.shan-chu-ban-kuai-hou-gai-ban-kuai-xia-suo-you-tie-zi-jiang-yi-bing-shan-chu-ban-kuai-xia-de-wen-jian-ye-wu-fa-xia-zai'
-          )
-        }}
-      </div>
-      <div class="text-error mb-4">
-        {{
-          $t(
-            'd.shan-chu-ban-kuai-shi-bu-ke-ni-de-cao-zuo-shan-chu-hou-jiang-wu-fa-hui-fu'
-          )
-        }}
-      </div>
+      <div class="text-xl mb-4">板块状态</div>
+      <div class="mb-4">禁用后板块下所有帖子将被隐藏</div>
 
       <div class="flex gap-4 justify-end">
         <ScButton
-          class="px-4 border border-error text-error"
+          class="px-4 border border-error"
+          :class="{
+            'text-error border-error': plateList[currentPlate].disabled == 0,
+            'text-success border-success':
+              plateList[currentPlate].disabled == 1,
+          }"
           @click="deletePlate(currentPlate)">
-          {{ $t('b.que-ren-shan-chu') }}
+          {{ plateList[currentPlate].disabled == 0 ? '禁用' : '启用' }}
         </ScButton>
 
         <ScButton class="px-4" @click="deletePlateModal = false" Border>
@@ -195,8 +217,10 @@ import ScModal from '@/components/common/ScModal.vue'
 import type { Role } from '@/types/Role'
 import type { Plate, PlateDto } from '@/types/Plate'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 const { t } = useI18n()
+const toast = useToast()
 
 const plateBar = ref<number | { value: number; label: string }>(0) // 板块ID，0为全部板块
 const plateBarOptions = ref([
@@ -223,6 +247,8 @@ const currentPlateBody = ref<Plate>({
   /** 板块类型，1交流板块，2文件板块 */
   type: 1,
   disabled: 0,
+  sort: 0,
+  admin: 0,
 })
 
 const getPlateList = () => {
@@ -248,15 +274,20 @@ const updatePlate = (index: number) => {
   if (!updateModal.value) {
     currentPlate.value = index // 设置当前操作的帖子
     currentPlateBody.value.id = item.id
-    currentPlateBody.value.name = ''
+    currentPlateBody.value.name = item.name || ''
     currentPlateBody.value.description = item.description || ''
     currentPlateBody.value.type = item.type
     currentPlateBody.value.disabled = item.disabled
+    currentPlateBody.value.sort = item.sort
+    currentPlateBody.value.admin = item.admin
     updateModal.value = true
     return
   }
+
   const body: PlateDto = {
     id: item.id,
+    sort: currentPlateBody.value.sort,
+    admin: currentPlateBody.value.admin,
   }
   if (currentPlateBody.value.name.trim() !== '') {
     body.name = currentPlateBody.value.name // 如果新名称不为空，则使用新名称
@@ -273,10 +304,12 @@ const updatePlate = (index: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPlateList()
+        toast.success('操作成功')
         updateModal.value = false
       }
     })
     .catch((error) => {
+      toast.error('操作失败' + error.msg)
       console.error('请求失败:', error.msg)
     })
 }
@@ -304,10 +337,12 @@ const addPlate = () => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPlateList()
+        toast.success('操作成功')
         addPlateModal.value = false // 关闭模态框
       }
     })
     .catch((error) => {
+      toast.error('操作失败' + error.msg)
       console.error('请求失败:', error.msg)
     })
 }
@@ -328,11 +363,13 @@ const deletePlate = (index: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPlateList()
+        toast.success('操作成功')
         deletePlateModal.value = false // 关闭模态框
       }
     })
     .catch((error) => {
       console.error('请求失败:', error.msg)
+      toast.error('操作失败' + error.msg)
     })
 }
 

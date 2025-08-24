@@ -8,6 +8,8 @@ export declare interface Plate {
   /** 板块类型，1交流板块，2文件板块 */
   type: number
   disabled: number
+  sort: number
+  admin: number
 }
 
 export declare interface PlateDto {
@@ -15,6 +17,8 @@ export declare interface PlateDto {
   name?: string
   description?: string
   type?: number
+  sort?: number
+  admin?: number
 }
 
 export declare interface PlateDisabledDto {

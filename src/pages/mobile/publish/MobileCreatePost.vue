@@ -140,7 +140,8 @@
           :activation="postData.plateId === b.id"
           @click="setPlate(b)"
           :icon="b.type === 1 ? FileText : Package"
-          Border>
+          Border
+          :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
           {{ b.name }}
         </ScButton>
       </div>
