@@ -1,7 +1,7 @@
 export declare interface PostListQueryDto {
   page?: number
   limit?: number
-  orderType?: string
+  orderType?: number
   plateId?: number
   title?: string
   creatorId?: number

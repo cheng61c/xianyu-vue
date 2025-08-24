@@ -51,6 +51,7 @@ export const usePostStore = defineStore('post', {
     orderType: 0,
     /** 排序选项 */
     orderTypeOptions: [
+      { label: '全部', value: 0 },
       { label: '点赞', value: 1 },
       { label: '查看数', value: 2 },
       { label: '热度', value: 3 },

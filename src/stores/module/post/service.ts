@@ -78,9 +78,11 @@ export const getPost = async (
   }
   const query: PostListQueryDto = {
     type: route.name == 'postList' ? 1 : 2,
-    orderType: postStore.orderType.toString(),
   }
 
+  if (postStore.orderType !== 0) {
+    query.orderType = postStore.orderType
+  }
   if (pid !== 0) {
     query.plateId = pid
   }
@@ -120,8 +122,12 @@ export const search = (
   postStore.isSearch = true
   const query: PostListQueryDto = {
     type: route.name == 'postList' ? 1 : 2,
-    orderType: postStore.orderType.toString(),
   }
+
+  if (postStore.orderType !== 0) {
+    query.orderType = postStore.orderType
+  }
+
   if (postStore.plateId && postStore.plateId !== 0) {
     query.plateId = postStore.plateId
   }
