@@ -132,6 +132,7 @@ import { useToast } from 'vue-toastification'
 
 import { useI18n } from 'vue-i18n'
 import { useDeviceStore } from '@/stores/global/deviceStore'
+import type { UserType } from '@/types'
 const { t } = useI18n()
 const deviceStore = useDeviceStore()
 const toast = useToast()
@@ -146,6 +147,10 @@ const props = defineProps({
   isEdit: {
     type: Boolean,
     default: false,
+  },
+  userInfo: {
+    type: Object as () => UserType,
+    default: () => ({}),
   },
 })
 

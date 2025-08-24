@@ -635,12 +635,12 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-italic/-/extension-italic-2.24.0.tgz#ce928b98d45e1db26e45fe3c20256079a081175e"
   integrity sha512-IW8TxvGTdi3FPDAdVkJCdMXUwwIagjrZO0qz0eTnM6nSX9hHXYrMQ3LyKHaXD5HTRBMLIqaokk8wQPkIMX4ruA==
 
-"@tiptap/extension-link@^2.11.7":
-  version "2.24.0"
-  resolved "https://registry.npmjs.org/@tiptap/extension-link/-/extension-link-2.24.0.tgz#9f46589919c53fdff9c6405bfabdeff4dffa87c8"
-  integrity sha512-J8kQI7xfT0Qaki1DeFhvZD1hWxkXmNmVzGRRz9ComrqIevaoXvZjI9aXyK2NkqjJB2xUxxu9JgcJIxUXbbBzfw==
+"@tiptap/extension-link@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.npmjs.org/@tiptap/extension-link/-/extension-link-3.3.0.tgz#c08ba82be086f85fe799f338a28444df32f57b1d"
+  integrity sha512-bQa8KHj5TFnZn8bCdpqDQUzsdsSt/VahZ9ZxvGgv3szyKrbprvugmXbSmU1m0CwLegt/66OcO/r+BdUU+yciAw==
   dependencies:
-    linkifyjs "^4.2.0"
+    linkifyjs "^4.3.2"
 
 "@tiptap/extension-list-item@^2.24.0":
   version "2.24.0"
@@ -1792,10 +1792,10 @@ linkify-it@^5.0.0:
   dependencies:
     uc.micro "^2.0.0"
 
-linkifyjs@^4.2.0:
-  version "4.3.1"
-  resolved "https://registry.npmjs.org/linkifyjs/-/linkifyjs-4.3.1.tgz#1f246ebf4be040002accd1f4535b6af7c7e37898"
-  integrity sha512-DRSlB9DKVW04c4SUdGvKK5FR6be45lTU9M76JnngqPeeGDqPwYc0zdUErtsNVMtxPXgUWV4HbXbnC4sNyBxkYg==
+linkifyjs@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.npmjs.org/linkifyjs/-/linkifyjs-4.3.2.tgz#d97eb45419aabf97ceb4b05a7adeb7b8c8ade2b1"
+  integrity sha512-NT1CJtq3hHIreOianA8aSXn6Cw0JzYOuDQbOrSPe7gqFnCpKP++MQe3ODgO3oh2GJFORkAAdqredOa60z63GbA==
 
 lowlight@^3.3.0:
   version "3.3.0"

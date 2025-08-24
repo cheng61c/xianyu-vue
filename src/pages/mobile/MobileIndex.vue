@@ -8,15 +8,11 @@
     </div>
   </div>
   <PopUpAnnouncement />
-  <!-- <div class="absolute top-1"><DevTools /></div> -->
 </template>
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
-import { useThemeStore } from '@/stores/global/themeStore'
-import { applyTheme } from '@/utils/color'
-// import DevTools from '@/components/common/DevTools.vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
@@ -55,15 +51,6 @@ watch(
   () => route.path,
   (newPath) => {
     routeName.value = newPath
-  },
-  { immediate: true }
-)
-
-const themeStore = useThemeStore()
-watch(
-  () => themeStore.darkTheme,
-  (newTheme) => {
-    applyTheme(newTheme)
   },
   { immediate: true }
 )

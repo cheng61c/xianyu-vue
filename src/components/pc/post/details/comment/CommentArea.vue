@@ -50,12 +50,20 @@
             :src="comment.author.headImg"
             :alt="comment.author.nickname"
             :size="40"
-            class="flex-shrink-0" />
+            class="flex-shrink-0"
+            @click.stop="openImg(comment.author.headImg)" />
 
           <!-- 评论内容 -->
           <div class="flex-1 group/one">
             <div class="flex items-center mb-1">
-              <span class="font-medium mr-2">
+              <span
+                class="font-medium mr-2"
+                @click.stop="
+                  $router.push({
+                    name: 'userPanel',
+                    query: { userId: comment.author.id },
+                  })
+                ">
                 {{ comment.author.nickname }}
               </span>
 
@@ -131,13 +139,19 @@
                     :src="reply.author.headImg"
                     :alt="reply.author.nickname"
                     :size="32"
-                    class="flex-shrink-0" />
+                    class="flex-shrink-0"
+                    @click.stop="openImg(reply.author.headImg)" />
 
                   <div class="flex-1">
                     <div class="flex items-center mb-1">
                       <span
                         class="font-medium mr-2"
-                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
+                        @click="
+                          $router.push({
+                            name: 'userPanel',
+                            query: { userId: reply.author.id },
+                          })
+                        ">
                         {{ reply.author.nickname }}
                       </span>
                       <ScTag
@@ -176,7 +190,15 @@
                     </div>
 
                     <div class="mb-1">
-                      <span v-if="reply.toAuthor" class="text-active mr-2">
+                      <span
+                        v-if="reply.toAuthor"
+                        class="text-active mr-2"
+                        @click.stop="
+                          $router.push({
+                            name: 'userPanel',
+                            query: { userId: reply.toAuthor.id },
+                          })
+                        ">
                         @{{ reply.toAuthor.nickname }}
                       </span>
                       <span

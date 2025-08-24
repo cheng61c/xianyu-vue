@@ -9,9 +9,11 @@ const lowlight = createLowlight({
 const configStore = useConfigStore()
 
 export const htmlToText = (html: string): string => {
-  if (!html || html == '') return ''
+  if (!html || html === '') return ''
   return String(html)
     .replace(/<img[^>]*>/gi, `[图片]`) // 替换所有 <img> 标签为 "[图片]"
+    .replace(/<video[^>]*>.*?<\/video>/gis, `[视频]`) // 替换所有 <video> 标签为 "[视频]"
+    .replace(/<a\s+[^>]*href=['"][^'"]+['"][^>]*>.*?<\/a>/gis, `[链接]`) // 替换所有 <a> 标签为 "[链接]"
     .replace(/<[^>]+>/g, '') // 移除其他所有 HTML 标签
 }
 

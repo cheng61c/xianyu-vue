@@ -1,6 +1,16 @@
 <template>
-  <UserHeader @updateUserInfo="getPanel" :isEdit="isCurrentUser" />
-  <Card class="stats max-w-6xl min-w-4xl w-full" noCol noPg>
+  <template v-if="userStore.isLogin || !isCurrentUser">
+    <UserHeader
+      @updateUserInfo="getCurrentUserInfo"
+      :isEdit="isCurrentUser"
+      :userInfo="userInfo" />
+  </template>
+
+  <Card
+    v-if="isCurrentUser"
+    class="stats max-w-6xl min-w-4xl w-full"
+    noCol
+    noPg>
     <div
       class="stat cursor-pointer"
       @click="$router.push({ name: 'userPost' })">
@@ -89,6 +99,8 @@ import Card from '@/components/common/Card.vue'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
 import { getUserPanel } from '@/stores/module/user/service'
 import { useRoute } from 'vue-router'
+import { userApi } from '@/apis'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
@@ -96,6 +108,7 @@ const route = useRoute()
 const isCurrentUser = computed(() => {
   return !route.query.userId
 })
+const loading = ref(true)
 
 // 个人信息
 const posts = ref({
@@ -121,6 +134,25 @@ const servers = ref({
   data: [],
   count: 0,
 })
+
+const getCurrentUserInfo = () => {
+  userApi
+    .getCurrentUser()
+    .then((response) => {
+      const data = response.data.data as UserType
+      data.headImg = formatLink(data.headImg)
+      data.signature = formatImageSrcsInHtml(data.signature)
+      userInfo.value = data
+      console.log(response.data.data)
+      loading.value = false
+    })
+    .catch((error) => {
+      console.error('Error fetching user data:', error)
+      userStore.userInfo = {} as UserType
+      userStore.token = ''
+      userStore.isLogin = false
+    })
+}
 
 const getPanel = async (userId: number) => {
   const panel = await getUserPanel(userId)

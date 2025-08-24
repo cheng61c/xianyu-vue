@@ -134,6 +134,13 @@
   content: '#H6';
 }
 
+/* link styles */
+
+.tiptap a {
+  color: blue;
+  text-decoration: underline;
+}
+
 .tiptap code {
   background-color: color-mix(in srgb, skyblue 30%, white);
   border-radius: 0.4rem;

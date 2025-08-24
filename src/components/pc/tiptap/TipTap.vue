@@ -27,6 +27,8 @@ import {
   Superscript,
   List,
   ListOrdered,
+  Link2,
+  VideoIcon,
 } from 'lucide-vue-next'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
@@ -37,6 +39,9 @@ import Strike from '@tiptap/extension-strike'
 import UnderlineE from '@tiptap/extension-underline'
 import BulletList from '@tiptap/extension-bullet-list'
 import CustomImageExtension from '@/extensions/CustomImageExtension'
+import Link from '@tiptap/extension-link'
+import Paragraph from '@tiptap/extension-paragraph'
+import Document from '@tiptap/extension-document'
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
 
 import { createLowlight } from 'lowlight'
@@ -51,6 +56,8 @@ import { HeadingWithId } from '@/extensions/HeadingWithId'
 
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import { useI18n } from 'vue-i18n'
+import { Video } from '@/extensions/video'
+import { getBili } from '@/apis/bili'
 const { t } = useI18n()
 
 const deviceStore = useDeviceStore()
@@ -125,6 +132,8 @@ const dataTip = {
   OrderedList: t('tip.you-xu-lie-biao-keyboardshortcuto', [keyboardShortcut]),
   BulletList: t('tip.wu-xu-lie-biao-keyboardshortcutl', [keyboardShortcut]),
   Image: t('tip.cha-ru-tu-pian-keyboardshortcutshifti', [keyboardShortcut]),
+  Link: '插入链接',
+  Video: '插入视频',
 }
 
 const contentModel = useVModel(props, 'modelValue', emit)
@@ -173,6 +182,13 @@ onMounted(() => {
           class: 'my-custom-class',
         },
       }),
+      Link.configure({
+        openOnClick: false,
+        defaultProtocol: 'https',
+      }),
+      Video,
+      Document,
+      Paragraph,
       UnderlineE,
       SubscriptE,
       SuperscriptE,
@@ -202,19 +218,6 @@ const options = [
   { value: 5, label: 'h5' },
   { value: 6, label: 'h6' },
 ]
-// function copyToClipboard() {
-//   if (editor.value) {
-//     const content = editor.value.getHTML()
-//     navigator.clipboard
-//       .writeText(content)
-//       .then(() => {
-//         console.log('Content copied to clipboard')
-//       })
-//       .catch((err) => {
-//         console.error('Failed to copy content: ', err)
-//       })
-//   }
-// }
 
 const openImagePopup = ref(false)
 function togglePopup(value?: string) {
@@ -232,6 +235,45 @@ function addImg(url: string) {
     editor.value.chain().focus().setImage({ src: url }).run()
   }
 }
+
+const insertLink = () => {
+  if (editor.value) {
+    const previousUrl = editor.value.getAttributes('link').href
+    if (editor.value.state.selection.empty && !previousUrl) {
+      alert('请先选中一些文本再插入链接')
+      return
+    }
+    const url = prompt('将文本设置为链接：', previousUrl)
+    if (url) {
+      editor.value.chain().focus().setLink({ href: url }).run()
+    } else {
+      editor.value.chain().focus().unsetLink().run()
+    }
+  }
+}
+
+const addVideo = async () => {
+  const url = prompt('请输入B站视频链接:')
+  if (!url) {
+    return
+  }
+
+  // 链接转码，去除参数等
+  const cleanUrl = encodeURI(url.trim().split('?')[0])
+  getBili(cleanUrl).then((res) => {
+    const bil = res.data.data
+    console.log(res)
+
+    if (bil && bil.formats && bil.formats.length > 0) {
+      const videoUrl = bil.formats[0].videoUrl
+      if (editor.value) {
+        editor.value.chain().focus().setVideo({ src: videoUrl }).run()
+      }
+    } else {
+      alert('无法获取视频信息，请检查URL是否正确')
+    }
+  })
+}
 </script>
 
 <template>
@@ -242,6 +284,7 @@ function addImg(url: string) {
     @click="expanded = !expanded">
     {{ expanded ? '收起工具栏' : '展开工具栏' }}
   </ScButton>
+
   <div class="h-full w-full overflow-hidden rounded-t-lg p-1">
     <div
       class="w-full max-h-[95dvh] bg-background"
@@ -514,10 +557,36 @@ function addImg(url: string) {
         </ScButton>
         <ScDivider vertical />
 
+        <!-- 链接 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="insertLink"
+          hoverable
+          :activation="editor?.isActive('link')"
+          :class="btnClass"
+          :data-tip="dataTip.Link"
+          noPd>
+          <Link2 />
+        </ScButton>
+
         <!-- 图片 -->
         <div :class="btnClass" :data-tip="dataTip.Image">
           <TipTapUploadImage @addImg="addImg" />
         </div>
+
+        <!-- 视频 -->
+        <ScButton
+          :shadow="false"
+          size="small"
+          @click="addVideo"
+          hoverable
+          :activation="editor?.isActive('video')"
+          :class="btnClass"
+          :data-tip="dataTip.Video"
+          noPd>
+          <VideoIcon />
+        </ScButton>
 
         <!-- 代码块 -->
         <ScButton
