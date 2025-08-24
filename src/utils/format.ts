@@ -24,11 +24,27 @@ export const formatTime = (value: string | number | Date) => {
   if (value instanceof Date) {
     date = value
   }
-  // 如果是纯数字字符串（时间戳），转换为数字
-  else if (typeof value === 'string' && /^\d+$/.test(value)) {
-    date = new Date(parseInt(value, 10))
+  // 如果是数字或数字字符串，需要判断是秒还是毫秒时间戳
+  else if (
+    typeof value === 'number' ||
+    (typeof value === 'string' && /^\d+$/.test(value))
+  ) {
+    const timestamp = typeof value === 'number' ? value : parseInt(value, 10)
+
+    // 判断时间戳是秒还是毫秒
+    // 通常，13位数字是毫秒时间戳，10位数字是秒时间戳
+    if (timestamp.toString().length === 10) {
+      // 10位数字，秒时间戳，需要乘以1000转换为毫秒
+      date = new Date(timestamp * 1000)
+    } else if (timestamp.toString().length === 13) {
+      // 13位数字，毫秒时间戳，直接使用
+      date = new Date(timestamp)
+    } else {
+      // 其他长度的数字，尝试直接转换，如果失败则返回无效日期
+      date = new Date(timestamp)
+    }
   }
-  // 其他情况（ISO 字符串或数字时间戳），直接传给 Date 构造函数
+  // 其他情况（ISO 字符串），直接传给 Date 构造函数
   else {
     date = new Date(value)
   }

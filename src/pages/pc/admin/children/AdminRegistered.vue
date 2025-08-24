@@ -1,6 +1,6 @@
 <template>
   <Card class="mb-4">
-    <h1 class="text-lg font-bold"></h1>
+    <h1 class="text-lg font-bold">后台注册</h1>
   </Card>
   <Card class="mb-4">
     <div class="flex gap-4 items-center">
