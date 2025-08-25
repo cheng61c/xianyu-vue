@@ -270,7 +270,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { RotateCcw, ArchiveX, Lock } from 'lucide-vue-next'
+import { RotateCcw, ArchiveX } from 'lucide-vue-next'
 import Dropdown from '@/components/common/ScSelector.vue'
 import Card from '@/components/common/Card.vue'
 import ScInput from '@/components/common/ScInput.vue'
