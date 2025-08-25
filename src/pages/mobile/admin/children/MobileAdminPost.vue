@@ -1,15 +1,14 @@
 <template>
   <Card class="mb-4">
-    <div class="flex gap-4">
+    <div class="flex gap-2">
       <Dropdown
         v-model="searchTypeValue"
         :options="searchTypeoptions"
         :placeholder="$t('b.sou-suo-biao-ti-he-nei-rong')"
         class="w-40" />
-      <ScInput
-        v-model="searchPostValue"
-        :placeholder="$t('b.sou-suo')"
-        class="w-xs" />
+      <ScInput v-model="searchPostValue" :placeholder="$t('b.sou-suo')" />
+    </div>
+    <div class="flex gap-2">
       <ScButton class="px-4" Border @click="search">
         {{ $t('b.sou-suo') }}
       </ScButton>
@@ -17,7 +16,7 @@
         {{ $t('b.shua-xin') }}
       </ScButton>
     </div>
-    <div class="flex gap-4">
+    <div class="flex gap-2">
       <label class="flex items-center gap-2 w-full">
         <span>{{ $t('b.ban-kuai') }}</span>
         <Dropdown
@@ -35,7 +34,8 @@
           :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
-
+    </div>
+    <div class="flex flex-wrap gap-2">
       <label class="flex items-center gap-2 w-full">
         <span>{{ $t('d.shi-fou-zhi-ding') }}</span>
         <Dropdown

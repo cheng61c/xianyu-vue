@@ -133,17 +133,44 @@
 
           <span>:</span>
         </label>
-        <ScButton
-          v-for="b in plateList"
-          :key="b.id"
-          class="px-4 py-1 text-sm"
-          :activation="postData.plateId === b.id"
-          @click="setPlate(b)"
-          :icon="b.type === 1 ? FileText : Package"
-          Border
-          :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
-          {{ b.name }}
-        </ScButton>
+
+        <div class="flex flex-wrap gap-2 w-full pl-2">
+          <label
+            class="w-24 flex justify-between items-center tooltip tooltip-right">
+            <span class="flex items-center gap-1">交流板块 :</span>
+          </label>
+          <template v-for="b in plateList" :key="`post-${b.id}`">
+            <ScButton
+              v-if="b.type === 1"
+              class="px-4 py-1 text-sm"
+              :activation="postData.plateId === b.id"
+              @click="setPlate(b)"
+              :icon="FileText"
+              Border
+              :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
+              {{ b.name }}
+            </ScButton>
+          </template>
+        </div>
+
+        <div class="flex flex-wrap gap-2 w-full pl-2">
+          <label
+            class="w-24 flex justify-between items-center tooltip tooltip-right">
+            <span class="flex items-center gap-1"> 资源板块 :</span>
+          </label>
+          <template v-for="b in plateList" :key="`res-${b.id}`">
+            <ScButton
+              v-if="b.type === 2"
+              class="px-4 py-1 text-sm"
+              :activation="postData.plateId === b.id"
+              @click="setPlate(b)"
+              :icon="Package"
+              Border
+              :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
+              {{ b.name }}
+            </ScButton>
+          </template>
+        </div>
       </div>
 
       <!-- 文件类型 -->

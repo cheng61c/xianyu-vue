@@ -15,7 +15,7 @@
     </div>
 
     <!-- 第二行，帖子部分内容 -->
-    <div class="line-clamp-2 cursor-pointer" @click="handleClick">
+    <div class="line-clamp-3 cursor-pointer" @click="handleClick">
       <div class="text-gray-content">
         <div>{{ post.title }}</div>
         <div>{{ htmlToText(post.content) }}</div>

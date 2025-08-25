@@ -49,7 +49,7 @@
             v-if="post.status == 1 || post.status == 3"
             size="sm"
             :status="post.visible == 1 ? 'success' : 'warning'">
-            {{ post.visible == 1 ? '发布中' : '下架' }}
+            {{ post.visible == 1 ? '正常' : '下架' }}
           </ScTag>
           <ScTag v-if="post.status == 2" size="sm" status="error">
             {{ $t('b.feng-jin') }}

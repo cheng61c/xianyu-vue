@@ -147,6 +147,8 @@ watch(
   (val) => {
     if (val) {
       open()
+    } else {
+      close()
     }
   },
   { immediate: true }

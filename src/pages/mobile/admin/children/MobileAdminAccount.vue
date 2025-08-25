@@ -6,10 +6,9 @@
         :options="searchTypeoptions"
         :placeholder="$t('b.sou-suo-yong-hu-ming')"
         class="w-40" />
-      <ScInput
-        v-model="searchPostValue"
-        :placeholder="$t('b.sou-suo')"
-        class="w-xs" />
+      <ScInput v-model="searchPostValue" :placeholder="$t('b.sou-suo')" />
+    </div>
+    <div class="flex gap-4">
       <ScButton class="px-4" Border @click="search">
         {{ $t('b.sou-suo') }}
       </ScButton>
@@ -17,7 +16,7 @@
         {{ $t('b.shua-xin') }}
       </ScButton>
     </div>
-    <div class="flex gap-4">
+    <div class="flex gap-2">
       <label class="flex items-center gap-2 w-full">
         <span>{{ $t('b.zhuang-tai') }}</span>
         <Dropdown
@@ -39,84 +38,69 @@
   </Card>
 
   <Card class="mb-4">
-    <div class="overflow-x-auto">
-      <table class="table">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>{{ $t('f.ni-cheng') }}</th>
-            <th>{{ $t('f.yong-hu-ming') }}</th>
-            <th>{{ $t('f.you-xiang') }}</th>
-            <th>{{ $t('f.zhu-ce-shi-jian') }}</th>
-            <th>{{ $t('f.zui-hou-deng-lu-shi-jian') }}</th>
-            <th>{{ $t('f.zui-hou-deng-lu-ip') }}</th>
-            <th>{{ $t('f.zhuang-tai') }}</th>
-            <th>{{ $t('f.cao-zuo') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(user, index) in userList" :key="user.id">
-            <th>{{ user.id }}</th>
-            <td>
-              <div class="flex gap-2 flex-wrap max-w-xs">
-                {{ user.nickname }}
-                <ScTag
-                  v-for="(role, roleIndex) in user.roles"
-                  :key="roleIndex"
-                  :bgColor="role.color"
-                  size="xs">
-                  {{ role.name }}
-                </ScTag>
-              </div>
-            </td>
-            <td>{{ user.account }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.regTime }}</td>
-            <td>{{ user.lastLoginTime }}</td>
-            <td>{{ user.lastLoginIp }}</td>
-            <td>
-              <div class="flex items-center gap-2 flex-wrap min-w-20">
-                <ScTag v-if="user.disabled" size="xs" status="error">
-                  {{ $t('b.feng-jin') }}
-                </ScTag>
-                <ScTag v-else size="xs" status="success">
-                  {{ $t('b.zheng-chang') }}
-                </ScTag>
-              </div>
-            </td>
+    <ScReusableTable :thead="thead" :tbody="userList" v-model:lockId="lockId">
+      <template #cell-0="{ data }">
+        <span class="font-bold">{{ data.id }}</span>
+      </template>
+      <template #cell-1="{ data }">
+        {{ data.nickname }}
+        <div class="w-full flex items-center flex-wrap gap-2">
+          <ScRole :user="data" isAll size="sm" />
+        </div>
+      </template>
+      <template #cell-2="{ data }">
+        {{ data.account }}
+      </template>
+      <template #cell-3="{ data }">
+        {{ data.email }}
+      </template>
+      <template #cell-4="{ data }">
+        {{ data.regTime }}
+      </template>
+      <template #cell-5="{ data }">
+        {{ data.lastLoginTime }}
+      </template>
+      <template #cell-6="{ data }">
+        {{ data.lastLoginIp }}
+      </template>
+      <template #cell-7="{ data }">
+        <div class="flex items-center gap-2 flex-wrap min-w-20">
+          <ScTag v-if="data.disabled" size="xs" status="error">
+            {{ $t('b.feng-jin') }}
+          </ScTag>
+          <ScTag v-else size="xs" status="success">
+            {{ $t('b.zheng-chang') }}
+          </ScTag>
+        </div>
+      </template>
+      <template #cell-8="{ index }">
+        <div class="flex items-center gap-2 flex-wrap">
+          <ScButton
+            @click="banned(index)"
+            class="border border-error text-error">
+            {{ $t('b.feng-jin') }}
+          </ScButton>
 
-            <td>
-              <div class="flex items-center gap-2 flex-wrap">
-                <ScButton
-                  @click="banned(index)"
-                  class="border border-error text-error">
-                  {{ $t('b.feng-jin') }}
-                </ScButton>
+          <ScButton @click="updateUser(index)" Border>
+            {{ $t('b.xiu-gai-xin-xi') }}
+          </ScButton>
 
-                <ScButton @click="updateUser(index)" Border>
-                  {{ $t('b.xiu-gai-xin-xi') }}
-                </ScButton>
+          <ScButton
+            v-if="verifyPermissions([1, 2])"
+            @click="updateUserRole(index)"
+            Border>
+            {{ $t('b.she-zhi-jiao-se') }}
+          </ScButton>
 
-                <ScButton
-                  v-if="verifyPermissions([1, 2])"
-                  @click="updateUserRole(index)"
-                  Border>
-                  {{ $t('b.she-zhi-jiao-se') }}
-                </ScButton>
-
-                <ScButton
-                  v-if="verifyPermissions([1, 2])"
-                  @click="logOff(index)"
-                  Border>
-                  {{ $t('b.qiang-zhi-xia-xian') }}
-                </ScButton>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          <ScButton
+            v-if="verifyPermissions([1, 2])"
+            @click="logOff(index)"
+            Border>
+            {{ $t('b.qiang-zhi-xia-xian') }}
+          </ScButton>
+        </div>
+      </template>
+    </ScReusableTable>
   </Card>
 
   <Pagination
@@ -137,7 +121,7 @@
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-6 w-[95vw]">
       <h3 class="text-xl mb-4">{{ $t('f.feng-jin-zhang-hao') }}</h3>
       <div>{{ $t('f.feng-jin-yuan-yin') }}</div>
       <ScInput
@@ -164,7 +148,7 @@
   </ScModal>
 
   <ScModal v-model="updateModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-6 w-[95vw]">
       <h3 class="text-xl mb-4">{{ $t('f.xiu-gai-yong-hu-xin-xi') }}</h3>
       <div class="flex items-center gap-2">
         <span> {{ $t('f.ni-cheng') }} </span>
@@ -211,7 +195,7 @@
   </ScModal>
 
   <ScModal v-model="updateRoleModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-6 w-[95vw]">
       <h3 class="text-xl mb-4">{{ $t('d.xiu-gai-yong-hu-quan-xian') }}</h3>
       <div>{{ $t('d.jiao-se-chi') }}</div>
       <div class="flex items-center gap-2 flex-wrap">
@@ -247,8 +231,9 @@
       </div>
     </Card>
   </ScModal>
+
   <ScModal v-model="logOffModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-6 w-[95vw]">
       <h3 class="text-xl mb-4">{{ $t('b.qiang-zhi-xia-xian') }}</h3>
       <div class="flex gap-2 flex-wrap items-center">
         {{ $t('d.mu-biao-zhang-hao') }}
@@ -285,7 +270,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { RotateCcw, ArchiveX } from 'lucide-vue-next'
+import { RotateCcw, ArchiveX, Lock } from 'lucide-vue-next'
 import Dropdown from '@/components/common/ScSelector.vue'
 import Card from '@/components/common/Card.vue'
 import ScInput from '@/components/common/ScInput.vue'
@@ -305,11 +290,25 @@ import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import ScReusableTable from '@/components/common/ScReusableTable.vue'
+import ScRole from '@/components/common/ScRole.vue'
 
 const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 const router = useRouter()
+const thead = ref([
+  'ID',
+  t('f.ni-cheng'),
+  t('f.yong-hu-ming'),
+  t('f.you-xiang'),
+  t('f.zhu-ce-shi-jian'),
+  t('f.zui-hou-deng-lu-shi-jian'),
+  t('f.zui-hou-deng-lu-ip'),
+  t('f.zhuang-tai'),
+  '操作',
+])
+const lockId = ref(0)
 
 const searchPostValue = ref('') // 搜索帖子内容
 

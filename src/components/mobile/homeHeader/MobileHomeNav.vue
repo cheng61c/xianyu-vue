@@ -81,6 +81,18 @@
               v-model="configStore.lang"
               class="w-32" />
           </div>
+
+          <div
+            v-if="
+              userStore.isLogin &&
+              verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])
+            "
+            class="flex items-center justify-between py-2"
+            @click="$router.push({ name: 'mobileAdmin' })">
+            <div>后台管理</div>
+            <ChevronRight />
+          </div>
+
           <div
             v-if="userStore.isLogin"
             class="flex gap-4 items-center justify-between py-2 text-error"
@@ -112,7 +124,7 @@ import { useAnnouncementStore } from '@/stores/global/announcementStore'
 import { useI18n } from 'vue-i18n'
 import ThemeButton from '@/components/common/ThemeButton.vue'
 import { logout } from '@/stores/module/user/service'
-
+import { verifyPermissions } from '@/utils/verify'
 import { useDrawerStore } from '@/stores/global/drawerStore'
 import ScSelector from '@/components/common/ScSelector.vue'
 

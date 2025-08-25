@@ -15,6 +15,10 @@ export const htmlToText = (html: string): string => {
     .replace(/<video[^>]*>.*?<\/video>/gis, `[视频]`) // 替换所有 <video> 标签为 "[视频]"
     .replace(/<a\s+[^>]*href=['"][^'"]+['"][^>]*>.*?<\/a>/gis, `[链接]`) // 替换所有 <a> 标签为 "[链接]"
     .replace(/<[^>]+>/g, '') // 移除其他所有 HTML 标签
+    .replace(
+      /&nbsp;|&amp;|&lt;|&gt;|&quot;|&#39;|&#x27;|&#x2F;|&#x60;|&#x3D;/g,
+      ''
+    ) // 移除常见 HTML 实体
 }
 
 export const formatTime = (value: string | number | Date) => {

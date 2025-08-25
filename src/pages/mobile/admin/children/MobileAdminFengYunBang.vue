@@ -43,20 +43,22 @@
   </Card>
 
   <ScModal v-model="isOpen" offOverflow>
-    <Card class="max-h-[80vh] overflow-y-auto w-5xl">
+    <Card class="max-h-[80vh] overflow-y-auto w-[95vw] gap-4">
       <span class="text-xl">添加玩家</span>
 
       <div class="flex items-center gap-4">
         <span> {{ $t('d.ming-cheng') }} </span>
-        <ScInput v-model="forms.title" :placeholder="'玩家名称'" class="m-2" />
+        <ScInput v-model="forms.title" :placeholder="'玩家名称'" />
       </div>
 
-      <div class="flex items-center gap-4">
-        <span> 头像链接: </span>
-        <ScInput
-          v-model="forms.headImg"
-          :placeholder="'头像链接'"
-          class="m-2" />
+      <div class="flex flex-col">
+        <p>社区id:</p>
+        <ScInput v-model="forms.userId" :placeholder="'在社区中有账号时填写'" />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <p>头像链接:</p>
+        <ScInput v-model="forms.headImg" :placeholder="'头像链接'" />
         <ScButton
           Border
           @dragover.prevent
@@ -76,27 +78,26 @@
         <ScButton v-if="uploadLoading" noPd>
           <span class="loading loading-spinner"></span>
         </ScButton>
+
+        <p>或者使用QQ头像:</p>
+        <p>http://q1.qlogo.cn/g?b=qq&s=4&nk=</p>
+
+        <div class="flex items-center gap-4">
+          <ScInput v-model="qid" :placeholder="'填入QQ号做为头像'" />
+          <template v-if="qid != ''">
+            <Avatar :src="getQQAvatar(qid)" :alt="forms.title" />
+          </template>
+        </div>
       </div>
 
-      <div class="flex items-center gap-4">
-        <span> 或者使用QQ头像: http://q1.qlogo.cn/g?b=qq&s=4&nk=</span>
-        <ScInput v-model="qid" :placeholder="'填入QQ号做为头像'" class="m-2" />
-        <template v-if="qid != ''">
-          <Avatar :src="getQQAvatar(qid)" :alt="forms.title" />
-        </template>
-      </div>
-
-      <div class="flex items-center gap-4">
-        <span> 社区id: </span>
-        <ScInput
-          v-model="forms.userId"
-          :placeholder="'在社区中有账号时填写'"
-          class="m-2" />
-      </div>
-
-      <div class="mt-4">
-        <TipTap v-model="forms.content" />
-      </div>
+      <!-- 帖子内容 -->
+      <ScButton
+        v-if="deviceStore.device == 1"
+        @click="onTipTap"
+        Border
+        class="w-full">
+        编写文章
+      </ScButton>
 
       <div class="flex justify-end mt-1 gap-4">
         <ScButton @click="addPlayer" Border>
@@ -127,6 +128,14 @@
       </div>
     </Card>
   </ScModal>
+
+  <ScDrawer v-model="isOpenTipTap" position="bottom">
+    <div v-if="forms.content" class="bg-background rounded-t-lg">
+      <TipTap
+        v-model="forms.content"
+        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+    </div>
+  </ScDrawer>
 </template>
 
 <script setup lang="ts">
@@ -148,12 +157,16 @@ import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 import { uploadApi } from '@/apis'
 import Avatar from '@/components/common/Avatar.vue'
+import ScDrawer from '@/components/common/ScDrawer.vue'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 
 const toast = useToast()
 const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
+const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const isOpenDel = ref(false)
+const isOpenTipTap = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploadLoading = ref(false)
 
@@ -164,6 +177,10 @@ const forms = ref<FengYunBangDto>({
   content: '',
 })
 const qid = ref('')
+
+const onTipTap = () => {
+  isOpenTipTap.value = true
+}
 
 const addPlayer = () => {
   if (!isOpen.value) {

@@ -6,13 +6,12 @@
         'justify-center': deviceStore.device == 1,
         'justify-between': deviceStore.device == 2,
       }">
-      <div class="flex w-xs gap-2 flex-shrink-0 items-center">
+      <div class="flex max-w-xs gap-2 flex-shrink-0 items-center">
         <ScInput
           v-model="searchText"
           :placeholder="t('b.sou-suo')"
           type="search"
-          @keyup.enter="handleSearch"
-          class="flex-1" />
+          @keyup.enter="handleSearch" />
         <ScButton @click="handleSearch" Border>
           {{ $t('b.sou-suo') }}
         </ScButton>
@@ -26,12 +25,49 @@
       </div>
 
       <div
+        v-if="deviceStore.device == 2"
         class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
         <div class="flex-shrink-0">排序方式:</div>
         <ScButtonSelector
           :options="orderTypeOptions"
           v-model="postStore.orderType" />
       </div>
+
+      <PopupBox
+        v-if="searchType == 2 && deviceStore.device == 1"
+        ref="popupBox"
+        position="bottom-left"
+        :icon="Funnel"
+        className="mt-1 py-1.5 px-1"
+        noPd>
+        <template #default="{ close }">
+          <Card noPg class="p-2 w-22 items-center">
+            <ScButtonSelector
+              col
+              :options="fileTypeOptions"
+              v-model="fileType"
+              @click="close()" />
+          </Card>
+        </template>
+      </PopupBox>
+
+      <PopupBox
+        v-if="deviceStore.device == 1"
+        ref="popupBox"
+        position="bottom-left"
+        :icon="ArrowDownWideNarrow"
+        className="mt-1 py-1.5 px-1"
+        noPd>
+        <template #default="{ close }">
+          <Card noPg class="p-2 w-22 items-center">
+            <ScButtonSelector
+              col
+              :options="orderTypeOptions"
+              v-model="postStore.orderType"
+              @click="close()" />
+          </Card>
+        </template>
+      </PopupBox>
     </div>
   </Card>
 </template>
@@ -42,7 +78,9 @@ import { computed, defineProps, ref, watch } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
+import PopupBox from '@/components/common/PopupBox.vue'
 import { useI18n } from 'vue-i18n'
+import { Funnel, ArrowDownWideNarrow } from 'lucide-vue-next'
 import { getFileTypeOptions } from '@/stores/module/post/service'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import { usePostStore } from '@/stores/module/post/postStore'

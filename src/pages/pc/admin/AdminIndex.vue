@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, ref, watch } from 'vue'
 import {
   Package,
@@ -41,9 +41,12 @@ import {
 import ScMenu from '@/components/pc/admin/ScMenu.vue'
 import { verifyPermissions } from '@/utils/verify'
 import { useI18n } from 'vue-i18n'
+import { useDeviceStore } from '@/stores/global/deviceStore'
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
+const deviceStore = useDeviceStore()
 const activation = ref('')
 const release = ref(true)
 
@@ -129,6 +132,9 @@ const menuItems = [
 ]
 
 onMounted(() => {
+  if (deviceStore.device == 1) {
+    router.push(route.path.replace('/admin/', '/mobile/admin/'))
+  }
   const currentBtn = menuItems.find((btn) => btn.path === route.path)
   if (currentBtn) {
     activation.value = currentBtn.name

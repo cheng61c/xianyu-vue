@@ -17,12 +17,13 @@
       {{ role.name }}
     </ScTag>
   </template>
-  <template v-else>
+  <template v-else-if="!userInfo.level && userInfo.roles.length > 0">
     <ScTag
       :bgColor="userInfo.roles[0]?.color"
       :size="props.size"
       :status="!userInfo.roles[0] ? 'info' : ''">
-      LV {{ userInfo.level }} {{ userInfo.roles[0]?.name ?? userInfo.rank }}
+      {{ userInfo.level ? 'LV' : '' }} {{ userInfo.level }}
+      {{ userInfo.roles[0]?.name ?? userInfo.rank }}
     </ScTag>
   </template>
 </template>

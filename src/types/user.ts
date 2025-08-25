@@ -15,6 +15,7 @@ export declare interface User {
   email?: string
 }
 export interface UserType {
+  [key: string]: any
   id: number
   account: string
   nickname: string

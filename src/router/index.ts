@@ -157,6 +157,94 @@ const routes = [
         ],
       },
       {
+        path: 'mobile/admin',
+        name: 'mobileAdmin',
+        redirect: '/mobile/admin/panel',
+        component: () => import('@/pages/mobile/admin/MobileAdminIndex.vue'),
+        children: [
+          {
+            path: 'panel',
+            name: 'mobileAdminPanel',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminPanel.vue'),
+          },
+          {
+            path: 'account',
+            name: 'mobileAdminAccount',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminAccount.vue'),
+          },
+          {
+            path: 'post',
+            name: 'mobileAdminPost',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminPost.vue'),
+          },
+          {
+            path: 'report',
+            name: 'mobileAdminReport',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminReport.vue'),
+          },
+          {
+            path: 'resource',
+            name: 'mobileAdminResource',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminResource.vue'),
+          },
+          {
+            path: 'server',
+            name: 'mobileAdminServer',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminServer.vue'),
+          },
+          {
+            path: 'role',
+            name: 'mobileAdminRole',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminRole.vue'),
+          },
+          {
+            path: 'plate',
+            name: 'mobileAdminPlate',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminPlate.vue'),
+          },
+          {
+            path: 'version',
+            name: 'mobileAdminVersion',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminVersion.vue'),
+          },
+          {
+            path: 'motd',
+            name: 'mobileAdminMotd',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminMotd.vue'),
+          },
+          {
+            path: 'info',
+            name: 'mobileAdminInfo',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminInfo.vue'),
+          },
+          {
+            path: 'reg',
+            name: 'mobileAdminRegistered',
+            component: () =>
+              import('@/pages/mobile/admin/children/MobileAdminRegistered.vue'),
+          },
+          {
+            path: 'mingrentang',
+            name: 'mobileAdminFengYunBang',
+            component: () =>
+              import(
+                '@/pages/mobile/admin/children/MobileAdminFengYunBang.vue'
+              ),
+          },
+        ],
+      },
+      {
         path: 'user',
         name: 'user',
         redirect: isMobile ? '/mobile/user' : '/user/panel',

@@ -19,7 +19,7 @@
     </div>
     <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
-        <span>{{ $t('b.ban-kuai') }}</span>
+        <span>{{ $t('d.ban-kuai') }}</span>
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
@@ -68,7 +68,7 @@
             <th>{{ $t('b.yong-hu') }}</th>
             <th>{{ $t('t.fa-bu-shi-jiaother') }}</th>
             <th>{{ $t('f.zhuang-tai') }}</th>
-            <th>{{ $t('f.cao-zuo') }}</th>
+            <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -87,9 +87,9 @@
             <td>
               <div class="flex items-center gap-2">
                 {{ post.creator.nickname }}
-                <ScTag size="xs" status="info"
-                  >uid: {{ post.creator.id }}</ScTag
-                >
+                <ScTag size="xs" status="info">
+                  uid: {{ post.creator.id }}
+                </ScTag>
               </div>
             </td>
             <td>{{ post.createdAt }}</td>
@@ -124,7 +124,9 @@
                 <ScButton
                   @click="setTop(index)"
                   class="border border-warning text-warning">
-                  {{ post.top == 0 ? '置顶' : '取消置顶' }}
+                  {{
+                    post.top == 0 ? $t('b.zhi-ding') : $t('b.qu-xiao-zhi-ding')
+                  }}
                 </ScButton>
 
                 <ScButton
@@ -133,7 +135,11 @@
                     'border border-primary text-primary': post.visible == 1,
                     'border border-error text-error': post.visible == 0,
                   }">
-                  {{ post.visible == 0 ? '已下架' : '上架中' }}
+                  {{
+                    post.visible == 0
+                      ? $t('b.yi-xia-jia')
+                      : $t('b.shang-jia-zhong')
+                  }}
                 </ScButton>
 
                 <ScButton
@@ -142,7 +148,11 @@
                   :class="{
                     'border border-error text-error': post.status == 2,
                   }">
-                  {{ post.status == 2 ? '撤销封禁' : '封禁' }}
+                  {{
+                    post.status == 2
+                      ? $t('d.che-xiao-feng-jin')
+                      : $t('b.feng-jin')
+                  }}
                 </ScButton>
 
                 <ScButton
@@ -151,7 +161,7 @@
                     'border border-green text-green': post.disabled == 1,
                     'border border-error text-error': post.disabled == 0,
                   }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+                  {{ post.disabled == 0 ? $t('b.shan-chu') : $t('hui-fu') }}
                 </ScButton>
               </div>
             </td>
@@ -167,6 +177,7 @@
     :total-items="postPage.total"
     :page-size="postPage.limit"
     @page-change="toPage" />
+
   <EmptyState
     v-else
     :title="$t('t.zan-wu-tie-zi')"
@@ -206,7 +217,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RotateCcw, ArchiveX } from 'lucide-vue-next'
 import Dropdown from '@/components/common/ScSelector.vue'
 import Card from '@/components/common/Card.vue'
@@ -222,7 +233,6 @@ import ScModal from '@/components/common/ScModal.vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-
 const searchPostValue = ref('') // 搜索帖子内容
 
 const searchStatus = ref<number | { value: number; label: string }>(0) // 帖子状态
@@ -303,7 +313,7 @@ const getPosts = () => {
       ? searchTypeValue.value.value
       : searchTypeValue.value
 
-  params.type = 1
+  params.type = 2 // 帖子类型，2为资源帖
   params.page = postPage.value.page // 当前页码
   params.limit = postPage.value.limit // 每页数量
   params.orderType = orderByValue // 排序方式
@@ -383,7 +393,7 @@ const getPlateList = () => {
         plateBarOptions.value = [
           { value: 0, label: t('b.quan-bu-ban-kuai') },
           ...response.data.data
-            .filter((plate: any) => plate.type === 1)
+            .filter((plate: any) => plate.type === 2)
             .map((plate: any) => ({
               value: plate.id,
               label: plate.name,
@@ -460,7 +470,7 @@ const banned = (index: number, val?: number) => {
 
 const deleteItem = (index: number) => {
   const item = postList.value[index]
-  const isDeleted = item.disabled === 1 // 是否已删除
+  const isDeleted = item.disabled === 1 // 当前是否已删除
   postApi
     .deletePostAsAdmin({
       id: item.id,
@@ -476,10 +486,6 @@ const deleteItem = (index: number) => {
       console.error('请求失败:', error.msg)
     })
 }
-
-watch([searchStatus, plateBar, orderBy, isTop], () => {
-  getPosts()
-})
 
 onMounted(() => {
   getPosts() // 页面加载时获取帖子列表

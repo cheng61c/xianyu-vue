@@ -2,7 +2,7 @@
   <div class="relative bg-background" ref="dropdownRef">
     <!-- 触发器 -->
     <div
-      class="flex items-center justify-between p-2 border rounded-md cursor-pointer hover:border-active"
+      class="flex items-center justify-between px-2 py-1.5 border rounded-md cursor-pointer hover:border-active"
       :class="{
         'border-active ': isOpen,
         'border-gray': !isOpen && !selectedItems.length,

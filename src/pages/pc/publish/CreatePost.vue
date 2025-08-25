@@ -130,32 +130,55 @@
       </div>
 
       <!-- 发送到板块 -->
-      <div v-if="mode === 'post'" class="flex items-center gap-2">
+      <div v-if="mode === 'post'" class="flex flex-wrap items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          :data-tip="
-            $t(
-              'd.xuan-ze-yao-fa-song-dao-de-ban-kuai-ban-kuai-lei-xing-hui-ying-xiang-tie-zi-lei-xing-de-xuan-ze-wen-jian-lei-xing-de-tie-zi-zhi-neng-fa-song-dao-wen-jian-ban-kuai'
-            )
-          ">
+          data-tip="
+            选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块">
           <span class="flex items-center gap-1">
-            {{ $t('f.xuan-ze-ban-kuai') }}
-            <span><CircleHelp :size="16" /></span>
+            选择板块 <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
         </label>
-        <ScButton
-          v-for="b in plateList"
-          :key="b.id"
-          class="px-4 py-1 text-sm"
-          :activation="postData.plateId === b.id"
-          @click="setPlate(b)"
-          :icon="b.type === 1 ? FileText : Package"
-          Border
-          :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
-          {{ b.name }}
-        </ScButton>
+
+        <div class="flex flex-wrap gap-2 w-full pl-2">
+          <label
+            class="w-24 flex justify-between items-center tooltip tooltip-right">
+            <span class="flex items-center gap-1">交流板块 :</span>
+          </label>
+          <template v-for="b in plateList" :key="`post-${b.id}`">
+            <ScButton
+              v-if="b.type === 1"
+              class="px-4 py-1 text-sm"
+              :activation="postData.plateId === b.id"
+              @click="setPlate(b)"
+              :icon="FileText"
+              Border
+              :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
+              {{ b.name }}
+            </ScButton>
+          </template>
+        </div>
+
+        <div class="flex flex-wrap gap-2 w-full pl-2">
+          <label
+            class="w-24 flex justify-between items-center tooltip tooltip-right">
+            <span class="flex items-center gap-1"> 资源板块 :</span>
+          </label>
+          <template v-for="b in plateList" :key="`res-${b.id}`">
+            <ScButton
+              v-if="b.type === 2"
+              class="px-4 py-1 text-sm"
+              :activation="postData.plateId === b.id"
+              @click="setPlate(b)"
+              :icon="Package"
+              Border
+              :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
+              {{ b.name }}
+            </ScButton>
+          </template>
+        </div>
       </div>
 
       <!-- 文件类型 -->
