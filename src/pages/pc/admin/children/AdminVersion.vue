@@ -241,9 +241,9 @@ const typeMap: Record<string, string> = {
   original: t('b.yuan-ban'),
 }
 
-const versionList = ref<Version[]>([]) // 帖子列表数据
-const currentVersion = ref(-1) // 当前操作的帖子ID
-const updateModal = ref(false) // 更新帖子模态框状态
+const versionList = ref<Version[]>([]) // 版本列表数据
+const currentVersion = ref(-1) // 当前操作的版本ID
+const updateModal = ref(false) // 更新版本模态框状态
 const addVersionModal = ref(false) // 添加新角色模态框状态
 const deleteVersionModal = ref(false) // 删除角色模态框状态
 const disabledVersionModal = ref(false) // 禁用角色模态框状态
@@ -265,7 +265,7 @@ const getVersionList = () => {
     .getVersionAsAdmin()
     .then((res) => {
       if (res.data.code === 200) {
-        // 处理获取到的帖子数据
+        // 处理获取到的版本数据
         versionList.value = res.data.data.map((item: ApiVersion) => {
           item.createdAt = formatTime(item.createdAt)
           item.updatedAt = formatTime(item.updatedAt)
@@ -282,16 +282,12 @@ const getVersionList = () => {
 const updateVersion = (index: number) => {
   const item = versionList.value[index]
   if (!updateModal.value) {
-    currentVersion.value = index // 设置当前操作的帖子
+    currentVersion.value = index // 设置当前操作的版本
     currentVersionBody.value.id = item.id
     currentVersionBody.value.name = item.name
     currentVersionBody.value.type = item.type
     currentVersionBody.value.version = item.version
-    typeBar.value =
-      typeof typeBar.value === 'object'
-        ? typeBar.value
-        : typeBarOptions.find((option) => option.value === item.type) ||
-          typeBar.value
+    typeBar.value = item.type
     updateModal.value = true
     return
   }
@@ -314,7 +310,7 @@ const updateVersion = (index: number) => {
 
   // 如果没有修改任何内容，则不发送请求
   if (Object.keys(body).length === 0) {
-    toast.warning(t('t.sha-ye-bu-shi-zou-le'))
+    toast.warning('啥也不是')
     updateModal.value = false
     return
   }
@@ -323,10 +319,10 @@ const updateVersion = (index: number) => {
     .putVersion(item.id, body)
     .then((response) => {
       if (response.data.code === 200) {
-        // 刷新帖子列表
+        // 刷新版本列表
         getVersionList()
         toast.success(t('t.xiu-gai-cheng-gong'))
-        currentVersion.value = -1 // 重置当前操作的帖子
+        currentVersion.value = -1 // 重置当前操作的版本
         updateModal.value = false
       }
     })
@@ -359,7 +355,7 @@ const addVersion = () => {
     .addVersion(body)
     .then((response) => {
       if (response.data.code === 200) {
-        // 刷新帖子列表
+        // 刷新版本列表
         getVersionList()
         addVersionModal.value = false
       }
@@ -373,7 +369,7 @@ const addVersion = () => {
 const deleteVersion = (index: number) => {
   const item = versionList.value[index]
   if (!deleteVersionModal.value) {
-    currentVersion.value = index // 设置当前操作的帖子
+    currentVersion.value = index // 设置当前操作的版本
     deleteVersionModal.value = true
     return
   }
@@ -381,7 +377,7 @@ const deleteVersion = (index: number) => {
     .delVersion(item.id)
     .then((response) => {
       if (response.data.code === 200) {
-        // 刷新帖子列表
+        // 刷新版本列表
         getVersionList()
         deleteVersionModal.value = false
       }
@@ -395,7 +391,7 @@ const deleteVersion = (index: number) => {
 const disabledVersion = (index: number, disabled: number) => {
   const item = versionList.value[index]
   if (!disabledVersionModal.value) {
-    currentVersion.value = index // 设置当前操作的帖子
+    currentVersion.value = index // 设置当前操作的版本
     disabledVersionModal.value = true
     return
   }
@@ -406,7 +402,7 @@ const disabledVersion = (index: number, disabled: number) => {
     })
     .then((response) => {
       if (response.data.code === 200) {
-        // 刷新帖子列表
+        // 刷新版本列表
         getVersionList()
         toast.success(t('t.cao-zuo-cheng-gong'))
         disabledVersionModal.value = false
@@ -419,6 +415,6 @@ const disabledVersion = (index: number, disabled: number) => {
 }
 
 onMounted(() => {
-  getVersionList() // 页面加载时获取帖子列表
+  getVersionList() // 页面加载时获取版本列表
 })
 </script>

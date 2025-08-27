@@ -331,7 +331,7 @@
 
       <!-- 服务器提示 -->
       <div
-        v-if="mode === 'server' && pingAvgTime != 0 && !pingLoding"
+        v-if="mode === 'server' && pingAvgTime == -1 && !pingLoding"
         class="flex items-center gap-2">
         <label class="flex items-center gap-2 cursor-pointer select-none">
           <input

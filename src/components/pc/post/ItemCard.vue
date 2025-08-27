@@ -5,28 +5,28 @@
       class="flex gap-2 justify-between items-center align-middle cursor-pointer"
       @click="handleClick">
       <Avatar
-        :src="post.creator.headImg"
-        :alt="post.creator.nickname"
+        :src="localPost.creator.headImg"
+        :alt="localPost.creator.nickname"
         :size="24" />
-      <div class="font-bold mr-auto">{{ post.title }}</div>
+      <div class="font-bold mr-auto">{{ localPost.title }}</div>
 
       <div class="text-sm text-gray-content">
-        {{ post.createdAt }}
+        {{ localPost.createdAt }}
       </div>
     </div>
 
     <!-- 第二行，帖子部分内容 -->
     <div class="line-clamp-2 cursor-pointer" @click="handleClick">
-      <div v-if="post.images" class="flex gap-2">
+      <div v-if="localPost.images" class="flex gap-2">
         <ScImage
-          v-for="img in post.images"
+          v-for="img in localPost.images"
           :key="img"
           :src="img"
-          :alt="post.title"
+          :alt="localPost.title"
           class="w-28 h-28" />
       </div>
       <div class="text-gray-content">
-        {{ htmlToText(post.content) }}
+        {{ htmlToText(localPost.content) }}
       </div>
     </div>
 
@@ -35,24 +35,24 @@
       <!-- 左侧标签 -->
       <div class="flex gap-2 items-center cursor-pointer">
         <ScTag size="sm" :icon="SquareChartGantt" status="info">
-          {{ post.plate.name }}
+          {{ localPost.plate.name }}
         </ScTag>
         <ScTag
-          v-if="post.type == 2"
+          v-if="localPost.type == 2"
           size="sm"
-          :icon="iconMap[post.fileType as keyof typeof typeLabelMap]"
+          :icon="iconMap[localPost.fileType as keyof typeof typeLabelMap]"
           status="info">
-          {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
+          {{ typeLabelMap[localPost.fileType as keyof typeof typeLabelMap] }}
         </ScTag>
       </div>
       <!-- 右侧按钮 -->
       <div class="flex gap-6" @click="handleClick">
         <ScButton
-          v-if="post.type == 2"
+          v-if="localPost.type == 2"
           noPadding
           noBg
-          :icon="post.postVersionCount == '0' ? PackageOpen : Package">
-          {{ post.postVersionCount }}
+          :icon="localPost.postVersionCount == '0' ? PackageOpen : Package">
+          {{ localPost.postVersionCount }}
         </ScButton>
 
         <ScButton
@@ -60,10 +60,10 @@
           noBg
           :icon="ThumbsUp"
           :class="{
-            'text-like': post.isLiked,
+            'text-like': localPost.isLiked,
           }"
-          @click.stop="likePost($t, post.id)">
-          {{ formatNumber(post.likeCount) }}
+          @click.stop="like(localPost.id)">
+          {{ formatNumber(localPost.likeCount) }}
         </ScButton>
 
         <ScButton
@@ -71,18 +71,18 @@
           noBg
           :icon="ThumbsDown"
           :class="{
-            'text-bad': post.isBaded,
+            'text-bad': localPost.isBaded,
           }"
-          @click.stop="badPost($t, post.id)">
-          {{ formatNumber(post.badCount) }}
+          @click.stop="bad(localPost.id)">
+          {{ formatNumber(localPost.badCount) }}
         </ScButton>
 
         <ScButton noPadding noBg :icon="MessageCircle">
-          {{ formatNumber(post.commentCount) }}
+          {{ formatNumber(localPost.commentCount) }}
         </ScButton>
 
         <ScButton noPadding noBg :icon="Eye">
-          {{ formatNumber(post.views) }}
+          {{ formatNumber(localPost.views) }}
         </ScButton>
       </div>
     </div>
@@ -94,7 +94,7 @@ import type { Post } from '@/types/Post'
 import Avatar from '@/components/common/Avatar.vue'
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
-import { defineProps } from 'vue'
+import { defineProps, reactive, watch } from 'vue'
 import { htmlToText, formatNumber } from '@/utils/format'
 import {
   MessageCircle,
@@ -110,25 +110,54 @@ import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
 import { likePost, badPost } from '@/stores/module/post/service'
+import { useI18n } from 'vue-i18n'
 
 const typeLabelMap = useTypeLabelMap()
 
 const router = useRouter()
+const { t } = useI18n()
 
 const props = defineProps<{
   post: Post
 }>()
+const localPost = reactive({ ...props.post })
+
+// 监听 post 变化时同步到本地副本
+watch(
+  () => props.post,
+  (newVal) => {
+    Object.assign(localPost, newVal)
+  }
+)
 
 const handleClick = () => {
   router.push({
     name: 'postDetails',
-    params: { postId: props.post.id },
+    params: { postId: localPost.id },
   })
   console.log(
     'Read more clicked for:',
-    props.post.title,
+    localPost.title,
     'with ID:',
-    props.post.id
+    localPost.id
   )
+}
+
+const like = (id: number) => {
+  likePost(t, id, () => {
+    localPost.isLiked = !localPost.isLiked
+    localPost.likeCount = formatNumber(
+      Number(localPost.likeCount) + (localPost.isLiked ? 1 : -1)
+    )
+  })
+}
+
+const bad = (id: number) => {
+  badPost(t, id, () => {
+    localPost.isBaded = !localPost.isBaded
+    localPost.badCount = formatNumber(
+      Number(localPost.badCount) + (localPost.isBaded ? 1 : -1)
+    )
+  })
 }
 </script>
