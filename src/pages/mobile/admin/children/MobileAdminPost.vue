@@ -85,11 +85,9 @@
             </td>
             <td>{{ post.plate.name }}</td>
             <td>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 {{ post.creator.nickname }}
-                <ScTag size="xs" status="info"
-                  >uid: {{ post.creator.id }}</ScTag
-                >
+                <ScRole :user="post.creator" size="xs"></ScRole>
               </div>
             </td>
             <td>{{ post.createdAt }}</td>
@@ -179,7 +177,7 @@
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div>{{ $t('d.zi-yuan-bei-zhu') }}</div>
       <ScInput
         v-model="currentPostRemark"
@@ -220,6 +218,7 @@ import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import { useI18n } from 'vue-i18n'
+import ScRole from '@/components/common/ScRole.vue'
 
 const { t } = useI18n()
 

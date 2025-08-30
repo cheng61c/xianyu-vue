@@ -94,7 +94,7 @@ import { motdApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import type { MotdType } from '@/types/Motd'
 import Dropdown from '@/components/common/ScSelector.vue'
-import { formatTime } from '@/utils/format'
+import { formatTime, formatXml } from '@/utils/format'
 import { useEditorShortcuts } from '@/utils/useEditorShortcuts'
 import { useI18n } from 'vue-i18n'
 
@@ -173,75 +173,6 @@ const addMotd = () => {
     })
 }
 
-/**
- * 纯浏览器实现的 XML 格式化（替代 prettier）
- * @param xml 原始 XML 字符串
- * @param indentSize 缩进空格数（取自 tabWidth.value）
- */
-const formatXml = (
-  xml: string,
-  indentSize: number = +tabWidth.value
-): string => {
-  try {
-    xml = xml.replace(/</g, '\n<').replace(/>/g, '>\n').replace(/\n\n/g, '\n')
-
-    // 1. 用浏览器原生解析器校验 XML 结构
-    const doc = new DOMParser().parseFromString(xml, 'text/xml')
-    if (doc.querySelector('parsererror')) {
-      console.warn('Invalid XML, returning original')
-      return xml // 不是合法 XML 时返回原内容
-    }
-
-    // 2. 递归缩进格式化
-    let formatted = ''
-    const indent = (n: number) => ' '.repeat(n * indentSize)
-
-    const formatNode = (node: Node, depth: number) => {
-      // 处理元素节点
-      if (node.nodeType === Node.ELEMENT_NODE) {
-        const elem = node as Element
-
-        // 开标签
-        formatted += `${indent(depth)}<${elem.tagName}`
-
-        // 属性缩进处理（属性换行显示）
-        if (elem.hasAttributes()) {
-          formatted += Array.from(elem.attributes)
-            .map((attr) => `\n${indent(depth + 1)}${attr.name}="${attr.value}"`)
-            .join('')
-        }
-
-        // 自闭合标签
-        if (!elem.childNodes.length && !elem.textContent?.trim()) {
-          formatted += ' />\n'
-          return
-        }
-
-        formatted += '>\n'
-
-        // 递归子节点
-        Array.from(elem.childNodes).forEach((child) =>
-          formatNode(child, depth + 1)
-        )
-
-        // 闭标签
-        formatted += `${indent(depth)}</${elem.tagName}>\n`
-      }
-      // 处理文本节点（保留有意义的内容）
-      else if (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()) {
-        formatted += `${indent(depth)}${node.textContent.trim()}\n`
-      }
-    }
-
-    // 从根节点开始格式化
-    formatNode(doc.documentElement, 0)
-    return formatted.trim()
-  } catch (e) {
-    console.error('XML formatting failed:', e)
-    return xml // 解析失败时返回原内容
-  }
-}
-
 // 移除 prettier 后的 format 函数
 const format = async (isUpdate = false) => {
   const motdBarValue =
@@ -260,7 +191,7 @@ const format = async (isUpdate = false) => {
 
   // 使用纯本地格式化（同步操作，无需 async）
   const originalContent = motdContent.value
-  motdContent.value = formatXml(originalContent)
+  motdContent.value = formatXml(originalContent, tabWidth.value)
 
   // 恢复光标位置（智能处理内容长度变化）
   await nextTick()

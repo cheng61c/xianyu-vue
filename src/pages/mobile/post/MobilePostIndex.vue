@@ -4,6 +4,7 @@
   </div>
 
   <div class="h-12"></div>
+  <!-- 横幅公告 -->
   <div v-if="show" class="flex justify-center w-full bg-warning/30">
     <span @click="toAnnouncement">{{ announcementPostData?.title }}</span>
     <ScButton

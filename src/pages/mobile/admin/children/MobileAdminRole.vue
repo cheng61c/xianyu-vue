@@ -22,7 +22,6 @@
           <tr>
             <th>ID</th>
             <th>{{ $t('b.ming-cheng') }}</th>
-            <th>{{ $t('b.bei-jing-se') }}</th>
             <th>{{ $t('b.yong-you-ren-shu') }}</th>
             <th>{{ $t('f.zhuang-tai') }}</th>
             <th>{{ $t('b.cao-zuo') }}</th>
@@ -32,15 +31,13 @@
           <tr v-for="(role, index) in roleList" :key="role.id">
             <th>{{ role.id }}</th>
             <td>
-              <div class="flex">
-                <ScTag :bgColor="role.color" size="md">
+              <div class="flex w-22">
+                <ScTag :bgColor="role.color" size="sm">
                   {{ role.name }}
                 </ScTag>
               </div>
             </td>
-            <td class="max-w-lg">
-              {{ role.color }}
-            </td>
+
             <td>{{ role.users.length }}</td>
 
             <td>
@@ -70,7 +67,6 @@
       </table>
     </div>
   </Card>
-
   <EmptyState
     v-else
     :title="$t('t.zan-wu-tie-zi')"
@@ -83,7 +79,7 @@
     @action-click="getRoleList(true)" />
 
   <ScModal v-model="updateModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('d.xiu-gai-jiao-se') }}</div>
       <div class="flex items-center gap-4">
         <span> {{ $t('d.ming-cheng') }} </span>
@@ -120,7 +116,7 @@
   </ScModal>
 
   <ScModal v-model="addRoleModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('b.tian-jia-xin-jiao-se') }}</div>
       <div class="text-warning">
         {{ $t('d.xin-tian-jia-de-jiao-se-bu-hui-you-ren-he-shi-ji-quan-xian') }}
@@ -162,7 +158,7 @@
   </ScModal>
 
   <ScModal v-model="deleteRoleModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('d.jin-yong-jiao-se') }}</div>
       <div class="text-warning mb-4">
         {{

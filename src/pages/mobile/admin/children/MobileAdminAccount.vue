@@ -45,7 +45,7 @@
       <template #cell-1="{ data }">
         {{ data.nickname }}
         <div class="w-full flex items-center flex-wrap gap-2">
-          <ScRole :user="data" isAll size="sm" />
+          <ScRole :user="data" isAll size="xs" />
         </div>
       </template>
       <template #cell-2="{ data }">
@@ -308,7 +308,7 @@ const thead = ref([
   t('f.zhuang-tai'),
   '操作',
 ])
-const lockId = ref(0)
+const lockId = ref(-1)
 
 const searchPostValue = ref('') // 搜索帖子内容
 

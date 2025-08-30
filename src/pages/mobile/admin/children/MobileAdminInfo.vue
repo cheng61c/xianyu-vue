@@ -5,11 +5,10 @@
         v-model="searchType"
         :options="searchTypeoptions"
         :placeholder="$t('b.sou-suo-cao-zuo-zhe-id')"
-        class="w-40" />
-      <ScInput
-        v-model="searchReportValue"
-        :placeholder="$t('b.sou-suo')"
-        class="w-xs" />
+        class="w-48" />
+      <ScInput v-model="searchReportValue" :placeholder="$t('b.sou-suo')" />
+    </div>
+    <div class="flex gap-4">
       <ScButton class="px-4" Border @click="search">
         {{ $t('b.sou-suo') }}
       </ScButton>
@@ -40,9 +39,9 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ info.creator.nickname }}
-                <ScTag size="xs" status="info"
-                  >uid: {{ info.creator.id }}</ScTag
-                >
+                <ScTag size="xs" status="info">
+                  uid: {{ info.creator.id }}
+                </ScTag>
                 <template v-if="info.creator.roles">
                   <ScTag
                     size="xs"

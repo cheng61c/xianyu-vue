@@ -64,7 +64,7 @@
     @action-click="getVersionList" />
 
   <ScModal v-model="updateModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('d.xiu-gai-ban-ben-hao') }}</div>
 
       <div class="flex items-center gap-4">
@@ -102,7 +102,7 @@
   </ScModal>
 
   <ScModal v-model="addVersionModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('b.tian-jia-xin-ban-ben-hao') }}</div>
 
       <div class="flex items-center gap-4">
@@ -140,7 +140,7 @@
   </ScModal>
 
   <ScModal v-model="deleteVersionModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('b.shan-chu-ban-ben-hao') }}</div>
       <div class="mb-4">
         {{ $t('d.mu-biao-ban-ben-hao') }}
@@ -173,7 +173,7 @@
   </ScModal>
 
   <ScModal v-model="disabledVersionModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('d.jin-yong-ban-ben-hao') }}</div>
       <div class="text-warning mb-4">
         {{

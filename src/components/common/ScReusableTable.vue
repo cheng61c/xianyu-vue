@@ -9,12 +9,13 @@
             :key="index"
             class="bg-background"
             :class="{
-              'sticky left-0 w-[6rem]': lockId === index,
+              'sticky left-0 w-[5rem]  bg-gray-100 dark:bg-[#22262b]':
+                lockId === index,
             }"
             @click="lock(index)">
             <div class="flex items-center gap-1">
               {{ item }}
-              <Lock v-if="lockId === index" />
+              <Lock v-if="lockId === index" :size="18" />
             </div>
           </th>
         </tr>
@@ -25,11 +26,13 @@
             <td
               class="bg-background"
               :class="{
-                'sticky left-0': lockId === cellIndex,
+                'sticky left-0 bg-gray-100 dark:bg-[#22262b]':
+                  lockId === cellIndex,
               }">
               <div
                 :class="{
-                  ' w-[6rem] overflow-hidden break-words': lockId === cellIndex,
+                  ' w-[5rem] overflow-hidden break-words ':
+                    lockId === cellIndex,
                 }">
                 <slot
                   :name="`cell-${cellIndex}`"
@@ -48,18 +51,17 @@
 
 <script setup lang="ts">
 import { Lock } from 'lucide-vue-next'
-import type { UserType } from '@/types'
 
-defineProps<{
+const props = defineProps<{
   thead: string[]
-  tbody: UserType[]
+  tbody: any[]
   lockId: number
 }>()
 
 const emit = defineEmits(['update:lockId'])
 
 const lock = (index: number) => {
-  emit('update:lockId', index)
+  emit('update:lockId', props.lockId === index ? -1 : index)
 }
 </script>
 

@@ -34,7 +34,8 @@
     <div v-if="!route.query.userId && !userStore.isLogin" class="text-error">
       请先登录
     </div>
-    <div class="flex gap-1 items-center">
+    <div class="flex gap-2 items-center">
+      <ThemeButton />
       <ScLogin v-if="!userStore.isLogin" />
       <PopupBox v-if="userStore.isLogin" position="bottom-left">
         <template #trigger>
@@ -54,10 +55,9 @@
             <div class="flex gap-1 w-full justify-center flex-wrap pb-4">
               <ScRole :user="userStore.userInfo" isAll size="sm" />
             </div>
-            <ScButton Border class="w-full"> 我的主页</ScButton>
-            <ScButton class="w-full text-bad mt-4 border border-bad"
-              >退出登录</ScButton
-            >
+            <ScButton Border class="w-full" @click="toPage('/mobile/user')">
+              我的主页
+            </ScButton>
           </div>
         </Card>
       </PopupBox>
@@ -120,6 +120,7 @@ import PopupBox from '@/components/common/PopupBox.vue'
 import Avatar from '@/components/common/Avatar.vue'
 import Card from '@/components/common/Card.vue'
 import { useDeviceStore } from '@/stores/global/deviceStore'
+import ThemeButton from '@/components/common/ThemeButton.vue'
 
 const { t } = useI18n()
 const route = useRoute()

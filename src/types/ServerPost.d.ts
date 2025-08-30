@@ -1,3 +1,5 @@
+import type { UserType } from './user'
+
 export declare interface ServerPost {
   title: string
   id?: number
@@ -74,9 +76,5 @@ export declare interface ServerPostType {
     type: 'online' | 'plugin' | 'original'
     version: string
   }
-  creator: {
-    id: number
-    nickname: string
-    headImg: string
-  }
+  creator: UserType
 }

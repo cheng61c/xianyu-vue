@@ -34,7 +34,15 @@
     <div class="flex justify-between mt-2">
       <!-- 左侧标签 -->
       <div class="flex gap-2 items-center cursor-pointer">
-        <ScTag size="sm" :icon="SquareChartGantt" status="info">
+        <ScTag
+          size="sm"
+          :icon="SquareChartGantt"
+          status="info"
+          @click="
+            $router.push({
+              params: { plateId: post.plate.id },
+            })
+          ">
           {{ post.plate.name }}
         </ScTag>
         <ScTag

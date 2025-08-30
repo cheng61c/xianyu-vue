@@ -1,11 +1,7 @@
 import { Plate } from '@/types/Plate'
 import { DocumentVersion } from '@/types/DocumentVersion'
 import { UserType } from './user'
-interface Creator {
-  id: number
-  nickname: string
-  headImg: string
-}
+
 export declare interface Post {
   id: number
   title: string
@@ -32,7 +28,7 @@ export declare interface Post {
   heat: string
   score: string
   isScored: boolean
-  creator: Creator
+  creator: UserType
   dependencies: {
     id: number
     title: string

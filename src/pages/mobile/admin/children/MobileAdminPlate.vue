@@ -34,19 +34,19 @@
             </td>
 
             <td>
-              <div class="flex gap-2">
+              <div class="flex gap-2 flex-wrap">
                 <ScTag
                   :status="plate.disabled === 0 ? 'success' : 'error'"
                   size="sm">
                   {{ plate.disabled === 0 ? '启用' : '禁用' }}
                 </ScTag>
                 <ScTag v-if="plate.admin" status="info" size="sm">
-                  管理员
+                  需要权限
                 </ScTag>
               </div>
             </td>
             <td>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <ScButton @click="updatePlate(index)" Border>
                   {{ $t('b.bian-ji') }}
                 </ScButton>

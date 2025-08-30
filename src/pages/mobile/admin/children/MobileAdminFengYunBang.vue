@@ -1,6 +1,5 @@
 <template>
   <Card class="mb-4">
-    {{ forms }}{{ content }}
     <div class="flex gap-2">
       <ScButton @click="getFengYunBangAll" :icon="RotateCcw" Border>
         刷新列表

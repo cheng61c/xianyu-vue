@@ -1,15 +1,17 @@
 <template>
   <Card class="mb-4">
     <div class="flex gap-4">
+      <ScInput
+        v-model="searchPostValue"
+        :placeholder="$t('b.sou-suo')"
+        class="w-full" />
+    </div>
+    <div class="flex gap-4">
       <Dropdown
         v-model="searchType"
         :options="searchTypeoptions"
         :placeholder="$t('b.sou-suo-biao-ti-he-nei-rong')"
-        class="w-40" />
-      <ScInput
-        v-model="searchPostValue"
-        :placeholder="$t('b.sou-suo')"
-        class="w-xs" />
+        class="w-52" />
       <ScButton class="px-4" Border @click="search">
         {{ $t('b.sou-suo') }}
       </ScButton>
@@ -17,9 +19,9 @@
         {{ $t('b.shua-xin') }}
       </ScButton>
     </div>
-    <div class="flex gap-4">
+    <div class="flex gap-4 flex-wrap">
       <label class="flex items-center gap-2 w-full">
-        <span>{{ $t('d.fu-wu-qi-ji-bie') }}</span>
+        <span>服务器类型</span>
         <Dropdown
           v-model="levelBar"
           :options="levelBarOptions"
@@ -39,84 +41,76 @@
   </Card>
 
   <Card class="mb-4">
-    <div class="overflow-x-auto">
-      <table class="table">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>{{ $t('b.biao-ti') }}</th>
-            <th>{{ $t('b.hui-fu') }}</th>
-            <th>{{ $t('b.yong-hu') }}</th>
-            <th>{{ $t('b.ji-bie') }}</th>
-            <th>{{ $t('b.fu-wu-qi-di-zhi') }}</th>
-            <th>{{ $t('b.fa-bu-shi-jian') }}</th>
-            <th>{{ $t('f.zhuang-tai') }}</th>
-            <th>{{ $t('b.cao-zuo') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(post, index) in postList" :key="post.id">
-            <th>{{ post.id }}</th>
-            <td>{{ post.title }}</td>
-            <td>{{ post.version.name }} / {{ post.version.version }}</td>
-            <td>
-              <div class="flex items-center gap-2">
-                {{ post.creator.nickname }}
-                <ScTag size="xs" status="info"
-                  >uid: {{ post.creator.id }}</ScTag
-                >
-              </div>
-            </td>
-            <td>{{ levelBarMap[post.level] }}</td>
-            <td>{{ post.url }}</td>
-            <td>{{ post.createdAt }}</td>
-            <td>
-              <div class="flex items-center gap-2 flex-wrap">
-                <ScTag v-if="post.status == 2" size="xs" status="error">
-                  {{ $t('b.feng-jin') }}
-                </ScTag>
-                <ScTag v-if="post.disabled == 1" size="xs" status="error">
-                  {{ $t('b.yi-shan-chu') }}
-                </ScTag>
-                <ScTag v-else size="xs" status="success">
-                  {{ $t('b.zheng-chang') }}
-                </ScTag>
-                <ScTag v-if="post.remark" size="xs" status="warning">
-                  {{ $t('b.yi-bei-zhu') }}
-                </ScTag>
-              </div>
-            </td>
+    <ScReusableTable :thead="thead" :tbody="postList" v-model:lockId="lockId">
+      <template #cell-0="{ data }">
+        <span class="font-bold">{{ data.id }}</span>
+      </template>
+      <template #cell-1="{ data }">
+        <div class="w-22">{{ data.title }}</div>
+      </template>
 
-            <td>
-              <div class="flex items-center gap-2">
-                <ScButton
-                  @click="banned(index)"
-                  :Border="post.status == 1 || post.status == 3"
-                  :class="{
-                    'border border-error text-error': post.status == 2,
-                  }">
-                  {{ post.status == 2 ? '撤销封禁' : '封禁' }}
-                </ScButton>
+      <template #cell-2="{ data }">
+        {{ data.version.name }} / {{ data.version.version }}
+      </template>
+      <template #cell-3="{ data }">
+        <div class="flex items-center gap-2 flex-wrap w-22">
+          {{ data.creator.nickname }}
+          <ScRole size="xs" :user="data.creator">
+            uid: {{ data.creator.id }}
+          </ScRole>
+        </div>
+      </template>
+      <template #cell-4="{ data }">
+        {{ levelBarMap[data.level] }}
+      </template>
+      <template #cell-5="{ data }">
+        {{ data.url }}
+      </template>
+      <template #cell-6="{ data }">
+        {{ data.createdAt }}
+      </template>
+      <template #cell-7="{ data }">
+        <div class="flex items-center gap-2 flex-wrap">
+          <ScTag v-if="data.status == 2" size="xs" status="error">
+            {{ $t('b.feng-jin') }}
+          </ScTag>
+          <ScTag v-if="data.disabled == 1" size="xs" status="error">
+            {{ $t('b.yi-shan-chu') }}
+          </ScTag>
+          <ScTag v-else size="xs" status="success">
+            {{ $t('b.zheng-chang') }}
+          </ScTag>
+          <ScTag v-if="data.remark" size="xs" status="warning">
+            {{ $t('b.yi-bei-zhu') }}
+          </ScTag>
+        </div>
+      </template>
+      <template #cell-8="{ data, index }">
+        <div class="flex items-center gap-2 flex-wrap">
+          <ScButton
+            @click="banned(index)"
+            :Border="data.status == 1 || data.status == 3"
+            :class="{
+              'border border-error text-error': data.status == 2,
+            }">
+            {{ data.status == 2 ? '撤销封禁' : '封禁' }}
+          </ScButton>
 
-                <ScButton
-                  @click="deleteItem(index)"
-                  :class="{
-                    'border border-green text-green': post.disabled == 1,
-                    'border border-error text-error': post.disabled == 0,
-                  }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
-                </ScButton>
+          <ScButton
+            @click="deleteItem(index)"
+            :class="{
+              'border border-green text-green': data.disabled == 1,
+              'border border-error text-error': data.disabled == 0,
+            }">
+            {{ data.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+          </ScButton>
 
-                <ScButton @click="updatePost(index)" Border>
-                  {{ $t('b.xiu-gai-ji-bie') }}
-                </ScButton>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          <ScButton @click="updatePost(index)" Border>
+            {{ $t('b.xiu-gai-ji-bie') }}
+          </ScButton>
+        </div>
+      </template>
+    </ScReusableTable>
   </Card>
 
   <Pagination
@@ -138,7 +132,7 @@
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('d.zi-yuan-bei-zhu') }}</div>
       <ScInput
         v-model="currentPostRemark"
@@ -164,7 +158,7 @@
   </ScModal>
 
   <ScModal v-model="updateModal">
-    <Card class="p-6 w-2xl">
+    <Card class="w-[95vw]">
       <div class="text-xl mb-4">{{ $t('d.xiu-gai-fu-wu-qi-ji-bie') }}</div>
       <ScButton
         v-for="(option, index) in levelBarOptions"
@@ -204,7 +198,22 @@ import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ServerPostListQueryDto, ServerPostType } from '@/types/ServerPost'
 import { useI18n } from 'vue-i18n'
+import ScRole from '@/components/common/ScRole.vue'
+import ScReusableTable from '@/components/common/ScReusableTable.vue'
 const { t } = useI18n()
+
+const thead = ref([
+  'ID',
+  '标题',
+  '版本',
+  '用户',
+  '类型',
+  '服务器地址',
+  '发布时间',
+  '状态',
+  '操作',
+])
+const lockId = ref(-1)
 
 const searchPostValue = ref('') // 搜索帖子内容
 

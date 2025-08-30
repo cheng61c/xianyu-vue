@@ -1,15 +1,17 @@
 <template>
   <Card class="mb-4">
     <div class="flex gap-4">
+      <ScInput
+        v-model="searchPostValue"
+        :placeholder="$t('b.sou-suo')"
+        class="w-full" />
+    </div>
+    <div class="flex gap-4">
       <Dropdown
         v-model="searchTypeValue"
         :options="searchTypeoptions"
         :placeholder="$t('b.sou-suo-biao-ti-he-nei-rong')"
-        class="w-40" />
-      <ScInput
-        v-model="searchPostValue"
-        :placeholder="$t('b.sou-suo')"
-        class="w-xs" />
+        class="flex-1" />
       <ScButton class="px-4" Border @click="search">
         {{ $t('b.sou-suo') }}
       </ScButton>
@@ -17,6 +19,7 @@
         {{ $t('b.shua-xin') }}
       </ScButton>
     </div>
+
     <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
         <span>{{ $t('d.ban-kuai') }}</span>
@@ -35,7 +38,9 @@
           :placeholder="$t('b.quan-bu')"
           class="flex-1" />
       </label>
+    </div>
 
+    <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
         <span>{{ $t('d.shi-fou-zhi-ding') }}</span>
         <Dropdown
@@ -44,7 +49,9 @@
           :placeholder="$t('b.wei-zhi-ding')"
           class="flex-1" />
       </label>
+    </div>
 
+    <div class="flex gap-4">
       <label class="flex items-center gap-2 w-full">
         <span>{{ $t('d.pai-xu-fang-shi') }}</span>
         <Dropdown
@@ -80,12 +87,14 @@
                   name: 'postDetails',
                   params: { postId: post.id },
                 }">
-                {{ post.title }}
+                <div class="w-18">{{ post.title }}</div>
               </RouterLink>
             </td>
-            <td>{{ post.plate.name }}</td>
             <td>
-              <div class="flex items-center gap-2">
+              <div class="w-14">{{ post.plate.name }}</div>
+            </td>
+            <td>
+              <div class="flex items-center gap-2 w-20 flex-wrap">
                 {{ post.creator.nickname }}
                 <ScTag size="xs" status="info">
                   uid: {{ post.creator.id }}
@@ -120,7 +129,7 @@
             </td>
 
             <td>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <ScButton
                   @click="setTop(index)"
                   class="border border-warning text-warning">
@@ -161,7 +170,7 @@
                     'border border-green text-green': post.disabled == 1,
                     'border border-error text-error': post.disabled == 0,
                   }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : $t('hui-fu') }}
+                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
                 </ScButton>
               </div>
             </td>
@@ -245,7 +254,6 @@ const searchStatusOptions = [
 
 const searchTypeValue = ref<number | { value: number; label: string }>(1) // 搜索类型
 const searchTypeoptions = [
-  { value: 0, label: t('b.sou-suo-biao-ti-he-nei-rong') },
   { value: 1, label: t('b.sou-suo-biao-ti') },
   { value: 2, label: t('b.sou-suo-nei-rong') },
   { value: 3, label: t('b.sou-suo-yong-hu-id') },
