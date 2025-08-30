@@ -1,5 +1,6 @@
 <template>
   <Card class="mb-4">
+    {{ forms }}{{ content }}
     <div class="flex gap-2">
       <ScButton @click="getFengYunBangAll" :icon="RotateCcw" Border>
         刷新列表
@@ -130,10 +131,8 @@
   </ScModal>
 
   <ScDrawer v-model="isOpenTipTap" position="bottom">
-    <div v-if="forms.content" class="bg-background rounded-t-lg">
-      <TipTap
-        v-model="forms.content"
-        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+    <div class="bg-background rounded-t-lg">
+      <TipTap v-if="content !== null" v-model="content" class="mobileTipTap" />
     </div>
   </ScDrawer>
 </template>
@@ -169,6 +168,7 @@ const isOpenDel = ref(false)
 const isOpenTipTap = ref(false)
 const fileInput = ref<HTMLInputElement | null>(null)
 const uploadLoading = ref(false)
+const isEditing = ref(false)
 
 const forms = ref<FengYunBangDto>({
   id: 0,
@@ -177,6 +177,7 @@ const forms = ref<FengYunBangDto>({
   content: '',
 })
 const qid = ref('')
+const content = ref<string | null>(null)
 
 const onTipTap = () => {
   isOpenTipTap.value = true
@@ -184,17 +185,22 @@ const onTipTap = () => {
 
 const addPlayer = () => {
   if (!isOpen.value) {
-    isOpen.value = true
     forms.value = {
       id: 0,
       title: '',
       headImg: '',
       content: '',
     }
+    content.value = ''
+    qid.value = ''
+    isOpen.value = true
     return
   }
   if (qid.value !== '') {
     forms.value.headImg = `http://q1.qlogo.cn/g?b=qq&s=4&nk=${qid.value.trim()}`
+  }
+  if (content.value) {
+    forms.value.content = content.value
   }
   addFengYunBang(forms.value, t, () => {
     isOpen.value = false
@@ -203,7 +209,9 @@ const addPlayer = () => {
       headImg: '',
       content: '',
     }
+    content.value = ''
     qid.value = ''
+    isEditing.value = false
   })
 }
 
@@ -245,6 +253,8 @@ const editPlayer = (item: FengYunBangDto) => {
     headImg: item.headImg,
     content: item.content || '',
   }
+  content.value = item.content
+
   if (item.userId) {
     forms.value.userId = item.userId
   }
@@ -252,6 +262,7 @@ const editPlayer = (item: FengYunBangDto) => {
     forms.value.headImg = `http://q1.qlogo.cn/g?b=qq&s=4&nk=${qid.value.trim()}`
   }
   isOpen.value = true
+  isEditing.value = true
 }
 
 const handleKeydown = (e: KeyboardEvent) => {

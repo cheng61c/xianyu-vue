@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { useVModel } from '@vueuse/core'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import {
@@ -73,6 +73,19 @@ const props = defineProps({
     default: true,
   },
 })
+const emit = defineEmits(['update:modelValue'])
+const contentModel = useVModel(props, 'modelValue', emit)
+
+// 监听父组件传入的 modelValue，内容变化时同步到编辑器
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (editor.value && newValue !== editor.value.getHTML()) {
+      editor.value.commands.setContent(newValue, false)
+    }
+  }
+)
+
 const btnClass = computed(() => {
   return deviceStore.device === 2
     ? 'tooltip tooltip-bottom p-2'
@@ -99,7 +112,6 @@ const CustomBulletList = BulletList.extend({
   },
 })
 
-const emit = defineEmits(['update:modelValue'])
 // 获取设备为Windows还是Mac
 const isMac = window.navigator.userAgent.toLowerCase().includes('mac')
 const keyboardShortcut = isMac ? '⌘' : 'Ctrl'
@@ -135,8 +147,6 @@ const dataTip = {
   Link: '插入链接',
   Video: '插入视频',
 }
-
-const contentModel = useVModel(props, 'modelValue', emit)
 
 const editor = ref<Editor>()
 
