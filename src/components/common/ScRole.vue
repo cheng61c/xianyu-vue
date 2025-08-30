@@ -26,6 +26,16 @@
       {{ userInfo.roles[0]?.name ?? userInfo.rank }}
     </ScTag>
   </template>
+  <template v-else>
+    <ScTag
+      :bgColor="userInfo.roles[0]?.color"
+      :size="props.size"
+      :status="!userInfo.roles[0] ? 'info' : ''">
+      LV
+      {{ levelSystem.getLevelFromExp(userInfo.exp) }}
+      {{ userInfo.rank }}
+    </ScTag>
+  </template>
 </template>
 
 <script setup lang="ts">

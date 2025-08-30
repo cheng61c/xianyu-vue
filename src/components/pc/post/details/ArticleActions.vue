@@ -87,6 +87,17 @@
           @click="unpublishItem(postData.id)">
           {{ postData.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
         </ScButton>
+        <div class="w-4/5 border-1 border-gray mx-auto"></div>
+        <ScButton
+          v-if="postData.creatorId == userStore.userInfo.id"
+          isCol
+          :icon="Edit"
+          :icon-size="24"
+          @click="
+            $router.push({ name: 'publish', params: { postId: postData.id } })
+          ">
+          {{ $t('b.bian-ji') }}
+        </ScButton>
       </Card>
     </div>
   </div>
@@ -146,6 +157,7 @@ import {
   ArrowDownFromLine,
   ArrowUpToLine,
   TriangleAlert,
+  Edit,
 } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useToast } from 'vue-toastification'

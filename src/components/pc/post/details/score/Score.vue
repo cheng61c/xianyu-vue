@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :id="id">
     <Card v-if="userStore.isLogin" class="mb-4">
       <div>
         <div class="flex gap-4">
@@ -236,6 +236,10 @@ const props = defineProps({
   postId: {
     type: Number,
     required: true,
+  },
+  id: {
+    type: String,
+    required: false,
   },
 })
 

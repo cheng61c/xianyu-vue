@@ -38,7 +38,7 @@
     </div>
   </Card>
 
-  <Card class="mb-4">
+  <Card v-if="reportList.length" class="mb-4">
     <div class="overflow-x-auto">
       <table class="table">
         <!-- head -->
@@ -64,23 +64,13 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ report.creator.nickname }}
-                <ScTag size="xs" status="info"
-                  >uid: {{ report.creator.id }}</ScTag
-                >
+                <ScRole size="xs" :user="report.creator" />
               </div>
             </td>
             <td>
               <div class="flex items-center gap-2 flex-wrap">
-                {{ report.handler.nickname }}
-                <ScTag size="xs" status="info">
-                  uid: {{ report.handler.id }}</ScTag
-                >
-                <ScTag
-                  size="xs"
-                  v-if="report.handler.roles"
-                  :bgColor="report.handler.roles.color">
-                  {{ report.handler.roles.name }}
-                </ScTag>
+                {{ report.handler?.nickname ?? 'null' }}
+                <ScRole size="xs" :user="report.handler" />
               </div>
             </td>
             <td>{{ searchStatusMap[report.status] }}</td>
@@ -163,30 +153,14 @@
         <span class="text-gray-content">{{ $t('d.ju-bao-zhe-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].creator.nickname }}
-          <ScTag size="xs">
-            uid: {{ reportList[currentReport].creator.id }}
-          </ScTag>
-          <ScTag
-            size="xs"
-            v-if="reportList[currentReport].creator.roles"
-            :bgColor="reportList[currentReport].creator.roles.color">
-            {{ reportList[currentReport].creator.roles.name }}
-          </ScTag>
+          <ScRole size="xs" :user="reportList[currentReport].creator" />
         </div>
       </div>
       <div class="flex items-center gap-2">
         <span class="text-gray-content">{{ $t('d.chu-li-ren-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
-          {{ reportList[currentReport].handler.nickname }}
-          <ScTag size="xs"
-            >uid: {{ reportList[currentReport].handler.id }}</ScTag
-          >
-          <ScTag
-            size="xs"
-            v-if="reportList[currentReport].handler.roles"
-            :bgColor="reportList[currentReport].handler.roles.color">
-            {{ reportList[currentReport].handler.roles.name }}
-          </ScTag>
+          {{ reportList[currentReport].handler?.nickname ?? '未知' }}
+          <ScRole size="xs" :user="reportList[currentReport].handler" />
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -232,15 +206,7 @@
         <span class="text-gray-content">{{ $t('d.ju-bao-zhe-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].creator.nickname }}
-          <ScTag size="xs">
-            uid: {{ reportList[currentReport].creator.id }}
-          </ScTag>
-          <ScTag
-            size="xs"
-            v-if="reportList[currentReport].creator.roles"
-            :bgColor="reportList[currentReport].creator.roles.color">
-            {{ reportList[currentReport].creator.roles.name }}
-          </ScTag>
+          <ScRole size="xs" :user="reportList[currentReport].creator" />
         </div>
       </div>
 
@@ -295,11 +261,12 @@ import ScButton from '@/components/common/ScButton.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import { reportApi } from '@/apis'
 import Pagination from '@/components/common/Pagination.vue'
-import ScTag from '@/components/common/ScTag.vue'
+// import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ReportDto, ReportType } from '@/types/Report'
 import { useI18n } from 'vue-i18n'
+import ScRole from '@/components/common/ScRole.vue'
 
 const { t } = useI18n()
 const searchReportValue = ref('') // 搜索帖子内容
@@ -310,13 +277,13 @@ const searchStatusOptions = [
   { value: 0, label: t('b.quan-bu') },
   { value: 1, label: t('b.wei-chu-li') },
   { value: 2, label: t('b.feng-jin') },
-  { value: 3, label: t('b.shen-he-tong-guo') },
+  { value: 3, label: '不封禁' },
 ]
 const searchStatusMap: { [key: number]: string } = {
   0: t('b.quan-bu'),
   1: t('b.wei-chu-li'),
   2: t('b.feng-jin'),
-  3: t('b.shen-he-tong-guo'),
+  3: '不封禁',
 }
 
 const searchType = ref<number | { value: number; label: string }>(0) // 搜索类型

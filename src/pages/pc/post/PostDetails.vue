@@ -1,9 +1,12 @@
 <template>
-  <div v-if="!loading" class="pb-2">
+  <div
+    v-if="!loading"
+    class="pb-2 h-[calc(100vh-64px-24px)] overflow-y-auto"
+    ref="postContainer">
     <!-- 导航 -->
     <!-- 面包屑 -->
 
-    <div v-if="postData" class="breadcrumbs text-sm ml-4">
+    <div v-if="postData" class="breadcrumbs text-sm ml-4" id="post-top">
       <ul>
         <li>
           <ScButton noPadding @click="goBack"> <Home :size="18" /> </ScButton>
@@ -30,26 +33,27 @@
       </ul>
     </div>
 
-    <div v-if="!errorPage && postData" class="flex gap-6 pr-1 pt-4">
+    <div v-if="!errorPage && postData" class="flex gap-6 pt-4">
       <!-- 左侧按钮 -->
       <ArticleActions :postData="postData" @updatePost="getPost" />
 
       <!-- 文章主体 -->
-      <div class="tiptap flex-1 w-7/10">
+      <div class="tiptap flex-1 w-7/10 p-1">
         <div ref="htmlContainer" v-html="postData?.content"></div>
         <div class="border-t border-gray my-8"></div>
 
         <!-- 发布版 -->
-        <Releases :postData="postData" />
+        <Releases :postData="postData" id="releases" />
 
         <!-- 评分 -->
         <Score
           v-if="postData && postData.type == 2"
           :postId="postData?.id"
+          id="score-container"
           class="mb-4" />
 
         <!-- 评论区 -->
-        <CommentArea :postData="postData"></CommentArea>
+        <CommentArea :postData="postData" id="comment-container"></CommentArea>
       </div>
 
       <!-- 右侧卡片 -->
@@ -160,6 +164,7 @@ const errorPage = ref(false) // 获取错误页面标志
 const imageModal = ref(false) // 图片查看模态框
 const imgurl = ref('') // 图片查看地址
 const htmlContainer = ref<HTMLElement | null>(null) // HTML内容容器
+const postContainer = ref<HTMLElement | null>(null) // 文章内容容器
 const loading = ref(false) // 加载状态
 
 const getPost = async (postId: number) => {
@@ -192,6 +197,30 @@ const openImg = (e: MouseEvent) => {
   imgurl.value = (e.target as HTMLImageElement).src
 }
 
+const scrollToHash = (hash: string) => {
+  console.log('Scrolling to hash:', hash)
+
+  const id = hash.replace('#', '')
+  const element = document.getElementById(id)
+  if (element) {
+    const offset = 80
+    const elementRect = element.getBoundingClientRect()
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    const offsetPosition = elementRect.top + scrollTop - offset
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth',
+    })
+    if (postContainer.value) {
+      postContainer.value.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
+    }
+  }
+}
+
 onMounted(async () => {
   loading.value = true
   const postId = route.params.postId
@@ -205,6 +234,18 @@ onMounted(async () => {
 
     loading.value = false
   }
+
+  console.log('哈希', route.hash)
+
+  if (route.hash) {
+    nextTick(() => {
+      scrollToHash(route.hash)
+      window.scrollTo({
+        top: 900,
+        behavior: 'smooth',
+      })
+    })
+  }
 })
 
 watch(
@@ -213,6 +254,17 @@ watch(
     const postId = newParams.postId
     console.log('Fetching details for post ID:', postId)
     // getPost(+postId)
+  }
+)
+
+// 监听路由hash变化
+watch(
+  () => route.hash,
+  (newHash) => {
+    console.log('newHash', newHash)
+    if (newHash) {
+      scrollToHash(newHash)
+    }
   }
 )
 

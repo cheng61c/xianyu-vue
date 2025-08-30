@@ -1,5 +1,5 @@
 <template>
-  <Card class="comment-container mx-auto">
+  <Card class="comment-container mx-auto" :id="id">
     <!-- 评论输入框 -->
     <div
       v-if="userStore.isLogin"
@@ -305,6 +305,7 @@ const { t } = useI18n()
 const toast = useToast()
 const props = defineProps<{
   postData: Post | null
+  id?: string
 }>()
 
 // 当前用户

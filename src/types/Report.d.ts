@@ -9,28 +9,8 @@ export declare interface ReportType {
   result: string
   createdAt: string
   updatedAt: string
-  creator: {
-    id: number
-    account: string
-    nickname: string
-    headImg: string
-    roles: {
-      id: number
-      name: string
-      color: string
-    }
-  }
-  handler: {
-    id: number
-    account: string
-    nickname: string
-    headImg: string
-    roles: {
-      id: number
-      name: string
-      color: string
-    }
-  }
+  creator: UserType
+  handler: UserType
   target: any
 }
 
