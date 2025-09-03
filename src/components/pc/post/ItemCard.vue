@@ -4,11 +4,17 @@
     <div
       class="flex gap-2 justify-between items-center align-middle cursor-pointer"
       @click="handleClick">
-      <Avatar
-        :src="localPost.creator.headImg"
-        :alt="localPost.creator.nickname"
-        :size="24" />
-      <div class="font-bold mr-auto">{{ localPost.title }}</div>
+      <div class="flex gap-2 items-center">
+        <Avatar
+          :src="localPost.creator.headImg"
+          :alt="localPost.creator.nickname"
+          :size="24" />
+        <span class="">{{ post.creator.nickname }}</span>
+        <ScRole
+          v-if="post.creator && post.creator.roles"
+          :user="post.creator"
+          size="sm"></ScRole>
+      </div>
 
       <div class="text-sm text-gray-content">
         {{ localPost.createdAt }}
@@ -25,6 +31,7 @@
           :alt="localPost.title"
           class="w-28 h-28" />
       </div>
+      <div class="font-bold">{{ localPost.title }}</div>
       <div class="text-gray-content">
         {{ htmlToText(localPost.content) }}
       </div>
@@ -119,6 +126,7 @@ import ScImage from '@/components/common/ScImage.vue'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
 import { likePost, badPost } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
+import ScRole from '@/components/common/ScRole.vue'
 
 const typeLabelMap = useTypeLabelMap()
 
