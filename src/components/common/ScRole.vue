@@ -5,7 +5,7 @@
       :key="role.id"
       :bgColor="role.color"
       :size="props.size">
-      {{ role.name }}
+      <template v-if="!props.noRole">{{ role.name }}</template>
     </ScTag>
   </template>
   <template v-else>
@@ -14,15 +14,22 @@
       :size="props.size"
       :status="!userInfo.roles[0] ? 'info' : ''">
       <template
-        v-if="userInfo.level ?? levelSystem.getLevelFromExp(userInfo.exp)">
-        LV
-        {{
-          userInfo.level
-            ? userInfo.level
-            : levelSystem.getLevelFromExp(userInfo.exp)
-        }}
+        v-if="
+          !props.noLevel &&
+          (userInfo.level ?? levelSystem.getLevelFromExp(userInfo.exp))
+        ">
+        <span>
+          Lv{{
+            userInfo.level
+              ? userInfo.level
+              : levelSystem.getLevelFromExp(userInfo.exp)
+          }}
+        </span>
       </template>
-      {{ userInfo.roles[0]?.name ?? userInfo.rank }}
+
+      <span v-if="!props.noRole">
+        {{ userInfo.roles[0]?.name ?? userInfo.rank }}
+      </span>
     </ScTag>
   </template>
 </template>
@@ -41,10 +48,14 @@ const props = withDefaults(
     user?: UserType
     size?: 'xs' | 'sm' | 'md' | 'lg'
     isAll?: boolean
+    noRole?: boolean
+    noLevel?: boolean
   }>(),
   {
     size: 'md',
     isAll: false,
+    noRole: false,
+    noLevel: false,
   }
 )
 

@@ -48,10 +48,10 @@ const props = defineProps({
 })
 
 const sizeClass = {
-  xs: 'text-xs px-1.5 py-1 h-4',
-  sm: 'text-sm px-1.5 py-0.5',
-  md: 'text-base px-2 py-1',
-  lg: 'text-lg px-2 py-1',
+  xs: 'text-[10px] px-1.5 py-1 h-4',
+  sm: 'text-[12px] px-1.5 py-0.5 h-5',
+  md: 'text-[14px] px-2 py-1',
+  lg: 'text-[16px] px-2 py-1',
 } as const
 
 const Style = computed(() => {

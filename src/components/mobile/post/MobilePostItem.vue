@@ -7,9 +7,15 @@
       <Avatar
         :src="post.creator.headImg"
         :alt="post.creator.nickname"
-        :size="24" />
+        :size="34" />
       <div>
-        <div class="font-bold mr-auto">{{ post.creator.nickname }}</div>
+        <div class="mr-auto flex items-center gap-2">
+          <span class="font-bold">{{ post.creator.nickname }}</span>
+          <ScRole
+            v-if="post.creator && post.creator.roles"
+            :user="post.creator"
+            size="sm"></ScRole>
+        </div>
         <div class="text-sm text-gray-content">{{ post.createdAt }}</div>
       </div>
     </div>
@@ -17,7 +23,7 @@
     <!-- 第二行，帖子部分内容 -->
     <div class="line-clamp-3 cursor-pointer" @click="handleClick">
       <div class="text-gray-content">
-        <div>{{ post.title }}</div>
+        <div class="font-bold">{{ post.title }}</div>
         <div>{{ htmlToText(post.content) }}</div>
       </div>
       <div v-if="post.images" class="flex gap-2">
@@ -114,6 +120,7 @@ import { useRouter } from 'vue-router'
 import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
+import ScRole from '@/components/common/ScRole.vue'
 const typeLabelMap = useTypeLabelMap()
 
 const router = useRouter()

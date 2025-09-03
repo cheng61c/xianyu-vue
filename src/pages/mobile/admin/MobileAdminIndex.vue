@@ -69,22 +69,24 @@
   </div>
 
   <ScDrawer v-model="isOpen" position="left">
-    <div
-      class="bg-background overflow-y-auto no-scrollbar w-[60dvw] h-[100dvh] flex flex-col">
-      <div class="flex p-4 justify-between items-center">
-        <h1 class="text-lg font-bold">菜单</h1>
-        <ChevronLeft />
-      </div>
-      <div class="border-b border-gray/40"></div>
+    <template #default="{ close }">
       <div
-        v-for="item in menuItems"
-        :key="item.path"
-        class="flex w-full items-center gap-2 px-4 py-3"
-        @click="toPage(item.path)">
-        <component :is="item.icon" :size="20" />
-        <span>{{ item.name }}</span>
+        class="bg-background overflow-y-auto no-scrollbar w-[60dvw] h-[100dvh] flex flex-col">
+        <div class="flex p-4 justify-between items-center">
+          <h1 class="text-lg font-bold">菜单</h1>
+          <ChevronLeft />
+        </div>
+        <div class="border-b border-gray/40"></div>
+        <div
+          v-for="item in menuItems"
+          :key="item.path"
+          class="flex w-full items-center gap-2 px-4 py-3"
+          @click="(toPage(item.path), close())">
+          <component :is="item.icon" :size="20" />
+          <span>{{ item.name }}</span>
+        </div>
       </div>
-    </div>
+    </template>
   </ScDrawer>
 </template>
 
