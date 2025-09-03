@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <ScDrawer v-model="rightDrawer" position="left">
+  <ScDrawer v-model="rightDrawer" position="right">
     <template #default="{ close }">
       <div class="bg-background w-64 h-full p-4 overflow-y-auto">
         <h3 class="text-xl px-2">名人堂</h3>

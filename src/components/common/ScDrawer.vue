@@ -22,7 +22,7 @@
               : 'right-0 top-0 h-full max-w-4/5',
           animationClass,
         ]">
-        <slot />
+        <slot :close="close" />
       </div>
     </div>
   </Teleport>
@@ -47,7 +47,7 @@ const router = useRouter()
 let routerGuard: (() => void) | null = null
 const props = defineProps<{
   modelValue: boolean
-  position?: 'side' | 'bottom' | 'left'
+  position?: 'side' | 'bottom' | 'left' | 'right'
 }>()
 
 const emit = defineEmits<{
