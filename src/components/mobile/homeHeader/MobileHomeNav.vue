@@ -43,6 +43,13 @@
                 <div>清空抽屉 ({{ drawerStore.drawers.length }})</div>
                 <button><Trash2 /></button>
               </div>
+
+              <div
+                class="flex gap-4 items-center justify-between py-2"
+                @click="onToast">
+                <div>弹窗</div>
+                <button><Trash2 /></button>
+              </div>
             </div>
           </template>
         </AccordionItem>
@@ -127,6 +134,7 @@ import { logout } from '@/stores/module/user/service'
 import { verifyPermissions } from '@/utils/verify'
 import { useDrawerStore } from '@/stores/global/drawerStore'
 import ScSelector from '@/components/common/ScSelector.vue'
+import CreatrPostJump from '@/components/common/CreatrPostJump.vue'
 
 const postStore = usePostStore()
 const leftDrawer = ref(false)
@@ -141,6 +149,21 @@ const drawerStore = useDrawerStore()
 const { locale, t } = useI18n()
 
 locale.value = configStore.lang.value // 设置初始语言
+
+const onToast = () => {
+  toast.success(
+    {
+      component: CreatrPostJump,
+      listeners: {
+        click: () => {},
+      },
+    },
+    {
+      timeout: 30000,
+      status: 'success',
+    }
+  )
+}
 
 const updateNav = (name: string) => {
   postStore.nav.name = name

@@ -73,6 +73,7 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
 import ScSelector from '@/components/common/ScSelector.vue'
+import CreatrPostJump from './CreatrPostJump.vue'
 
 const toast = useToast()
 const configStore = useConfigStore()
@@ -104,7 +105,18 @@ watch(
 )
 
 const onToast = () => {
-  toast.success('Button clicked!')
+  toast.success(
+    {
+      component: CreatrPostJump,
+      listeners: {
+        click: () => {},
+      },
+    },
+    {
+      timeout: 30000,
+      status: 'success',
+    }
+  )
 }
 const deleteUser = () => {
   userStore.userInfo = {} as UserType

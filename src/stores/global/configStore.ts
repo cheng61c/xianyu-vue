@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 
 export const useConfigStore = defineStore('config', {
   state: () => ({
-    /** 语言 */
+    /** 默认语言 */
     lang: { value: 'zh', label: '简体中文' },
     langs: [
       { value: 'zh', label: '简体中文' },
@@ -11,14 +11,9 @@ export const useConfigStore = defineStore('config', {
     ],
     /** 自动登录 */
     autoLogin: false,
-    // serverAddress: 'http://119.29.147.180/api'
     /** 后端接口 */
     serverAddress: 'http://192.168.28.238:3000/api',
     // serverAddress: 'https://api.schub.top/api',
-    /** 上传路径 */
-
-    uploadPath: 'http://192.168.28.238:3000/upload',
-    // uploadPath: 'https://api.schub.top/api/upload',
     errorImg:
       'https://r2.schub.top/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
 
@@ -74,6 +69,9 @@ export const useConfigStore = defineStore('config', {
         } catch (err) {
           console.warn('无法加载 config.json，使用默认配置', err)
         }
+      } else {
+        console.log('本地环境，使用默认配置')
+        this.serverAddress = 'http://192.168.28.238:3000/api'
       }
     },
   },

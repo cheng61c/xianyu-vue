@@ -5,7 +5,6 @@
       <h2 class="card-title px-1.5">{{ $t('d.gong-gao-lan') }}</h2>
       <div v-for="post in posts">
         <div
-          v-if="post.top == 1"
           @click="handleClick(post)"
           class="flex gap-2 items-center px-1.5 py-1 hover:bg-gray/50 rounded-md cursor-pointer transition-all">
           <ScTag status="warning"> {{ $t('b.zhi-ding') }} </ScTag>
@@ -44,7 +43,7 @@ const handleClick = (post: { id: any }) => {
 const posts = ref<Post[]>([])
 
 const getPost = () => {
-  postApi.getPostListTop().then((res) => {
+  postApi.getPostListTop('1,2,3').then((res) => {
     if (res.data.code === 200) {
       posts.value = res.data.data.list.map((item: any) => {
         item.createdAt = formatTime(item.createdAt)

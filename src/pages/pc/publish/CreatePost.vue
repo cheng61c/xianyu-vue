@@ -445,12 +445,15 @@ import type { Version } from '@/types/version'
 import { verifyPermissions } from '@/utils/verify'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useI18n } from 'vue-i18n'
+import CreatrPostJump from '@/components/common/CreatrPostJump.vue'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
 const toast = useToast()
 const postStore = usePostStore()
 const configStore = useConfigStore()
 const userStore = useUserStore()
+const router = useRouter()
 
 const props = defineProps({
   post: {
@@ -566,6 +569,25 @@ const sendPsot = () => {
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success(t('t.fa-bu-cheng-gong'))
+        if (postData.value.type == 2) {
+          toast(
+            {
+              component: CreatrPostJump,
+              listeners: {
+                click: () => {
+                  router.push({
+                    name: 'publishResource',
+                    params: { postId: res.data.data.id },
+                  })
+                },
+              },
+            },
+            {
+              timeout: 30000,
+              status: 'success',
+            }
+          )
+        }
         loader.value = false
         window.history.back()
       }

@@ -22,7 +22,7 @@
               : 'right-0 top-0 h-full max-w-4/5',
           animationClass,
         ]">
-        <slot :close="close" />
+        <slot />
       </div>
     </div>
   </Teleport>
@@ -41,13 +41,13 @@ import {
 import { useRouter } from 'vue-router'
 // import { useToast } from 'vue-toastification'
 
-const drawerStore = useDrawerStore()
+const drawertore = useDrawerStore()
 const router = useRouter()
 // const toast = useToast()
 let routerGuard: (() => void) | null = null
 const props = defineProps<{
   modelValue: boolean
-  position?: 'side' | 'bottom' | 'left' | 'right'
+  position?: 'side' | 'bottom' | 'left'
 }>()
 
 const emit = defineEmits<{
@@ -68,23 +68,23 @@ const open = () => {
     animationClass.value = ''
   })
 
-  drawerStore.drawers.push({
+  drawertore.drawers.push({
     close: off,
     id: Symbol().toString(),
   })
 }
 
 const close = () => {
-  if (drawerStore.drawers.length === 0) {
+  if (drawertore.drawers.length === 0) {
     off()
     return
   }
   try {
-    drawerStore.drawers[drawerStore.drawers.length - 1].close()
+    drawertore.drawers[drawertore.drawers.length - 1].close()
   } catch (error) {
     console.error('关闭抽屉时发生错误:', error)
   }
-  drawerStore.drawers.pop()
+  drawertore.drawers.pop()
 }
 const off = () => {
   emit('update:modelValue', false)
@@ -107,28 +107,16 @@ const getTranslateClass = (type: 'enter' | 'leave') => {
 }
 
 onMounted(() => {
-  drawerStore.drawers = []
-
-  routerGuard = router.beforeEach((to, from, next) => {
-    if (to.path !== from.path) {
-      // 如果当前路由不是抽屉组件所在的路由，则关闭抽屉
-      next()
-      drawerStore.drawers = []
-    }
-
-    if (
-      ['publish', 'publishResource', 'postList', 'modList'].includes(
-        from.name as string
-      )
-    ) {
-      console.log('drawerStore.drawers.length', drawerStore.drawers.length)
-      if (drawerStore.drawers.length > 0) {
+  drawertore.drawers = []
+  routerGuard = router.beforeEach((_to, from, next) => {
+    if (from.name === 'publish' || from.name === 'publishResource') {
+      if (drawertore.drawers.length > 0) {
         close()
         next(false)
         return
       } else {
         next()
-        drawerStore.drawers = []
+        drawertore.drawers = []
       }
     }
     next()
@@ -147,8 +135,6 @@ watch(
   (val) => {
     if (val) {
       open()
-    } else {
-      close()
     }
   },
   { immediate: true }

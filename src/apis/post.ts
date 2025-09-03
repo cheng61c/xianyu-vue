@@ -15,8 +15,14 @@ export const getPostList = (dto: PostListQueryDto) => {
     params: dto,
   })
 }
-export const getPostListTop = () => {
-  return request.get('/post/top')
+export const getPostListTop = (top: string) => {
+  return request({
+    method: 'get',
+    url: '/post/top',
+    params: {
+      type: top,
+    },
+  })
 }
 export const getServerPostList = (dto: ServerPostListQueryDto) => {
   return request({

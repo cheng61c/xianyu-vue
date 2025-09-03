@@ -34,6 +34,9 @@ class LevelSystem {
 
 /**
  * 等级系统
+ * - baseExp: 基础经验值
+ * - exponent: 经验值增长曲线的指数
+ * - offset: 经验值增长的偏移量
  */
 const levelSystem = new LevelSystem(10, 1.7, 50)
 

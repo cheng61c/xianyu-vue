@@ -1,14 +1,5 @@
 <template>
   <template v-if="props.isAll && userInfo.roles.length > 0">
-    <ScTag :size="props.size" status="info">
-      LV
-      {{
-        userInfo.level
-          ? userInfo.level
-          : levelSystem.getLevelFromExp(userInfo.exp)
-      }}
-    </ScTag>
-
     <ScTag
       v-for="role in userInfo.roles"
       :key="role.id"
@@ -17,23 +8,21 @@
       {{ role.name }}
     </ScTag>
   </template>
-  <template v-else-if="!userInfo.level && userInfo.roles.length > 0">
-    <ScTag
-      :bgColor="userInfo.roles[0]?.color"
-      :size="props.size"
-      :status="!userInfo.roles[0] ? 'info' : ''">
-      {{ userInfo.level ? 'LV' : '' }} {{ userInfo.level }}
-      {{ userInfo.roles[0]?.name ?? userInfo.rank }}
-    </ScTag>
-  </template>
   <template v-else>
     <ScTag
       :bgColor="userInfo.roles[0]?.color"
       :size="props.size"
       :status="!userInfo.roles[0] ? 'info' : ''">
-      LV
-      {{ levelSystem.getLevelFromExp(userInfo.exp) }}
-      {{ userInfo.rank }}
+      <template
+        v-if="userInfo.level ?? levelSystem.getLevelFromExp(userInfo.exp)">
+        LV
+        {{
+          userInfo.level
+            ? userInfo.level
+            : levelSystem.getLevelFromExp(userInfo.exp)
+        }}
+      </template>
+      {{ userInfo.roles[0]?.name ?? userInfo.rank }}
     </ScTag>
   </template>
 </template>

@@ -87,7 +87,9 @@
           @click="unpublishItem(postData.id)">
           {{ postData.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
         </ScButton>
-        <div class="w-4/5 border-1 border-gray mx-auto"></div>
+        <div
+          v-if="postData.creatorId == userStore.userInfo.id"
+          class="w-4/5 border-1 border-gray mx-auto"></div>
         <ScButton
           v-if="postData.creatorId == userStore.userInfo.id"
           isCol
