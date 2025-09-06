@@ -1,38 +1,50 @@
 <template>
   <Card v-if="userStore.isLogin" class="w-full">
+    <div class="mb-4 text-xl font-bold">强制下线</div>
+    <div>让所有登录的设备强制下线（包括当前设备）</div>
+    <div>下线后使用密码可重新登录</div>
+    <div class="flex gap-2 items-center">
+      <ScButton @click="forceLogout" Border class="w-full"> 下线 </ScButton>
+    </div>
+  </Card>
+
+  <Card v-if="userStore.isLogin" class="w-full">
     <div class="mb-4 text-xl font-bold">{{ $t('f.zhong-zhi-mi-ma') }}</div>
-    <div class="flex gap-4 iems-center">
-      <span>{{ $t('f.xin-mi-ma') }}</span>
+    <div class="flex gap-2 items-center">
+      <span class="w-20">{{ $t('f.xin-mi-ma') }}</span>
       <ScInput
         v-model="resetPassword.newPassword"
         type="password"
+        class="flex-1"
         :placeholder="$t('f.qing-shu-ru-xin-mi-ma')" />
     </div>
 
-    <div class="flex gap-4 items-center">
-      <span>{{ $t('f.que-ren-mi-ma') }}</span>
+    <div class="flex gap-2 items-center">
+      <span class="w-20">{{ $t('f.que-ren-mi-ma') }}</span>
       <ScInput
         v-model="resetPassword.confirmPassword"
         type="password"
+        class="flex-1"
         :placeholder="$t('f.qing-zai-ci-shu-ru-xin-mi-ma')" />
     </div>
 
-    <div class="flex gap-4 items-center">
-      <span>{{ $t('f.you-xiang-yan-zheng-ma') }}</span>
+    <div class="flex gap-2 items-center">
+      <span class="w-20">{{ $t('f.you-xiang-yan-zheng-ma') }}</span>
       <ScInput
         v-model="resetPassword.captcha"
+        type="text"
+        class="flex-1"
         :placeholder="$t('f.qing-shu-ru-yan-zheng-ma')" />
       <ScButton
         :disabled="isSendCode"
         @click="getCaptcha(userStore.userInfo.email)"
-        Border
-        class="py-2">
+        Border>
         {{ sendCodeText }}
       </ScButton>
     </div>
 
-    <div class="flex gap-4 items-center">
-      <ScButton @click="updatePassword" Border class="py-2">
+    <div class="flex gap-2 items-center">
+      <ScButton @click="updatePassword" Border class="w-full">
         {{ $t('b.ti-jiao') }}
       </ScButton>
     </div>
@@ -71,6 +83,21 @@ const resetPassword = ref({
 const isSendCode = ref(false)
 const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
 const signature = ref('')
+
+const forceLogout = () => {
+  userApi
+    .updateUserKey()
+    .then((res) => {
+      if (res.data.code === 200) {
+        toast.success('操作成功')
+        userStore.logout()
+      }
+    })
+    .catch((error) => {
+      console.error('Error forcing logout:', error)
+      toast.error('操作失败' + error.msg)
+    })
+}
 
 // 计时x秒
 const countdown = (duration: number) => {

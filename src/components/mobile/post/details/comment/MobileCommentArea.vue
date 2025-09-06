@@ -330,7 +330,7 @@ const commentsPage = ref({
 const openImg = (img: string) => {
   if (!img) return
   imageModal.value = true
-  imgurl.value = img
+  imgurl.value = formatLink(img)
 }
 
 const setSort = (value: number) => {

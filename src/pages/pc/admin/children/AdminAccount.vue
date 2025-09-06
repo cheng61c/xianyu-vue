@@ -488,7 +488,7 @@ const banned = (index: number, val?: number) => {
             remark: updateBody.value.remark, // 备注内容
           })
           if (verifyPermissions([1, 2])) {
-            await userApi.updateUserKey(item.id)
+            await userApi.updateUserKeyAsAdmin(item.id)
           }
           toast.success(t('t.cao-zuo-cheng-gong'))
         } catch (error) {
@@ -545,7 +545,7 @@ const updateUser = (index: number) => {
           // 如果更新的是当前登录用户的信息，重新获取用户信息
           getInfo()
         } else {
-          userApi.updateUserKey(item.id)
+          userApi.updateUserKeyAsAdmin(item.id)
         }
       }
     })
@@ -591,7 +591,7 @@ const logOff = (index: number) => {
     return
   }
   userApi
-    .updateUserKey(item.id)
+    .updateUserKeyAsAdmin(item.id)
     .then(() => {
       toast.success(t('t.cao-zuo-cheng-gong'))
       getUserList()

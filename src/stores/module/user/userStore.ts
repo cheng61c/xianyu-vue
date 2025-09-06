@@ -11,6 +11,16 @@ export const useUserStore = defineStore('user', {
     isLogin: false,
     showLoginModal: false,
   }),
-  actions: {},
+  actions: {
+    logout() {
+      this.token = ''
+      this.userInfo = {} as UserType
+      this.account = ''
+      this.password = ''
+      this.autoLogin = false
+      this.isLogin = false
+      this.showLoginModal = false
+    },
+  },
   persist: true,
 })

@@ -45,6 +45,10 @@ export const updateUser = (dto: UpdateUserDto) => {
   return request.put('/user/update', dto)
 }
 
+export const updateUserKey = () => {
+  return request.put(`/user/update-key`)
+}
+
 export const getUserPosts = (dto: UserPostQueryDto) => {
   return request({
     method: 'get',
@@ -85,7 +89,7 @@ export const updateRoles = (dto: UpdateRoleDto) => {
   return request.put(`/admin/user/update-roles`, dto)
 }
 
-export const updateUserKey = (id: number) => {
+export const updateUserKeyAsAdmin = (id: number) => {
   return request.put(`/admin/user/update-key/${id}`)
 }
 
