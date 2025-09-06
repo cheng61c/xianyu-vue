@@ -17,7 +17,7 @@
 
   <Card
     v-if="userStore.isLogin"
-    v-for="(post, postIndex) in posts"
+    v-for="(post, postIndex) in resStore.posts"
     :key="post.id"
     class="w-full">
     <div class="flex gap-2">
@@ -157,15 +157,15 @@
       <div class="skeleton w-full h-20"></div>
     </div>
     <Pagination
-      v-else-if="posts.length"
-      :current-page="pagination.page"
-      :total-items="pagination.count"
-      :page-size="pagination.limit"
+      v-else-if="resStore.posts.length"
+      :current-page="resStore.pagination.page"
+      :total-items="resStore.pagination.count"
+      :page-size="resStore.pagination.limit"
       @page-change="toPage" />
   </div>
 
   <EmptyState
-    v-if="posts.length === 0 && userStore.isLogin"
+    v-if="resStore.posts.length === 0 && userStore.isLogin"
     :title="$t('t.zan-wu-tie-zi')"
     :description="'你还没有发布任何帖子哦~'"
     iconSize="64"
@@ -191,7 +191,9 @@
           noPd>
         </ScButton>
       </div>
-      <div v-if="packageList.length === 0" class="overflow-y-auto h-full">
+      <div
+        v-if="resStore.packageList.length === 0"
+        class="overflow-y-auto h-full">
         <EmptyState
           description="暂无版本信息"
           action="点击添加版本"
@@ -200,11 +202,11 @@
           @action-click="toCreateResource()" />
       </div>
 
-      <div v-if="packageList.length" class="w-full">
+      <div v-if="resStore.packageList.length" class="w-full">
         <!-- 表格行 -->
         <div
           class="w-full py-2 border-b border-gray-content"
-          v-for="(pkg, index) in packageList"
+          v-for="(pkg, index) in resStore.packageList"
           :key="index">
           <div class="flex items-center gap-2 mb-2">
             <ScTag :type="pkg.fileType" size="sm" status="info">
@@ -260,7 +262,7 @@
         </div>
       </div>
       <ScButton
-        v-if="packageList.length"
+        v-if="resStore.packageList.length"
         class="w-full"
         @click="toCreateResource()"
         :icon="PackagePlus"
@@ -272,14 +274,14 @@
     </Card>
   </ScModal>
 
-  <ScModal v-model="isDeletePost">
+  <ScModal v-model="resStore.isDeletePost">
     <Card class="max-w-2xl">
       <div class="text-lg font-bold mb-4">
         {{ $t('t.que-ren-shan-chu-tie-zi') }}
       </div>
       <div class="">
         {{ $t('t.tie-zi-biao-ti') }}
-        <span>{{ posts[currenPostId].title }}</span>
+        <span>{{ resStore.posts[resStore.currenPostId].title }}</span>
       </div>
       <div class="mb-4">
         <span>{{ $t('d.ni-que-ding-yao-shan-chu-ci-tie-zi-ma') }}</span>
@@ -287,7 +289,7 @@
       </div>
       <ScDivider />
       <div class="flex justify-end gap-2">
-        <ScButton class="text-sm border" @click="isDeletePost = false">
+        <ScButton class="text-sm border" @click="resStore.isDeletePost = false">
           {{ $t('b.qu-xiao') }}
         </ScButton>
         <ScButton class="text-sm text-error border" @click="deletePost">
@@ -297,7 +299,7 @@
     </Card>
   </ScModal>
 
-  <ScModal v-model="isDeletePkg">
+  <ScModal v-model="resStore.isDeletePkg">
     <Card class="max-w-2xl">
       <div class="text-lg font-bold mb-4">
         {{ $t('d.que-ding-shan-chu-ban-ben') }}
@@ -305,15 +307,16 @@
       <div class="flex gap-2">
         {{ $t('b.ban-ben-hao') }}
         <ScTag
-          :type="packageList[currenPkgId].fileType"
+          :type="resStore.packageList[resStore.currenPostId].fileType"
           size="sm"
           status="info">
-          v {{ packageList[currenPkgId].version }}
+          v
+          {{ resStore.packageList[resStore.currenPostId].version }}
         </ScTag>
       </div>
       <div class="">
         {{ $t('d.ban-ben-biao-ti') }}
-        <span>{{ packageList[currenPkgId].title }}</span>
+        <span>{{ resStore.packageList[resStore.currenPostId].title }}</span>
       </div>
       <div class="mb-4">
         <span>{{ $t('d.ni-que-ding-yao-shan-chu-ci-ban-ben-ma') }}</span>
@@ -321,7 +324,7 @@
       </div>
       <ScDivider />
       <div class="flex justify-end gap-2">
-        <ScButton class="text-sm border" @click="isDeletePkg = false">
+        <ScButton class="text-sm border" @click="resStore.isDeletePkg = false">
           {{ $t('b.qu-xiao') }}
         </ScButton>
         <ScButton class="text-sm text-error border" @click="deletePackage">
@@ -335,7 +338,6 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
-import type { UserType } from '@/types'
 import { onMounted, ref } from 'vue'
 import {
   ThumbsUp,
@@ -354,14 +356,10 @@ import {
   Download,
   SquareArrowOutUpRight,
 } from 'lucide-vue-next'
-import { userApi, postApi, downloadApi } from '@/apis'
-import { formatTime, htmlToText } from '@/utils/format'
-import type { Post } from '@/types/Post'
+import { postApi } from '@/apis'
 import { useToast } from 'vue-toastification'
-import { extractImageSrcs } from '@/utils/regex'
 import { useRouter } from 'vue-router'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
-import type { DocumentVersion } from '@/types/DocumentVersion'
 import { formatFileSize } from '@/utils/format'
 import ScImage from '@/components/common/ScImage.vue'
 import ScButton from '@/components/common/ScButton.vue'
@@ -373,72 +371,32 @@ import ScSearch from '@/components/pc/user/ScSearch.vue'
 import Pagination from '@/components/common/Pagination.vue'
 
 import { useI18n } from 'vue-i18n'
+import {
+  getPackageList,
+  searchUserResource,
+  deletePackage,
+  downloadFile,
+} from '@/stores/module/userResource/service'
+import { useUserResourceStore } from '@/stores/module/userResource/userResourceStore'
+import { getPosts } from '@/stores/module/userResource/service'
 
 const { t } = useI18n()
 const userStore = useUserStore()
-const userInfo = ref<UserType>(userStore.userInfo)
+const resStore = useUserResourceStore()
 const toast = useToast()
 const typeLabelMap = useTypeLabelMap()
-
-const currenPostId = ref(0)
-const currenPkgId = ref(0)
-const posts = ref<Post[]>([])
-const packageList = ref<DocumentVersion[]>([])
 const openPackageList = ref(false)
-const isDeletePost = ref(false)
-const isDeletePkg = ref(false)
 const loading = ref(false)
-
-const pagination = ref({
-  page: 1,
-  limit: 10,
-  total: 0,
-  count: 0,
-})
 const searchText = ref('')
-const isSearch = ref(false)
-
 const router = useRouter()
 
-const getPosts = () => {
-  if (!userStore.isLogin) {
-    return
-  }
-  if (isSearch.value) {
-    search(searchText.value, false)
-    return
-  }
-  loading.value = true
-  userApi
-    .getUserPosts({
-      userId: userInfo.value.id,
-      type: 2,
-      page: pagination.value.page,
-      limit: pagination.value.limit,
-    })
-    .then((response) => {
-      posts.value = response.data.data.list.map((item: any) => {
-        const imgs = extractImageSrcs(item.content)
-        item.cover = imgs.length > 0 ? imgs[0] : ''
-        item.createdAt = formatTime(item.createdAt)
-        item.content = htmlToText(item.content)
-        return item
-      })
-      pagination.value = {
-        page: response.data.data.page,
-        limit: response.data.data.limit,
-        total: response.data.data.total,
-        count: response.data.data.count,
-      }
-      loading.value = false
-    })
-    .catch((error) => {
-      toast.error(t('t.jia-zai-shi-bai') + error.msg)
-    })
+const search = (value: string, click: boolean, type: string) => {
+  resStore.pagination.page = 1
+  searchUserResource(t, value, click, type)
 }
 
 const unpublishItem = (postIndex: number) => {
-  const item = posts.value[postIndex]
+  const item = resStore.posts[postIndex]
   if (!item) {
     toast.error(t('t.tie-zi-bu-cun-zai'))
     return
@@ -451,7 +409,7 @@ const unpublishItem = (postIndex: number) => {
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
-        getPosts()
+        getPosts(t)
         toast.success(t('t.cao-zuo-cheng-gong'))
       }
     })
@@ -461,7 +419,7 @@ const unpublishItem = (postIndex: number) => {
 }
 
 const onPackageModal = (id: number) => {
-  currenPostId.value = id
+  resStore.currenPostId = id
   getPackageList()
   openPackageList.value = !openPackageList.value
 }
@@ -471,10 +429,10 @@ const toCreateResource = () => {
   router.push({
     name: 'publishResource',
     query: {
-      postId: currenPostId.value,
+      postId: resStore.currenPostId,
     },
     params: {
-      postId: currenPostId.value,
+      postId: resStore.currenPostId,
     },
   })
 }
@@ -487,46 +445,22 @@ const toEditResource = (id: number) => {
       resourceId: id,
     },
     params: {
-      postId: currenPostId.value,
+      postId: resStore.currenPostId,
     },
   })
 }
 
-const getPackageList = () => {
-  postApi
-    .getPostDocumentList({
-      id: currenPostId.value,
-    })
-    .then((response) => {
-      packageList.value = response.data.data.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-        return item
-      })
-    })
-    .catch((error) => {
-      console.error('Error fetching package list:', error)
-    })
-}
-
-const downloadFile = (url: string, vid: number) => {
-  if (!url) return
-  let fileName = url.split('/').pop()
-  if (!fileName) return
-  fileName = fileName.replace(/(preview|download)\?filename=/, '')
-  downloadApi.downloadFile(fileName, vid)
-}
-
 const deleteItem = (postIndex: number) => {
-  isDeletePost.value = true
-  currenPostId.value = postIndex
+  resStore.isDeletePost = true
+  resStore.currenPostId = postIndex
 }
 const deletePkg = (pkgId: number) => {
-  isDeletePkg.value = true
-  currenPkgId.value = pkgId
+  resStore.isDeletePkg = true
+  resStore.currenPostId = pkgId
 }
 
 const deletePost = () => {
-  const item = posts.value[currenPostId.value]
+  const item = resStore.posts[resStore.currenPostId]
   if (!item) {
     toast.error(t('t.tie-zi-bu-cun-zai'))
     return
@@ -536,91 +470,22 @@ const deletePost = () => {
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
-        getPosts()
+        getPosts(t)
         toast.success(t('t.shan-chu-cheng-gong'))
       }
     })
     .catch((error) => {
       toast.error(t('t.qing-qiu-shi-bai') + error.msg)
     })
-  isDeletePost.value = false
-}
-
-const deletePackage = () => {
-  const item = packageList.value[currenPkgId.value]
-  if (!item) {
-    toast.error(t('t.ban-ben-bu-cun-zai'))
-    return
-  }
-  postApi
-    .deleteVersion(item.id)
-    .then((response) => {
-      if (response.data.code === 200) {
-        // 刷新版本列表
-        getPackageList()
-        toast.success(t('t.shan-chu-cheng-gong'))
-      }
-    })
-    .catch((error) => {
-      toast.error(t('t.qing-qiu-shi-bai') + error.msg)
-    })
-  isDeletePkg.value = false
+  resStore.isDeletePost = false
 }
 
 const toPage = (page: number) => {
-  pagination.value.page = page
-  getPosts()
-}
-
-const search = (key: string, click = true, fileTypes?: string) => {
-  if (click) {
-    pagination.value.page = 1
-  }
-  loading.value = true
-  searchText.value = key.trim()
-  isSearch.value = true
-
-  const query: any = {
-    userId: userInfo.value.id,
-    type: 2,
-    page: pagination.value.page,
-    limit: pagination.value.limit,
-  }
-
-  if (searchText.value !== '') {
-    query.key = searchText.value
-  }
-
-  if (fileTypes && fileTypes != '0') {
-    console.log('fileTypes', fileTypes)
-
-    query.fileTypes = fileTypes
-  }
-
-  userApi
-    .getUserPosts(query)
-    .then((response) => {
-      posts.value = response.data.data.list.map((item: any) => {
-        const imgs = extractImageSrcs(item.content)
-        item.cover = imgs.length > 0 ? imgs[0] : ''
-        item.createdAt = formatTime(item.createdAt)
-        item.content = htmlToText(item.content)
-        return item
-      })
-      pagination.value = {
-        page: response.data.data.page,
-        limit: response.data.data.limit,
-        total: response.data.data.total,
-        count: response.data.data.count,
-      }
-      loading.value = false
-    })
-    .catch((error) => {
-      toast.error(t('t.sou-suo-shi-bai') + error.msg)
-    })
+  resStore.pagination.page = page
+  getPosts(t)
 }
 
 onMounted(() => {
-  getPosts()
+  getPosts(t)
 })
 </script>
