@@ -39,11 +39,11 @@ import {
   onUnmounted,
 } from 'vue'
 import { useRouter } from 'vue-router'
-// import { useToast } from 'vue-toastification'
+import { useToast } from 'vue-toastification'
 
 const drawertore = useDrawerStore()
 const router = useRouter()
-// const toast = useToast()
+const toast = useToast()
 let routerGuard: (() => void) | null = null
 const props = defineProps<{
   modelValue: boolean
@@ -107,19 +107,20 @@ const getTranslateClass = (type: 'enter' | 'leave') => {
 }
 
 onMounted(() => {
+  // 初始化或获取数据
   drawertore.drawers = []
-  routerGuard = router.beforeEach((_to, from, next) => {
-    if (from.name === 'publish' || from.name === 'publishResource') {
-      if (drawertore.drawers.length > 0) {
-        close()
-        next(false)
-        return
-      } else {
-        next()
-        drawertore.drawers = []
-      }
+
+  // 监听页面路由变化，关闭抽屉
+  routerGuard = router.beforeEach((_to, _from, next) => {
+    if (drawertore.drawers.length > 0) {
+      toast.info('关闭抽屉' + drawertore.drawers.length)
+      close()
+      next(false)
+      return
+    } else {
+      toast.info('直接返回')
+      next(false)
     }
-    next()
   })
 })
 
@@ -135,6 +136,10 @@ watch(
   (val) => {
     if (val) {
       open()
+    } else {
+      off()
+      console.log('抽屉关闭2', drawertore.drawers.length)
+      drawertore.drawers.pop()
     }
   },
   { immediate: true }

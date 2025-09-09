@@ -33,7 +33,7 @@
         <div v-if="deviceStore.device == 2" class="flex-1">
           <img
             src="/public/85120626_p0_master1200.jpg"
-            :alt="$t('b.tou-xiang')"
+            alt="titleImg"
             class="w-full h-full object-cover rounded-lg" />
         </div>
 
@@ -485,7 +485,7 @@ const handleRregister = () => {
     return
   }
   if (!/^[a-zA-Z0-9_]+$/.test(registerForm.account)) {
-    toast.error(t('tyong-hu-ming-zhi-neng-shi-zi-mu-shu-zi-huo-xia-hua-xian'))
+    toast.error('用户名只能包含字母、数字和下划线')
     return
   }
 
