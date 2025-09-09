@@ -6,6 +6,10 @@ export const useDrawerStore = defineStore('drawer', {
       close: () => void
       id?: string
     }>,
+    modals: [] as Array<{
+      close: () => void
+      id?: string
+    }>,
   }),
   persist: true,
 })

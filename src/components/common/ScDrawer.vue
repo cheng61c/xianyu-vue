@@ -8,7 +8,7 @@
           'opacity-100': animationClass === '' && visible,
           'opacity-0': animationClass !== '' || !visible,
         }"
-        @click="close" />
+        @click="offBg" />
 
       <!-- 内容面板 -->
       <div
@@ -44,7 +44,7 @@ import { useToast } from 'vue-toastification'
 const drawertore = useDrawerStore()
 const router = useRouter()
 const toast = useToast()
-let routerGuard: (() => void) | null = null
+let unregisterRouterGuard: (() => void) | null = null
 const props = defineProps<{
   modelValue: boolean
   position?: 'side' | 'bottom' | 'left' | 'right'
@@ -72,10 +72,17 @@ const open = () => {
     close: off,
     id: Symbol().toString(),
   })
+  window.history.pushState(null, '#', document.URL)
+}
+
+const offBg = () => {
+  close()
+  router.back()
 }
 
 const close = () => {
   if (drawertore.drawers.length === 0) {
+    toast.warning('抽屉栈已空，无法关闭')
     off()
     return
   }
@@ -107,28 +114,17 @@ const getTranslateClass = (type: 'enter' | 'leave') => {
 }
 
 onMounted(() => {
-  // 初始化或获取数据
   drawertore.drawers = []
-
-  // 监听页面路由变化，关闭抽屉
-  routerGuard = router.beforeEach((_to, _from, next) => {
-    if (drawertore.drawers.length > 0) {
-      toast.info('关闭抽屉' + drawertore.drawers.length)
+  unregisterRouterGuard = router.beforeEach((to, from, next) => {
+    if (from.fullPath === to.fullPath && drawertore.drawers.length > 0) {
       close()
-      next(false)
-      return
-    } else {
-      toast.info('直接返回')
-      next(false)
     }
+    next()
   })
 })
 
 onUnmounted(() => {
-  if (routerGuard) {
-    routerGuard()
-    routerGuard = null
-  }
+  unregisterRouterGuard?.()
 })
 
 watch(
@@ -136,10 +132,6 @@ watch(
   (val) => {
     if (val) {
       open()
-    } else {
-      off()
-      console.log('抽屉关闭2', drawertore.drawers.length)
-      drawertore.drawers.pop()
     }
   },
   { immediate: true }
