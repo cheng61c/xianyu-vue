@@ -9,7 +9,7 @@ export declare interface Plate {
   type: number
   disabled: number
   sort: number
-  admin: number
+  admin: boolean
 }
 
 export declare interface PlateDto {
@@ -18,7 +18,7 @@ export declare interface PlateDto {
   description?: string
   type?: number
   sort?: number
-  admin?: number
+  admin?: boolean
 }
 
 export declare interface PlateDisabledDto {

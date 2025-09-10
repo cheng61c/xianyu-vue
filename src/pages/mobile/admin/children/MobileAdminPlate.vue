@@ -82,7 +82,7 @@
     @action-click="getPlateList" />
 
   <ScModal v-model="updateModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-4 w-[95vw]">
       <div class="text-xl mb-4">{{ $t('b.bian-ji-ban-kuai') }}</div>
 
       <div>
@@ -100,12 +100,14 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <span> 仅允许管理员发布 </span>
-        <ScInput
+        <span> 发布权限: </span>
+        <ScCheckbox
           v-model="currentPlateBody.admin"
-          :placeholder="'仅允许管理员发布'"
-          type="number"
-          class="m-2" />
+          :true-value="1"
+          :false-value="0"
+          class="m-2">
+          仅允许管理员发布
+        </ScCheckbox>
       </div>
 
       <div class="flex items-center gap-4">
@@ -147,7 +149,7 @@
   </ScModal>
 
   <ScModal v-model="addPlateModal">
-    <Card class="p-6 w-2xl h-[18rem]">
+    <Card class="p-4 w-[95vw]">
       <div class="text-xl mb-4">{{ $t('b.tian-jia-ban-kuai') }}</div>
       <div class="flex items-center gap-4">
         <span> {{ $t('d.ming-cheng') }} </span>
@@ -156,6 +158,27 @@
           :placeholder="$t('d.ban-kuai-ming-cheng')"
           class="m-2" />
       </div>
+
+      <div class="flex items-center gap-4">
+        <span> 排序 </span>
+        <ScInput
+          v-model="newPlateBody.sort"
+          :placeholder="'排序'"
+          type="number"
+          class="m-2" />
+      </div>
+
+      <div class="flex items-center gap-4">
+        <span> 发布权限: </span>
+        <ScCheckbox
+          v-model="newPlateBody.admin"
+          :true-value="1"
+          :false-value="0"
+          class="m-2">
+          仅允许管理员发布
+        </ScCheckbox>
+      </div>
+
       <div class="flex items-center gap-4">
         <span> {{ $t('d.lei-xing') }} </span>
         <Dropdown
@@ -163,6 +186,16 @@
           :options="plateBarOptions"
           :placeholder="$t('d.qing-xuan-ze-ban-kuai-lei-xing')"
           class="m-2 w-full max-w-xs" />
+      </div>
+
+      <div class="flex items-start justify-start gap-4">
+        <span class="mt-2"> {{ $t('d.miao-shu') }} :</span>
+        <ScInput
+          v-model="newPlateBody.description"
+          :placeholder="$t('d.miao-shu')"
+          class="m-2 w-4/5"
+          multiline
+          :resizable="false" />
       </div>
 
       <div class="flex gap-4 justify-end h-full items-end">
@@ -177,7 +210,7 @@
   </ScModal>
 
   <ScModal v-model="deletePlateModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-4 w-[95vw]">
       <div class="text-xl mb-4">板块状态</div>
       <div class="mb-4">禁用后板块下所有帖子将被隐藏</div>
 
@@ -204,20 +237,22 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { RotateCcw, ArchiveX, Plus } from 'lucide-vue-next'
-import Card from '@/components/common/Card.vue'
-import ScInput from '@/components/common/ScInput.vue'
-import ScButton from '@/components/common/ScButton.vue'
-import EmptyState from '@/components/common/EmptyState.vue'
-import { plateApi } from '@/apis'
-import Dropdown from '@/components/common/ScSelector.vue'
-import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/utils/format'
-import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'
 import type { Plate, PlateDto } from '@/types/Plate'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
+import { plateApi } from '@/apis'
+import { formatTime } from '@/utils/format'
+
+import Card from '@/components/common/Card.vue'
+import ScInput from '@/components/common/ScInput.vue'
+import ScButton from '@/components/common/ScButton.vue'
+import EmptyState from '@/components/common/EmptyState.vue'
+import Dropdown from '@/components/common/ScSelector.vue'
+import ScTag from '@/components/common/ScTag.vue'
+import ScModal from '@/components/common/ScModal.vue'
+import ScCheckbox from '@/components/common/ScCheckbox.vue'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -235,7 +270,12 @@ const addPlateModal = ref(false) // 添加新角色模态框状态
 const deletePlateModal = ref(false) // 删除角色模态框状态
 const newPlateBody = ref<PlateDto>({
   name: '',
+  /** 板块介绍 */
+  description: '',
+  /** 板块类型，1交流板块，2文件板块 */
   type: 1,
+  sort: 0,
+  admin: false,
 })
 const currentPlateBody = ref<Plate>({
   id: -1,
@@ -248,7 +288,7 @@ const currentPlateBody = ref<Plate>({
   type: 1,
   disabled: 0,
   sort: 0,
-  admin: 0,
+  admin: false,
 })
 
 const getPlateList = () => {
@@ -320,6 +360,8 @@ const addPlate = () => {
     newPlateBody.value.name = '' // 清空新名称
     newPlateBody.value.type = 1 // 默认设置为交流板块
     newPlateBody.value.description = '' // 清空新描述
+    newPlateBody.value.sort = 0 // 默认排序为0
+    newPlateBody.value.admin = false // 默认允许所有人发布
     return
   }
   const plateBarValue =
@@ -328,6 +370,9 @@ const addPlate = () => {
   const data = {
     name: (newPlateBody.value.name ?? '').trim(),
     type: plateBarValue,
+    description: (newPlateBody.value.description ?? '').trim(),
+    sort: newPlateBody.value.sort ?? 0,
+    admin: newPlateBody.value.admin,
   }
   console.log('data', data)
 
