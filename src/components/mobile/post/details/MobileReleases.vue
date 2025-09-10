@@ -11,13 +11,15 @@
           <div
             class="h-1/3 w-1 flex-1"
             :class="{
-              'bg-gray': vIndex != 0,
+              'bg-active/30': vIndex != 0,
             }"></div>
-          <div class="bg-secondary h-4 w-4 rounded-full"></div>
+          <div
+            class="bg-active h-4 w-4 rounded-full tooltip tooltip-left z-2"
+            :data-tip="item.createdAt"></div>
           <div
             class="h-1/3 w-1 flex-1"
             :class="{
-              'bg-gray': vIndex != versios.length - 1,
+              'bg-active/30': vIndex != versios.length - 1,
             }"></div>
         </div>
 
@@ -64,9 +66,11 @@
           class="w-full py-2 px-4 border-b border-gray"
           v-for="(file, index) in currenPostVersion.files"
           :key="index">
-          <div class="flex items-center mb-2">
-            <div>
-              <div>{{ file.filename }}</div>
+          <div class="flex items-center my-1 w-full">
+            <div class="flex-[2]">
+              <div class="break-words whitespace-pre-wrap text-wrap">
+                {{ file.filename }}
+              </div>
               <div class="text-xs space-x-1">
                 <span>{{ formatFileSize(file.size) }}</span>
                 <span>/</span>
@@ -74,13 +78,12 @@
               </div>
             </div>
 
-            <div class="flex-1 flex gap-2 justify-end flex-wrap">
+            <div class="w-10 justify-end flex-wrap">
               <ScButton
                 class="text-sm text-error px-4 border hover:border-active"
                 :icon="Download"
                 :iconSize="16"
                 @click="downloadFile(file.url, currenPostVersion.id)">
-                下载
               </ScButton>
             </div>
           </div>
