@@ -41,7 +41,7 @@
                   {{ plate.disabled === 0 ? '启用' : '禁用' }}
                 </ScTag>
                 <ScTag v-if="plate.admin" status="info" size="sm">
-                  管理员
+                  仅管理员可发布
                 </ScTag>
               </div>
             </td>

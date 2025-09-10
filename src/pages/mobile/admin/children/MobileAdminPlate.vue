@@ -82,7 +82,7 @@
     @action-click="getPlateList" />
 
   <ScModal v-model="updateModal">
-    <Card class="p-4 w-[95vw]">
+    <Card class="p-4 w-[95vw] space-y-2">
       <div class="text-xl mb-4">{{ $t('b.bian-ji-ban-kuai') }}</div>
 
       <div>
@@ -91,48 +91,48 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <span> 排序 </span>
+        <span class="w-20"> 排序 </span>
         <ScInput
           v-model="currentPlateBody.sort"
           :placeholder="'排序'"
           type="number"
-          class="m-2" />
+          class="flex-1" />
       </div>
 
-      <div class="flex items-center gap-4">
-        <span> 发布权限: </span>
+      <div class="flex items-center">
+        <span class="w-20"> 发布权限: </span>
         <ScCheckbox
           v-model="currentPlateBody.admin"
           :true-value="1"
           :false-value="0"
-          class="m-2">
+          class="flex-1">
           仅允许管理员发布
         </ScCheckbox>
       </div>
 
       <div class="flex items-center gap-4">
-        <span> {{ $t('d.ming-cheng') }} </span>
+        <span class="w-20"> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="currentPlateBody.name"
           :placeholder="$t('d.ban-kuai-ming-cheng')"
-          class="m-2" />
+          class="flex-1" />
       </div>
 
       <div class="flex items-center gap-4">
-        <span> {{ $t('d.lei-xing') }} </span>
+        <span class="w-20"> {{ $t('d.lei-xing') }} </span>
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
           :placeholder="t('d.qing-xuan-ze-ban-kuai-lei-xing')"
-          class="m-2 w-full max-w-xs" />
+          class="flex-1" />
       </div>
 
       <div class="flex items-start justify-start gap-4">
-        <span class="mt-2"> {{ $t('d.miao-shu') }} :</span>
+        <span class="w-20"> {{ $t('d.miao-shu') }} :</span>
         <ScInput
           v-model="currentPlateBody.description"
           :placeholder="$t('d.miao-shu')"
-          class="m-2 w-4/5"
+          class="flex-1"
           multiline
           :resizable="false" />
       </div>
@@ -149,51 +149,51 @@
   </ScModal>
 
   <ScModal v-model="addPlateModal">
-    <Card class="p-4 w-[95vw]">
+    <Card class="p-4 w-[95vw] space-y-2">
       <div class="text-xl mb-4">{{ $t('b.tian-jia-ban-kuai') }}</div>
       <div class="flex items-center gap-4">
-        <span> {{ $t('d.ming-cheng') }} </span>
+        <span class="w-20"> {{ $t('d.ming-cheng') }} </span>
         <ScInput
           v-model="newPlateBody.name"
           :placeholder="$t('d.ban-kuai-ming-cheng')"
-          class="m-2" />
+          class="flex-1" />
       </div>
 
       <div class="flex items-center gap-4">
-        <span> 排序 </span>
+        <span class="w-20"> 排序 </span>
         <ScInput
           v-model="newPlateBody.sort"
           :placeholder="'排序'"
           type="number"
-          class="m-2" />
+          class="flex-1" />
       </div>
 
       <div class="flex items-center gap-4">
-        <span> 发布权限: </span>
+        <span class="w-20"> 发布权限: </span>
         <ScCheckbox
           v-model="newPlateBody.admin"
           :true-value="1"
           :false-value="0"
-          class="m-2">
+          class="flex-1">
           仅允许管理员发布
         </ScCheckbox>
       </div>
 
       <div class="flex items-center gap-4">
-        <span> {{ $t('d.lei-xing') }} </span>
+        <span class="w-20"> {{ $t('d.lei-xing') }} </span>
         <Dropdown
           v-model="plateBar"
           :options="plateBarOptions"
           :placeholder="$t('d.qing-xuan-ze-ban-kuai-lei-xing')"
-          class="m-2 w-full max-w-xs" />
+          class="flex-1" />
       </div>
 
       <div class="flex items-start justify-start gap-4">
-        <span class="mt-2"> {{ $t('d.miao-shu') }} :</span>
+        <span class="w-20"> {{ $t('d.miao-shu') }} :</span>
         <ScInput
           v-model="newPlateBody.description"
           :placeholder="$t('d.miao-shu')"
-          class="m-2 w-4/5"
+          class="flex-1"
           multiline
           :resizable="false" />
       </div>
