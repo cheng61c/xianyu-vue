@@ -1,6 +1,6 @@
 <template>
   <Card v-if="versios && versios.length > 0">
-    <h3 class="text-lg font-bold mb-2">发布版</h3>
+    <h3 class="text-lg font-bold mb-2">资源下载</h3>
 
     <div>
       <div
@@ -36,13 +36,10 @@
   </Card>
 
   <ScModal v-model="showModal">
-    <Card class="gap-4 w-[90vw] max-h-[80vh] overflow-y-auto">
-      <div class="flex justify-between items-center">
-        <h3 class="text-lg font-semibold">
-          {{ currenPostVersion?.version }} {{ currenPostVersion?.title }}
-        </h3>
+    <Card class="w-[95vw] max-h-[95dvh] overflow-y-auto">
+      <div class="flex justify-end sticky top-2 h-0">
         <ScButton
-          class="text-sm"
+          class="text-sm text-right"
           @click="showModal = false"
           :icon="Minimize2"
           iconSize="22"
@@ -50,6 +47,12 @@
           noPd>
         </ScButton>
       </div>
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg font-semibold">
+          {{ currenPostVersion?.title }}
+        </h3>
+      </div>
+
       <div v-if="currenPostVersion">
         <!-- 文章主体 -->
         <div class="tiptap mb-4" v-html="currenPostVersion.content"></div>

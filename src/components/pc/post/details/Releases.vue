@@ -43,7 +43,7 @@
     <Card class="gap-4 w-4xl h-full max-h-[80vh] overflow-y-auto">
       <div class="flex justify-between items-center">
         <h3 class="text-lg font-semibold">
-          {{ currenPostVersion?.version }} {{ currenPostVersion?.title }}
+          {{ currenPostVersion?.title }}
         </h3>
         <ScButton
           class="text-sm"
@@ -63,7 +63,7 @@
           <!-- 表头 -->
           <div
             class="flex font-semibold py-2 px-4 border-b border-gray-content">
-            <div class="flex-[1.2]">{{ $t('d.wen-jian-ming') }}</div>
+            <div class="flex-[2]">{{ $t('d.wen-jian-ming') }}</div>
             <div class="flex-1">{{ $t('d.wen-jian-da-xiao') }}</div>
             <div class="flex-1">{{ $t('b.fa-bu-shi-jian') }}</div>
             <div class="flex-1"></div>
@@ -75,7 +75,9 @@
             v-for="(file, index) in currenPostVersion.files"
             :key="index">
             <div class="flex items-center mb-2">
-              <div class="flex-[1.2]">{{ file.filename }}</div>
+              <div class="flex-[2] break-words whitespace-pre-line">
+                {{ file.filename }}
+              </div>
               <div class="flex-1">{{ formatFileSize(file.size) }}</div>
               <div class="flex-1">{{ file.createdAt }}</div>
               <div class="flex-1 flex gap-2 justify-end flex-wrap">

@@ -167,7 +167,7 @@ export const lightHtml = (html: string): string => {
       .replace(/&#x26;/g, '&')
 
     // 高亮处理代码
-    const highlightedCode = lowlight.highlight('typescript', decodedCode)
+    const highlightedCode = lowlight.highlight('csharp', decodedCode)
 
     // 生成高亮后的 HTML
     const highlightedHtml = toHtml(highlightedCode, {

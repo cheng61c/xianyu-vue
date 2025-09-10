@@ -29,7 +29,7 @@
         <RouterLink
           :to="{ hash: `#releases` }"
           class="hover:underline text-blue-600 cursor-pointer">
-          发布版
+          资源下载
         </RouterLink>
       </li>
 
