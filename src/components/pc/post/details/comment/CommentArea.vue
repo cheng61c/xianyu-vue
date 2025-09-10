@@ -431,6 +431,7 @@ const replay = (
 
   sendComment(t, data, () => {
     console.log('评论发送成功')
+    getcomments(1)
   })
 }
 
