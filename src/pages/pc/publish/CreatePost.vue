@@ -155,7 +155,7 @@
               @click="setPlate(b)"
               :icon="FileText"
               Border
-              :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
+              :disabled="b.admin && !verifyPermissions([1, 2, 9])">
               {{ b.name }}
             </ScButton>
           </template>
@@ -174,7 +174,7 @@
               @click="setPlate(b)"
               :icon="Package"
               Border
-              :disabled="b.admin !== 0 && !verifyPermissions([1, 2, 9])">
+              :disabled="b.admin && !verifyPermissions([1, 2, 9])">
               {{ b.name }}
             </ScButton>
           </template>
