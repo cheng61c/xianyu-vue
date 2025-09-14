@@ -59,5 +59,12 @@ const props = withDefaults(
   }
 )
 
-const userInfo = computed(() => props.user || userStore.userInfo)
+const userInfo = computed(() => {
+  const user = props.user ?? userStore.userInfo
+  // 获取user.roles,如果有就将里面的内容按照id排序
+  if (user.roles) {
+    user.roles.sort((a, b) => a.id - b.id)
+  }
+  return user
+})
 </script>

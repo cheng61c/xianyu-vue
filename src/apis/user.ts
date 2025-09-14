@@ -49,6 +49,14 @@ export const updateUserKey = () => {
   return request.put(`/user/update-key`)
 }
 
+export const updateUserVerifyCode = (code: string) => {
+  return request.put(`/user/update-verify-code`, { code })
+}
+
+export const verifyCode = (dto: { user: string; code: string }) => {
+  return request.put(`/user/verify-code`, dto)
+}
+
 export const getUserPosts = (dto: UserPostQueryDto) => {
   return request({
     method: 'get',

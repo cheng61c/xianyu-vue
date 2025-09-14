@@ -1,5 +1,8 @@
 <template>
-  <UserHeader @updateUserInfo="getCurrentUserInfo" />
+  <UserHeader
+    @updateUserInfo="getCurrentUserInfo"
+    :isEdit="isCurrentUser"
+    :userInfo="userInfo" />
 
   <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
     <div class="mb-4 text-xl font-bold">{{ $t('f.ji-chu-xin-xi') }}</div>
@@ -12,7 +15,7 @@
     <div class="flex gap-4 items-center">
       <span>{{ $t('f.ni-cheng') }}</span>
       <ScInput
-        v-model="userInfo.nickname"
+        v-model="nickname"
         class="w-1/3"
         type="text"
         :placeholder="$t('f.qing-shu-ru-ni-cheng')" />
@@ -71,8 +74,33 @@
 
     <div class="flex gap-4 items-center">
       <ScButton @click="updatePassword" Border class="py-2">
-        {{ $t('b.ti-jiao') }}
+        提交更改
       </ScButton>
+    </div>
+  </Card>
+
+  <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
+    <div class="mb-4 text-xl font-bold">账号秘钥</div>
+    <div>
+      账号秘钥是您账号的私密信息，用于验证身份，设置新的秘钥后，旧的秘钥将失效
+    </div>
+    <div>验证码设置后无法获取，请妥善保管</div>
+
+    <div class="flex items-center">
+      <div>账号秘钥：</div>
+      <ScInput v-model="code" class="w-1/4" type="text" />
+    </div>
+    <div class="flex gap-4 items-center">
+      <ScButton @click="updateUserVerifyCode(code)" Border> 提交更改 </ScButton>
+    </div>
+  </Card>
+
+  <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
+    <div class="mb-4 text-xl font-bold">强制下线</div>
+    <div>让所有登录的设备强制下线（包括当前设备）</div>
+    <div>下线后使用密码可重新登录</div>
+    <div class="flex gap-2 items-center">
+      <ScButton @click="forceLogout" Border class="w-1/4"> 下线 </ScButton>
     </div>
   </Card>
 
@@ -93,15 +121,17 @@ import TipTap from '@/components/pc/tiptap/TipTap.vue'
 import ScCollapse from '@/components/common/ScCollapse.vue'
 import { userApi } from '@/apis'
 import type { UserType } from '@/types/user'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useUserStore } from '@/stores/module/user/userStore'
-
+import { forceLogout, updateUserVerifyCode } from '@/stores/module/user/service'
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
 import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
+
 const { t } = useI18n()
 
 const toast = useToast()
@@ -114,6 +144,12 @@ const resetPassword = ref({
 })
 const isSendCode = ref(false)
 const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
+const route = useRoute()
+const code = ref('')
+const isCurrentUser = computed(() => {
+  return !route.query.userId
+})
+const nickname = ref('')
 
 // 计时x秒
 const countdown = (duration: number) => {
@@ -198,7 +234,7 @@ const updatePassword = () => {
 const updateInfo = () => {
   userApi
     .updateUser({
-      nickname: userInfo.value.nickname,
+      nickname: nickname.value,
       signature: userInfo.value.signature,
     })
     .then((response) => {

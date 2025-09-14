@@ -1,5 +1,16 @@
 <template>
   <Card v-if="userStore.isLogin" class="w-full">
+    <div class="mb-4 text-xl font-bold">账号秘钥</div>
+    <div>账号秘钥是您账号的私密信息，用于验证身份</div>
+    <ScInput v-model="code" class="w-full" type="text" />
+    <div class="flex gap-2 items-center">
+      <ScButton @click="updateUserVerifyCode(code)" Border class="w-full">
+        更新
+      </ScButton>
+    </div>
+  </Card>
+
+  <Card v-if="userStore.isLogin" class="w-full">
     <div class="mb-4 text-xl font-bold">强制下线</div>
     <div>让所有登录的设备强制下线（包括当前设备）</div>
     <div>下线后使用密码可重新登录</div>
@@ -70,6 +81,7 @@ import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
 import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
+import { forceLogout, updateUserVerifyCode } from '@/stores/module/user/service'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -83,21 +95,7 @@ const resetPassword = ref({
 const isSendCode = ref(false)
 const sendCodeText = ref(t('f.huo-qu-yan-zheng-ma'))
 const signature = ref('')
-
-const forceLogout = () => {
-  userApi
-    .updateUserKey()
-    .then((res) => {
-      if (res.data.code === 200) {
-        toast.success('操作成功')
-        userStore.logout()
-      }
-    })
-    .catch((error) => {
-      console.error('Error forcing logout:', error)
-      toast.error('操作失败' + error.msg)
-    })
-}
+const code = ref('')
 
 // 计时x秒
 const countdown = (duration: number) => {

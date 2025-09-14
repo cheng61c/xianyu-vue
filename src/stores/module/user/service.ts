@@ -4,6 +4,7 @@ import { formatLink } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import type { UserType } from '@/types'
 import { useToast } from 'vue-toastification'
+import type { Role } from '@/types/Role'
 
 const toast = useToast()
 const userStore = useUserStore()
@@ -21,6 +22,7 @@ export const login = async () => {
         const data = res.data.data
         data.headImg = formatLink(data.headImg)
         data.signature = formatImageSrcsInHtml(data.signature)
+        data.roles = data.roles.sort((a: Role, b: Role) => a.id - b.id)
         userStore.userInfo = data.user
         userStore.isLogin = true
       }
@@ -50,6 +52,36 @@ export const logout = (t: any, close?: () => {}) => {
     })
     .catch(() => {
       toast.error(t('t.deng-chu-shi-bai'))
+    })
+}
+
+/** 强制退出登录 */
+export const forceLogout = () => {
+  userApi
+    .updateUserKey()
+    .then((res) => {
+      if (res.data.code === 200) {
+        toast.success('操作成功')
+        userStore.logout()
+      }
+    })
+    .catch((error) => {
+      console.error('Error forcing logout:', error)
+      toast.error('操作失败' + error.msg)
+    })
+}
+
+export const updateUserVerifyCode = (code: string) => {
+  userApi
+    .updateUserVerifyCode(code)
+    .then((res) => {
+      if (res.data.code === 200) {
+        toast.success('操作成功')
+      }
+    })
+    .catch((error) => {
+      console.error('Error forcing logout:', error)
+      toast.error('操作失败' + error.msg)
     })
 }
 

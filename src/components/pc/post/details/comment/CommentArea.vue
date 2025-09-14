@@ -101,9 +101,10 @@
               </div>
             </div>
 
-            <div class="mb-2" @click="currentPopupBox = `${comment.id}`">
-              {{ comment.content }}
-            </div>
+            <div
+              class="mb-2"
+              @click="currentPopupBox = `${comment.id}`"
+              v-html="comment.content"></div>
 
             <!-- 图片 -->
             <div v-if="comment.image" class="flex flex-wrap gap-2 mb-2">
@@ -202,8 +203,8 @@
                         @{{ reply.toAuthor.nickname }}
                       </span>
                       <span
-                        @click="currentPopupBox = `${comment.id}-${reply.id}`">
-                        {{ reply.content }}
+                        @click="currentPopupBox = `${comment.id}-${reply.id}`"
+                        v-html="reply.content">
                       </span>
                     </div>
 
@@ -300,6 +301,7 @@ import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { useI18n } from 'vue-i18n'
 import { getSortOptions } from '@/stores/module/post/service'
 import { sendComment } from '@/stores/module/comment/service'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 const { t } = useI18n()
 
 const toast = useToast()
@@ -371,6 +373,7 @@ const getcomments = (page: number) => {
           item.image = item.image
             ? item.image.map((img: string) => formatLink(img))
             : []
+          item.content = formatImageSrcsInHtml(item.content)
           item.children = item.children.map((child: any) => {
             child.createdAt = formatTime(child.createdAt)
             child.image = child.image
