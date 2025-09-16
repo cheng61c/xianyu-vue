@@ -1,24 +1,6 @@
 <template>
-  <!-- <div
-    v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 10])"
-    class="flex w-full gap-4">
-    <ScMenu :items="menuItems" v-model:activation="activation" />
-
-    <div
-      v-if="release"
-      class="px-2 w-full h-[calc(100vh-74px)] pb-2 overflow-y-auto no-scrollbar">
-      <RouterView></RouterView>
-    </div>
-  </div>
   <div
-    v-else
-    class="flex items-center justify-center h-[calc(100vh-64px)] w-full">
-    <h1 class="text-2xl font-bold">
-      {{ $t('d.mei-you-quan-xian-fang-wen-ci-ye-mian') }}
-    </h1>
-  </div> -->
-
-  <div class="h-12 w-full flex justify-between items-center px-4 bg-background">
+    class="fixed top-0 left-0 z-1 h-12 w-full flex justify-between items-center px-4 bg-background">
     <div class="flex gap-4">
       <ScButton noPd class="" :icon="Menu" :iconSize="22" @click="onMenu">
         {{ activation }}
@@ -34,7 +16,7 @@
     <div v-if="!route.query.userId && !userStore.isLogin" class="text-error">
       请先登录
     </div>
-    <div class="flex gap-2 items-center">
+    <div class="flex gap-2 items-center justify-end">
       <ThemeButton />
       <ScLogin v-if="!userStore.isLogin" />
       <PopupBox v-if="userStore.isLogin" position="bottom-left">
@@ -64,7 +46,7 @@
     </div>
   </div>
 
-  <div class="px-2">
+  <div class="px-2 mt-12">
     <RouterView></RouterView>
   </div>
 
