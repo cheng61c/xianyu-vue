@@ -150,38 +150,43 @@
   <ScModal v-model="updateModal">
     <Card class="p-6 w-[95vw]">
       <h3 class="text-xl mb-4">{{ $t('f.xiu-gai-yong-hu-xin-xi') }}</h3>
+      <div class="flex items-center gap-2" v-if="verifyPermissions([1, 2])">
+        <span class="w-12"> {{ $t('f.yong-hu-ming') }} </span>
+        <ScInput
+          v-model="updateBody.account"
+          :placeholder="$t('f.yong-hu-ming')"
+          class="m-2" />
+      </div>
+
       <div class="flex items-center gap-2">
-        <span> {{ $t('f.ni-cheng') }} </span>
+        <span class="w-12"> {{ $t('f.ni-cheng') }} </span>
         <ScInput
           v-model="updateBody.nickname"
           :placeholder="$t('f.ni-cheng')"
           class="m-2" />
       </div>
       <div class="flex items-center gap-2" v-if="verifyPermissions([1, 2])">
-        <span> {{ $t('f.you-xiang') }} </span>
+        <span class="w-12"> {{ $t('f.you-xiang') }} </span>
         <ScInput
           v-model="updateBody.email"
           :placeholder="$t('f.you-xiang')"
           class="m-2" />
       </div>
       <div class="flex items-center gap-2">
-        <span> {{ $t('f.mi-ma') }} </span>
+        <span class="w-12"> {{ $t('f.mi-ma') }} </span>
         <ScInput
           v-model="updateBody.password"
           :placeholder="$t('f.mi-ma')"
           class="m-2" />
-        <Info :size="18" class="text-warning" />
-        <span class="text-sm text-warning">
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-12"></div>
+        <span class="text-sm text-warning flex items-center gap-1">
+          <Info :size="18" class="text-warning" />
           {{ $t('d.dui-zi-ji-xiu-gai-mi-ma-hui-qiang-zhi-xia-xian') }}
         </span>
       </div>
-      <div class="flex items-center gap-2" v-if="verifyPermissions([1, 2])">
-        <span> {{ $t('f.yong-hu-ming') }} </span>
-        <ScInput
-          v-model="updateBody.account"
-          :placeholder="$t('f.yong-hu-ming')"
-          class="m-2" />
-      </div>
+
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateUser(currentUser)" Border>
           {{ $t('b.ti-jiao-xiu-gai') }}
@@ -197,29 +202,37 @@
   <ScModal v-model="updateRoleModal">
     <Card class="p-6 w-[95vw]">
       <h3 class="text-xl mb-4">{{ $t('d.xiu-gai-yong-hu-quan-xian') }}</h3>
+      <div class="text-warning">点击标签添加或移除</div>
       <div>{{ $t('d.jiao-se-chi') }}</div>
-      <div class="flex items-center gap-2 flex-wrap">
+      <div
+        class="flex items-center gap-2 flex-wrap border border-gray p-2 rounded-lg">
         <ScTag
           v-for="(role, index) in roleList"
           :key="index"
           :bgColor="role.color"
-          size="sm"
+          size="md"
           class="cursor-pointer"
           @click="addRoleItem(index)">
           {{ role.name }}
         </ScTag>
       </div>
       <div>{{ $t('d.dang-qian-cun-zai') }}</div>
-      <div class="flex items-center gap-2 flex-wrap">
+      <div
+        class="flex items-center gap-2 flex-wrap border border-gray p-2 rounded-lg">
         <ScTag
           v-for="(role, index) in userList[currentUser].roles"
           :key="index"
           :bgColor="role.color"
-          size="sm"
+          size="md"
           class="cursor-pointer"
           @click="removeRoleItem(index)">
           {{ role.name }}
         </ScTag>
+        <span
+          v-if="!userList[currentUser].roles.length"
+          class="text-sm text-error">
+          无
+        </span>
       </div>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateUserRole(currentUser)" Border>
@@ -238,9 +251,9 @@
       <div class="flex gap-2 flex-wrap items-center">
         {{ $t('d.mu-biao-zhang-hao') }}
         <span>{{ userList[currentUser].nickname }}</span>
-        <ScTag size="xs" status="info"
-          >uid: {{ userList[currentUser].id }}</ScTag
-        >
+        <ScTag size="xs" status="info">
+          uid: {{ userList[currentUser].id }}
+        </ScTag>
         <ScTag
           v-for="(role, roleIndex) in userList[currentUser].roles"
           :key="roleIndex"
@@ -306,7 +319,7 @@ const thead = ref([
   t('f.zui-hou-deng-lu-shi-jian'),
   t('f.zui-hou-deng-lu-ip'),
   t('f.zhuang-tai'),
-  '操作',
+  t('f.cao-zuo'),
 ])
 const lockId = ref(-1)
 

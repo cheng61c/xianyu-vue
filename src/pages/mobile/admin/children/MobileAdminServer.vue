@@ -46,7 +46,7 @@
         <span class="font-bold">{{ data.id }}</span>
       </template>
       <template #cell-1="{ data }">
-        <div class="w-22">{{ data.title }}</div>
+        {{ data.title }}
       </template>
 
       <template #cell-2="{ data }">

@@ -64,120 +64,103 @@
   </Card>
 
   <Card class="mb-4">
-    <div class="overflow-x-auto">
-      <table class="table">
-        <!-- head -->
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>{{ $t('b.biao-ti') }}</th>
-            <th>{{ $t('b.ban-kuai') }}</th>
-            <th>{{ $t('b.yong-hu') }}</th>
-            <th>{{ $t('t.fa-bu-shi-jiaother') }}</th>
-            <th>{{ $t('f.zhuang-tai') }}</th>
-            <th>{{ $t('b.cao-zuo') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(post, index) in postList" :key="post.id">
-            <th>{{ post.id }}</th>
-            <td>
-              <RouterLink
-                :to="{
-                  name: 'postDetails',
-                  params: { postId: post.id },
-                }">
-                <div class="w-18">{{ post.title }}</div>
-              </RouterLink>
-            </td>
-            <td>
-              <div class="w-14">{{ post.plate.name }}</div>
-            </td>
-            <td>
-              <div class="flex items-center gap-2 w-20 flex-wrap">
-                {{ post.creator.nickname }}
-                <ScTag size="xs" status="info">
-                  uid: {{ post.creator.id }}
-                </ScTag>
-              </div>
-            </td>
-            <td>{{ post.createdAt }}</td>
-            <td>
-              <div class="flex items-center gap-2 flex-wrap">
-                <ScTag v-if="post.status == 2" size="xs" status="error">
-                  {{ $t('b.feng-jin') }}
-                </ScTag>
-                <ScTag v-else size="xs" status="success">
-                  {{ $t('b.zheng-chang') }}
-                </ScTag>
+    <ScReusableTable :thead="thead" :tbody="postList" v-model:lockId="lockId">
+      <template #cell-0="{ data }">
+        <span class="font-bold">{{ data.id }}</span>
+      </template>
+      <template #cell-1="{ data }">
+        <span class="font-bold w-28">
+          <RouterLink
+            :to="{
+              name: 'postDetails',
+              params: { postId: data.id },
+            }">
+            {{ data.title }}
+          </RouterLink>
+        </span>
+      </template>
+      <template #cell-2="{ data }">
+        <span class="font-bold">{{ data.plate.name }}</span>
+      </template>
 
-                <ScTag v-if="post.visible == 0" size="xs" status="error">
-                  {{ $t('b.yi-xia-jia') }}
-                </ScTag>
+      <template #cell-3="{ data }">
+        <div class="flex items-center gap-2 flex-wrap">
+          {{ data.creator.nickname }}
+          <ScRole :user="data.creator" size="xs"></ScRole>
+        </div>
+      </template>
 
-                <ScTag v-if="post.top == 1" size="xs" status="warning">
-                  {{ $t('b.zhi-ding-zhong') }}
-                </ScTag>
+      <template #cell-4="{ data }">
+        {{ data.createdAt }}
+      </template>
+      <template #cell-5="{ data }">
+        <div class="flex items-center gap-2 flex-wrap">
+          <ScTag v-if="data.status == 2" size="xs" status="error">
+            {{ $t('b.feng-jin') }}
+          </ScTag>
+          <ScTag v-else size="xs" status="success">
+            {{ $t('b.zheng-chang') }}
+          </ScTag>
 
-                <ScTag v-if="post.disabled == 1" size="xs" status="error">
-                  {{ $t('b.yi-shan-chu') }}
-                </ScTag>
-                <ScTag v-if="post.remark" size="xs" status="warning">
-                  {{ $t('b.yi-bei-zhu') }}
-                </ScTag>
-              </div>
-            </td>
+          <ScTag v-if="data.visible == 0" size="xs" status="error">
+            {{ $t('b.yi-xia-jia') }}
+          </ScTag>
 
-            <td>
-              <div class="flex items-center gap-2 flex-wrap">
-                <ScButton
-                  @click="setTop(index)"
-                  class="border border-warning text-warning">
-                  {{
-                    post.top == 0 ? $t('b.zhi-ding') : $t('b.qu-xiao-zhi-ding')
-                  }}
-                </ScButton>
+          <ScTag v-if="data.top == 1" size="xs" status="warning">
+            {{ $t('b.zhi-ding-zhong') }}
+          </ScTag>
+          <ScTag v-if="data.top == 2" size="xs" status="warning">
+            横幅置顶
+          </ScTag>
+          <ScTag v-if="data.top == 3" size="xs" status="warning">
+            弹窗置顶
+          </ScTag>
 
-                <ScButton
-                  @click="removed(index)"
-                  :class="{
-                    'border border-primary text-primary': post.visible == 1,
-                    'border border-error text-error': post.visible == 0,
-                  }">
-                  {{
-                    post.visible == 0
-                      ? $t('b.yi-xia-jia')
-                      : $t('b.shang-jia-zhong')
-                  }}
-                </ScButton>
+          <ScTag v-if="data.disabled == 1" size="xs" status="error">
+            {{ $t('b.yi-shan-chu') }}
+          </ScTag>
+          <ScTag v-if="data.remark" size="xs" status="warning">
+            {{ $t('b.yi-bei-zhu') }}
+          </ScTag>
+        </div>
+      </template>
+      <template #cell-6="{ data, index }">
+        <div class="flex items-center gap-2">
+          <ScButton
+            @click="setTop(index)"
+            class="border border-warning text-warning">
+            置顶
+          </ScButton>
 
-                <ScButton
-                  @click="banned(index)"
-                  :Border="post.status == 1 || post.status == 3"
-                  :class="{
-                    'border border-error text-error': post.status == 2,
-                  }">
-                  {{
-                    post.status == 2
-                      ? $t('d.che-xiao-feng-jin')
-                      : $t('b.feng-jin')
-                  }}
-                </ScButton>
+          <ScButton
+            @click="removed(index)"
+            :class="{
+              'border border-primary text-primary': data.visible == 1,
+              'border border-error text-error': data.visible == 0,
+            }">
+            {{ data.visible == 0 ? '已下架' : '上架中' }}
+          </ScButton>
 
-                <ScButton
-                  @click="deleteItem(index)"
-                  :class="{
-                    'border border-green text-green': post.disabled == 1,
-                    'border border-error text-error': post.disabled == 0,
-                  }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
-                </ScButton>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+          <ScButton
+            @click="banned(index)"
+            :Border="data.status == 1 || data.status == 3"
+            :class="{
+              'border border-error text-error': data.status == 2,
+            }">
+            {{ data.status == 2 ? '撤销封禁' : '封禁' }}
+          </ScButton>
+
+          <ScButton
+            @click="deleteItem(index)"
+            :class="{
+              'border border-green text-green': data.disabled == 1,
+              'border border-error text-error': data.disabled == 0,
+            }">
+            {{ data.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+          </ScButton>
+        </div>
+      </template>
+    </ScReusableTable>
   </Card>
 
   <Pagination
@@ -199,7 +182,7 @@
     @action-click="toPage" />
 
   <ScModal v-model="bannedModal">
-    <Card class="p-6 w-2xl">
+    <Card class="p-4 w-[95vw]">
       <div>{{ $t('d.zi-yuan-bei-zhu') }}</div>
       <ScInput
         v-model="currentPostRemark"
@@ -223,6 +206,36 @@
       </div>
     </Card>
   </ScModal>
+
+  <ScModal v-model="setTopModal">
+    <Card class="p-4 w-[95vw]">
+      <div class="text-xl mb-4">设置置顶</div>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 0"
+        @click="setTop(currentPost, 0)">
+        不置顶
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 1"
+        @click="setTop(currentPost, 1)">
+        置顶
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 2"
+        @click="setTop(currentPost, 2)">
+        横幅公告
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 3"
+        @click="setTop(currentPost, 3)">
+        弹窗公告
+      </ScButton>
+    </Card>
+  </ScModal>
 </template>
 
 <script setup lang="ts">
@@ -240,6 +253,7 @@ import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import { useI18n } from 'vue-i18n'
+import ScReusableTable from '@/components/common/ScReusableTable.vue'
 
 const { t } = useI18n()
 const searchPostValue = ref('') // 搜索帖子内容
@@ -293,6 +307,17 @@ const postList = ref<Post[]>([]) // 帖子列表数据
 const bannedModal = ref(false) // 封禁帖子模态框状态
 const currentPost = ref(-1) // 当前操作的帖子ID
 const currentPostRemark = ref('') // 当前操作的帖子备注内容
+const setTopModal = ref(false)
+const thead = ref([
+  'ID',
+  t('b.biao-ti'),
+  t('b.ban-kuai'),
+  t('b.yong-hu'),
+  t('t.fa-bu-shi-jiaother'),
+  t('f.zhuang-tai'),
+  t('f.cao-zuo'),
+])
+const lockId = ref(-1)
 
 const toPage = (page: number) => {
   postPage.value.page = page
@@ -432,12 +457,17 @@ const removed = (index: number) => {
     })
 }
 
-const setTop = (index: number) => {
+const setTop = (index: number, val?: number) => {
+  if (!setTopModal.value) {
+    currentPost.value = index
+    setTopModal.value = true
+    return
+  }
   const item = postList.value[index]
   postApi
     .postToTopAsAdmin({
       id: item.id,
-      top: item.top === 1 ? 0 : 1, // 切换置顶状态
+      top: val ?? (item.top === 1 ? 0 : 1),
     })
     .then((response) => {
       if (response.data.code === 200) {

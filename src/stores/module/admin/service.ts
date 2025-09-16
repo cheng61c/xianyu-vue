@@ -7,26 +7,38 @@ export const getPanelInfo = async (): Promise<AdminPanelInfo> => {
     const data = res.data.data
     return {
       recentLoginStats: {
-        chart: getEChartsTemplate('最近登录', data.recentLoginStats.list),
+        chart: getEChartsTemplate(
+          `最近登录(${data.recentLoginStats.count})`,
+          data.recentLoginStats.list
+        ),
         count: data.recentLoginStats.count,
       },
       recentRegisterStats: {
-        chart: getEChartsTemplate('最近注册', data.recentRegisterStats.list),
+        chart: getEChartsTemplate(
+          `最近注册(${data.recentRegisterStats.count})`,
+          data.recentRegisterStats.list
+        ),
         count: data.recentRegisterStats.count,
       },
       recentPostStats: {
-        chart: getEChartsTemplate('最近发布的帖子', data.recentPostStats.list),
+        chart: getEChartsTemplate(
+          `最近发布的帖子(${data.recentPostStats.count})`,
+          data.recentPostStats.list
+        ),
         count: data.recentPostStats.count,
       },
       recentResourcePostStats: {
         chart: getEChartsTemplate(
-          '最近发布的资源',
+          `最近发布的资源(${data.recentResourcePostStats.count})`,
           data.recentResourcePostStats.list
         ),
         count: data.recentResourcePostStats.count,
       },
       recentCommentStats: {
-        chart: getEChartsTemplate('最近评论', data.recentCommentStats.list),
+        chart: getEChartsTemplate(
+          `最近发布的评论(${data.recentCommentStats.count})`,
+          data.recentCommentStats.list
+        ),
         count: data.recentCommentStats.count,
       },
 
@@ -56,7 +68,6 @@ const getEChartsTemplate = (title: string, data: any): any => {
     },
     yAxis: {
       type: 'value',
-      interval: 1,
     },
     series: [
       {

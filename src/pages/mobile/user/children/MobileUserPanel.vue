@@ -27,10 +27,12 @@
         <p>资源</p>
       </div>
 
-      <div v-if="verifyPermissions([8, 12])" class="h-8 w-0.5 bg-gray/40"></div>
+      <div
+        v-if="verifyPermissions([1, 2, 8, 12])"
+        class="h-8 w-0.5 bg-gray/40"></div>
 
       <div
-        v-if="verifyPermissions([8, 12])"
+        v-if="verifyPermissions([1, 2, 8, 12])"
         class="flex flex-col justify-center items-center">
         <p class="text-lg font-bold">
           {{ servers.count }}

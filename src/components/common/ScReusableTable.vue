@@ -76,6 +76,8 @@ td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid rgba(var(--color-gray-rgb), 0.4);
+
+  white-space: nowrap; /* 防止换行 */
 }
 
 .sticky {

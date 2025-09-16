@@ -4,31 +4,31 @@
   </Card>
   <Card class="mb-4">
     <div class="flex gap-4 items-center">
-      <span>{{ $t('f.ni-cheng') }}</span>
+      <span class="w-12">{{ $t('f.ni-cheng') }}</span>
       <ScInput
         v-model="form.nickname"
         :placeholder="$t('f.qing-shu-ru-ni-cheng')"
         type="text" />
     </div>
     <div class="flex gap-4 items-center">
-      <span>{{ $t('f.zhang-hao') }}</span>
+      <span class="w-12">{{ $t('f.zhang-hao') }}</span>
       <ScInput
         v-model="form.account"
         :placeholder="$t('d.qing-shu-ru-zhang-hao')"
         type="text" />
     </div>
     <div class="flex gap-4 items-center">
-      <span>{{ $t('f.you-xiang') }}</span>
+      <span class="w-12">{{ $t('f.you-xiang') }}</span>
       <ScInput
         v-model="form.email"
         :placeholder="$t('d.qing-shu-ru-you-xiang')"
         type="email" />
-      <span class="text-gray">
+      <span class="text-gray w-16">
         {{ $t('d.you-xiang-bu-xian-zhi-ge-shi') }}
       </span>
     </div>
     <div class="flex gap-4 items-center">
-      <span>{{ $t('f.mi-ma') }}</span>
+      <span class="w-12">{{ $t('f.mi-ma') }}</span>
       <ScInput
         v-model="form.password"
         :placeholder="$t('d.qing-shu-ru-mi-ma')"

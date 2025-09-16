@@ -22,18 +22,6 @@
     </div>
     <ScLogin />
   </div>
-  <div
-    v-if="false"
-    class="flex gap-2 px-4 py-2 min-w-full min-h-10 overflow-x-auto overflow-y-hidden">
-    <ScButton
-      v-for="btn in routeBtns"
-      :key="btn.name"
-      class="shadow-md px-4"
-      :activation="activation === btn.name"
-      @click="toPage(btn)">
-      {{ btn.name }}
-    </ScButton>
-  </div>
 
   <div class="flex flex-col w-full items-center gap-4 py-2 px-2">
     <RouterView></RouterView>
@@ -94,12 +82,6 @@ const deviceStore = useDeviceStore()
 // const isCurrentUser = computed(() => {
 //   return !route.query.userId
 // })
-
-const toPage = (btn: any) => {
-  if (btn.path === route.path) return
-  activation.value = btn.name
-  router.push(btn.path)
-}
 
 onMounted(() => {
   if (deviceStore.device == 2) {
