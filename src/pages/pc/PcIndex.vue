@@ -8,14 +8,14 @@
     <div v-if="configStore.padAdaptation" class="h-[8vh]"></div>
     <PopUpAnnouncement />
   </div>
-  <div class="absolute bottom-0 right-0"><DevTools /></div>
+  <!-- <div class="absolute bottom-0 right-0"><DevTools /></div> -->
 </template>
 
 <script setup lang="ts">
 import HomeHeader from '@/components/pc/homeHeader/HomeHeader.vue'
 import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
 import { useConfigStore } from '@/stores/global/configStore'
-import DevTools from '@/components/common/DevTools.vue'
+// import DevTools from '@/components/common/DevTools.vue'
 
 const configStore = useConfigStore()
 </script>
