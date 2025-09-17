@@ -419,6 +419,10 @@ const handleModalChange = (type: string) => {
 }
 
 const getCaptcha = (email: string) => {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast.error('邮箱格式不正确')
+    return
+  }
   isSendCode.value = true
   countdown(30)
   userApi
@@ -426,13 +430,12 @@ const getCaptcha = (email: string) => {
     .then((res: Api) => {
       if (res.data.code === 200) {
         toast.success(t('t.yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang'))
-      } else {
-        toast.error(t('f.huo-qu-yan-zheng-ma-shi-bai') + res.data.msg)
       }
     })
     .catch((error) => {
       // 处理获取验证码错误
       toast.error(error.msg)
+      countdown(1)
     })
 }
 
