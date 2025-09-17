@@ -156,7 +156,7 @@
               'border border-green text-green': data.disabled == 1,
               'border border-error text-error': data.disabled == 0,
             }">
-            {{ data.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+            {{ data.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
           </ScButton>
         </div>
       </template>

@@ -87,7 +87,7 @@
             <td>
               <div class="flex items-center gap-2">
                 {{ post.creator.nickname }}
-                <ScTag size="xs" status="info"
+                <ScTag size="sm" status="info"
                   >uid: {{ post.creator.id }}</ScTag
                 >
               </div>
@@ -95,25 +95,25 @@
             <td>{{ post.createdAt }}</td>
             <td>
               <div class="flex items-center gap-2 flex-wrap">
-                <ScTag v-if="post.status == 2" size="xs" status="error">
+                <ScTag v-if="post.status == 2" size="sm" status="error">
                   {{ $t('b.feng-jin') }}
                 </ScTag>
-                <ScTag v-else size="xs" status="success">
+                <ScTag v-else size="sm" status="success">
                   {{ $t('b.zheng-chang') }}
                 </ScTag>
 
-                <ScTag v-if="post.visible == 0" size="xs" status="error">
+                <ScTag v-if="post.visible == 0" size="sm" status="error">
                   {{ $t('b.yi-xia-jia') }}
                 </ScTag>
 
-                <ScTag v-if="post.top == 1" size="xs" status="warning">
+                <ScTag v-if="post.top == 1" size="sm" status="warning">
                   {{ $t('b.zhi-ding-zhong') }}
                 </ScTag>
 
-                <ScTag v-if="post.disabled == 1" size="xs" status="error">
+                <ScTag v-if="post.disabled == 1" size="sm" status="error">
                   {{ $t('b.yi-shan-chu') }}
                 </ScTag>
-                <ScTag v-if="post.remark" size="xs" status="warning">
+                <ScTag v-if="post.remark" size="sm" status="warning">
                   {{ $t('b.yi-bei-zhu') }}
                 </ScTag>
               </div>
@@ -203,6 +203,36 @@
       </div>
     </Card>
   </ScModal>
+
+  <ScModal v-model="setTopModal">
+    <Card class="p-4 w-[95vw]">
+      <div class="text-xl mb-4">设置置顶</div>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 0"
+        @click="setTop(currentPost, 0)">
+        不置顶
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 1"
+        @click="setTop(currentPost, 1)">
+        置顶
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 2"
+        @click="setTop(currentPost, 2)">
+        横幅公告
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 3"
+        @click="setTop(currentPost, 3)">
+        弹窗公告
+      </ScButton>
+    </Card>
+  </ScModal>
 </template>
 
 <script setup lang="ts">
@@ -275,6 +305,7 @@ const postList = ref<Post[]>([]) // 帖子列表数据
 const bannedModal = ref(false) // 封禁帖子模态框状态
 const currentPost = ref(-1) // 当前操作的帖子ID
 const currentPostRemark = ref('') // 当前操作的帖子备注内容
+const setTopModal = ref(false)
 
 const toPage = (page: number) => {
   postPage.value.page = page
@@ -414,12 +445,17 @@ const removed = (index: number) => {
     })
 }
 
-const setTop = (index: number) => {
+const setTop = (index: number, val?: number) => {
+  if (!setTopModal.value) {
+    currentPost.value = index
+    setTopModal.value = true
+    return
+  }
   const item = postList.value[index]
   postApi
     .postToTopAsAdmin({
       id: item.id,
-      top: item.top === 1 ? 0 : 1, // 切换置顶状态
+      top: val ?? (item.top === 1 ? 0 : 1),
     })
     .then((response) => {
       if (response.data.code === 200) {
@@ -431,7 +467,6 @@ const setTop = (index: number) => {
       console.error('请求失败:', error.msg)
     })
 }
-
 const banned = (index: number, val?: number) => {
   const item = postList.value[index]
   if (!bannedModal.value) {

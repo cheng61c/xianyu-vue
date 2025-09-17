@@ -64,13 +64,13 @@
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ report.creator.nickname }}
-                <ScRole size="xs" :user="report.creator" />
+                <ScRole size="sm" :user="report.creator" />
               </div>
             </td>
             <td>
               <div class="flex items-center gap-2 flex-wrap">
                 {{ report.handler?.nickname ?? 'null' }}
-                <ScRole size="xs" :user="report.handler" />
+                <ScRole size="sm" :user="report.handler" />
               </div>
             </td>
             <td>{{ searchStatusMap[report.status] }}</td>
@@ -79,12 +79,12 @@
             <td>{{ report.updatedAt }}</td>
             <!-- <td>
               <div class="flex items-center gap-2 flex-wrap">
-                <ScTag v-if="report.status == 2" size="xs" status="error">
+                <ScTag v-if="report.status == 2" size="sm" status="error">
                   封禁
                 </ScTag>
-                <ScTag v-else size="xs" status="success"> 正常 </ScTag>
+                <ScTag v-else size="sm" status="success"> 正常 </ScTag>
 
-                <ScTag v-if="report.result" size="xs" status="warning">
+                <ScTag v-if="report.result" size="sm" status="warning">
                   已备注
                 </ScTag>
               </div>
@@ -153,14 +153,14 @@
         <span class="text-gray-content">{{ $t('d.ju-bao-zhe-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].creator.nickname }}
-          <ScRole size="xs" :user="reportList[currentReport].creator" />
+          <ScRole size="sm" :user="reportList[currentReport].creator" />
         </div>
       </div>
       <div class="flex items-center gap-2">
         <span class="text-gray-content">{{ $t('d.chu-li-ren-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].handler?.nickname ?? '未知' }}
-          <ScRole size="xs" :user="reportList[currentReport].handler" />
+          <ScRole size="sm" :user="reportList[currentReport].handler" />
         </div>
       </div>
       <div class="flex items-center gap-2">
@@ -206,7 +206,7 @@
         <span class="text-gray-content">{{ $t('d.ju-bao-zhe-id') }}</span>
         <div class="flex items-center gap-2 flex-wrap">
           {{ reportList[currentReport].creator.nickname }}
-          <ScRole size="xs" :user="reportList[currentReport].creator" />
+          <ScRole size="sm" :user="reportList[currentReport].creator" />
         </div>
       </div>
 

@@ -109,6 +109,12 @@
                 <ScTag v-if="post.top == 1" size="xs" status="warning">
                   {{ $t('b.zhi-ding-zhong') }}
                 </ScTag>
+                <ScTag v-if="post.top == 2" size="xs" status="warning">
+                  横幅置顶
+                </ScTag>
+                <ScTag v-if="post.top == 3" size="xs" status="warning">
+                  弹窗置顶
+                </ScTag>
 
                 <ScTag v-if="post.disabled == 1" size="xs" status="error">
                   {{ $t('b.yi-shan-chu') }}
@@ -124,9 +130,7 @@
                 <ScButton
                   @click="setTop(index)"
                   class="border border-warning text-warning">
-                  {{
-                    post.top == 0 ? $t('b.zhi-ding') : $t('b.qu-xiao-zhi-ding')
-                  }}
+                  设置置顶
                 </ScButton>
 
                 <ScButton
@@ -161,7 +165,7 @@
                     'border border-green text-green': post.disabled == 1,
                     'border border-error text-error': post.disabled == 0,
                   }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : $t('hui-fu') }}
+                  {{ post.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
                 </ScButton>
               </div>
             </td>
@@ -212,6 +216,36 @@
           {{ $t('b.qu-xiao') }}
         </ScButton>
       </div>
+    </Card>
+  </ScModal>
+
+  <ScModal v-model="setTopModal">
+    <Card class="p-4 w-[95vw]">
+      <div class="text-xl mb-4">设置置顶</div>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 0"
+        @click="setTop(currentPost, 0)">
+        不置顶
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 1"
+        @click="setTop(currentPost, 1)">
+        置顶
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 2"
+        @click="setTop(currentPost, 2)">
+        横幅公告
+      </ScButton>
+      <ScButton
+        Border
+        :activation="postList[currentPost].top == 3"
+        @click="setTop(currentPost, 3)">
+        弹窗公告
+      </ScButton>
     </Card>
   </ScModal>
 </template>
@@ -285,6 +319,7 @@ const postList = ref<Post[]>([]) // 帖子列表数据
 const bannedModal = ref(false) // 封禁帖子模态框状态
 const currentPost = ref(-1) // 当前操作的帖子ID
 const currentPostRemark = ref('') // 当前操作的帖子备注内容
+const setTopModal = ref(false)
 
 const toPage = (page: number) => {
   postPage.value.page = page
@@ -424,12 +459,17 @@ const removed = (index: number) => {
     })
 }
 
-const setTop = (index: number) => {
+const setTop = (index: number, val?: number) => {
+  if (!setTopModal.value) {
+    currentPost.value = index
+    setTopModal.value = true
+    return
+  }
   const item = postList.value[index]
   postApi
     .postToTopAsAdmin({
       id: item.id,
-      top: item.top === 1 ? 0 : 1, // 切换置顶状态
+      top: val ?? (item.top === 1 ? 0 : 1),
     })
     .then((response) => {
       if (response.data.code === 200) {

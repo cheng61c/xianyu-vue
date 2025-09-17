@@ -213,20 +213,23 @@
   <ScModal v-model="updateRoleModal">
     <Card class="p-6 w-2xl">
       <h3 class="text-xl mb-4">{{ $t('d.xiu-gai-yong-hu-quan-xian') }}</h3>
+      <div class="text-warning">点击标签添加或移除</div>
       <div>{{ $t('d.jiao-se-chi') }}</div>
-      <div class="flex items-center gap-2 flex-wrap">
+      <div
+        class="flex items-center gap-2 flex-wrap border border-gray p-2 rounded-lg">
         <ScTag
           v-for="(role, index) in roleList"
           :key="index"
           :bgColor="role.color"
-          size="sm"
+          size="md"
           class="cursor-pointer"
           @click="addRoleItem(index)">
           {{ role.name }}
         </ScTag>
       </div>
       <div>{{ $t('d.dang-qian-cun-zai') }}</div>
-      <div class="flex items-center gap-2 flex-wrap">
+      <div
+        class="flex items-center gap-2 flex-wrap border border-gray p-2 rounded-lg">
         <ScTag
           v-for="(role, index) in userList[currentUser].roles"
           :key="index"
@@ -236,6 +239,11 @@
           @click="removeRoleItem(index)">
           {{ role.name }}
         </ScTag>
+        <span
+          v-if="!userList[currentUser].roles.length"
+          class="text-sm text-error">
+          无
+        </span>
       </div>
       <div class="flex gap-4 justify-end">
         <ScButton class="px-4" @click="updateUserRole(currentUser)" Border>
@@ -253,9 +261,9 @@
       <div class="flex gap-2 flex-wrap items-center">
         {{ $t('d.mu-biao-zhang-hao') }}
         <span>{{ userList[currentUser].nickname }}</span>
-        <ScTag size="xs" status="info"
-          >uid: {{ userList[currentUser].id }}</ScTag
-        >
+        <ScTag size="xs" status="info">
+          uid: {{ userList[currentUser].id }}
+        </ScTag>
         <ScTag
           v-for="(role, roleIndex) in userList[currentUser].roles"
           :key="roleIndex"
