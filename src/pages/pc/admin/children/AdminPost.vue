@@ -87,9 +87,9 @@
             <td>
               <div class="flex items-center gap-2">
                 {{ post.creator.nickname }}
-                <ScTag size="sm" status="info"
-                  >uid: {{ post.creator.id }}</ScTag
-                >
+                <ScTag size="sm" status="info">
+                  uid: {{ post.creator.id }}
+                </ScTag>
               </div>
             </td>
             <td>{{ post.createdAt }}</td>
@@ -121,11 +121,7 @@
 
             <td>
               <div class="flex items-center gap-2">
-                <ScButton
-                  @click="setTop(index)"
-                  class="border border-warning text-warning">
-                  {{ post.top == 0 ? '置顶' : '取消置顶' }}
-                </ScButton>
+                <ScButton @click="setTop(index)" Border> 设置置顶 </ScButton>
 
                 <ScButton
                   @click="removed(index)"

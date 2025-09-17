@@ -127,11 +127,7 @@
 
             <td>
               <div class="flex items-center gap-2">
-                <ScButton
-                  @click="setTop(index)"
-                  class="border border-warning text-warning">
-                  设置置顶
-                </ScButton>
+                <ScButton @click="setTop(index)" Border> 设置置顶 </ScButton>
 
                 <ScButton
                   @click="removed(index)"
