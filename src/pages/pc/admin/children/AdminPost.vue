@@ -201,7 +201,7 @@
   </ScModal>
 
   <ScModal v-model="setTopModal">
-    <Card class="p-4 w-[95vw]">
+    <Card class="p-6 w-2xl">
       <div class="text-xl mb-4">设置置顶</div>
       <ScButton
         Border
