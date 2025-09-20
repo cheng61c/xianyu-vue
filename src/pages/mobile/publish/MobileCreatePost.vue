@@ -9,10 +9,10 @@
         @click="$router.back()">
       </ScButton>
       <div class="text-lg font-semibold" @click="$router.back()">
-        {{ isEdit ? '编辑' : '创建' }}帖子
+        {{ isEdit ? $t('b.bian-ji-tie-zi') : $t('b.chuang-jian-tie-zi') }}
       </div>
       <div v-if="!userStore.isLogin" class="text-error">
-        请先登录后再发布帖子
+        {{ $t('d.qing-xian-deng-lu-hou-zai-fa-bu-tie-zi') }}
       </div>
     </div>
 
@@ -22,26 +22,33 @@
       <div class="items-center gap-2 space-y-2">
         <label
           class="w-24 flex items-center tooltip tooltip-right"
-          data-tip="
-            帖子标题，帖子标题会显示在游戏内社区的列表中，建议使用简短的标题，便于用户快速搜索">
+          :data-tip="
+            $t(
+              't.tie-zi-biao-ti-tie-zi-biao-ti-hui-xian-shi-zai-you-xi-nei-she-qu-de-lie-biao-zhong-jian-yi-shi-yong-jian-duan-de-biao-ti-bian-yu-yong-hu-kuai-su-sou-suo'
+            )
+          ">
           <span class="flex items-center gap-1">
-            标题 <span><CircleHelp :size="16" /></span>
+            {{ $t('b.biao-ti') }} <span><CircleHelp :size="16" /></span>
           </span>
         </label>
         <input
           v-model="title"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="请输入标题" />
+          :placeholder="$t('d.qing-shu-ru-biao-ti')" />
       </div>
 
       <!-- 模式选择 -->
       <div class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="模式选择，用于选择发布帖子或服务器，不同模式下的表单内容会有所不同">
+          :data-tip="
+            $t(
+              't.mo-shi-xuan-ze-yong-yu-xuan-ze-fa-bu-tie-zi-huo-fu-wu-qi-bu-tong-mo-shi-xia-de-biao-dan-nei-rong-hui-you-suo-bu-tong'
+            )
+          ">
           <span class="flex items-center gap-1">
-            模式选择 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.mo-shi-xuan-ze') }} <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -52,7 +59,7 @@
             :activation="mode === 'post'"
             Border
             @click="mode = 'post'">
-            帖子
+            {{ $t('nav.tie-zi') }}
           </ScButton>
           <ScButton
             v-if="verifyPermissions([1, 2, 8, 9])"
@@ -60,7 +67,7 @@
             :activation="mode === 'server'"
             Border
             @click="mode = 'server'">
-            服务器
+            {{ $t('nav.fu-wu-qi') }}
           </ScButton>
         </div>
       </div>
@@ -72,7 +79,7 @@
           class="w-24 flex justify-between items-center tooltip tooltip-right"
           data-tip="置顶选项，用于选择帖子在社区中的显示方式，置顶的帖子会在列表中优先显示，横幅公告和弹窗公告会在站内有特殊提示">
           <span class="flex items-center gap-1">
-            置顶模式 <span><CircleHelp :size="16" /></span>
+            {{ $t('b.zhi-ding-mo-shi') }} <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -83,40 +90,48 @@
             :activation="postData.top === 0"
             Border
             @click="postData.top = 0">
-            不置顶
+            {{ $t('b.bu-zhi-ding') }}
           </ScButton>
           <ScButton
             class="px-4 py-1 text-sm"
             :activation="postData.top === 1"
             Border
             @click="postData.top = 1">
-            置顶
+            {{ $t('b.zhi-ding') }}
           </ScButton>
           <ScButton
             class="px-4 py-1 text-sm"
             :activation="postData.top === 2"
             Border
             @click="postData.top = 2">
-            横幅公告
+            {{ $t('b.heng-fu-gong-gao') }}
           </ScButton>
           <ScButton
             class="px-4 py-1 text-sm"
             :activation="postData.top === 3"
             Border
             @click="postData.top = 3">
-            弹窗公告
+            {{ $t('b.dan-chuang-gong-gao') }}
           </ScButton>
           <span
             v-if="postData.top == 2"
             class="flex gap-1 text-green items-center">
             <CircleAlert :size="16" />
-            使用"横幅公告"选项时，该帖子的标题将置顶在主页的页面顶端
+            {{
+              $t(
+                't.shi-yong-heng-fu-gong-gao-xuan-xiang-shi-gai-tie-zi-de-biao-ti-jiang-zhi-ding-zai-zhu-ye-de-ye-mian-ding-duan'
+              )
+            }}
           </span>
           <span
             v-if="postData.top == 3"
             class="flex gap-1 text-green items-center">
             <CircleAlert :size="16" />
-            使用"弹窗公告"选项时，该帖子将在页面加载完成时弹出
+            {{
+              $t(
+                't.shi-yong-dan-chuang-gong-gao-xuan-xiang-shi-gai-tie-zi-jiang-zai-ye-mian-jia-zai-wan-cheng-shi-dan-chu'
+              )
+            }}
           </span>
         </div>
       </div>
@@ -125,10 +140,14 @@
       <div v-if="mode === 'post'" class="flex flex-wrap items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块">
+          :data-tip="
+            $t(
+              'd.xuan-ze-yao-fa-song-dao-de-ban-kuai-ban-kuai-lei-xing-hui-ying-xiang-tie-zi-lei-xing-de-xuan-ze-wen-jian-lei-xing-de-tie-zi-zhi-neng-fa-song-dao-wen-jian-ban-kuai'
+            )
+          ">
           <span class="flex items-center gap-1">
-            选择板块 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.xuan-ze-ban-kuai') }}
+            <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -137,7 +156,9 @@
         <div class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
-            <span class="flex items-center gap-1">交流板块 :</span>
+            <span class="flex items-center gap-1">{{
+              $t('f.jiao-liu-ban-kuai')
+            }}</span>
           </label>
           <template v-for="b in plateList" :key="`post-${b.id}`">
             <ScButton
@@ -156,7 +177,9 @@
         <div class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
-            <span class="flex items-center gap-1"> 资源板块 :</span>
+            <span class="flex items-center gap-1">
+              {{ $t('f.zi-yuan-ban-kuai') }}</span
+            >
           </label>
           <template v-for="b in plateList" :key="`res-${b.id}`">
             <ScButton
@@ -179,10 +202,14 @@
         class="flex items-center gap-2 flex-wrap">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            选择文件类型，文件类型会影响文件的上传方式和显示方式，且一个帖子中只能存在一种文件类型，建议根据实际情况选择合适的文件类型">
+          :data-tip="
+            $t(
+              'd.xuan-ze-wen-jian-lei-xing-wen-jian-lei-xing-hui-ying-xiang-wen-jian-de-shang-chuan-fang-shi-he-xian-shi-fang-shi-qie-yi-ge-tie-zi-zhong-zhi-neng-cun-zai-yi-zhong-wen-jian-lei-xing-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-wen-jian-lei-xing'
+            )
+          ">
           <span class="flex items-center gap-1">
-            文件类型 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.wen-jian-lei-xing') }}
+            <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -202,7 +229,11 @@
           v-if="postData.fileType == 7"
           class="flex gap-1 text-error items-center">
           <CircleAlert :size="16" />
-          使用"其他"选项时，上传的资源将不会在游戏中显示
+          {{
+            $t(
+              't.shi-yong-qi-ta-xuan-xiang-shi-shang-chuan-de-zi-yuan-jiang-bu-hui-zai-you-xi-zhong-xian-shi'
+            )
+          }}
         </span>
       </div>
 
@@ -212,10 +243,14 @@
         class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            关联帖子，当该帖子所使用的文件需要依赖其他帖子中的文件时使用，启用后可以选择其他帖子进行关联，便于快速查找和使用">
+          :data-tip="
+            $t(
+              'd.guan-lian-tie-zi-dang-gai-tie-zi-suo-shi-yong-de-wen-jian-xu-yao-yi-lai-qi-ta-tie-zi-zhong-de-wen-jian-shi-shi-yong-qi-yong-hou-ke-yi-xuan-ze-qi-ta-tie-zi-jin-hang-guan-lian-bian-yu-kuai-su-cha-zhao-he-shi-yong'
+            )
+          ">
           <span class="flex items-center gap-1">
-            关联帖子 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.guan-lian-tie-zi') }}
+            <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -231,7 +266,9 @@
             class="w-4 h-4 flex justify-center items-center border rounded cursor-pointer peer-checked:bg-active peer-checked:border-active peer-checked:text-active-content transition">
             <Check v-if="enablePostRelation" />
           </label>
-          <span class="text-sm text-background-content">启用关联帖子选择</span>
+          <span class="text-sm text-background-content">{{
+            $t('f.qi-yong-guan-lian-tie-zi-xuan-ze')
+          }}</span>
         </label>
       </div>
 
@@ -245,7 +282,7 @@
             <input
               v-model="relatedSearch"
               type="text"
-              placeholder="搜索帖子标题"
+              placeholder="$t('t.sou-suo-tie-zi-biao-ti')"
               class="w-full mb-2 px-3 py-1.5 border border-gray-content rounded-lg text-sm focus:ring-2 focus:ring-active outline-none" />
             <div
               class="border border-gray-content rounded-lg p-2 h-[180px] overflow-y-auto space-y-1 text-sm">
@@ -259,7 +296,7 @@
               <div
                 v-if="filteredPosts.length === 0"
                 class="text-gray-400 text-center py-2">
-                没有匹配的帖子
+                {{ $t('d.mei-you-pi-pei-de-tie-zi') }}
               </div>
             </div>
           </div>
@@ -276,13 +313,13 @@
                 <button
                   class="text-red-500 hover:underline text-xs"
                   @click="removePost(post.id)">
-                  移除
+                  {{ $t('b.yi-chu') }}
                 </button>
               </div>
               <div
                 v-if="selectedPosts.length === 0"
                 class="text-gray-400 text-center py-2">
-                暂无已选帖子
+                {{ $t('d.zan-wu-yi-xuan-tie-zi') }}
               </div>
             </div>
           </div>
@@ -293,10 +330,13 @@
       <div v-if="mode === 'server'" class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            你的服务器地址，这将用于在游戏内连接到你的服务器，通常是 IP:端口号">
+          :data-tip="
+            $t(
+              't.ni-de-fu-wu-qi-di-zhi-zhe-jiang-yong-yu-zai-you-xi-nei-lian-jie-dao-ni-de-fu-wu-qi-tong-chang-shi-ip-duan-kou-hao'
+            )
+          ">
           <span class="flex items-center gap-2">
-            服务器 IP <span><CircleHelp :size="16" /></span>
+            {{ $t('f.fu-wu-qi-ip') }} <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -305,20 +345,25 @@
           v-model="serverData.url"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="请输入服务器 IP "
+          placeholder="$t('d.qing-shu-ru-fu-wu-qi-ip') "
           @blur="connectionTest(serverData.url)" />
-
         <span
           class="text-info tooltip tooltip-right"
-          data-tip="
-        该测试只对ip有效，与端口号无关，请确保端口号已开放"
+          :data-tip="
+            $t(
+              't.gai-ce-shi-zhi-dui-ip-you-xiao-yu-duan-kou-hao-wu-guan-qing-que-bao-duan-kou-hao-yi-kai-fang'
+            )
+          "
           v-if="pingLoding">
-          测试延迟中...
+          {{ $t('d.ce-shi-yan-chi-zhong') }}
         </span>
         <span
           class="tooltip tooltip-right"
-          data-tip="
-            该测试只对ip有效，与端口号无关，请确保端口号已开放"
+          :data-tip="
+            $t(
+              't.gai-ce-shi-zhi-dui-ip-you-xiao-yu-duan-kou-hao-wu-guan-qing-que-bao-duan-kou-hao-yi-kai-fang'
+            )
+          "
           :class="{
             'text-green': pingAvgTime < 50 && pingAvgTime > 0,
             'text-yellow-500': pingAvgTime >= 50 && pingAvgTime < 100,
@@ -345,7 +390,11 @@
             <Check v-if="pingEnsure" />
           </label>
           <span class="text-sm text-error">
-            检测到IP无法ping通，若已确定IP正常，请勾选
+            {{
+              $t(
+                'd.jian-ce-dao-ip-wu-fa-ping-tong-ruo-yi-que-ding-ip-zheng-chang-qing-gou-xuan'
+              )
+            }}
           </span>
         </label>
       </div>
@@ -357,7 +406,8 @@
           data-tip="
             选择服务器版本，服务器版本会影响游戏内的连接方式和功能，建议根据实际情况选择合适的版本">
           <span class="flex items-center gap-1">
-            服务器版本 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.fu-wu-qi-ban-ben') }}
+            <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -379,7 +429,7 @@
         @click="onTipTap"
         Border
         class="w-full">
-        编写文章
+        {{ $t('b.bian-xie-wen-zhang') }}
       </ScButton>
     </div>
 
@@ -438,6 +488,7 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import ScDrawer from '@/components/common/ScDrawer.vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const postStore = usePostStore()
@@ -459,6 +510,7 @@ const props = defineProps({
     type: Boolean,
   },
 })
+const { t } = useI18n()
 const plateList = ref<Plate[]>([]) // 板块列表
 const versionList = ref<Version[]>([]) // 版本列表
 
@@ -514,32 +566,32 @@ const removePost = (id: number) => {
 // 提交
 const submitPost = () => {
   if (!title.value.trim()) {
-    toast.error('标题不能为空')
+    toast.error(t('t.biao-ti-bu-neng-wei-kong'))
     return
   }
   if (postContent.value && !postContent.value.trim()) {
-    toast.error('内容不能为空')
+    toast.error(t('t.nei-rong-bu-neng-wei-kong'))
     return
   }
 
   if (mode.value === 'post') {
     if (postData.value.plateId === 0) {
-      toast.error('请选择板块')
+      toast.error(t('t.qing-xuan-ze-ban-kuai'))
       return
     }
     if (postData.value.type === 2 && postData.value.fileType === 0) {
-      toast.error('请选择文件类型')
+      toast.error(t('t.qing-xuan-ze-wen-jian-lei-xing'))
       return
     }
     sendPsot()
   } else {
     if (!serverData.value.url.trim()) {
-      toast.error('服务器地址不能为空')
+      toast.error(t('t.fu-wu-qi-di-zhi-bu-neng-wei-kong'))
       return
     }
 
     if (serverData.value.versionId === 0) {
-      toast.error('请选择服务器版本')
+      toast.error(t('t.qing-xuan-ze-fu-wu-qi-ban-ben'))
       return
     }
     sendServer()
@@ -548,7 +600,7 @@ const submitPost = () => {
 
 const sendPsot = () => {
   if (postContent.value === null) {
-    toast.error('内容不能为空')
+    toast.error(t('t.nei-rong-bu-neng-wei-kong'))
     return
   }
   postData.value.title = title.value
@@ -561,7 +613,7 @@ const sendPsot = () => {
   )
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('发布成功')
+        toast.success(t('t.fa-bu-cheng-gong'))
         loader.value = false
         router.back()
         if (!props.isEdit && postData.value.type == 2 && res.data.data) {
@@ -574,12 +626,12 @@ const sendPsot = () => {
               postId: res.data.data.id,
             },
           })
-          toast.success('请上传资源文件')
+          toast.success(t('t.qing-shang-chuan-zi-yuan-wen-jian'))
         }
       }
     })
     .catch((err) => {
-      toast.error('发布失败' + err.msg)
+      toast.error(t('t.fa-bu-shi-bai') + err.msg)
       console.error('发布失败', err)
       loader.value = false
     })
@@ -587,7 +639,7 @@ const sendPsot = () => {
 
 const sendServer = () => {
   if (postContent.value === null) {
-    toast.error('内容不能为空')
+    toast.error(t('t.nei-rong-bu-neng-wei-kong'))
     return
   }
   serverData.value.title = title.value
@@ -600,13 +652,13 @@ const sendServer = () => {
     .createServer(serverData.value)
     .then((res: Api) => {
       if (res.data.code === 200) {
-        toast.success('发布成功')
+        toast.success(t('t.fa-bu-cheng-gong'))
         loader.value = false
         window.history.back()
       }
     })
     .catch((err) => {
-      toast.error('发布失败' + err.msg)
+      toast.error(t('t.fa-bu-shi-bai') + err.msg)
       loader.value = false
     })
 }
@@ -622,7 +674,7 @@ const connectionTest = async (url: string) => {
     url.startsWith('127.0.0.1') ||
     url.startsWith('192.168.')
   ) {
-    toast.error('本地地址或局域网IP不支持')
+    toast.error(t('t.ben-di-di-zhi-huo-ju-yu-wang-ip-bu-zhi-chi'))
     pingLoding.value = false
     return
   }
@@ -638,9 +690,9 @@ const connectionTest = async (url: string) => {
         packetLoss: string
       }
       if (data.success) {
-        toast.success('连接成功')
+        toast.success(t('t.lian-jie-cheng-gong'))
       } else {
-        toast.error('连接失败，请检查服务器地址')
+        toast.error(t('t.lian-jie-shi-bai-qing-jian-cha-fu-wu-qi-di-zhi'))
         data.avgTime = '-1'
       }
       pingAvgTime.value = Number(data.avgTime)
@@ -648,7 +700,7 @@ const connectionTest = async (url: string) => {
       pingLoding.value = false
     })
     .catch(() => {
-      toast.error('连接失败，请检查服务器地址')
+      toast.error(t('t.lian-jie-shi-bai-qing-jian-cha-fu-wu-qi-di-zhi'))
       pingAvgTime.value = -1
       pingAuccess.value = false
       pingLoding.value = false

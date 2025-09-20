@@ -27,7 +27,7 @@
                   }),
                   close())
                 ">
-                编辑
+                {{ $t('b.bian-ji') }}
               </ScButton>
               <ScButton
                 v-if="postData && verifyPermissions([1, 2, 5])"
@@ -74,12 +74,24 @@
 
     <!-- 提示词 -->
     <div v-if="postData?.status == 2 || postData?.disabled == 1">
-      <div class="text-red-500 text-lg font-bold">该帖子已被封禁或禁用</div>
-      <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
+      <div class="text-red-500 text-lg font-bold">
+        {{ $t('d.gai-tie-zi-yi-bei-feng-jin-huo-jin-yong') }}
+      </div>
+      <div class="text-gray-content mt-2">
+        {{
+          $t('d.dang-qian-zheng-zai-shi-yong-guan-li-yuan-quan-xian-cha-kan')
+        }}
+      </div>
     </div>
     <div v-if="postData?.visible == 0">
-      <div class="text-red-500 text-lg font-bold">该帖子已下架</div>
-      <div class="text-gray-content mt-2">当前正在使用管理员权限查看</div>
+      <div class="text-red-500 text-lg font-bold">
+        {{ $t('d.gai-tie-zi-yi-xia-jia') }}
+      </div>
+      <div class="text-gray-content mt-2">
+        {{
+          $t('d.dang-qian-zheng-zai-shi-yong-guan-li-yuan-quan-xian-cha-kan')
+        }}
+      </div>
     </div>
 
     <!-- 详情 -->
@@ -138,15 +150,23 @@
     </div>
     <!-- 错误页面 -->
     <div v-else class="flex flex-col items-center">
-      <h2 class="text-xl font-bold my-4">帖子加载失败</h2>
+      <h2 class="text-xl font-bold my-4">
+        {{ $t('d.tie-zi-jia-zai-shi-bai') }}
+      </h2>
       <img
         src="/public/wow.webp"
         alt="Error"
         class="w-auto h-40 mb-4 mx-auto" />
       <p class="text-gray-content mb-4">
-        可能是帖子不存在或已被删除，您可以尝试刷新页面或返回上一页。
+        {{
+          $t(
+            'd.ke-neng-shi-tie-zi-bu-cun-zai-huo-yi-bei-shan-chu-nin-ke-yi-chang-shi-shua-xin-ye-mian-huo-fan-hui-shang-yi-ye'
+          )
+        }}
       </p>
-      <ScButton @click="goBack" class="mt-2" Border>返回上一页</ScButton>
+      <ScButton @click="goBack" class="mt-2" Border>{{
+        $t('b.fan-hui-shang-yi-ye')
+      }}</ScButton>
     </div>
   </div>
 
@@ -166,7 +186,7 @@
       <div class="flex">
         <h3 class="text-xl mb-4 mr-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
         <div v-if="!userStore.isLogin" class="text-error pt-1">
-          请先登录后再操作
+          {{ $t('t.qing-xian-deng-lu-hou-zai-cao-zuo') }}
         </div>
       </div>
 

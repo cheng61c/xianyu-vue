@@ -27,7 +27,7 @@
       <div
         v-if="deviceStore.device == 2"
         class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
-        <div class="flex-shrink-0">排序方式:</div>
+        <div class="flex-shrink-0">{{ $t('d.pai-xu-fang-shi') }}</div>
         <ScButtonSelector
           :options="orderTypeOptions"
           v-model="postStore.orderType" />

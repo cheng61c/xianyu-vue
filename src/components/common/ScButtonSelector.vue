@@ -76,7 +76,7 @@ const updateHighlightPosition = () => {
     if (props.col) {
       // 垂直布局样式
       highlightStyle.value = {
-        width: `${containerRect.width}px`,
+        width: `${containerRect.width - 2}px`,
         height: `${elementRect.height}px`,
         left: '0px',
         top: `${elementRect.top - containerRect.top - 1}px`,
@@ -85,7 +85,7 @@ const updateHighlightPosition = () => {
       // 水平布局样式
       highlightStyle.value = {
         width: `${elementRect.width}px`,
-        height: `${containerRect.height}px`,
+        height: `${containerRect.height - 2}px`,
         left: `${elementRect.left - containerRect.left - 1}px`,
         top: '0px',
       }

@@ -23,13 +23,15 @@
 
     <div class="space-y-2">
       <ScButton @click="onUpdateAvatar" Border class="w-full">
-        修改头像
+        {{ $t('b.xiu-gai-tou-xiang') }}
       </ScButton>
 
       <ScButton @click="onTipTap" Border class="w-full">
-        编辑主页
+        {{ $t('b.bian-ji-zhu-ye') }}
         {{
-          signature == userInfo.signature ? '' : '已修改, 请点击提交保存修改'
+          signature == userInfo.signature
+            ? ''
+            : $t('b.yi-xiu-gai-qing-dian-ji-ti-jiao-bao-cun-xiu-gai')
         }}
       </ScButton>
     </div>

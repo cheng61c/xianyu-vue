@@ -121,7 +121,9 @@
 
             <td>
               <div class="flex items-center gap-2">
-                <ScButton @click="setTop(index)" Border> 设置置顶 </ScButton>
+                <ScButton @click="setTop(index)" Border>
+                  {{ $t('b.she-zhi-zhi-ding') }}
+                </ScButton>
 
                 <ScButton
                   @click="removed(index)"
@@ -129,7 +131,11 @@
                     'border border-primary text-primary': post.visible == 1,
                     'border border-error text-error': post.visible == 0,
                   }">
-                  {{ post.visible == 0 ? '已下架' : '上架中' }}
+                  {{
+                    post.visible == 0
+                      ? $t('b.yi-xia-jia')
+                      : $t('b.shang-jia-zhong')
+                  }}
                 </ScButton>
 
                 <ScButton
@@ -138,7 +144,11 @@
                   :class="{
                     'border border-error text-error': post.status == 2,
                   }">
-                  {{ post.status == 2 ? '撤销封禁' : '封禁' }}
+                  {{
+                    post.status == 2
+                      ? $t('d.che-xiao-feng-jin')
+                      : $t('b.feng-jin')
+                  }}
                 </ScButton>
 
                 <ScButton
@@ -147,7 +157,7 @@
                     'border border-green text-green': post.disabled == 1,
                     'border border-error text-error': post.disabled == 0,
                   }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+                  {{ post.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
                 </ScButton>
               </div>
             </td>
@@ -202,30 +212,30 @@
 
   <ScModal v-model="setTopModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">设置置顶</div>
+      <div class="text-xl mb-4">{{ $t('b.she-zhi-zhi-ding') }}</div>
       <ScButton
         Border
         :activation="postList[currentPost].top == 0"
         @click="setTop(currentPost, 0)">
-        不置顶
+        {{ $t('b.bu-zhi-ding') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 1"
         @click="setTop(currentPost, 1)">
-        置顶
+        {{ $t('b.zhi-ding') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 2"
         @click="setTop(currentPost, 2)">
-        横幅公告
+        {{ $t('b.heng-fu-gong-gao') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 3"
         @click="setTop(currentPost, 3)">
-        弹窗公告
+        {{ $t('b.dan-chuang-gong-gao') }}
       </ScButton>
     </Card>
   </ScModal>

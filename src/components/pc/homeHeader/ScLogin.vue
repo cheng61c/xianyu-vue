@@ -420,7 +420,7 @@ const handleModalChange = (type: string) => {
 
 const getCaptcha = (email: string) => {
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    toast.error('邮箱格式不正确')
+    toast.error(t('t.you-xiang-ge-shi-bu-zheng-que'))
     return
   }
   isSendCode.value = true
@@ -488,7 +488,9 @@ const handleRregister = () => {
     return
   }
   if (!/^[a-zA-Z0-9_]+$/.test(registerForm.account)) {
-    toast.error('用户名只能包含字母、数字和下划线')
+    toast.error(
+      t('t.yong-hu-ming-zhi-neng-bao-han-zi-mu-shu-zi-he-xia-hua-xian')
+    )
     return
   }
 

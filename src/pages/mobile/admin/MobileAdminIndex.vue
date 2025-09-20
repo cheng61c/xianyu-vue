@@ -14,7 +14,7 @@
       </ScButton>
     </div>
     <div v-if="!route.query.userId && !userStore.isLogin" class="text-error">
-      请先登录
+      {{ $t('t.qing-xian-deng-lu') }}
     </div>
     <div class="flex gap-2 items-center justify-end">
       <ThemeButton />
@@ -38,7 +38,7 @@
               <ScRole :user="userStore.userInfo" isAll size="sm" />
             </div>
             <ScButton Border class="w-full" @click="toPage('/mobile/user')">
-              我的主页
+              {{ $t('b.wo-de-zhu-ye') }}
             </ScButton>
           </div>
         </Card>
@@ -55,7 +55,7 @@
       <div
         class="bg-background overflow-y-auto no-scrollbar w-[60dvw] h-[100dvh] flex flex-col">
         <div class="flex p-4 justify-between items-center">
-          <h1 class="text-lg font-bold">菜单</h1>
+          <h1 class="text-lg font-bold">{{ $t('b.cai-dan') }}</h1>
           <ChevronLeft />
         </div>
         <div class="border-b border-gray/40"></div>
@@ -199,7 +199,7 @@ const menuItems = [
   },
   {
     icon: Trophy,
-    name: '名人堂',
+    name: t('b.ming-ren-tang'),
     path: '/mobile/admin/mingrentang',
     role: verifyPermissions([1, 2, 3]),
   },

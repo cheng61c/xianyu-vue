@@ -8,9 +8,11 @@
         :iconSize="22"
         @click="$router.back()">
       </ScButton>
-      <div class="text-lg font-semibold" @click="$router.back()">编辑资源</div>
+      <div class="text-lg font-semibold" @click="$router.back()">
+        {{ $t('b.bian-ji-zi-yuan') }}
+      </div>
       <div v-if="!userStore.isLogin" class="text-error">
-        请先登录后再发布内容
+        {{ $t('d.qing-xian-deng-lu-hou-zai-fa-bu-nei-rong') }}
       </div>
     </div>
 
@@ -18,12 +20,12 @@
       <div class="flex flex-col w-full space-y-4 pb-2">
         <!-- 标题 -->
         <div class="flex items-center gap-2">
+          $t('d.ban-ben-hao-zi-yuan-ban-ben-hao')
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right"
-            data-tip="
-            版本号，资源版本号">
+            :data-tip="$t('d.ban-ben-hao-zi-yuan-ban-ben-hao')">
             <span class="flex items-center gap-1">
-              版本号 <span><CircleHelp :size="16" /></span>
+              {{ $t('d.ban-ben-hao') }} <span><CircleHelp :size="16" /></span>
             </span>
 
             <span>:</span>
@@ -39,10 +41,9 @@
         <div class="flex items-center gap-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right"
-            data-tip="
-            版本标题">
+            :data-tip="$t('t.ban-ben-biao-ti')">
             <span class="flex items-center gap-1">
-              标题 <span><CircleHelp :size="16" /></span>
+              {{ $t('b.biao-ti') }} <span><CircleHelp :size="16" /></span>
             </span>
 
             <span>:</span>
@@ -51,23 +52,28 @@
             v-model="versionData.title"
             type="text"
             class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-            placeholder="请输入标题" />
+            :placeholder="$t('d.qing-shu-ru-biao-ti')" />
         </div>
 
         <!-- 游戏版本 -->
         <div class="flex flex-col gap-2">
           <label
             class="w-32 flex items-center tooltip tooltip-right"
-            data-tip="游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本">
+            :data-tip="
+              $t(
+                't.you-xi-ban-ben-yong-yu-zai-bu-tong-ban-ben-de-you-xi-zhong-zhan-shi-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-ban-ben'
+              )
+            ">
             <span class="flex items-center gap-1">
-              适配的游戏版本 <span><CircleHelp :size="16" /></span>
+              {{ $t('f.shi-pei-de-you-xi-ban-ben') }}
+              <span><CircleHelp :size="16" /></span>
             </span>
             <span>:</span>
           </label>
 
           <div class="flex gap-2 flex-col">
             <div class="flex flex-wrap gap-2">
-              <span>插件版:</span>
+              <span>{{ $t('f.cha-jian-ban') }}</span>
               <template v-for="version in versionList" :key="version.id">
                 <ScButton
                   v-if="version.type === 'plugin'"
@@ -79,7 +85,7 @@
               </template>
             </div>
             <div class="flex flex-wrap gap-2">
-              <span>联机版:</span>
+              <span>{{ $t('f.lian-ji-ban') }}</span>
               <template v-for="version in versionList" :key="version.id">
                 <ScButton
                   v-if="version.type === 'online'"
@@ -91,7 +97,7 @@
               </template>
             </div>
             <div class="flex flex-wrap gap-2">
-              <span>原版:</span>
+              <span>{{ $t('f.yuan-ban') }}</span>
               <template v-for="version in versionList" :key="version.id">
                 <ScButton
                   v-if="version.type === 'original'"
@@ -119,7 +125,7 @@
         @click="onTipTap"
         Border
         class="w-full">
-        编写介绍
+        {{ $t('b.bian-xie-jie-shao') }}
       </ScButton>
 
       <!-- 发布按钮 -->
@@ -130,7 +136,9 @@
           class="px-6 py-2 hover:bg-active/80"
           @click="submitVersiont"
           :loading="loader">
-          {{ versionData.id ? '更新版本' : '发布版本' }}
+          {{
+            versionData.id ? $t('b.geng-xin-ban-ben') : $t('b.fa-bu-ban-ben')
+          }}
         </ScButton>
       </div>
     </div>
@@ -163,6 +171,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScUploadFile from '@/components/common/ScUploadFile.vue'
 import ScDrawer from '@/components/common/ScDrawer.vue'
 import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps({
   post: {
@@ -170,7 +179,7 @@ const props = defineProps({
     default: null,
   },
 })
-
+const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 const router = useRouter()
@@ -218,23 +227,23 @@ const setFileIds = (ids: number[]) => {
 // 提交
 const submitVersiont = () => {
   if (!versionData.value.title) {
-    toast.error('请输入版本标题')
+    toast.error(t('t.qing-shu-ru-ban-ben-biao-ti'))
     return
   }
   if (!versionData.value.version) {
-    toast.error('请输入版本号')
+    toast.error(t('t.qing-shu-ru-ban-ben-hao'))
     return
   }
   if (!versionData.value.content) {
-    toast.error('请输入版本内容')
+    toast.error(t('t.qing-shu-ru-ban-ben-nei-rong'))
     return
   }
   if (!versionData.value.content) {
-    toast.error('内容不能为空')
+    toast.error(t('t.nei-rong-bu-neng-wei-kong'))
     return
   }
   if (!versionData.value.content.trim()) {
-    toast.error('内容不能为空')
+    toast.error(t('t.nei-rong-bu-neng-wei-kong'))
     return
   }
 
@@ -250,7 +259,7 @@ const submitVersiont = () => {
     .then((res: Api) => {
       const data = res.data
       if (data.code == 200) {
-        toast.success('版本发布成功')
+        toast.success(t('t.ban-ben-fa-bu-cheng-gong'))
         // 清空表单
         versionData.value = {
           title: '',
@@ -266,7 +275,7 @@ const submitVersiont = () => {
       }
     })
     .catch((error) => {
-      toast.error('发布失败: ' + error.msg)
+      toast.error(t('t.fa-bu-shi-bai') + error.msg)
       loader.value = false
     })
 }
@@ -298,6 +307,7 @@ onMounted(async () => {
         id: file.id,
         size: +file.size,
       }))
+      toast.success(t('t.ban-ben-fa-bu-cheng-gong'))
     }
     loaderData.value = false
   } else {

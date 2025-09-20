@@ -144,8 +144,8 @@ const dataTip = {
   OrderedList: t('tip.you-xu-lie-biao-keyboardshortcuto', [keyboardShortcut]),
   BulletList: t('tip.wu-xu-lie-biao-keyboardshortcutl', [keyboardShortcut]),
   Image: t('tip.cha-ru-tu-pian-keyboardshortcutshifti', [keyboardShortcut]),
-  Link: '插入链接',
-  Video: '插入视频',
+  Link: t('tip.cha-ru-lian-jie'),
+  Video: t('tip.cha-rubzhan-shi-pin'),
 }
 
 const editor = ref<Editor>()
@@ -250,10 +250,10 @@ const insertLink = () => {
   if (editor.value) {
     const previousUrl = editor.value.getAttributes('link').href
     if (editor.value.state.selection.empty && !previousUrl) {
-      alert('请先选中一些文本再插入链接')
+      alert(t('tip.qing-xian-xuan-zhong-yi-xie-wen-ben-zai-cha-ru-lian-jie'))
       return
     }
-    const url = prompt('将文本设置为链接：', previousUrl)
+    const url = prompt(t('tip.jiang-wen-ben-she-zhi-wei-lian-jie'), previousUrl)
     if (url) {
       editor.value.chain().focus().setLink({ href: url }).run()
     } else {
@@ -263,7 +263,7 @@ const insertLink = () => {
 }
 
 const addVideo = async () => {
-  const url = prompt('请输入B站视频链接:')
+  const url = prompt(t('t.qing-shu-rubzhan-shi-pin-lian-jie'))
   if (!url) {
     return
   }
@@ -280,7 +280,9 @@ const addVideo = async () => {
         editor.value.chain().focus().setVideo({ src: videoUrl }).run()
       }
     } else {
-      alert('无法获取视频信息，请检查URL是否正确')
+      alert(
+        t('t.wu-fa-huo-qu-shi-pin-xin-xi-qing-jian-cha-url-shi-fou-zheng-que')
+      )
     }
   })
 }
@@ -292,7 +294,7 @@ const addVideo = async () => {
     class="absolute top-[-1.8rem] right-1 z-3 bg-background px-2 shadow-md"
     noPd
     @click="expanded = !expanded">
-    {{ expanded ? '收起工具栏' : '展开工具栏' }}
+    {{ expanded ? $t('b.shou-qi-gong-ju-lan') : $t('b.zhan-kai-gong-ju-lan') }}
   </ScButton>
 
   <div class="h-full w-full overflow-hidden rounded-t-lg p-1">

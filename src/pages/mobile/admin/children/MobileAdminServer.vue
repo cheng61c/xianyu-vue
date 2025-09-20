@@ -21,7 +21,7 @@
     </div>
     <div class="flex gap-4 flex-wrap">
       <label class="flex items-center gap-2 w-full">
-        <span>服务器类型</span>
+        <span>{{ $t('d.fu-wu-qi-lei-xing') }}</span>
         <Dropdown
           v-model="levelBar"
           :options="levelBarOptions"
@@ -93,7 +93,9 @@
             :class="{
               'border border-error text-error': data.status == 2,
             }">
-            {{ data.status == 2 ? '撤销封禁' : '封禁' }}
+            {{
+              data.status == 2 ? $t('d.che-xiao-feng-jin') : $t('b.feng-jin')
+            }}
           </ScButton>
 
           <ScButton
@@ -102,7 +104,7 @@
               'border border-green text-green': data.disabled == 1,
               'border border-error text-error': data.disabled == 0,
             }">
-            {{ data.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+            {{ data.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
           </ScButton>
 
           <ScButton @click="updatePost(index)" Border>
@@ -204,14 +206,14 @@ const { t } = useI18n()
 
 const thead = ref([
   'ID',
-  '标题',
-  '版本',
-  '用户',
-  '类型',
-  '服务器地址',
-  '发布时间',
-  '状态',
-  '操作',
+  t('b.biao-ti'),
+  t('b.ban-ben'),
+  t('b.yong-hu'),
+  t('b.lei-xing'),
+  t('b.fu-wu-qi-di-zhi'),
+  t('b.fa-bu-shi-jian'),
+  t('f.zhuang-tai'),
+  t('b.cao-zuo'),
 ])
 const lockId = ref(-1)
 

@@ -4,7 +4,7 @@
     <ScButton
       @click="handleCardClick(0, route, router)"
       :activation="activation == 0">
-      全部板块
+      {{ $t('b.quan-bu-ban-kuai') }}
     </ScButton>
 
     <ScButton

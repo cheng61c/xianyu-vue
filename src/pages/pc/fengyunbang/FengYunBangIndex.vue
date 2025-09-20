@@ -5,10 +5,10 @@
         <div
           class="flex gap-2 items-center justify-center text-lg font-bold border-b border-gray/40 pb-1 mb-2">
           <Trophy :size="24" />
-          <span>名人堂</span>
+          <span>{{ $t('b.ming-ren-tang') }}</span>
         </div>
         <div class="text-gray-content text-sm text-center mb-2">
-          顺序无关排名
+          {{ $t('d.shun-xu-wu-guan-pai-ming') }}
         </div>
         <div class="flex flex-col">
           <div
@@ -42,10 +42,12 @@
             <div class="flex flex-col">
               <span class="text-lg font-bold">{{ item.title }}</span>
               <span>
-                创建于: {{ item.createdAt }}
+                {{ $t('d.chuang-jian-yu-itemcreatedat', [item.createdAt]) }}
                 {{
                   item.createdAt != item.updatedAt
-                    ? `; 最后更新于: ${item.updatedAt}`
+                    ? $t('d.zui-hou-geng-xin-yu-itemupdatedat', [
+                        item.updatedAt,
+                      ])
                     : ''
                 }}
               </span>

@@ -1,11 +1,10 @@
-import axios, { AxiosError } from 'axios'
-
+import axios, { AxiosError, type AxiosResponse } from 'axios'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useConfigStore } from '@/stores/global/configStore'
 import type { Api, ErrorResponse } from '@/types'
 
-const config = useConfigStore()
-const serverUrl = config.serverAddress
+const configStore = useConfigStore()
+const serverUrl = configStore.serverAddress
 const userInfo = useUserStore()
 
 const apiClient = axios.create({
@@ -16,6 +15,7 @@ const apiClient = axios.create({
   },
 })
 
+// 请求拦截器
 apiClient.interceptors.request.use(
   (config) => {
     // 获取 token
@@ -23,6 +23,9 @@ apiClient.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
+
+    configStore.loading = true
+
     return config
   },
   (error) => {
@@ -32,7 +35,8 @@ apiClient.interceptors.request.use(
 
 // 响应拦截器
 apiClient.interceptors.response.use(
-  (response: Api) => {
+  (response: AxiosResponse<Api>) => {
+    configStore.loading = false
     return response
   },
   (error: AxiosError) => {
@@ -51,6 +55,11 @@ apiClient.interceptors.response.use(
       customError.msg = '服务器无响应'
       customError.status = 500
     }
+
+    // 请求失败时触发的函数
+    console.log('Request failed:', error)
+    configStore.loading = false
+
     return Promise.reject(customError)
   }
 )

@@ -386,7 +386,8 @@
     "floorsec-86400-tian-qian": "{0} days ago",
     "floorsec-2592000-ge-yue-qian": "{0} months ago",
     "floorsec-31536000-nian-qian": "{0} years ago",
-    "ge-ren-zhu-ye": "个人主页"
+    "ge-ren-zhu-ye": "个人主页",
+    "loading": "loading..."
   },
   "t": {
     "yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang": "Verification code has been sent to your email",

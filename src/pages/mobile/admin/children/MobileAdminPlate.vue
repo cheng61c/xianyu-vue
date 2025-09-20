@@ -16,7 +16,7 @@
         <!-- head -->
         <thead>
           <tr>
-            <th>序号</th>
+            <th>{{ $t('b.xu-hao') }}</th>
             <th>{{ $t('b.ming-cheng') }}</th>
             <th>{{ $t('b.tie-zi-shu') }}</th>
             <th>{{ $t('f.zhuang-tai') }}</th>
@@ -38,10 +38,12 @@
                 <ScTag
                   :status="plate.disabled === 0 ? 'success' : 'error'"
                   size="sm">
-                  {{ plate.disabled === 0 ? '启用' : '禁用' }}
+                  {{
+                    plate.disabled === 0 ? $t('b.qi-yong') : $t('b.jin-yong')
+                  }}
                 </ScTag>
                 <ScTag v-if="plate.admin" status="info" size="sm">
-                  需要权限
+                  {{ $t('t.xu-yao-quan-xian') }}
                 </ScTag>
               </div>
             </td>
@@ -59,7 +61,9 @@
                   }"
                   Border>
                   {{
-                    plateList[index].disabled === 0 ? $t('b.jin-yong') : '启用'
+                    plateList[index].disabled === 0
+                      ? $t('b.jin-yong')
+                      : $t('b.qi-yong')
                   }}
                 </ScButton>
               </div>
@@ -72,7 +76,7 @@
 
   <EmptyState
     v-else
-    :title="'暂无数据'"
+    :title="$t('d.zan-wu-shu-ju')"
     iconSize="64"
     iconColor="#ccc"
     :icon="ArchiveX"
@@ -91,22 +95,22 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <span class="w-20"> 排序 </span>
+        <span class="w-20"> {{ $t('d.pai-xu') }} </span>
         <ScInput
           v-model="currentPlateBody.sort"
-          :placeholder="'排序'"
+          :placeholder="$t('d.pai-xu')"
           type="number"
           class="flex-1" />
       </div>
 
       <div class="flex items-center">
-        <span class="w-20"> 发布权限: </span>
+        <span class="w-20"> {{ $t('f.fa-bu-quan-xian') }} </span>
         <ScCheckbox
           v-model="currentPlateBody.admin"
           :true-value="1"
           :false-value="0"
           class="flex-1">
-          仅允许管理员发布
+          {{ $t('f.jin-yun-xu-guan-li-yuan-fa-bu') }}
         </ScCheckbox>
       </div>
 
@@ -160,22 +164,22 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <span class="w-20"> 排序 </span>
+        <span class="w-20"> {{ $t('d.pai-xu') }} </span>
         <ScInput
           v-model="newPlateBody.sort"
-          :placeholder="'排序'"
+          :placeholder="$t('d.pai-xu')"
           type="number"
           class="flex-1" />
       </div>
 
       <div class="flex items-center gap-4">
-        <span class="w-20"> 发布权限: </span>
+        <span class="w-20"> {{ $t('f.fa-bu-quan-xian') }} </span>
         <ScCheckbox
           v-model="newPlateBody.admin"
           :true-value="1"
           :false-value="0"
           class="flex-1">
-          仅允许管理员发布
+          {{ $t('f.jin-yun-xu-guan-li-yuan-fa-bu') }}
         </ScCheckbox>
       </div>
 
@@ -211,8 +215,12 @@
 
   <ScModal v-model="deletePlateModal">
     <Card class="p-4 w-[95vw]">
-      <div class="text-xl mb-4">板块状态</div>
-      <div class="mb-4">禁用后板块下所有帖子将被隐藏</div>
+      <div class="text-xl mb-4">{{ $t('d.ban-kuai-zhuang-tai') }}</div>
+      <div class="mb-4">
+        {{
+          $t('d.jin-yong-hou-ban-kuai-xia-suo-you-tie-zi-jiang-bei-yin-cang')
+        }}
+      </div>
 
       <div class="flex gap-4 justify-end">
         <ScButton
@@ -223,7 +231,11 @@
               plateList[currentPlate].disabled == 1,
           }"
           @click="deletePlate(currentPlate)">
-          {{ plateList[currentPlate].disabled == 0 ? '禁用' : '启用' }}
+          {{
+            plateList[currentPlate].disabled == 0
+              ? $t('b.qi-yong')
+              : $t('b.jin-yong')
+          }}
         </ScButton>
 
         <ScButton class="px-4" @click="deletePlateModal = false" Border>
@@ -344,12 +356,12 @@ const updatePlate = (index: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPlateList()
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
         updateModal.value = false
       }
     })
     .catch((error) => {
-      toast.error('操作失败' + error.msg)
+      toast.error(t('t.cao-zuo-shi-bai') + error.msg)
       console.error('请求失败:', error.msg)
     })
 }
@@ -382,12 +394,12 @@ const addPlate = () => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPlateList()
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
         addPlateModal.value = false // 关闭模态框
       }
     })
     .catch((error) => {
-      toast.error('操作失败' + error.msg)
+      toast.error(t('t.cao-zuo-shi-bai') + error.msg)
       console.error('请求失败:', error.msg)
     })
 }
@@ -408,13 +420,13 @@ const deletePlate = (index: number) => {
       if (response.data.code === 200) {
         // 刷新帖子列表
         getPlateList()
-        toast.success('操作成功')
+        toast.success(t('t.cao-zuo-cheng-gong'))
         deletePlateModal.value = false // 关闭模态框
       }
     })
     .catch((error) => {
       console.error('请求失败:', error.msg)
-      toast.error('操作失败' + error.msg)
+      toast.error(t('t.cao-zuo-shi-bai') + error.msg)
     })
 }
 

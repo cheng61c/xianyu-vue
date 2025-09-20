@@ -38,6 +38,7 @@ import {
   onMounted,
   onUnmounted,
 } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -55,7 +56,7 @@ const emit = defineEmits<{
 }>()
 
 const position = props.position ?? 'side'
-
+const { t } = useI18n()
 const drawerRef = ref<HTMLElement | null>(null)
 const visible = ref(false)
 const animationClass = ref('')
@@ -82,7 +83,7 @@ const offBg = () => {
 
 const close = () => {
   if (drawertore.drawers.length === 0) {
-    toast.warning('抽屉栈已空，无法关闭')
+    toast.warning(t('d.chou-ti-zhan-yi-kong-wu-fa-guan-bi'))
     off()
     return
   }

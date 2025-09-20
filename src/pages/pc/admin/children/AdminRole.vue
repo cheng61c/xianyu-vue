@@ -212,7 +212,9 @@ import ScModal from '@/components/common/ScModal.vue'
 import type { Role } from '@/types/Role'
 import { useThemeStore } from '@/stores/global/themeStore'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const themeStore = useThemeStore() // 引入主题状态管理
 const toast = useToast()
 const roleList = ref<Role[]>([]) // 帖子列表数据
@@ -244,7 +246,7 @@ const getRoleList = (click = false) => {
           return item
         })
         if (click) {
-          toast.success('角色列表刷新成功')
+          toast.success(t('t.jiao-se-lie-biao-shua-xin-cheng-gong'))
         }
       }
     })
@@ -273,12 +275,12 @@ const updateRole = (index: number) => {
         // 刷新帖子列表
         getRoleList()
         updateModal.value = false
-        toast.success('角色更新成功')
+        toast.success(t('t.jiao-se-geng-xin-cheng-gong'))
       }
     })
     .catch((error) => {
       console.error('请求失败:', error.msg)
-      toast.error('角色更新失败: ' + error.msg)
+      toast.error(t('t.jiao-se-geng-xin-shi-bai') + error.msg)
     })
 }
 
@@ -289,7 +291,7 @@ const addRole = () => {
     return
   }
   if (!newRoleBody.value.name) {
-    toast.error('角色名称不能为空')
+    toast.error(t('t.jiao-se-ming-cheng-bu-neng-wei-kong'))
     return
   }
   roleApi
@@ -299,12 +301,12 @@ const addRole = () => {
         // 刷新帖子列表
         getRoleList()
         addRoleModal.value = false
-        toast.success('角色添加成功')
+        toast.success(t('t.jiao-se-tian-jia-cheng-gong'))
       }
     })
     .catch((error) => {
       console.error('请求失败:', error.msg)
-      toast.error('角色添加失败: ' + error.msg)
+      toast.error(t('t.jiao-se-tian-jia-shi-bai') + error.msg)
     })
 }
 
@@ -325,7 +327,7 @@ const deleteRole = (index: number, val: number) => {
         // 刷新帖子列表
         getRoleList()
         deleteRoleModal.value = false
-        toast.success('角色删除成功')
+        toast.success(t('t.jiao-se-shan-chu-cheng-gong'))
       }
     })
     .catch((error) => {

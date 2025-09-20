@@ -1,10 +1,16 @@
 <template>
   <div class="flex gap-4 items-center py-2">
     <div>
-      <h2 class="text-md font-semibold text-active-content">帖子发布完成！</h2>
-      <p class="text-active-content">点击跳转到资源发布页</p>
+      <h2 class="text-md font-semibold text-active-content">
+        {{ $t('d.tie-zi-fa-bu-wan-cheng') }}
+      </h2>
+      <p class="text-active-content">
+        {{ $t('d.dian-ji-tiao-zhuan-dao-zi-yuan-fa-bu-ye') }}
+      </p>
     </div>
-    <ScButton @click="$emit('click')" class="mt-2" Border> 跳转 </ScButton>
+    <ScButton @click="$emit('click')" class="mt-2" Border>
+      {{ $t('b.tiao-zhuan') }}
+    </ScButton>
   </div>
 </template>
 

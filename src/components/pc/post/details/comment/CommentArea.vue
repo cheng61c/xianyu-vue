@@ -242,8 +242,10 @@
                 ">
                 {{
                   showAllReply === comment.id
-                    ? '收起回复'
-                    : `查看${comment.children.length} 条回复`
+                    ? $t('b.shou-qi-hui-fu')
+                    : $t('b.cha-kan-commentchildrenlength-tiao-hui-fu', [
+                        comment.children.length,
+                      ])
                 }}
               </ScButton>
             </div>
@@ -434,6 +436,7 @@ const replay = (
 
   sendComment(t, data, () => {
     console.log('评论发送成功')
+    toast.success(t('t.ping-lun-cheng-gong'))
     getcomments(1)
   })
 }

@@ -5,12 +5,16 @@
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">总注册数</div>
+        <div class="stat-title">{{ $t('d.zong-zhu-ce-shu') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.totalUsers }}
         </div>
         <div class="stat-desc">
-          最近注册 {{ panelInfo.recentRegisterStats.count }}
+          {{
+            $t('d.zui-jin-zhu-ce-panelinforecentregisterstatscount', [
+              panelInfo.recentRegisterStats.count,
+            ])
+          }}
         </div>
       </div>
 
@@ -18,7 +22,7 @@
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">最近登录</div>
+        <div class="stat-title">{{ $t('d.zui-jin-deng-lu') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.recentLoginStats.count }}
         </div>
@@ -28,12 +32,16 @@
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">帖子数</div>
+        <div class="stat-title">{{ $t('b.tie-zi-shu') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.totalPosts }}
         </div>
         <div class="stat-desc">
-          最近更新 {{ panelInfo.recentPostStats.count }}
+          {{
+            $t('d.zui-jin-geng-xin-panelinforecentpoststatscount', [
+              panelInfo.recentPostStats.count,
+            ])
+          }}
         </div>
       </div>
 
@@ -41,12 +49,16 @@
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">资源数</div>
+        <div class="stat-title">{{ $t('d.zi-yuan-shu') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.totalResourcePosts }}
         </div>
         <div class="stat-desc">
-          最近更新 {{ panelInfo.recentResourcePostStats.count }}
+          {{
+            $t('d.zui-jin-geng-xin-panelinforecentresourcepoststatscount', [
+              panelInfo.recentResourcePostStats.count,
+            ])
+          }}
         </div>
       </div>
 
@@ -54,12 +66,16 @@
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">评论数</div>
+        <div class="stat-title">{{ $t('d.ping-lun-shu') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.totalComments }}
         </div>
         <div class="stat-desc">
-          最近更新 {{ panelInfo.recentCommentStats.count }}
+          {{
+            $t('d.zui-jin-geng-xin-panelinforecentcommentstatscount', [
+              panelInfo.recentCommentStats.count,
+            ])
+          }}
         </div>
       </div>
 
@@ -67,18 +83,24 @@
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">文件数</div>
+        <div class="stat-title">{{ $t('b.wen-jian-shu') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.totalFiles }}
         </div>
-        <div class="stat-desc">已过滤 {{ panelInfo.totalPendingFiles }}</div>
+        <div class="stat-desc">
+          {{
+            $t('d.yi-guo-lv-panelinfototalpendingfiles', [
+              panelInfo.totalPendingFiles,
+            ])
+          }}
+        </div>
       </div>
 
       <div class="stat">
         <div class="stat-figure text-primary">
           <ScrollText />
         </div>
-        <div class="stat-title">服务器</div>
+        <div class="stat-title">{{ $t('nav.fu-wu-qi') }}</div>
         <div class="stat-value text-primary">
           {{ panelInfo.totalServerPosts }}
         </div>

@@ -2,9 +2,11 @@
   <Card class="mb-4">
     <div class="flex gap-2">
       <ScButton @click="getFengYunBangAll" :icon="RotateCcw" Border>
-        刷新列表
+        {{ $t('b.shua-xin-lie-biao') }}
       </ScButton>
-      <ScButton @click="addPlayer" :icon="Plus" Border> 添加玩家 </ScButton>
+      <ScButton @click="addPlayer" :icon="Plus" Border>
+        {{ $t('b.tian-jia-wan-jia') }}
+      </ScButton>
     </div>
   </Card>
   <Card v-if="fengYunBangStore.list.length" class="mb-4">
@@ -15,8 +17,8 @@
           <tr>
             <th>ID</th>
             <th>{{ $t('b.ming-cheng') }}</th>
-            <th>创建时间</th>
-            <th>更新时间</th>
+            <th>{{ $t('b.chuang-jian-shi-jian') }}</th>
+            <th>{{ $t('b.geng-xin-shi-jian') }}</th>
             <th>{{ $t('b.cao-zuo') }}</th>
           </tr>
         </thead>
@@ -33,7 +35,9 @@
                 <ScButton Border @click="editPlayer(item)">
                   {{ $t('b.bian-ji') }}
                 </ScButton>
-                <ScButton Border @click="deletePlayer(item)"> 删除 </ScButton>
+                <ScButton Border @click="deletePlayer(item)">
+                  {{ $t('b.shan-chu') }}
+                </ScButton>
               </div>
             </td>
           </tr>
@@ -44,21 +48,27 @@
 
   <ScModal v-model="isOpen" offOverflow>
     <Card class="max-h-[80vh] overflow-y-auto w-[95vw] gap-4">
-      <span class="text-xl">添加玩家</span>
+      <span class="text-xl">{{ $t('b.tian-jia-wan-jia') }}</span>
 
       <div class="flex items-center gap-4">
         <span> {{ $t('d.ming-cheng') }} </span>
-        <ScInput v-model="forms.title" :placeholder="'玩家名称'" />
+        <ScInput
+          v-model="forms.title"
+          :placeholder="$t('t.wan-jia-ming-cheng')" />
       </div>
 
       <div class="flex flex-col">
-        <p>社区id:</p>
-        <ScInput v-model="forms.userId" :placeholder="'在社区中有账号时填写'" />
+        <p>{{ $t('f.she-qu-id') }}</p>
+        <ScInput
+          v-model="forms.userId"
+          :placeholder="$t('t.zai-she-qu-zhong-you-zhang-hao-shi-tian-xie')" />
       </div>
 
       <div class="flex flex-col gap-1">
-        <p>头像链接:</p>
-        <ScInput v-model="forms.headImg" :placeholder="'头像链接'" />
+        <p>{{ $t('f.tou-xiang-lian-jie') }}</p>
+        <ScInput
+          v-model="forms.headImg"
+          :placeholder="$t('t.tou-xiang-lian-jie')" />
         <ScButton
           Border
           @dragover.prevent
@@ -70,7 +80,9 @@
             ref="fileInput"
             class="hidden"
             @change="handleFileChange" />
-          <div>将图片拖到此处，或点击上传</div>
+          <div>
+            {{ $t('f.jiang-tu-pian-tuo-dao-ci-chu-huo-dian-ji-shang-chuan') }}
+          </div>
           <template v-if="forms.headImg" #endIcon>
             <Avatar :src="forms.headImg" :alt="forms.title" />
           </template>
@@ -79,11 +91,13 @@
           <span class="loading loading-spinner"></span>
         </ScButton>
 
-        <p>或者使用QQ头像:</p>
+        <p>{{ $t('f.huo-zhe-shi-yong-qq-tou-xiang') }}</p>
         <p>http://q1.qlogo.cn/g?b=qq&s=4&nk=</p>
 
         <div class="flex items-center gap-4">
-          <ScInput v-model="qid" :placeholder="'填入QQ号做为头像'" />
+          <ScInput
+            v-model="qid"
+            :placeholder="$t('f.tian-ru-qq-hao-zuo-wei-tou-xiang')" />
           <template v-if="qid != ''">
             <Avatar :src="getQQAvatar(qid)" :alt="forms.title" />
           </template>
@@ -96,21 +110,24 @@
         @click="onTipTap"
         Border
         class="w-full">
-        编写文章
+        {{ $t('b.bian-xie-wen-zhang') }}
       </ScButton>
-
       <div class="flex justify-end mt-1 gap-4">
         <ScButton @click="addPlayer" Border>
-          {{ forms.id != 0 ? '确认修改' : '确认添加' }}
+          {{
+            forms.id != 0 ? $t('b.que-ren-xiu-gai') : $t('b.que-ren-tian-jia')
+          }}
         </ScButton>
-        <ScButton @click="isOpen = false" Border> 取消 </ScButton>
+        <ScButton @click="isOpen = false" Border>
+          {{ $t('b.qu-xiao') }}
+        </ScButton>
       </div>
     </Card>
   </ScModal>
 
   <ScModal v-model="isOpenDel" offOverflow>
     <Card class="max-h-[80vh] overflow-y-auto w-2xl">
-      <span class="text-xl">删除</span>
+      <span class="text-xl">{{ $t('b.shan-chu') }}</span>
 
       <div class="flex items-center gap-4">
         <span> {{ $t('d.ming-cheng') }} </span>
@@ -122,9 +139,11 @@
           @click="deletePlayer()"
           Border
           class="text-error border-error">
-          确认删除
+          {{ $t('b.que-ren-shan-chu') }}
         </ScButton>
-        <ScButton @click="isOpenDel = false" Border> 取消 </ScButton>
+        <ScButton @click="isOpenDel = false" Border>
+          {{ $t('b.qu-xiao') }}
+        </ScButton>
       </div>
     </Card>
   </ScModal>

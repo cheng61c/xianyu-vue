@@ -7,7 +7,7 @@
         :icon="ChevronLeft"
         :iconSize="22"
         @click="$router.back()">
-        名人堂
+        {{ $t('b.ming-ren-tang') }}
       </ScButton>
 
       <ScButton :icon="Menu" :iconSize="22" @click="rightDrawer = true">
@@ -32,10 +32,12 @@
             <div class="flex flex-col">
               <span class="text-lg font-bold">{{ item.title }}</span>
               <span>
-                创建于: {{ item.createdAt }}
+                {{ $t('d.chuang-jian-yu-itemcreatedat', [item.createdAt]) }}
                 {{
                   item.createdAt != item.updatedAt
-                    ? `; 最后更新于: ${item.updatedAt}`
+                    ? $t('d.zui-hou-geng-xin-yu-itemupdatedat', [
+                        item.updatedAt,
+                      ])
                     : ''
                 }}
               </span>
@@ -69,8 +71,10 @@
   <ScDrawer v-model="rightDrawer" position="right">
     <template #default="{ close }">
       <div class="bg-background w-64 h-full p-4 overflow-y-auto">
-        <h3 class="text-xl px-2">名人堂</h3>
-        <div class="px-2 text-gray-content text-sm">排序与排名无关</div>
+        <h3 class="text-xl px-2">{{ $t('b.ming-ren-tang') }}</h3>
+        <div class="px-2 text-gray-content text-sm">
+          {{ $t('t.pai-xu-yu-pai-ming-wu-guan') }}
+        </div>
         <div class="flex flex-col mt-4">
           <div
             v-for="item in fengYunBangStore.list"

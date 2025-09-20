@@ -109,7 +109,7 @@
       <div class="flex">
         <h3 class="text-xl mb-4 mr-4">{{ $t('d.ju-bao-tie-zi') }}</h3>
         <div v-if="!userStore.isLogin" class="text-error pt-1">
-          请先登录后再操作
+          {{ $t('t.qing-xian-deng-lu-hou-zai-cao-zuo') }}
         </div>
       </div>
       <div>

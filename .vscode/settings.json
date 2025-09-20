@@ -18,6 +18,11 @@
   "i18n-ally.extract.ignoredByFiles": {
     "src\\pages\\pc\\user\\children\\UserResource.vue": [
       "\r\n                v {{ pkg.version }}\r\n              "
-    ]
+    ],
+    "src\\components\\mobile\\post\\details\\score\\MobileScore.vue": [
+      "评分详情"
+    ],
+    "src\\pages\\mobile\\publish\\MobileCreatePost.vue": ["请选择文件类型"],
+    "src\\pages\\pc\\user\\children\\UserEdit.vue": ["下线后使用密码可重新登录"]
   }
 }

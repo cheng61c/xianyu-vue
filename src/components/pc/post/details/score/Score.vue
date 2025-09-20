@@ -13,7 +13,7 @@
         <CommentInput
           :post-id="props.postId"
           @submit="sendScore"
-          submitText="发表评分"
+          :submitText="$t('d.fa-biao-ping-fen')"
           :placeholder="$t('d.dui-gai-zi-yuan-de-ping-jia-shi')" />
       </div>
     </Card>
@@ -145,7 +145,7 @@
                     [
                       score.createdAt,
                       score.updatedAt != score.createdAt
-                        ? `更新于 ${score.updatedAt}`
+                        ? $t('d.geng-xin-yu-scoreupdatedat', [score.updatedAt])
                         : '',
                     ]
                   )
@@ -396,13 +396,11 @@ const scoreAction = (index: number, actionType: 'like' | 'bad') => {
         score.likeCount = res.data.data.likeCount
         score.badCount = res.data.data.badCount
         toast.success(t('t.cao-zuo-cheng-gong'))
-      } else {
-        toast.error(res.data.msg || t('cao-zuo-shi-bai-qing-shao-hou-zai-shi'))
       }
     })
     .catch((error) => {
       console.error(`Error ${actionType}ing score:`, error)
-      toast.error(t('cao-zuo-shi-bai-qing-shao-hou-zai-shi'))
+      toast.error(t('t.cao-zuo-shi-bai-qing-shao-hou-zai-shi'))
     })
 }
 

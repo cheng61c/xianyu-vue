@@ -1,6 +1,6 @@
 <template>
   <Card v-if="versios && versios.length > 0" class="mb-4" :id="id">
-    <h3 class="text-lg font-bold mb-2">资源下载</h3>
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.zi-yuan-xia-zai') }}</h3>
 
     <div class="w-full">
       <div

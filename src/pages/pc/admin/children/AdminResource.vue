@@ -110,10 +110,10 @@
                   {{ $t('b.zhi-ding-zhong') }}
                 </ScTag>
                 <ScTag v-if="post.top == 2" size="xs" status="warning">
-                  横幅置顶
+                  {{ $t('b.heng-fu-gong-gao') }}
                 </ScTag>
                 <ScTag v-if="post.top == 3" size="xs" status="warning">
-                  弹窗置顶
+                  {{ $t('b.dan-chuang-gong-gao') }}
                 </ScTag>
 
                 <ScTag v-if="post.disabled == 1" size="xs" status="error">
@@ -127,7 +127,9 @@
 
             <td>
               <div class="flex items-center gap-2">
-                <ScButton @click="setTop(index)" Border> 设置置顶 </ScButton>
+                <ScButton @click="setTop(index)" Border>
+                  {{ $t('b.she-zhi-zhi-ding') }}
+                </ScButton>
 
                 <ScButton
                   @click="removed(index)"
@@ -217,30 +219,30 @@
 
   <ScModal v-model="setTopModal">
     <Card class="p-6 w-2xl">
-      <div class="text-xl mb-4">设置置顶</div>
+      <div class="text-xl mb-4">{{ $t('b.she-zhi-zhi-ding') }}</div>
       <ScButton
         Border
         :activation="postList[currentPost].top == 0"
         @click="setTop(currentPost, 0)">
-        不置顶
+        {{ $t('b.bu-zhi-ding') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 1"
         @click="setTop(currentPost, 1)">
-        置顶
+        {{ $t('b.zhi-ding') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 2"
         @click="setTop(currentPost, 2)">
-        横幅公告
+        {{ $t('b.heng-fu-gong-gao') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 3"
         @click="setTop(currentPost, 3)">
-        弹窗公告
+        {{ $t('b.dan-chuang-gong-gao') }}
       </ScButton>
     </Card>
   </ScModal>

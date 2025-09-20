@@ -47,7 +47,9 @@
       class="px-3 border flex-1 border-gray rounded-md focus:outline-none focus:ring-1 focus:ring-active focus:border-transparent"></textarea> -->
       <ScInput
         v-model="commentContent"
-        :placeholder="userStore.isLogin ? placeholder : '请登录后评论'"
+        :placeholder="
+          userStore.isLogin ? placeholder : $t('t.qing-deng-lu-hou-ping-lun')
+        "
         :maxlength="500"
         class="flex-1 h-full max-h-[10rem]"
         :maxHeight="120"
@@ -76,7 +78,9 @@ import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'
 import ScInput from '@/components/common/ScInput.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 
@@ -91,11 +95,11 @@ const props = defineProps({
   },
   submitText: {
     type: String,
-    default: '发送',
+    default: t('b.fa-song'),
   },
   placeholder: {
     type: String,
-    default: '写下你的评论...',
+    default: t('t.xie-xia-ni-de-ping-lun'),
   },
   noImg: {
     type: Boolean,

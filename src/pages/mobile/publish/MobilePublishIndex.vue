@@ -3,9 +3,9 @@
     v-if="loadError"
     class="flex flex-col items-center justify-center h-full">
     <EmptyState
-      :title="'加载失败'"
-      :description="'请刷新页面或点击下方返回'"
-      :action="'返回'"
+      :title="$t('t.jia-zai-shi-bai')"
+      :description="$t('t.qing-shua-xin-ye-mian-huo-dian-ji-xia-fang-fan-hui')"
+      :action="$t('b.fan-hui')"
       :actionIcon="Undo2"
       @action-click="$router.back()" />
   </div>

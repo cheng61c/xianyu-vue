@@ -280,13 +280,13 @@ const searchStatusOptions = [
   { value: 0, label: t('b.quan-bu') },
   { value: 1, label: t('b.wei-chu-li') },
   { value: 2, label: t('b.feng-jin') },
-  { value: 3, label: '不封禁' },
+  { value: 3, label: t('b.bu-feng-jin') },
 ]
 const searchStatusMap: { [key: number]: string } = {
   0: t('b.quan-bu'),
   1: t('b.wei-chu-li'),
   2: t('b.feng-jin'),
-  3: '不封禁',
+  3: t('b.bu-feng-jin'),
 }
 
 const searchType = ref<number | { value: number; label: string }>(0) // 搜索类型

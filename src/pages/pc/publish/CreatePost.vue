@@ -136,7 +136,8 @@
           data-tip="
             选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块">
           <span class="flex items-center gap-1">
-            选择板块 <span><CircleHelp :size="16" /></span>
+            {{ $t('f.xuan-ze-ban-kuai') }}
+            <span><CircleHelp :size="16" /></span>
           </span>
 
           <span>:</span>
@@ -145,7 +146,9 @@
         <div class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
-            <span class="flex items-center gap-1">交流板块 :</span>
+            <span class="flex items-center gap-1">{{
+              $t('f.jiao-liu-ban-kuai')
+            }}</span>
           </label>
           <template v-for="b in plateList" :key="`post-${b.id}`">
             <ScButton
@@ -164,7 +167,9 @@
         <div class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
-            <span class="flex items-center gap-1"> 资源板块 :</span>
+            <span class="flex items-center gap-1">
+              {{ $t('f.zi-yuan-ban-kuai') }}</span
+            >
           </label>
           <template v-for="b in plateList" :key="`res-${b.id}`">
             <ScButton

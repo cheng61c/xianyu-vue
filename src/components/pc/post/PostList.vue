@@ -40,9 +40,7 @@ import ItemCard from './ItemCard.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import { SquareArrowOutUpRight } from 'lucide-vue-next'
-
 import ScSearch from '@/components/pc/user/ScSearch.vue'
-
 import { getPost, search } from '@/stores/module/post/service'
 import { usePostStore } from '@/stores/module/post/postStore'
 

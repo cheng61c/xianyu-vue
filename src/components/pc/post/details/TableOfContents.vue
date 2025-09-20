@@ -20,7 +20,7 @@
           <RouterLink
             :to="{ hash: `#post-top` }"
             class="hover:underline text-blue-600 cursor-pointer">
-            文章主体
+            {{ $t('b.wen-zhang-zhu-ti') }}
           </RouterLink>
         </li>
       </template>
@@ -29,7 +29,7 @@
         <RouterLink
           :to="{ hash: `#releases` }"
           class="hover:underline text-blue-600 cursor-pointer">
-          资源下载
+          {{ $t('d.zi-yuan-xia-zai') }}
         </RouterLink>
       </li>
 
@@ -37,7 +37,7 @@
         <RouterLink
           :to="{ hash: `#score-container` }"
           class="hover:underline text-blue-600 cursor-pointer">
-          评分
+          {{ $t('b.ping-fen') }}
         </RouterLink>
       </li>
 
@@ -45,7 +45,7 @@
         <RouterLink
           :to="{ hash: `#comment-container` }"
           class="hover:underline text-blue-600 cursor-pointer">
-          评论区
+          {{ $t('b.ping-lun-qu') }}
         </RouterLink>
       </li>
     </ul>

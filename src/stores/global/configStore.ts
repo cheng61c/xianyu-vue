@@ -19,6 +19,8 @@ export const useConfigStore = defineStore('config', {
 
     /** 平板适配 */
     padAdaptation: false,
+    /** 网络请求中 */
+    loading: false,
 
     menuItems: <MenuItem[]>[
       {

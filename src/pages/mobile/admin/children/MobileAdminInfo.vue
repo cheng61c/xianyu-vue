@@ -164,9 +164,10 @@ import ScTag from '@/components/common/ScTag.vue'
 import { formatTime } from '@/utils/format'
 import type { InfoType, QueryInfoDto } from '@/types/Info'
 import { useI18n } from 'vue-i18n'
+import { useToast } from 'vue-toastification'
 
 const { t } = useI18n()
-
+const toast = useToast()
 const searchReportValue = ref('') // 搜索帖子内容
 
 const searchType = ref<number | { value: number; label: string }>(0) // 搜索类型
@@ -229,6 +230,9 @@ const getPosts = () => {
       }
     })
     .catch((error) => {
+      toast.error(error.msg)
+      console.log(error)
+
       console.error('请求错误:', error.msg)
     })
 }

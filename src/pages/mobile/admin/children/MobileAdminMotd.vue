@@ -4,8 +4,12 @@
       <ScButton @click="getMotd" :icon="RotateCcw" Border>
         {{ $t('b.shua-xin') }}
       </ScButton>
-      <ScButton @click="updateMotd" :icon="Save" Border> 保存修改 </ScButton>
-      <ScButton @click="addMotd" :icon="Plus" Border> 保存为新公告 </ScButton>
+      <ScButton @click="updateMotd" :icon="Save" Border>
+        {{ $t('b.bao-cun-xiu-gai') }}
+      </ScButton>
+      <ScButton @click="addMotd" :icon="Plus" Border>
+        {{ $t('b.bao-cun-wei-xin-gong-gao') }}
+      </ScButton>
     </div>
     <div class="flex gap-2 items-center">
       <span class="text-gray-content">{{ $t('d.dang-qian-gong-gao') }}</span>

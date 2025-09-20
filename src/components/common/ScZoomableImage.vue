@@ -15,7 +15,7 @@
     <img
       ref="imgRef"
       :src="src"
-      alt="图片预览"
+      :alt="$t('t.tu-pian-yu-lan')"
       @dblclick.prevent
       @mousedown.prevent
       :draggable="false"

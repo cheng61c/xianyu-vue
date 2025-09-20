@@ -23,12 +23,12 @@
         <ScInput
           v-model="postStore.searchText"
           class="flex-1"
-          :placeholder="'搜索帖子标题'" />
+          :placeholder="$t('t.sou-suo-tie-zi-biao-ti')" />
         <ScButton
           :icon="Search"
           noPd
           @click="handleSearch(postStore.searchText, true, String(fileType))">
-          搜索
+          {{ $t('b.sou-suo') }}
         </ScButton>
 
         <PopupBox

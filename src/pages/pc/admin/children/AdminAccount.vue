@@ -213,7 +213,9 @@
   <ScModal v-model="updateRoleModal">
     <Card class="p-6 w-2xl">
       <h3 class="text-xl mb-4">{{ $t('d.xiu-gai-yong-hu-quan-xian') }}</h3>
-      <div class="text-warning">点击标签添加或移除</div>
+      <div class="text-warning">
+        {{ $t('d.dian-ji-biao-qian-tian-jia-huo-yi-chu') }}
+      </div>
       <div>{{ $t('d.jiao-se-chi') }}</div>
       <div
         class="flex items-center gap-2 flex-wrap border border-gray p-2 rounded-lg">
@@ -242,7 +244,7 @@
         <span
           v-if="!userList[currentUser].roles.length"
           class="text-sm text-error">
-          无
+          {{ $t('other.null') }}
         </span>
       </div>
       <div class="flex gap-4 justify-end">

@@ -24,7 +24,7 @@
       <div class="pb-2 py-2">
         <template v-if="item.type === 1">
           <span v-if="item.commentId">
-            回复
+            {{ $t('b.hui-fu-0') }}
             <span class="text-active">@{{ userStore.userInfo.nickname }}</span>
             :
           </span>
@@ -40,11 +40,18 @@
       <div class="text-text-gray text-sm border-l border-gray pl-3 my-1">
         <template v-if="item.type === 1 && item.commentId">
           <span>
-            你: 回复 @{{ item.send.nickname }}: {{ item.commentContent }}
+            {{
+              $t('d.ni-hui-fu-itemsendnickname-itemcommentcontent', [
+                item.send.nickname,
+                item.commentContent,
+              ])
+            }}
           </span>
         </template>
         <template v-else-if="item.type === 2">
-          <span>帖子标题: {{ item.post.title }}</span>
+          <span>{{
+            $t('d.tie-zi-biao-ti-itemposttitle', [item.post.title])
+          }}</span>
         </template>
       </div>
 

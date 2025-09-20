@@ -74,33 +74,49 @@
 
     <div class="flex gap-4 items-center">
       <ScButton @click="updatePassword" Border class="py-2">
-        提交更改
+        {{ $t('f.ti-jiao-geng-gai') }}
       </ScButton>
     </div>
   </Card>
 
   <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
-    <div class="mb-4 text-xl font-bold">账号秘钥</div>
+    <div class="mb-4 text-xl font-bold">{{ $t('d.zhang-hao-mi-yue') }}</div>
     <div>
-      账号秘钥是您账号的私密信息，用于验证身份，设置新的秘钥后，旧的秘钥将失效
+      {{
+        $t(
+          'd.zhang-hao-mi-yue-shi-nin-zhang-hao-de-si-mi-xin-xi-yong-yu-yan-zheng-shen-fen-she-zhi-xin-de-mi-yue-hou-jiu-de-mi-yue-jiang-shi-xiao'
+        )
+      }}
     </div>
-    <div>验证码设置后无法获取，请妥善保管</div>
+    <div>
+      {{ $t('d.yan-zheng-ma-she-zhi-hou-wu-fa-huo-qu-qing-tuo-shan-bao-guan') }}
+    </div>
 
     <div class="flex items-center">
-      <div>账号秘钥：</div>
+      <div>{{ $t('d.zhang-hao-mi-yue') }}</div>
       <ScInput v-model="code" class="w-1/4" type="text" />
     </div>
     <div class="flex gap-4 items-center">
-      <ScButton @click="updateUserVerifyCode(code)" Border> 提交更改 </ScButton>
+      <ScButton @click="updateUserVerifyCode(code)" Border>
+        {{ $t('f.ti-jiao-geng-gai') }}
+      </ScButton>
     </div>
   </Card>
 
   <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full">
-    <div class="mb-4 text-xl font-bold">强制下线</div>
-    <div>让所有登录的设备强制下线（包括当前设备）</div>
-    <div>下线后使用密码可重新登录</div>
+    <div class="mb-4 text-xl font-bold">{{ $t('b.qiang-zhi-xia-xian') }}</div>
+    <div>
+      {{
+        $t(
+          'd.rang-suo-you-deng-lu-de-she-bei-qiang-zhi-xia-xian-bao-kuo-dang-qian-she-bei'
+        )
+      }}
+    </div>
+    <div>{{ $t('d.xia-xian-hou-shi-yong-mi-ma-ke-zhong-xin-deng-lu') }}</div>
     <div class="flex gap-2 items-center">
-      <ScButton @click="forceLogout" Border class="w-1/4"> 下线 </ScButton>
+      <ScButton @click="forceLogout" Border class="w-1/4">
+        {{ $t('b.xia-xian') }}
+      </ScButton>
     </div>
   </Card>
 

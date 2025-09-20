@@ -1,6 +1,6 @@
 <template>
   <Card v-if="versios && versios.length > 0">
-    <h3 class="text-lg font-bold mb-2">资源下载</h3>
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.zi-yuan-xia-zai') }}</h3>
 
     <div>
       <div
@@ -27,7 +27,9 @@
         <div
           @click="handleModalChange(item)"
           class="flex gap-1 items-center py-2 col-start-2 row-start-1 row-span-3">
-          <ScTag v-if="vIndex == 0" size="sm" status="success"> 最新 </ScTag>
+          <ScTag v-if="vIndex == 0" size="sm" status="success">
+            {{ $t('b.zui-xin') }}
+          </ScTag>
           <ScTag size="sm" status="info">
             {{ item.version }}
           </ScTag>
@@ -59,7 +61,9 @@
         <!-- 文章主体 -->
         <div class="tiptap mb-4" v-html="currenPostVersion.content"></div>
         <!-- 文件列表 -->
-        <div class="text-lg font-bold pt-2 border-t border-gray">文件下载</div>
+        <div class="text-lg font-bold pt-2 border-t border-gray">
+          {{ $t('d.wen-jian-xia-zai') }}
+        </div>
 
         <!-- 表格行 -->
         <div

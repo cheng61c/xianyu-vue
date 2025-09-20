@@ -15,7 +15,9 @@
     <Card class="p-6 w-2xl">
       <div class="flex">
         <h3 class="text-xl mb-4 mr-4">{{ $t('d.ju-bao-ping-lun') }}</h3>
-        <div v-if="!userStore.isLogin" class="text-error">请先登录后再操作</div>
+        <div v-if="!userStore.isLogin" class="text-error">
+          {{ $t('t.qing-xian-deng-lu-hou-zai-cao-zuo') }}
+        </div>
       </div>
 
       <div>
@@ -103,7 +105,7 @@ const deleteComment = (_id: number) => {
     toast.error(t('t.qing-xian-deng-lu'))
     return
   }
-  toast.error('还没做')
+  toast.error(t('t.huan-mei-zuo'))
   // reportApi.deleteComment(id).then(() => {
   //   toast.success(t('t.shan-chu-cheng-gong'))
   //   emit('updateComment')

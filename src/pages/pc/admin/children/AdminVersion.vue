@@ -310,7 +310,7 @@ const updateVersion = (index: number) => {
 
   // 如果没有修改任何内容，则不发送请求
   if (Object.keys(body).length === 0) {
-    toast.warning('啥也不是')
+    // toast.warning('啥也不是')
     updateModal.value = false
     return
   }

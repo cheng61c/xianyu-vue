@@ -2,7 +2,9 @@
   <div>
     <!-- 评论排序选项 -->
     <div class="flex justify-between items-center border-gray pb-4">
-      <span class="text-lg"> 评论 ({{ commentsPage.total }})</span>
+      <span class="text-lg">
+        {{ $t('d.ping-lun-commentspagetotal', [commentsPage.total]) }}</span
+      >
       <PopupBox
         :button-text="sortOptions[currentSort - 1].label"
         :icon="sortOptions[currentSort].icon">
@@ -52,7 +54,7 @@
                     v-if="comment.author.id == postData?.author.id"
                     size="xs"
                     bgColor="#FFADBB">
-                    帖主
+                    {{ $t('b.tie-zhu') }}
                   </ScTag>
                 </div>
                 <p
@@ -94,7 +96,7 @@
                 v-for="(img, imgIndex) in comment.image"
                 :key="imgIndex"
                 :src="img"
-                alt="评论图片"
+                :alt="$t('d.ping-lun-tu-pian')"
                 class="w-20 h-20 object-cover rounded-md cursor-pointer"
                 @click="openImg(img)" />
             </div>
@@ -226,8 +228,10 @@
                 ">
                 {{
                   showAllReply === comment.id
-                    ? '收起回复'
-                    : `查看${comment.children.length} 条回复`
+                    ? $t('b.shou-qi-hui-fu')
+                    : $t('b.cha-kan-commentchildrenlength-tiao-hui-fu', [
+                        comment.children.length,
+                      ])
                 }}
               </ScButton>
             </div>
@@ -317,8 +321,8 @@ const showAllReply = ref(0)
 const currentLoadButtonText = computed(() => {
   return commentsPage.value.page >=
     Math.ceil(commentsPage.value.total / commentsPage.value.limit)
-    ? '到底了'
-    : '加载更多评论'
+    ? t('b.dao-di-le')
+    : t('b.jia-zai-geng-duo-ping-lun')
 })
 
 const comments = ref<CommentType[]>([])
@@ -382,7 +386,11 @@ const getcomments = (page: number) => {
       }
     })
     .catch((error) => {
-      toast.error('获取评论失败，请稍后再试: ' + error.msg)
+      toast.error(
+        t('d.huo-qu-ping-lun-shi-bai-qing-shao-hou-zai-shi-errormsg', [
+          error.msg,
+        ])
+      )
       console.error('获取评论时发生错误:', error)
     })
 }
@@ -395,14 +403,14 @@ const replay = (
   clearContent: () => void
 ) => {
   if (!userStore.isLogin) {
-    toast.error('请先登录后再发表评论')
+    toast.error(t('t.qing-xian-deng-lu-hou-zai-fa-biao-ping-lun'))
     return
   }
   if (!props.postData) {
     return
   }
   if (content.trim() === '') {
-    toast.error('评论内容不能为空')
+    toast.error(t('t.ping-lun-nei-rong-bu-neng-wei-kong'))
     return
   }
   const data: SendCommentDto = {
@@ -426,12 +434,12 @@ const replay = (
       if (res.data.code === 200) {
         replayContent.value = ''
         getcomments(1) // 重新获取评论列表
-        toast.success('评论成功')
+        toast.success(t('t.ping-lun-cheng-gong'))
         if (clearContent) clearContent()
       }
     })
     .catch((error) => {
-      toast.error('发表评论失败，请稍后再试: ' + error)
+      toast.error(t('t.fa-biao-ping-lun-shi-bai-qing-shao-hou-zai-shi') + error)
       console.error('发表评论时发生错误:', error)
     })
 }

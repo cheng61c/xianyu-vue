@@ -7,7 +7,7 @@
         :icon="ChevronLeft"
         :iconSize="22"
         @click="$router.back()">
-        消息
+        {{ $t('b.xiao-xi') }}
       </ScButton>
     </div>
 
@@ -28,11 +28,11 @@
 
       <MessageSection
         v-if="unreadMessages.length"
-        title="最新"
+        :title="$t('b.zui-xin')"
         :messages="unreadMessages" />
       <MessageSection
         v-if="readMessages.length"
-        title="累计"
+        :title="$t('t.lei-ji')"
         :messages="readMessages" />
     </div>
   </div>
@@ -46,19 +46,21 @@ import MessageSection from '@/components/pc/message/MessageSection.vue'
 import { useMessageStore } from '@/stores/module/message/MessageStore'
 import { getMessages, markReadAll } from '@/stores/module/message/service'
 import ScButton from '@/components/common/ScButton.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const messageStore = useMessageStore()
 const type = ref(1)
 
 // 菜单配置
 const menuItems = computed(() => [
   {
-    name: '回复我的',
+    name: t('d.hui-fu-wo-de'),
     type: 1,
     count: messageStore.replyUnread.length + messageStore.replyRead.length,
   },
   {
-    name: '收到的赞',
+    name: t('d.shou-dao-de-zan'),
     type: 2,
     count: messageStore.likesUnread.length + messageStore.likesRead.length,
   },

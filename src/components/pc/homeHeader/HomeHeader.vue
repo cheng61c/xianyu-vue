@@ -21,6 +21,7 @@
       :updatePage="updatePage" />
 
     <div class="flex gap-4 items-center">
+      <LoadingIcon v-if="configStore.loading" />
       <ScButton
         class="relative cursor-pointer"
         :class="{
@@ -86,6 +87,7 @@ import ScTag from '@/components/common/ScTag.vue'
 import HomeNav from './HomeNav.vue'
 import ScLogin from './ScLogin.vue'
 import { usePostStore } from '@/stores/module/post/postStore'
+import LoadingIcon from '@/components/common/LoadingIcon.vue'
 
 const messageStore = useMessageStore()
 const announcementStore = useAnnouncementStore()
@@ -134,6 +136,7 @@ const offAnnouncement = (id?: number) => {
 }
 
 onMounted(() => {
+  configStore.loading = true
   postApi
     .getPostList({
       top: 2,
@@ -143,6 +146,7 @@ onMounted(() => {
       if (postData.value) {
         show.value = true
       }
+      configStore.loading = false
     })
 
   messageApi.getUnreadMessageList().then((res) => {

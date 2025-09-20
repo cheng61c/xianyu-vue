@@ -125,7 +125,7 @@ const menuItems = [
   },
   {
     icon: Trophy,
-    name: '名人堂',
+    name: t('b.ming-ren-tang'),
     path: '/admin/mingrentang',
     role: verifyPermissions([1, 2, 3]),
   },

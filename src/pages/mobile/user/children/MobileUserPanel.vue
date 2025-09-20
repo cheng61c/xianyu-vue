@@ -15,7 +15,7 @@
         <p class="text-lg font-bold">
           {{ posts.count }}
         </p>
-        <p>帖子</p>
+        <p>{{ $t('nav.tie-zi') }}</p>
       </div>
 
       <div class="h-8 w-0.5 bg-gray/40"></div>
@@ -24,7 +24,7 @@
         <p class="text-lg font-bold">
           {{ resources.count }}
         </p>
-        <p>资源</p>
+        <p>{{ $t('nav.zi-yuan') }}</p>
       </div>
 
       <div
@@ -37,7 +37,7 @@
         <p class="text-lg font-bold">
           {{ servers.count }}
         </p>
-        <p>服务器</p>
+        <p>{{ $t('nav.fu-wu-qi') }}</p>
       </div>
     </Card>
 
@@ -59,28 +59,28 @@
           class="flex flex-col justify-center items-center flex-1"
           @click="toPage('mobileUserPost')">
           <ScrollText class="text-primary" :size="26" />
-          <p>帖子</p>
+          <p>{{ $t('nav.tie-zi') }}</p>
         </div>
 
         <div
           class="flex flex-col justify-center items-center flex-1"
           @click="toPage('mobileUserResource')">
           <Package class="text-primary" :size="26" />
-          <p>资源</p>
+          <p>{{ $t('nav.zi-yuan') }}</p>
         </div>
 
         <div
           class="flex flex-col justify-center items-center flex-1"
           @click="toPage('mobileUserFile')">
           <File class="text-primary" :size="26" />
-          <p>文件</p>
+          <p>{{ $t('nav.wen-jian') }}</p>
         </div>
 
         <div
           class="flex flex-col justify-center items-center flex-1"
           @click="toPage('mobileUserServer')">
           <Server class="text-primary" :size="26" />
-          <p>服务器</p>
+          <p>{{ $t('nav.fu-wu-qi') }}</p>
         </div>
       </div>
     </Card>
@@ -89,14 +89,14 @@
       <div
         class="flex justify-between px-2 py-1"
         @click="toPage('mobileUserEdit')">
-        <span>编辑资料</span>
+        <span>{{ $t('nav.bian-ji-zi-liao') }}</span>
         <ChevronRight />
       </div>
       <div class="border-b border-gray/40"></div>
       <div
         class="flex justify-between px-2 py-1"
         @click="toPage('mobileAccountSecurity')">
-        <span>账号安全</span>
+        <span>{{ $t('d.zhang-hao-an-quan') }}</span>
         <ChevronRight />
       </div>
     </Card>
@@ -110,7 +110,7 @@
           router.push({ name: 'Home' })
         }
       ">
-      <p class="text-center text-error">退出登录</p>
+      <p class="text-center text-error">{{ $t('b.tui-chu-deng-lu') }}</p>
     </Card>
   </template>
 </template>

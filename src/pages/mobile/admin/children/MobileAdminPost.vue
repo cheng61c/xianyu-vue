@@ -116,7 +116,7 @@
           <ScButton
             @click="setTop(index)"
             class="border border-warning text-warning">
-            置顶
+            {{ $t('b.zhi-ding') }}
           </ScButton>
 
           <ScButton
@@ -125,16 +125,19 @@
               'border border-primary text-primary': data.visible == 1,
               'border border-error text-error': data.visible == 0,
             }">
-            {{ data.visible == 0 ? '已下架' : '上架中' }}
+            {{
+              data.visible == 0 ? $t('b.yi-xia-jia') : $t('b.shang-jia-zhong')
+            }}
           </ScButton>
-
           <ScButton
             @click="banned(index)"
             :Border="data.status == 1 || data.status == 3"
             :class="{
               'border border-error text-error': data.status == 2,
             }">
-            {{ data.status == 2 ? '撤销封禁' : '封禁' }}
+            {{
+              data.status == 2 ? $t('d.che-xiao-feng-jin') : $t('b.feng-jin')
+            }}
           </ScButton>
 
           <ScButton
@@ -143,7 +146,7 @@
               'border border-green text-green': data.disabled == 1,
               'border border-error text-error': data.disabled == 0,
             }">
-            {{ data.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+            {{ data.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
           </ScButton>
         </div>
       </template>
@@ -195,30 +198,30 @@
 
   <ScModal v-model="setTopModal">
     <Card class="p-4 w-[95vw]">
-      <div class="text-xl mb-4">设置置顶</div>
+      <div class="text-xl mb-4">{{ $t('b.she-zhi-zhi-ding') }}</div>
       <ScButton
         Border
         :activation="postList[currentPost].top == 0"
         @click="setTop(currentPost, 0)">
-        不置顶
+        {{ $t('b.bu-zhi-ding') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 1"
         @click="setTop(currentPost, 1)">
-        置顶
+        {{ $t('b.zhi-ding') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 2"
         @click="setTop(currentPost, 2)">
-        横幅公告
+        {{ $t('b.heng-fu-gong-gao') }}
       </ScButton>
       <ScButton
         Border
         :activation="postList[currentPost].top == 3"
         @click="setTop(currentPost, 3)">
-        弹窗公告
+        {{ $t('b.dan-chuang-gong-gao') }}
       </ScButton>
     </Card>
   </ScModal>

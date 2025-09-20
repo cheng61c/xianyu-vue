@@ -12,7 +12,7 @@
   <ScDrawer v-model="leftDrawer" position="left">
     <template v-if="postStore.plate" #default="{ close }">
       <div class="bg-background w-64 h-full p-4">
-        <h3 class="text-xl px-2">菜单</h3>
+        <h3 class="text-xl px-2">{{ $t('b.cai-dan') }}</h3>
         <template v-if="postStore.plate">
           <AccordionItem v-model:open="open2">
             <template #title>测试工具箱</template>
@@ -60,19 +60,19 @@
               v-if="userStore.isLogin"
               class="flex items-center justify-between py-2"
               @click="(close(), $router.push({ name: 'message' }))">
-              <div>消息</div>
+              <div>{{ $t('b.xiao-xi') }}</div>
               <ChevronRight />
             </div>
 
             <div
               class="flex items-center justify-between py-2"
               @click="(close(), $router.push({ name: 'mingrentang' }))">
-              <div>名人堂</div>
+              <div>{{ $t('b.ming-ren-tang') }}</div>
               <ChevronRight />
             </div>
 
             <div class="flex gap-4 items-center justify-between py-2">
-              <div>昼夜切换</div>
+              <div>{{ $t('d.zhou-ye-qie-huan') }}</div>
               <ThemeButton />
             </div>
             <div class="flex gap-4 items-center justify-between py-1">
@@ -90,7 +90,7 @@
               "
               class="flex items-center justify-between py-2"
               @click="(close(), $router.push({ name: 'mobileAdmin' }))">
-              <div>后台管理</div>
+              <div>{{ $t('b.hou-tai-guan-li') }}</div>
               <ChevronRight />
             </div>
 
@@ -98,7 +98,7 @@
               v-if="userStore.isLogin"
               class="flex gap-4 items-center justify-between py-2 text-error"
               @click="(close(), logout($t))">
-              <span>退出登录</span>
+              <span>{{ $t('b.tui-chu-deng-lu') }}</span>
               <ScButton :icon="LogOut" :iconSize="22" noPd class="text-error" />
             </div>
           </div>
@@ -176,12 +176,12 @@ const deleteUser = () => {
   userStore.userInfo = {} as UserType
   userStore.isLogin = false
   userStore.token = ''
-  toast.success('用户缓存已清除')
+  toast.success(t('t.yong-hu-huan-cun-yi-qing-chu'))
 }
 const deleteAnnouncement = () => {
   announcementStore.popUps = []
   announcementStore.banners = []
-  toast.success('公告已读状态已清除')
+  toast.success(t('t.gong-gao-yi-du-zhuang-tai-yi-qing-chu'))
 }
 
 const deleteDrawer = () => {

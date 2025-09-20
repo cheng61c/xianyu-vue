@@ -18,7 +18,7 @@
       </ScButton>
     </div>
     <div v-if="!route.query.userId && !userStore.isLogin" class="text-error">
-      请先登录
+      {{ $t('t.qing-xian-deng-lu') }}
     </div>
     <ScLogin />
   </div>
@@ -72,7 +72,7 @@ const routeBtns = ref([
     path: '/mobile/user/edit',
   },
   {
-    name: '账号安全',
+    name: t('d.zhang-hao-an-quan'),
     path: '/mobile/user/account-security',
   },
 ])
