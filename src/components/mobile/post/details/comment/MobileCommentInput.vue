@@ -78,9 +78,9 @@ import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'
 import ScInput from '@/components/common/ScInput.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
-import { useI18n } from 'vue-i18n'
+// import { useI18n } from 'vue-i18n'
 
-const { t } = useI18n()
+// const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 
@@ -95,11 +95,11 @@ const props = defineProps({
   },
   submitText: {
     type: String,
-    default: t('b.fa-song'),
+    default: '发送',
   },
   placeholder: {
     type: String,
-    default: t('t.xie-xia-ni-de-ping-lun'),
+    default: '写下你的评论...',
   },
   noImg: {
     type: Boolean,
