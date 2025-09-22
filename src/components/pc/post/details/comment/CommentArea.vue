@@ -381,6 +381,7 @@ const getcomments = (page: number) => {
             child.image = child.image
               ? child.image.map((img: string) => formatLink(img))
               : []
+            child.content = formatImageSrcsInHtml(child.content)
             return child
           })
           return item

@@ -28,12 +28,12 @@
     <div class="space-y-4">
       <!-- 单条评论 -->
       <div v-for="comment in comments" :key="comment.id">
-        <div class="flex items-start gap-3">
+        <div class="flex items-start gap-2">
           <!-- 用户头像 -->
           <Avatar
             :src="comment.author.headImg"
             :alt="comment.author.nickname"
-            :size="40"
+            :size="36"
             class="flex-shrink-0 mt-1"
             @click.stop="openImg(comment.author.headImg)" />
 
@@ -86,7 +86,7 @@
             </div>
 
             <div
-              class="mb-2"
+              class="mb-2 w-full break-all"
               @click="currentPopupBox = `${comment.id}`"
               v-html="comment.content"></div>
 
@@ -119,17 +119,17 @@
                 )"
                 :key="reply.id"
                 class="reply-item">
-                <div class="flex items-start gap-3 group/item">
+                <div class="flex items-start gap-2 group/item">
                   <Avatar
                     :src="reply.author.headImg"
                     :alt="reply.author.nickname"
-                    :size="32"
+                    :size="24"
                     class="flex-shrink-0"
                     @click.stop="openImg(reply.author.headImg)" />
 
                   <div class="flex-1">
                     <div
-                      class="flex items-center mb-1"
+                      class="flex items-start mb-1"
                       @click="
                         $router.push({
                           name: 'mobileUserPanel',
@@ -149,7 +149,7 @@
                         {{ $t('b.tie-zhu') }}
                       </ScTag>
                       <span
-                        class="text-gray-content text-xs ml-2"
+                        class="text-gray-content text-xs"
                         @click="currentPopupBox = `${comment.id}-${reply.id}`">
                         {{ reply.createdAt }}
                       </span>
@@ -176,7 +176,8 @@
                       </div>
                     </div>
 
-                    <div class="mb-1">
+                    <div
+                      class="max-w-[calc(100vw-80px)] mb-1 overflow-wrap word-wrap">
                       <span
                         v-if="reply.toAuthor"
                         class="text-active mr-2"
@@ -190,7 +191,8 @@
                       </span>
                       <span
                         @click="currentPopupBox = `${comment.id}-${reply.id}`"
-                        v-html="reply.content">
+                        v-html="reply.content"
+                        class="w-full break-all">
                       </span>
                     </div>
 
@@ -297,6 +299,7 @@ import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getSortOptions } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
+import { formatImageSrcsInHtml } from '@/utils/regex'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -367,11 +370,13 @@ const getcomments = (page: number) => {
           item.image = item.image
             ? item.image.map((img: string) => formatLink(img))
             : []
+          item.content = formatImageSrcsInHtml(item.content)
           item.children = item.children.map((child: any) => {
             child.createdAt = formatTime(child.createdAt)
             child.image = child.image
               ? child.image.map((img: string) => formatLink(img))
               : []
+            child.content = formatImageSrcsInHtml(child.content)
             return child
           })
           return item

@@ -39,7 +39,7 @@ export const formatImageSrcsInHtml = (html: string): string => {
  * @param {string} html - 要处理的HTML字符串
  * @returns {string} 处理后的HTML字符串
  */
-function wrapUnwrappedUrls(html: string) {
+function wrapUnwrappedUrls(html: string): string {
   const tempDiv = document.createElement('div')
   tempDiv.innerHTML = html
 
@@ -67,7 +67,7 @@ function wrapUnwrappedUrls(html: string) {
       if (!isWrapped && urlRegex.test(text)) {
         const newHtml = text.replace(
           urlRegex,
-          '<a href="$1" target="_blank" rel="noopener">$1</a>'
+          '<a href="$1" target="_blank" rel="noopener" class="text-active">$1</a>'
         )
 
         // 如果文本中有URL，替换整个文本节点
