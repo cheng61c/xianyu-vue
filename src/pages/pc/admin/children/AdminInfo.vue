@@ -162,7 +162,7 @@ import EmptyState from '@/components/common/EmptyState.vue'
 import { infoApi } from '@/apis'
 import Pagination from '@/components/common/Pagination.vue'
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import type { InfoType, QueryInfoDto } from '@/types/Info'
 import { useI18n } from 'vue-i18n'
 
@@ -220,8 +220,8 @@ const getPosts = () => {
       if (res.data.code === 200) {
         // 处理获取到的帖子数据
         reportList.value = res.data.data.list.map((item: InfoType) => {
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
         reportPage.value.limit = res.data.data.limit || 15

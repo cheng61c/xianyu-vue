@@ -293,7 +293,7 @@ import ScTag from '@/components/common/ScTag.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { commentApi } from '@/apis'
 import type { CommentType, SendCommentDto } from '@/types/comment'
-import { formatLink, formatTime } from '@/utils/format'
+import { formatLink, formatTimeOrAgo } from '@/utils/format'
 import { useToast } from 'vue-toastification'
 import CommentReplyButton from './CommentReplyButton.vue'
 import CommentMenu from './CommentMenu.vue'
@@ -371,13 +371,13 @@ const getcomments = (page: number) => {
     .then((res) => {
       if (res.data.code === 200) {
         const list = res.data.data.list.map((item: any) => {
-          item.createdAt = formatTime(item.createdAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
           item.image = item.image
             ? item.image.map((img: string) => formatLink(img))
             : []
           item.content = formatImageSrcsInHtml(item.content)
           item.children = item.children.map((child: any) => {
-            child.createdAt = formatTime(child.createdAt)
+            child.createdAt = formatTimeOrAgo(child.createdAt, t)
             child.image = child.image
               ? child.image.map((img: string) => formatLink(img))
               : []

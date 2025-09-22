@@ -21,7 +21,7 @@
         {{
           $t(
             'd.shang-ci-deng-lu-shi-jian-formattimeuserstoreuserinfolastlogintime',
-            [formatTime(userInfo.lastLoginTime)]
+            [formatTimeOrAgo(userInfo.lastLoginTime, $t)]
           )
         }}
       </div>
@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { formatLink } from '@/utils/format'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { uploadApi, userApi } from '@/apis'
 import Avatar from '@/components/common/Avatar.vue'

@@ -117,7 +117,7 @@
 
 <script setup lang="ts">
 import { commentApi, serverApi, uploadApi, userApi } from '@/apis'
-import { formatLink, formatNumber, formatTime } from '@/utils/format'
+import { formatLink, formatNumber, formatTimeOrAgo } from '@/utils/format'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -135,7 +135,9 @@ import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useRoute, useRouter } from 'vue-router'
 import { deepClone } from '@/utils/copy'
 import { logout } from '@/stores/module/user/service'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
@@ -194,7 +196,7 @@ const getPosts = () => {
         )
       )
       posts.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
       })
       posts.value.count = response.data.data.count
     })
@@ -220,7 +222,7 @@ const getResources = () => {
         )
       )
       resources.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
       })
       resources.value.count = response.data.data.count
     })
@@ -257,7 +259,7 @@ const getServers = () => {
     })
     .then((response) => {
       servers.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
       })
       servers.value.count = response.data.data.count
     })
@@ -281,7 +283,7 @@ const getComments = () => {
         )
       )
       comments.value.data = response.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
       })
       comments.value.count = response.data.data.count
     })

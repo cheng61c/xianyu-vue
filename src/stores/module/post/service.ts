@@ -4,7 +4,7 @@ import { useConfigStore } from '@/stores/global/configStore'
 import { usePostStore } from '@/stores/module/post/postStore'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
-import { formatNumber, formatTime, lightHtml } from '@/utils/format'
+import { formatNumber, formatTimeOrAgo, lightHtml } from '@/utils/format'
 import { extractImageSrcs, formatImageSrcsInHtml } from '@/utils/regex'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
@@ -13,6 +13,7 @@ import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-vue-next'
 
 import { generateTocFromHtml } from '@/utils/toc'
 import { useUserStore } from '../user/userStore'
+import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const configStore = useConfigStore()
@@ -68,6 +69,7 @@ export const getPost = async (
   pid: number,
   route: RouteLocationNormalizedLoadedGeneric
 ) => {
+  const { t } = useI18n()
   if (
     postStore.isSearch &&
     postStore.searchText &&
@@ -95,8 +97,8 @@ export const getPost = async (
         // 处理图片链接
         item.images = extractImageSrcs(item.content)
         item.content = formatImageSrcsInHtml(item.content)
-        item.createdAt = formatTime(item.createdAt)
-        item.updatedAt = formatTime(item.updatedAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
+        item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
         item.likeCount = formatNumber(item.likeCount)
         item.commentCount = formatNumber(item.commentCount)
         item.views = formatNumber(item.views)
@@ -115,6 +117,7 @@ export const search = (
   fileTypes = '0',
   route: RouteLocationNormalizedLoadedGeneric
 ) => {
+  const { t } = useI18n()
   if (click) {
     postStore.postPage.page = 1
   }
@@ -147,8 +150,8 @@ export const search = (
       postStore.post = res.data.list.map((item: Post) => {
         // 处理图片链接
         item.images = extractImageSrcs(item.content)
-        item.createdAt = formatTime(item.createdAt)
-        item.updatedAt = formatTime(item.updatedAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
+        item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
         return item
       })
       postStore.postPage.page = res.data.page
@@ -159,6 +162,7 @@ export const search = (
 }
 /** 获取帖子详情 */
 export const getPostDetails = async (postId: number) => {
+  const { t } = useI18n()
   postStore.postData = null // 清理数据
   postStore.tocList = [] // 清理目录列表
   postStore.errorPage = false // 重置错误页面标志
@@ -167,15 +171,15 @@ export const getPostDetails = async (postId: number) => {
     .then((response: Api) => {
       const data = response.data.data as Post
       data.content = lightHtml(formatImageSrcsInHtml(data.content))
-      data.createdAt = formatTime(data.createdAt)
-      data.updatedAt = formatTime(data.updatedAt)
+      data.createdAt = formatTimeOrAgo(data.createdAt, t)
+      data.updatedAt = formatTimeOrAgo(data.updatedAt, t)
       data.commentCount = formatNumber(data.commentCount)
       data.likeCount = formatNumber(data.likeCount)
       data.badCount = formatNumber(data.badCount)
       data.postVersions = data.postVersions.map((item) => ({
         ...item,
         content: lightHtml(formatImageSrcsInHtml(item.content)),
-        createdAt: formatTime(item.createdAt),
+        createdAt: formatTimeOrAgo(item.createdAt, t),
       }))
       const tocList = generateTocFromHtml(data.content)
       postStore.tocList = tocList

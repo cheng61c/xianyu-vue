@@ -28,9 +28,11 @@ import Creation from './Creation.vue'
 import type { Post } from '@/types/Post'
 import { onMounted, ref } from 'vue'
 import { postApi } from '@/apis'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import ScTag from '@/components/common/ScTag.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const router = useRouter()
 
 const handleClick = (post: { id: any }) => {
@@ -46,8 +48,8 @@ const getPost = () => {
   postApi.getPostListTop('1,2,3').then((res) => {
     if (res.data.code === 200) {
       posts.value = res.data.data.list.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
-        item.updatedAt = formatTime(item.updatedAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
+        item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
         return item
       })
     }

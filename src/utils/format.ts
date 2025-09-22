@@ -21,6 +21,55 @@ export const htmlToText = (html: string): string => {
     ) // 移除常见 HTML 实体
 }
 
+export const formatTimeOrAgo = (value: string | number | Date, t: any) => {
+  let date: Date
+
+  // 如果已经是 Date 对象，直接使用
+  if (value instanceof Date) {
+    date = value
+  }
+  // 如果是数字或数字字符串，需要判断是秒还是毫秒时间戳
+  else if (
+    typeof value === 'number' ||
+    (typeof value === 'string' && /^\d+$/.test(value))
+  ) {
+    const timestamp = typeof value === 'number' ? value : parseInt(value, 10)
+
+    // 判断时间戳是秒还是毫秒
+    // 通常，13位数字是毫秒时间戳，10位数字是秒时间戳
+    if (timestamp.toString().length === 10) {
+      // 10位数字，秒时间戳，需要乘以1000转换为毫秒
+      date = new Date(timestamp * 1000)
+    } else if (timestamp.toString().length === 13) {
+      // 13位数字，毫秒时间戳，直接使用
+      date = new Date(timestamp)
+    } else {
+      // 其他长度的数字，尝试直接转换，如果失败则返回无效日期
+      date = new Date(timestamp)
+    }
+  }
+  // 其他情况（ISO 字符串），直接传给 Date 构造函数
+  else {
+    date = new Date(value)
+  }
+
+  // 检查是否解析成功
+  if (isNaN(date.getTime())) {
+    return 'Invalid Date'
+  }
+
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  date.setHours(0, 0, 0, 0)
+
+  // 如果是当天的日期，调用 formatTimeAgo
+  if (today.getTime() === date.getTime()) {
+    return formatTimeAgo(value.toString(), t)
+  } else {
+    return formatTime(value)
+  }
+}
+
 export const formatTime = (value: string | number | Date) => {
   let date: Date
 

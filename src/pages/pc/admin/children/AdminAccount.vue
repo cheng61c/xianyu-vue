@@ -306,7 +306,7 @@ import { Info } from 'lucide-vue-next'
 import Pagination from '@/components/common/Pagination.vue'
 
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { UpdateUserAsAdminDto, UserSelectDto, UserType } from '@/types'
 import { verifyPermissions } from '@/utils/verify'
@@ -443,8 +443,8 @@ const getUserList = () => {
       if (response.data.code === 200) {
         userList.value = response.data.data.list.map((user: UserType) => ({
           ...user,
-          regTime: formatTime(user.regTime),
-          lastLoginTime: formatTime(user.lastLoginTime),
+          regTime: formatTimeOrAgo(user.regTime, t),
+          lastLoginTime: formatTimeOrAgo(user.lastLoginTime, t),
         }))
         userPage.value.total = response.data.data.total
         userPage.value.page = response.data.data.page

@@ -1,10 +1,11 @@
 import { downloadApi, postApi, userApi } from '@/apis'
 import { useUserResourceStore } from './userResourceStore'
-import { formatLink, formatTime, htmlToText } from '@/utils/format'
+import { formatLink, formatTimeOrAgo, htmlToText } from '@/utils/format'
 import { extractImageSrcs } from '@/utils/regex'
 
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '../user/userStore'
+import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const resStore = useUserResourceStore()
@@ -48,7 +49,7 @@ export const searchUserResource = async (
     resStore.posts = response.data.data.list.map((item: any) => {
       const imgs = extractImageSrcs(item.content)
       item.cover = imgs.length > 0 ? imgs[0] : ''
-      item.createdAt = formatTime(item.createdAt)
+      item.createdAt = formatTimeOrAgo(item.createdAt, t)
       item.content = htmlToText(item.content)
       return item
     })
@@ -88,13 +89,14 @@ export const deletePackage = (t: any) => {
 }
 
 export const getPackageList = () => {
+  const { t } = useI18n()
   postApi
     .getPostDocumentList({
       id: resStore.currenPostId,
     })
     .then((response) => {
       resStore.packageList = response.data.data.map((item: any) => {
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
         return item
       })
     })
@@ -152,7 +154,7 @@ export const getPosts = (t: any) => {
       resStore.posts = response.data.data.list.map((item: any) => {
         const imgs = extractImageSrcs(item.content)
         item.cover = imgs.length > 0 ? formatLink(imgs[0]) : ''
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
         item.content = htmlToText(item.content)
         return item
       })

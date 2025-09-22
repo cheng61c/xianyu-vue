@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import { downloadApi, uploadApi } from '@/apis'
-import { formatFileSize, formatTime } from '@/utils/format'
+import { formatFileSize, formatTimeOrAgo } from '@/utils/format'
 import { Download, Package } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { FileType } from '@/types/Upload'
@@ -64,6 +64,10 @@ import { onMounted, ref } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import Pagination from '@/components/common/Pagination.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
+
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 const userStore = useUserStore()
 
 const files = ref<FileType[]>([])
@@ -90,7 +94,7 @@ const getFiles = () => {
     })
     .then((response) => {
       files.value = response.data.data.list.map((item: FileType) => {
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
         item.size = formatFileSize(item.size)
         return item
       })

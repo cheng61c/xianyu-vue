@@ -253,7 +253,7 @@ import type { Plate, PlateDto } from '@/types/Plate'
 import { useI18n } from 'vue-i18n'
 import { useToast } from 'vue-toastification'
 import { plateApi } from '@/apis'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 
 import Card from '@/components/common/Card.vue'
 import ScInput from '@/components/common/ScInput.vue'
@@ -308,8 +308,8 @@ const getPlateList = () => {
       if (res.data.code === 200) {
         // 处理获取到的帖子数据
         plateList.value = res.data.data.map((item: Role) => {
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
       }

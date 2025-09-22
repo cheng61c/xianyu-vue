@@ -213,7 +213,7 @@ import ScButton from '@/components/common/ScButton.vue'
 import EmptyState from '@/components/common/EmptyState.vue'
 import { versionApi } from '@/apis'
 import Dropdown from '@/components/common/ScSelector.vue'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ApiVersion, PutVersionDto, Version } from '@/types/version'
 import { useToast } from 'vue-toastification'
@@ -267,8 +267,8 @@ const getVersionList = () => {
       if (res.data.code === 200) {
         // 处理获取到的帖子数据
         versionList.value = res.data.data.map((item: ApiVersion) => {
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
       }

@@ -202,7 +202,7 @@ import { Vue3ColorPicker } from '@cyhnkckali/vue3-color-picker'
 import { verifyPermissions } from '@/utils/verify'
 
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 
 import type { Role } from '@/types/Role'
@@ -237,8 +237,8 @@ const getRoleList = (click = false) => {
       if (res.data.code === 200) {
         // 处理获取到的帖子数据
         roleList.value = res.data.data.map((item: Role) => {
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
         if (click) {

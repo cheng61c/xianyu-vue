@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatLink, formatNumber, formatTime } from '@/utils/format'
+import { formatLink, formatNumber, formatTimeOrAgo } from '@/utils/format'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
 import { computed, onMounted, ref } from 'vue'
@@ -101,7 +101,9 @@ import { getUserPanel } from '@/stores/module/user/service'
 import { useRoute } from 'vue-router'
 import { userApi } from '@/apis'
 import { formatImageSrcsInHtml } from '@/utils/regex'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 const userInfo = ref<UserType>(userStore.userInfo)
 const route = useRoute()
@@ -166,7 +168,7 @@ const getPanel = async (userId: number) => {
     posts.value.data.reduce((acc: number, item: any) => acc + item.likeCount, 0)
   )
   posts.value.data = panel.posts.list.map((item: any) => {
-    item.createdAt = formatTime(item.createdAt)
+    item.createdAt = formatTimeOrAgo(item.createdAt, t)
   })
   posts.value.count = panel.posts.count
 
@@ -178,7 +180,7 @@ const getPanel = async (userId: number) => {
     )
   )
   resources.value.data = panel.resources.list.map((item: any) => {
-    item.createdAt = formatTime(item.createdAt)
+    item.createdAt = formatTimeOrAgo(item.createdAt, t)
   })
   resources.value.count = panel.resources.count
 
@@ -187,13 +189,13 @@ const getPanel = async (userId: number) => {
 
   // 服务器
   servers.value.data = panel.servers.list.map((item: any) => {
-    item.createdAt = formatTime(item.createdAt)
+    item.createdAt = formatTimeOrAgo(item.createdAt, t)
   })
   servers.value.count = panel.servers.count
 
   // 评论
   comments.value.data = panel.comments.list.map((item: any) => {
-    item.createdAt = formatTime(item.createdAt)
+    item.createdAt = formatTimeOrAgo(item.createdAt, t)
   })
   comments.value.count = panel.comments.count
 }

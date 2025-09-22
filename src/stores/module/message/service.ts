@@ -1,11 +1,11 @@
 import { messageApi } from '@/apis'
 import type { MessageType } from '@/types/MessageItem'
-import { formatTime, htmlToText } from '@/utils/format'
+import { formatTimeOrAgo, htmlToText } from '@/utils/format'
 import { useMessageStore } from './MessageStore'
 
 const messageStore = useMessageStore()
 
-export const getMessages = () => {
+export const getMessages = (t: any) => {
   messageApi.getUnreadMessageList().then((res) => {
     if (res.data.code === 200) {
       const data = res.data.data as MessageType[]
@@ -14,8 +14,8 @@ export const getMessages = () => {
         .filter((item) => item.type === 1)
         .map((item) => {
           item.content = htmlToText(item.content ?? '')
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
 
@@ -23,8 +23,8 @@ export const getMessages = () => {
         .filter((item) => item.type === 2)
         .map((item) => {
           item.content = htmlToText(item.content ?? '')
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
 
@@ -32,8 +32,8 @@ export const getMessages = () => {
         .filter((item) => item.type === 3)
         .map((item) => {
           item.content = htmlToText(item.content ?? '')
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           return item
         })
 
@@ -52,8 +52,8 @@ export const getMessages = () => {
           .filter((item) => item.type === 1)
           .map((item) => {
             item.content = htmlToText(item.content ?? '')
-            item.createdAt = formatTime(item.createdAt)
-            item.updatedAt = formatTime(item.updatedAt)
+            item.createdAt = formatTimeOrAgo(item.createdAt, t)
+            item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
             return item
           })
 
@@ -61,8 +61,8 @@ export const getMessages = () => {
           .filter((item) => item.type === 2)
           .map((item) => {
             item.content = htmlToText(item.content ?? '')
-            item.createdAt = formatTime(item.createdAt)
-            item.updatedAt = formatTime(item.updatedAt)
+            item.createdAt = formatTimeOrAgo(item.createdAt, t)
+            item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
             return item
           })
 
@@ -70,8 +70,8 @@ export const getMessages = () => {
           .filter((item) => item.type === 3)
           .map((item) => {
             item.content = htmlToText(item.content ?? '')
-            item.createdAt = formatTime(item.createdAt)
-            item.updatedAt = formatTime(item.updatedAt)
+            item.createdAt = formatTimeOrAgo(item.createdAt, t)
+            item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
             return item
           })
 

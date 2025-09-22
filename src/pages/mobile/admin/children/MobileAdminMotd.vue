@@ -80,7 +80,7 @@ import { motdApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import type { MotdType } from '@/types/Motd'
 import Dropdown from '@/components/common/ScSelector.vue'
-import { formatTime, formatXml } from '@/utils/format'
+import { formatTimeOrAgo, formatXml } from '@/utils/format'
 import { useEditorShortcuts } from '@/utils/useEditorShortcuts'
 import { useI18n } from 'vue-i18n'
 
@@ -104,8 +104,8 @@ const getMotd = () => {
     .then((response) => {
       if (response.data && response.data.code === 200) {
         motd.value = response.data.data.map((item: MotdType) => {
-          item.createdAt = formatTime(item.createdAt)
-          item.updatedAt = formatTime(item.updatedAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
+          item.updatedAt = formatTimeOrAgo(item.updatedAt, t)
           item.motd = decodeURIComponent(item.motd)
           return item
         })

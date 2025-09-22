@@ -1,20 +1,21 @@
 import { heloApi } from '@/apis'
 import { useFengYunBangStore } from './FengYunBangStore'
 import type { FengYunBang } from '@/types/FengYunBang'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import { useToast } from 'vue-toastification'
+import { useI18n } from 'vue-i18n'
 const toast = useToast()
 
 const fengYunBangStore = useFengYunBangStore()
-
 export const getFengYunBangAll = async () => {
+  const { t } = useI18n()
   heloApi.getFengYunBangAll().then((res) => {
     if (res.data.code === 200) {
       const data = res.data.data
       fengYunBangStore.list = data.map((item: FengYunBang) => ({
         ...item,
-        createdAt: formatTime(item.createdAt),
-        updatedAt: formatTime(item.updatedAt),
+        createdAt: formatTimeOrAgo(item.createdAt, t),
+        updatedAt: formatTimeOrAgo(item.updatedAt, t),
       }))
       console.log('fengYunBangStore', fengYunBangStore)
     }
@@ -22,13 +23,14 @@ export const getFengYunBangAll = async () => {
 }
 
 export const getFengYunBangList = async () => {
+  const { t } = useI18n()
   heloApi.getFengYunBangList().then((res) => {
     if (res.data.code === 200) {
       const data = res.data.data
       fengYunBangStore.list = data.list.map((item: FengYunBang) => ({
         ...item,
-        createdAt: formatTime(item.createdAt),
-        updatedAt: formatTime(item.updatedAt),
+        createdAt: formatTimeOrAgo(item.createdAt, t),
+        updatedAt: formatTimeOrAgo(item.updatedAt, t),
       }))
       console.log('fengYunBangStore', fengYunBangStore)
     }

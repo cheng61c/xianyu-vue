@@ -111,8 +111,11 @@ import type { DocumentVersion } from '@/types/DocumentVersion'
 import EmptyState from '@/components/common/EmptyState.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import { Download, Minimize2 } from 'lucide-vue-next'
-import { formatFileSize, formatTime } from '@/utils/format'
+import { formatFileSize, formatTimeOrAgo } from '@/utils/format'
 import { downloadApi } from '@/apis'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   postData: {
@@ -148,10 +151,10 @@ watch(
     if (newVal) {
       versios.value = newVal.postVersions.map((version) => ({
         ...version,
-        createdAt: formatTime(version.createdAt),
+        createdAt: formatTimeOrAgo(version.createdAt, t),
         files: version.files.map((file) => ({
           ...file,
-          createdAt: formatTime(file.createdAt),
+          createdAt: formatTimeOrAgo(file.createdAt, t),
         })),
       }))
     }

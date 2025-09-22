@@ -199,7 +199,7 @@ import {
 } from 'lucide-vue-next'
 import { userApi, postApi } from '@/apis'
 import { extractImageSrcs } from '@/utils/regex'
-import { formatTime, htmlToText } from '@/utils/format'
+import { formatTimeOrAgo, htmlToText } from '@/utils/format'
 import ScImage from '@/components/common/ScImage.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import type { Post } from '@/types/Post'
@@ -252,7 +252,7 @@ const getPosts = () => {
         const imgs = extractImageSrcs(item.content)
         item.cover = imgs.length > 0 ? imgs[0] : ''
         item.content = htmlToText(item.content)
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
         return item
       })
       pagination.value = {
@@ -349,7 +349,7 @@ const search = (key: string) => {
       posts.value = response.data.data.list.map((item: any) => {
         const imgs = extractImageSrcs(item.content)
         item.cover = imgs.length > 0 ? imgs[0] : ''
-        item.createdAt = formatTime(item.createdAt)
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
         return item
       })
       pagination.value = {

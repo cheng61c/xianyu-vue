@@ -200,7 +200,7 @@ import { serverApi } from '@/apis'
 import Pagination from '@/components/common/Pagination.vue'
 import type { Post } from '@/types/Post'
 import ScTag from '@/components/common/ScTag.vue'
-import { formatTime } from '@/utils/format'
+import { formatTimeOrAgo } from '@/utils/format'
 import ScModal from '@/components/common/ScModal.vue'
 import type { ServerPostListQueryDto, ServerPostType } from '@/types/ServerPost'
 import { useI18n } from 'vue-i18n'
@@ -297,7 +297,7 @@ const getPosts = () => {
       if (res.data.code === 200) {
         // 处理获取到的帖子数据
         postList.value = res.data.data.list.map((item: Post) => {
-          item.createdAt = formatTime(item.createdAt)
+          item.createdAt = formatTimeOrAgo(item.createdAt, t)
           item.title =
             item.title.length > 20
               ? item.title.slice(0, 20) + '...'
