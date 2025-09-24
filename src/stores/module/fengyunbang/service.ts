@@ -3,9 +3,7 @@ import { useFengYunBangStore } from './FengYunBangStore'
 import type { FengYunBang } from '@/types/FengYunBang'
 import { formatTimeOrAgo } from '@/utils/format'
 import { useToast } from 'vue-toastification'
-import { useI18n } from 'vue-i18n'
 const toast = useToast()
-const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
 export const getFengYunBangAll = async (t: any) => {
   heloApi.getFengYunBangAll().then((res) => {
@@ -42,7 +40,7 @@ export const addFengYunBang = (
     content: string
     id?: number
   },
-  _t: any,
+  t: any,
   close?: () => void
 ) => {
   const apiMethod =
@@ -58,7 +56,7 @@ export const addFengYunBang = (
   })
 }
 
-export const deleteFengYunBang = (id: number, _t: any, close?: () => void) => {
+export const deleteFengYunBang = (id: number, t: any, close?: () => void) => {
   heloApi.deleteFengYunBang(id).then(async (res: any) => {
     if (res.data.code === 200) {
       toast.success('删除成功')
