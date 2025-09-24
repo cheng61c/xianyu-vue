@@ -14,13 +14,13 @@
             v-if="post.status == 1 || post.status == 3"
             size="sm"
             :status="post.visible == 1 ? 'success' : 'warning'">
-            {{ post.visible == 1 ? '正常' : '下架' }}
+            {{ post.visible == 1 ? $t('b.zheng-chang') : $t('b.xia-jia') }}
           </ScTag>
           <ScTag v-if="post.status == 2" size="sm" status="error">
             {{ $t('b.feng-jin') }}
           </ScTag>
           <ScTag size="sm" status="info">
-            {{ post.level == 1 ? '个人服' : '社区服' }}
+            {{ post.level == 1 ? $t('b.ge-ren-fu') : $t('b.she-qu-fu') }}
           </ScTag>
         </div>
       </div>
@@ -43,8 +43,8 @@
           class="text-sm px-4 border border-gray hover:border-active"
           :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
           :iconSize="16"
-          @click="unpublishItem(postIndex)">
-          {{ post.visible == 1 ? '下架' : '发布' }}
+          @click="unpublishItem(postIndex, $t)">
+          {{ post.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
         </ScButton>
         <ScButton
           class="text-sm text-error px-4 border border-gray hover:border-active"

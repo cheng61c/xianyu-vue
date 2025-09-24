@@ -121,14 +121,14 @@ import ScTag from '@/components/common/ScTag.vue'
 import ScImage from '@/components/common/ScImage.vue'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
 import ScRole from '@/components/common/ScRole.vue'
-const typeLabelMap = useTypeLabelMap()
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
-
+const { t } = useI18n()
 const props = defineProps<{
   post: Post
 }>()
-
+const typeLabelMap = useTypeLabelMap(t)
 const handleClick = () => {
   router.push({
     name: 'postDetails',

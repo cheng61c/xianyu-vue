@@ -2,7 +2,7 @@
   <div class="h-12 w-full flex justify-between items-center px-4 bg-background">
     <ScButton noPd @click="onMenu" :icon="Menu" :iconSize="20" />
     <HomeNav
-      :menuItems="configStore.menuItems"
+      :menuItems="menuItems"
       :activeNavName="activeNavName"
       :updateNav="updateNav"
       :updatePage="updatePage" />
@@ -115,7 +115,7 @@ import AccordionItem from '@/components/common/ScAccordionItem.vue'
 import { Menu, LogOut, ChevronRight, Trash2 } from 'lucide-vue-next'
 import { onMounted, ref, watch } from 'vue'
 import { usePostStore } from '@/stores/module/post/postStore'
-import { getPlate } from '@/stores/module/post/service'
+import { getMenuItems, getPlate } from '@/stores/module/post/service'
 import HomeNav from '@/components/pc/homeHeader/HomeNav.vue'
 import ScLogin from '@/components/pc/homeHeader/ScLogin.vue'
 import { useToast } from 'vue-toastification'
@@ -142,8 +142,7 @@ const userStore = useUserStore()
 const announcementStore = useAnnouncementStore()
 const drawerStore = useDrawerStore()
 const { locale, t } = useI18n()
-
-locale.value = configStore.lang.value // 设置初始语言
+const menuItems = getMenuItems(t)
 
 const onToast = () => {
   toast.success(

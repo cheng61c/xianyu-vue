@@ -48,7 +48,9 @@
       <ScInput
         v-model="commentContent"
         :placeholder="
-          userStore.isLogin ? placeholder : $t('t.qing-deng-lu-hou-ping-lun')
+          userStore.isLogin
+            ? computedPlaceholder
+            : $t('t.qing-deng-lu-hou-ping-lun')
         "
         :maxlength="500"
         class="flex-1 h-full max-h-[10rem]"
@@ -63,7 +65,7 @@
         activation
         :disabled="!userStore.isLogin"
         class="hover:bg-active/60 py-2 mb-1.5">
-        {{ submitText }}
+        {{ computedSubmitText }}
       </ScButton>
     </div>
   </div>
@@ -71,16 +73,16 @@
 
 <script setup lang="ts">
 import ScButton from '@/components/common/ScButton.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useToast } from 'vue-toastification'
 import { ImagePlus, X } from 'lucide-vue-next'
 import { uploadApi } from '@/apis'
 import { formatLink } from '@/utils/format'
 import ScInput from '@/components/common/ScInput.vue'
 import { useUserStore } from '@/stores/module/user/userStore'
-// import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
 
-// const { t } = useI18n()
+const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
 
@@ -95,16 +97,31 @@ const props = defineProps({
   },
   submitText: {
     type: String,
-    default: '发送',
+    default: '',
   },
   placeholder: {
     type: String,
-    default: '写下你的评论...',
+    default: '',
   },
   noImg: {
     type: Boolean,
     default: false,
   },
+})
+
+const computedPlaceholder = computed(() => {
+  if (props.placeholder == '') {
+    return t('t.qing-xie-xia-ni-de-ping-lun')
+  }
+
+  return t('t.qing-deng-lu-hou-ping-lun')
+})
+
+const computedSubmitText = computed(() => {
+  if (props.submitText == '') {
+    return t('b.fa-song')
+  }
+  return props.submitText
 })
 
 const emit = defineEmits(['submit'])
@@ -135,7 +152,7 @@ const handleFileChange = async (event: Event) => {
       const imageUrl = formatLink(res.data.data.url)
       imageList.value[index] = { url: imageUrl, loading: false }
     } catch (error) {
-      toast.error(`图片上传失败: ${file.name}`)
+      toast.error(t('t.tu-pian-shang-chuan-shi-bai-filename', [file.name]))
       imageList.value.splice(index, 1)
     }
   }
@@ -157,7 +174,7 @@ const clearContent = () => {
 
 const submitComment = () => {
   if (commentContent.value.trim() === '') {
-    toast.error('评论内容不能为空')
+    toast.error(t('t.ping-lun-nei-rong-bu-neng-wei-kong'))
     return
   }
 

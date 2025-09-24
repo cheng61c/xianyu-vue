@@ -49,7 +49,7 @@ onMounted(async () => {
     ? +(route.params.plateId as string)
     : 0
   getPlate(t)
-  getPost(activation.value, route)
+  getPost(activation.value, route, t)
 })
 
 watch(
@@ -65,7 +65,7 @@ watch(
 
     postStore.currentPlate.currentRouteName = (route.name as string) || ''
     getPlate(t)
-    getPost(activation.value, route)
+    getPost(activation.value, route, t)
   },
   { immediate: true }
 )

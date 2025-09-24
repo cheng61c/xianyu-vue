@@ -5,10 +5,9 @@ import { formatTimeOrAgo } from '@/utils/format'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 const toast = useToast()
-
+const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
-export const getFengYunBangAll = async () => {
-  const { t } = useI18n()
+export const getFengYunBangAll = async (t: any) => {
   heloApi.getFengYunBangAll().then((res) => {
     if (res.data.code === 200) {
       const data = res.data.data
@@ -22,8 +21,7 @@ export const getFengYunBangAll = async () => {
   })
 }
 
-export const getFengYunBangList = async () => {
-  const { t } = useI18n()
+export const getFengYunBangList = async (t: any) => {
   heloApi.getFengYunBangList().then((res) => {
     if (res.data.code === 200) {
       const data = res.data.data
@@ -52,7 +50,7 @@ export const addFengYunBang = (
   ;(heloApi as any)[apiMethod](body).then(async (res: any) => {
     if (res.data.code === 200) {
       toast.success('操作成功')
-      await getFengYunBangAll()
+      await getFengYunBangAll(t)
       if (close) {
         close()
       }
@@ -64,7 +62,7 @@ export const deleteFengYunBang = (id: number, _t: any, close?: () => void) => {
   heloApi.deleteFengYunBang(id).then(async (res: any) => {
     if (res.data.code === 200) {
       toast.success('删除成功')
-      await getFengYunBangAll()
+      await getFengYunBangAll(t)
       if (close) {
         close()
       }

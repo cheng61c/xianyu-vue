@@ -2,12 +2,10 @@ import { messageApi } from '@/apis'
 import type { MessageType } from '@/types/MessageItem'
 import { formatTimeOrAgo, htmlToText } from '@/utils/format'
 import { useMessageStore } from './MessageStore'
-import { useI18n } from 'vue-i18n'
 
 const messageStore = useMessageStore()
 
-export const getMessages = () => {
-  const { t } = useI18n()
+export const getMessages = (t: any) => {
   messageApi.getUnreadMessageList().then((res) => {
     if (res.data.code === 200) {
       const data = res.data.data as MessageType[]

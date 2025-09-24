@@ -131,10 +131,10 @@
           'bg-active/60 text-active-content/60  cursor-not-allowed tooltip tooltip-left':
             userStore.isLogin === false,
         }"
-        data-tip="请先登录后再发布内容"
+        :data-tip="$t('d.qing-xian-deng-lu-hou-zai-fa-bu-nei-rong')"
         @click="submitVersiont"
         :disabled="userStore.isLogin === false || loader">
-        {{ versionData.id ? '更新版本' : '发布版本' }}
+        {{ versionData.id ? $t('b.geng-xin-ban-ben') : $t('b.fa-bu-ban-ben') }}
       </button>
     </div>
   </div>

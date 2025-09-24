@@ -119,6 +119,7 @@ import { useRoute, useRouter } from 'vue-router'
 import {
   getFileTypeOptions,
   getPost,
+  getSortOptions,
   search,
 } from '@/stores/module/post/service'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
@@ -150,7 +151,7 @@ const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
 const show = ref(false) // 显示置顶公告
 const announcementStore = useAnnouncementStore()
-const orderTypeOptions = computed(() => postStore.orderTypeOptions)
+const orderTypeOptions = getSortOptions(t)
 
 const announcementPostData = ref<Post | null>(null)
 
@@ -239,7 +240,7 @@ const stopDrag = () => {
 const setPage = async (page: number) => {
   postStore.postPage.page = page
   toTop()
-  await getPost(+plateId.value, route)
+  await getPost(+plateId.value, route, t)
 }
 
 const handleSearch = (
@@ -253,8 +254,7 @@ const handleSearch = (
   postStore.isSearch = true
   postStore.postPage.page = 1
   postStore.postPage.total = 0
-  postStore.post = []
-  search(searchText, click, fileTypes, route)
+  search(searchText, click, fileTypes, route, t)
 }
 
 watch(
@@ -266,18 +266,18 @@ watch(
       plateId.value = newPlate.plateId as string
       postStore.postPage.page = 1
       postStore.postPage.limit = 10
-      getPost(+newPlate.plateId, route)
+      getPost(+newPlate.plateId, route, t)
     }
   },
   { immediate: true }
 )
 watch(fileType, () => {
-  search(postStore.searchText, true, String(fileType.value), route)
+  search(postStore.searchText, true, String(fileType.value), route, t)
 })
 watch(
   () => postStore.orderType,
   () => {
-    search(postStore.searchText, true, String(fileType.value), route)
+    search(postStore.searchText, true, String(fileType.value), route, t)
   }
 )
 

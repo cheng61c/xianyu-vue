@@ -14,7 +14,7 @@
           <span
             v-for="item in selectedItems"
             :key="getKey(item)"
-            class="inline-flex items-center px-2 py-1 bg-gray rounded-md text-sm hover:bg-active hover:text-active-content">
+            class="inline-flex items-center px-2 py-1 bg-gray/40 rounded-md text-sm hover:bg-active hover:text-active-content">
             {{ getLabel(item) }}
             <button
               type="button"
@@ -61,14 +61,16 @@
       leave-to-class="transform scale-95 opacity-0">
       <div
         v-show="isOpen"
-        class="absolute z-10 mt-1 w-full shadow-lg rounded-md py-1 border border-gray bg-background max-h-60 overflow-auto focus:outline-none">
+        class="absolute z-10 mt-1 w-full shadow-lg rounded-md border border-gray bg-background max-h-60 overflow-auto focus:outline-none">
         <!-- 搜索框 -->
-        <div v-if="searchable" class="sticky top-0 px-2 py-1 border-b">
+        <div
+          v-if="searchable"
+          class="sticky top-0 px-2 py-1 z-2 border-b bg-background">
           <input
             ref="searchInput"
             v-model="searchQuery"
             type="text"
-            class="w-full p-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-active focus:border-active"
+            class="w-full p-2 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-active focus:border-active bg-background"
             :placeholder="$t('b.sou-suo') + '...'"
             @click.stop />
         </div>

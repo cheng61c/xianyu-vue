@@ -330,14 +330,14 @@ const openImg = (src: string) => {
 }
 
 const getPostData = async (id: number) => {
-  const { post, toc } = await getPostDetails(id)
+  const { post, toc } = await getPostDetails(id, t)
   postData.value = post
   tocList.value = toc
 }
 
 onMounted(async () => {
   const postId = route.params.postId
-  const details = await getPostDetails(+postId)
+  const details = await getPostDetails(+postId, t)
   if (!details.post) {
     errorPage.value = true // 设置错误页面标志
     return

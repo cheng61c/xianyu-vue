@@ -20,8 +20,11 @@
       <div class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            帖子标题，帖子标题会显示在游戏内社区的列表中，建议使用简短的标题，便于用户快速搜索">
+          :data-tip="
+            $t(
+              't.tie-zi-biao-ti-tie-zi-biao-ti-hui-xian-shi-zai-you-xi-nei-she-qu-de-lie-biao-zhong-jian-yi-shi-yong-jian-duan-de-biao-ti-bian-yu-yong-hu-kuai-su-sou-suo'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('b.biao-ti') }} <span><CircleHelp :size="16" /></span>
           </span>
@@ -39,7 +42,11 @@
       <div class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="模式选择，用于选择发布帖子或服务器，不同模式下的表单内容会有所不同">
+          :data-tip="
+            $t(
+              't.mo-shi-xuan-ze-yong-yu-xuan-ze-fa-bu-tie-zi-huo-fu-wu-qi-bu-tong-mo-shi-xia-de-biao-dan-nei-rong-hui-you-suo-bu-tong'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('f.mo-shi-xuan-ze') }} <span><CircleHelp :size="16" /></span>
           </span>
@@ -65,12 +72,17 @@
         </div>
       </div>
 
+      <!-- 置顶模式 -->
       <div
         v-if="mode === 'post' && verifyPermissions([1, 2, 6, 9])"
         class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="置顶选项，用于选择帖子在社区中的显示方式，置顶的帖子会在列表中优先显示，横幅公告和弹窗公告会在站内有特殊提示">
+          :data-tip="
+            $t(
+              'f.zhi-ding-xuan-xiang-yong-yu-xuan-ze-tie-zi-zai-she-qu-zhong-de-xian-shi-fang-shi-zhi-ding-de-tie-zi-hui-zai-lie-biao-zhong-you-xian-xian-shi-heng-fu-gong-gao-he-dan-chuang-gong-gao-hui-zai-zhan-nei-you-te-shu-ti-shi'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('b.zhi-ding-mo-shi') }} <span><CircleHelp :size="16" /></span>
           </span>
@@ -133,8 +145,11 @@
       <div v-if="mode === 'post'" class="flex flex-wrap items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            选择要发送到的板块，板块类型会影响帖子类型的选择，文件类型的帖子只能发送到文件板块">
+          :data-tip="
+            $t(
+              'd.xuan-ze-yao-fa-song-dao-de-ban-kuai-ban-kuai-lei-xing-hui-ying-xiang-tie-zi-lei-xing-de-xuan-ze-wen-jian-lei-xing-de-tie-zi-zhi-neng-fa-song-dao-wen-jian-ban-kuai'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('f.xuan-ze-ban-kuai') }}
             <span><CircleHelp :size="16" /></span>
@@ -146,9 +161,9 @@
         <div class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
-            <span class="flex items-center gap-1">{{
-              $t('f.jiao-liu-ban-kuai')
-            }}</span>
+            <span class="flex items-center gap-1">
+              {{ $t('f.jiao-liu-ban-kuai') }}
+            </span>
           </label>
           <template v-for="b in plateList" :key="`post-${b.id}`">
             <ScButton
@@ -206,7 +221,7 @@
         </label>
         <div class="flex gap-2 flex-wrap">
           <ScButton
-            v-for="type in configStore.fileTypes"
+            v-for="type in fileTypes"
             :key="type.value"
             class="px-4 py-1 text-sm"
             :activation="postData.fileType === type.value"
@@ -337,8 +352,11 @@
 
         <span
           class="text-info tooltip tooltip-right"
-          data-tip="
-        该测试只对ip有效，与端口号无关，请确保端口号已开放"
+          :data-tip="
+            $t(
+              't.gai-ce-shi-zhi-dui-ip-you-xiao-yu-duan-kou-hao-wu-guan-qing-que-bao-duan-kou-hao-yi-kai-fang'
+            )
+          "
           v-if="pingLoding">
           {{ $t('d.ce-shi-yan-chi-zhong') }}
         </span>
@@ -421,7 +439,7 @@
         class="px-6 py-2 hover:bg-active/80"
         @click="submitPost"
         :loading="loader">
-        {{ isEdit ? '更新帖子' : '发布帖子' }}
+        {{ isEdit ? $t('b.geng-xin-tie-zi') : $t('b.fa-bu-tie-zi') }}
       </ScButton>
     </div>
   </div>
@@ -442,7 +460,6 @@ import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'
 import { usePostStore } from '@/stores/module/post/postStore'
-import { useConfigStore } from '@/stores/global/configStore'
 import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/common/ScButton.vue'
 import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
@@ -452,14 +469,14 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useI18n } from 'vue-i18n'
 import CreatrPostJump from '@/components/common/CreatrPostJump.vue'
 import { useRouter } from 'vue-router'
+import { getfileTypes } from '@/stores/module/post/service'
 
 const { t } = useI18n()
 const toast = useToast()
 const postStore = usePostStore()
-const configStore = useConfigStore()
 const userStore = useUserStore()
 const router = useRouter()
-
+const fileTypes = getfileTypes(t)
 const props = defineProps({
   post: {
     type: Object as () => Post | null,

@@ -79,7 +79,7 @@ watch(
 
     postStore.currentPlate.currentRouteName = (route.name as string) || ''
     getPlate(t)
-    getPost(activation.value, route)
+    getPost(activation.value, route, t)
   }
 )
 </script>

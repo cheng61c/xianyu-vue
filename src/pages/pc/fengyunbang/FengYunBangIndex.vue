@@ -88,10 +88,12 @@ import { useFengYunBangStore } from '@/stores/module/fengyunbang/FengYunBangStor
 import { getFengYunBangList } from '@/stores/module/fengyunbang/service'
 import { Trophy } from 'lucide-vue-next'
 
+const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
 const currentId = ref(fengYunBangStore.list[0]?.id || 0)
 const rightContainer = ref<HTMLElement | null>(null)
 import type { ComponentPublicInstance } from 'vue'
+import { useI18n } from 'vue-i18n'
 const cardRefs = ref<
   Record<number, HTMLElement | Element | ComponentPublicInstance>
 >({})
@@ -136,6 +138,6 @@ watch(
 )
 
 onMounted(() => {
-  getFengYunBangList()
+  getFengYunBangList(t)
 })
 </script>

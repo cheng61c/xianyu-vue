@@ -7,6 +7,16 @@
         {{ $t('b.dao-xu-xian-kuang-huo-dian-ji-shang-chuan') }}
       </div>
 
+      <div class="flex gap-2 items-center">
+        <span> {{ $t('f.xuan-ze-wen-jian') }}</span>
+        <ScSelector
+          class="flex-1"
+          v-model="uploadedFiles"
+          :options="myFiles"
+          multiple
+          searchable></ScSelector>
+      </div>
+
       <div
         class="border-2 border-dashed border-gray rounded-xltext-center cursor-pointer hover:border-blue-400 transition"
         :class="{
@@ -22,7 +32,7 @@
           multiple
           class="hidden"
           @change="handleFileChange" />
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div
             v-for="(file, index) in uploadedFiles"
             :key="index"
@@ -30,10 +40,10 @@
             @click.stop>
             <ScButton
               :icon="iconMap[props.typeid as keyof typeof iconMap]"
-              :iconSize="36"
+              :iconSize="deviceStore.device == 2 ? 36 : 24"
               noBg
               noPd />
-            <div class="text-center px-2">{{ file.name }}</div>
+            <div class="text-center px-2 break-all">{{ file.name }}</div>
             <button
               @click.stop="removeFile(index)"
               class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow cursor-pointe"
@@ -52,7 +62,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, onBeforeUnmount, computed } from 'vue'
+import {
+  ref,
+  onMounted,
+  nextTick,
+  onBeforeUnmount,
+  computed,
+  watchEffect,
+} from 'vue'
 import { Plus, X } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
 import Card from './Card.vue'
@@ -62,8 +79,10 @@ import { uploadApi } from '@/apis'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
 import { useI18n } from 'vue-i18n'
 import { useDeviceStore } from '@/stores/global/deviceStore'
+import ScSelector from './ScSelector.vue'
+import type { FileType } from '@/types/Upload'
 const { t } = useI18n()
-const typeLabelMap = useTypeLabelMap()
+const typeLabelMap = useTypeLabelMap(t)
 
 const props = defineProps({
   typeid: {
@@ -81,13 +100,45 @@ const emit = defineEmits<{
 
 const deviceStore = useDeviceStore()
 
-const uploadedFiles = ref<{ name: string; id: number; size: number }[]>([])
+const uploadedFiles = ref<
+  {
+    value?: number
+    label?: string
+    size: number
+    name: string
+    id: number
+  }[]
+>([])
 
 const fileInput = ref<HTMLInputElement | null>(null)
 const isOpen = ref(false)
 const uploading = ref(false)
 const files = ref<{ file: File }[]>([])
 const toast = useToast()
+
+const myFiles = ref<
+  {
+    value: number
+    label: string
+    size: number
+    name: string
+    id: number
+  }[]
+>([])
+watchEffect(async () => {
+  const files = await uploadApi.getFilesList({
+    types: '1,2,3,4,5,7',
+    page: 1,
+    limit: 999,
+  })
+  myFiles.value = files.data.data.list.map((file: FileType) => ({
+    value: file.id,
+    label: file.filename,
+    size: file.size,
+    name: file.filename,
+    id: file.id,
+  }))
+})
 
 const fileTypeLabel = computed(
   () =>

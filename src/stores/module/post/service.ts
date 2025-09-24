@@ -1,6 +1,5 @@
 import { useToast } from 'vue-toastification'
 import { plateApi, postApi, reportApi } from '@/apis'
-import { useConfigStore } from '@/stores/global/configStore'
 import { usePostStore } from '@/stores/module/post/postStore'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
@@ -13,17 +12,64 @@ import { ArrowDownWideNarrow, ArrowUpNarrowWide } from 'lucide-vue-next'
 
 import { generateTocFromHtml } from '@/utils/toc'
 import { useUserStore } from '../user/userStore'
-import { useI18n } from 'vue-i18n'
+import type { MenuItem } from '@/types/Config'
 
 const toast = useToast()
-const configStore = useConfigStore()
 const postStore = usePostStore()
 const userStore = useUserStore()
+
+export const getMenuItems = (t: any): MenuItem[] => {
+  return [
+    {
+      name: t('nav.jiao-liu-tie-zi'),
+      pathName: 'postList',
+      params: { plateId: 0 },
+      type: 1,
+    },
+    {
+      name: t('nav.zi-yuan-xia-zai'),
+      pathName: 'modList',
+      params: { plateId: 0 },
+      type: 2,
+    },
+  ]
+}
+
+export const getfileTypes = (t: any) => {
+  return [
+    { value: 1, label: t('b.cun-dang') },
+    { value: 2, label: t('b.jia-ju') },
+    { value: 3, label: t('b.cai-zhi') },
+    { value: 4, label: t('b.pi-fu') },
+    { value: 5, label: t('b.mo-zu') },
+    { value: 7, label: t('b.qi-ta') },
+  ]
+}
+/** 获取文件标签 */
+export const getFileTypeOptions = (t: any) => {
+  return [
+    { value: 0, label: t('b.quan-bu') },
+    { value: 1, label: t('b.cun-dang') },
+    { value: 2, label: t('b.jia-ju') },
+    { value: 3, label: t('b.cai-zhi') },
+    { value: 4, label: t('b.pi-fu') },
+    { value: 5, label: t('b.mo-zu') },
+    { value: 7, label: t('b.qi-ta') },
+  ]
+}
+/** 获取排序选项 */
+export const getSortOptions = (t: any) => {
+  return [
+    { value: 1, label: t('b.zui-xin'), icon: ArrowDownWideNarrow },
+    { value: 2, label: t('b.zui-zao'), icon: ArrowUpNarrowWide },
+    { value: 3, label: t('b.zui-zan'), icon: ArrowDownWideNarrow },
+  ]
+}
 
 /** 获取板块列表 */
 export const getPlate = async (t: any) => {
   const typeId =
-    configStore.menuItems.find(
+    getMenuItems(t).find(
       (item) => item.pathName === postStore.currentPlate.currentRouteName
     )?.type || 1
   plateApi
@@ -58,24 +104,25 @@ export const handleCardClick = (
 /** 跳转分页 */
 export const toPage = (
   page: number,
-  route: RouteLocationNormalizedLoadedGeneric
+  route: RouteLocationNormalizedLoadedGeneric,
+  t: any
 ) => {
   postStore.postPage.page = page
-  getPost(postStore.plateId, route)
+  getPost(postStore.plateId, route, t)
 }
 
 /** 获取帖子 */
 export const getPost = async (
   pid: number,
-  route: RouteLocationNormalizedLoadedGeneric
+  route: RouteLocationNormalizedLoadedGeneric,
+  t: any
 ) => {
-  const { t } = useI18n()
   if (
     postStore.isSearch &&
     postStore.searchText &&
     postStore.searchText.trim()
   ) {
-    search(postStore.searchText, false, '0', route)
+    search(postStore.searchText, false, '0', route, t)
     return
   }
   const query: PostListQueryDto = {
@@ -115,9 +162,9 @@ export const search = (
   key: string,
   click = true,
   fileTypes = '0',
-  route: RouteLocationNormalizedLoadedGeneric
+  route: RouteLocationNormalizedLoadedGeneric,
+  t: any
 ) => {
-  const { t } = useI18n()
   if (click) {
     postStore.postPage.page = 1
   }
@@ -161,8 +208,7 @@ export const search = (
   })
 }
 /** 获取帖子详情 */
-export const getPostDetails = async (postId: number) => {
-  const { t } = useI18n()
+export const getPostDetails = async (postId: number, t: any) => {
   postStore.postData = null // 清理数据
   postStore.tocList = [] // 清理目录列表
   postStore.errorPage = false // 重置错误页面标志
@@ -199,27 +245,6 @@ export const getPostDetails = async (postId: number) => {
         toc: [],
       }
     })
-}
-/** 获取文件标签 */
-export const getFileTypeOptions = (t: any) => {
-  return [
-    { value: 0, label: t('b.quan-bu') },
-    { value: 1, label: t('b.cun-dang') },
-    { value: 2, label: t('b.jia-ju') },
-    { value: 3, label: t('b.cai-zhi') },
-    { value: 4, label: t('b.pi-fu') },
-    { value: 5, label: t('b.mo-zu') },
-    { value: 7, label: t('b.qi-ta') },
-  ]
-}
-/** 获取排序选项 */
-export const getSortOptions = (t: any) => {
-  return [
-    { value: 1, label: t('b.shi-jian-jiang-xu'), icon: ArrowDownWideNarrow },
-    { value: 2, label: t('b.shi-jian-sheng-xu'), icon: ArrowUpNarrowWide },
-    { value: 3, label: t('b.dian-zan-jiang-xu'), icon: ArrowDownWideNarrow },
-    { value: 4, label: t('b.dian-zan-sheng-xu'), icon: ArrowUpNarrowWide },
-  ]
 }
 
 /** 删除帖子 */

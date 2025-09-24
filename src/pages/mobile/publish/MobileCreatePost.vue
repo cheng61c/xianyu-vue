@@ -72,12 +72,17 @@
         </div>
       </div>
 
+      <!-- 置顶模式 -->
       <div
         v-if="mode === 'post' && verifyPermissions([1, 2, 6, 9])"
         class="flex items-center gap-2 flex-wrap">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="置顶选项，用于选择帖子在社区中的显示方式，置顶的帖子会在列表中优先显示，横幅公告和弹窗公告会在站内有特殊提示">
+          :data-tip="
+            $t(
+              'f.zhi-ding-xuan-xiang-yong-yu-xuan-ze-tie-zi-zai-she-qu-zhong-de-xian-shi-fang-shi-zhi-ding-de-tie-zi-hui-zai-lie-biao-zhong-you-xian-xian-shi-heng-fu-gong-gao-he-dan-chuang-gong-gao-hui-zai-zhan-nei-you-te-shu-ti-shi'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('b.zhi-ding-mo-shi') }} <span><CircleHelp :size="16" /></span>
           </span>
@@ -216,7 +221,7 @@
         </label>
         <div class="flex gap-2 flex-wrap">
           <ScButton
-            v-for="type in configStore.fileTypes"
+            v-for="type in fileTypes"
             :key="type.value"
             class="px-4 py-1 text-sm"
             :activation="postData.fileType === type.value"
@@ -403,8 +408,11 @@
       <div v-if="mode === 'server'" class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            选择服务器版本，服务器版本会影响游戏内的连接方式和功能，建议根据实际情况选择合适的版本">
+          :data-tip="
+            $t(
+              'd.xuan-ze-fu-wu-qi-ban-ben-fu-wu-qi-ban-ben-hui-ying-xiang-you-xi-nei-de-lian-jie-fang-shi-he-gong-neng-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-ban-ben'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('f.fu-wu-qi-ban-ben') }}
             <span><CircleHelp :size="16" /></span>
@@ -448,7 +456,7 @@
         class="px-6 py-2 hover:bg-active/80"
         @click="submitPost"
         :loading="loader">
-        {{ isEdit ? '更新帖子' : '发布帖子' }}
+        {{ isEdit ? $t('b.geng-xin-tie-zi') : $t('b.fa-bu-tie-zi') }}
       </ScButton>
     </div>
   </div>
@@ -478,7 +486,6 @@ import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'
 import { usePostStore } from '@/stores/module/post/postStore'
-import { useConfigStore } from '@/stores/global/configStore'
 import type { Plate } from '@/types/Plate'
 import ScButton from '@/components/common/ScButton.vue'
 import { postApi, pingApi, plateApi, versionApi, serverApi } from '@/apis'
@@ -488,15 +495,18 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import ScDrawer from '@/components/common/ScDrawer.vue'
 import { useRouter } from 'vue-router'
+import { getfileTypes } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const postStore = usePostStore()
-const configStore = useConfigStore()
 const userStore = useUserStore()
 const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const router = useRouter()
+const { t } = useI18n()
+
+const fileTypes = getfileTypes(t)
 
 const onTipTap = () => {
   isOpen.value = true
@@ -510,7 +520,6 @@ const props = defineProps({
     type: Boolean,
   },
 })
-const { t } = useI18n()
 const plateList = ref<Plate[]>([]) // 板块列表
 const versionList = ref<Version[]>([]) // 版本列表
 

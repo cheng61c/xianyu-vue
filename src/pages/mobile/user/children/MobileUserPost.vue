@@ -29,7 +29,7 @@
       <div class="flex flex-col gap-2 w-full">
         <!-- 标题 -->
         <div
-          class="flex items-center gap-2 flex-grow"
+          class="flex items-center gap-2 flex-grow break-all"
           @click.stop="
             $router.push({ name: 'postDetails', params: { postId: post.id } })
           ">
@@ -53,7 +53,7 @@
             {{ post.createdAt }}
           </div>
         </div>
-        <div class="line-clamp-3">
+        <div class="line-clamp-3 break-all">
           {{ post.content }}
         </div>
       </div>

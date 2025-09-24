@@ -102,11 +102,13 @@ import { getFengYunBangList } from '@/stores/module/fengyunbang/service'
 import { ChevronLeft, Menu } from 'lucide-vue-next'
 import ScDrawer from '@/components/common/ScDrawer.vue'
 import ScButton from '@/components/common/ScButton.vue'
+import type { ComponentPublicInstance } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const fengYunBangStore = useFengYunBangStore()
 const currentId = ref(fengYunBangStore.list[0]?.id || 0)
 const rightContainer = ref<HTMLElement | null>(null)
-import type { ComponentPublicInstance } from 'vue'
 const cardRefs = ref<
   Record<number, HTMLElement | Element | ComponentPublicInstance>
 >({})
@@ -154,6 +156,6 @@ watch(
 )
 
 onMounted(() => {
-  getFengYunBangList()
+  getFengYunBangList(t)
 })
 </script>

@@ -48,7 +48,7 @@
                 <ScTag
                   :status="role.status === 1 ? 'success' : 'error'"
                   size="sm">
-                  {{ role.status === 1 ? '启用' : '禁用' }}
+                  {{ role.status === 1 ? $t('b.qi-yong') : $t('b.jin-yong') }}
                 </ScTag>
               </div>
             </td>

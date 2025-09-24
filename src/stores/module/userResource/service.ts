@@ -5,7 +5,6 @@ import { extractImageSrcs } from '@/utils/regex'
 
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '../user/userStore'
-import { useI18n } from 'vue-i18n'
 
 const toast = useToast()
 const resStore = useUserResourceStore()
@@ -78,7 +77,7 @@ export const deletePackage = (t: any) => {
     .then((response) => {
       if (response.data.code === 200) {
         // 刷新版本列表
-        getPackageList()
+        getPackageList(t)
         toast.success(t('t.shan-chu-cheng-gong'))
       }
     })
@@ -88,8 +87,7 @@ export const deletePackage = (t: any) => {
   resStore.isDeletePkg = false
 }
 
-export const getPackageList = () => {
-  const { t } = useI18n()
+export const getPackageList = (t: any) => {
   postApi
     .getPostDocumentList({
       id: resStore.currenPostId,

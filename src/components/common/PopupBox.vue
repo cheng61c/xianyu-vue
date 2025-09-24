@@ -23,7 +23,7 @@
     <transition name="fade-slide">
       <div
         v-if="isOpen"
-        class="absolute z-10"
+        class="absolute z-10 shadow-lg bg-transparent"
         :class="{
           'top-[110%]': position === 'bottom',
           'bottom-[110%]': position === 'top',

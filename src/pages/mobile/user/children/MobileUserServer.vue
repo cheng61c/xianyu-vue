@@ -44,7 +44,7 @@
         class="text-sm px-4 border border-gray hover:border-active"
         :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
         :iconSize="16"
-        @click="unpublishItem(postIndex)">
+        @click="unpublishItem(postIndex, $t)">
         {{ post.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
       </ScButton>
       <ScButton

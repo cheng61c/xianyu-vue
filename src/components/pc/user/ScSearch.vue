@@ -6,7 +6,8 @@
         'justify-center': deviceStore.device == 1,
         'justify-between': deviceStore.device == 2,
       }">
-      <div class="flex max-w-xs gap-2 flex-shrink-0 items-center">
+      <div
+        class="flex max-w-xs min-w-3/5 flex-1 gap-2 flex-shrink-0 items-center">
         <ScInput
           v-model="searchText"
           :placeholder="t('b.sou-suo')"
@@ -74,14 +75,17 @@
 
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
-import { computed, defineProps, ref, watch } from 'vue'
+import { defineProps, ref, watch } from 'vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
 import PopupBox from '@/components/common/PopupBox.vue'
 import { useI18n } from 'vue-i18n'
 import { Funnel, ArrowDownWideNarrow } from 'lucide-vue-next'
-import { getFileTypeOptions } from '@/stores/module/post/service'
+import {
+  getFileTypeOptions,
+  getSortOptions,
+} from '@/stores/module/post/service'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import { usePostStore } from '@/stores/module/post/postStore'
 
@@ -101,7 +105,7 @@ const deviceStore = useDeviceStore()
 const postStore = usePostStore()
 const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
-const orderTypeOptions = computed(() => postStore.orderTypeOptions)
+const orderTypeOptions = getSortOptions(t)
 
 const emit = defineEmits<{
   (e: 'search', value: string, click: boolean, type: string): void

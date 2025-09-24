@@ -128,11 +128,9 @@ import { likePost, badPost } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
 import ScRole from '@/components/common/ScRole.vue'
 
-const typeLabelMap = useTypeLabelMap()
-
 const router = useRouter()
 const { t } = useI18n()
-
+const typeLabelMap = useTypeLabelMap(t)
 const props = defineProps<{
   post: Post
 }>()

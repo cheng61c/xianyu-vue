@@ -1,4 +1,3 @@
-import type { MenuItem } from '@/types/Config'
 import { defineStore } from 'pinia'
 
 export const useConfigStore = defineStore('config', {
@@ -21,30 +20,6 @@ export const useConfigStore = defineStore('config', {
     padAdaptation: false,
     /** 网络请求中 */
     loading: false,
-
-    menuItems: <MenuItem[]>[
-      {
-        name: '交流帖子',
-        pathName: 'postList',
-        params: { plateId: 0 },
-        type: 1,
-      },
-      {
-        name: '资源下载',
-        pathName: 'modList',
-        params: { plateId: 0 },
-        type: 2,
-      },
-    ],
-
-    fileTypes: [
-      { value: 1, label: '存档' },
-      { value: 2, label: '家具' },
-      { value: 3, label: '材质' },
-      { value: 4, label: '皮肤' },
-      { value: 5, label: '模组' },
-      { value: 7, label: '其他' },
-    ],
   }),
 
   actions: {

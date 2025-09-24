@@ -1,42 +1,52 @@
 import { adminPanelApi } from '@/apis'
 import type { AdminPanelInfo } from '@/types/PanelInfo'
 
-export const getPanelInfo = async (): Promise<AdminPanelInfo> => {
+export const getPanelInfo = async (t: any): Promise<AdminPanelInfo> => {
   const res = await adminPanelApi.getPanel()
   if (res.data.code == 200) {
     const data = res.data.data
     return {
       recentLoginStats: {
         chart: getEChartsTemplate(
-          `最近登录(${data.recentLoginStats.count})`,
+          t('d.zui-jin-deng-lu-datarecentloginstatscount', [
+            data.recentLoginStats.count,
+          ]),
           data.recentLoginStats.list
         ),
         count: data.recentLoginStats.count,
       },
       recentRegisterStats: {
         chart: getEChartsTemplate(
-          `最近注册(${data.recentRegisterStats.count})`,
+          t('d.zui-jin-zhu-ce-datarecentregisterstatscount', [
+            data.recentRegisterStats.count,
+          ]),
           data.recentRegisterStats.list
         ),
         count: data.recentRegisterStats.count,
       },
       recentPostStats: {
         chart: getEChartsTemplate(
-          `最近发布的帖子(${data.recentPostStats.count})`,
+          t('d.zui-jin-fa-bu-de-tie-zi-datarecentpoststatscount', [
+            data.recentPostStats.count,
+          ]),
           data.recentPostStats.list
         ),
         count: data.recentPostStats.count,
       },
       recentResourcePostStats: {
         chart: getEChartsTemplate(
-          `最近发布的资源(${data.recentResourcePostStats.count})`,
+          t('d.zui-jin-fa-bu-de-zi-yuan-datarecentresourcepoststatscount', [
+            data.recentResourcePostStats.count,
+          ]),
           data.recentResourcePostStats.list
         ),
         count: data.recentResourcePostStats.count,
       },
       recentCommentStats: {
         chart: getEChartsTemplate(
-          `最近发布的评论(${data.recentCommentStats.count})`,
+          t('d.zui-jin-fa-bu-de-ping-lun-datarecentcommentstatscount', [
+            data.recentCommentStats.count,
+          ]),
           data.recentCommentStats.list
         ),
         count: data.recentCommentStats.count,

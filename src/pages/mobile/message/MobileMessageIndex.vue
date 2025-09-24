@@ -74,7 +74,7 @@ const readMessages = computed(() => {
 
 const setPage = (typeId: number) => {
   type.value = typeId
-  getMessages()
+  getMessages(t)
 }
 onMounted(getMessages)
 onUnmounted(markReadAll)

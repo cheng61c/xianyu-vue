@@ -55,14 +55,16 @@ const messageStore = useMessageStore()
 const type = ref(1)
 
 // 菜单配置
-const menuItems = [
+const menuItems = ref([
   { type: 1, label: t('d.hui-fu-wo-de') },
   { type: 2, label: t('d.shou-dao-de-zan') },
-]
+])
 
 // 计算属性
 const activeMenu = computed(
-  () => menuItems.find((item) => item.type === type.value) || menuItems[0]
+  () =>
+    menuItems.value.find((item) => item.type === type.value) ||
+    menuItems.value[0]
 )
 const totalCount = computed(() => {
   return type.value === 1
@@ -79,7 +81,7 @@ const readMessages = computed(() => {
 // 方法
 const setPage = (typeId: number) => {
   type.value = typeId
-  getMessages()
+  getMessages(t)
 }
 
 // 生命周期

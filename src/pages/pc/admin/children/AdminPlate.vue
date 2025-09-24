@@ -38,7 +38,9 @@
                 <ScTag
                   :status="plate.disabled === 0 ? 'success' : 'error'"
                   size="sm">
-                  {{ plate.disabled === 0 ? '启用' : '禁用' }}
+                  {{
+                    plate.disabled === 0 ? $t('b.qi-yong') : $t('b.jin-yong')
+                  }}
                 </ScTag>
                 <ScTag v-if="plate.admin" status="info" size="sm">
                   {{ $t('t.jin-guan-li-yuan-ke-fa-bu') }}

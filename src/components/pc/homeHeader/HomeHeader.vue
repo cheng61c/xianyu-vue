@@ -15,7 +15,7 @@
     </button>
 
     <HomeNav
-      :menuItems="configStore.menuItems"
+      :menuItems="menuItems"
       :activeNavName="activeNavName"
       :updateNav="updateNav"
       :updatePage="updatePage" />
@@ -30,13 +30,9 @@
         :icon="Mail"
         :iconSize="25"
         noPd
-        @click="
-          $router.push({
-            name: 'message',
-          })
-        ">
+        @click="toMessage">
         <ScTag
-          v-if="messageStore.replyUnread.length"
+          v-if="userStore.isLogin && messageStore.replyUnread.length"
           size="xs"
           status="error"
           class="absolute top-[-4px] right-[-10%]">
@@ -53,6 +49,7 @@
         noPd
         @click="$router.push({ name: 'mingrentang' })" />
       <ThemeButton />
+      <LangPopupButton />
       <ScLogin />
     </div>
   </header>
@@ -88,19 +85,32 @@ import HomeNav from './HomeNav.vue'
 import ScLogin from './ScLogin.vue'
 import { usePostStore } from '@/stores/module/post/postStore'
 import LoadingIcon from '@/components/common/LoadingIcon.vue'
+import { useUserStore } from '@/stores/module/user/userStore'
+import { useToast } from 'vue-toastification'
+import { getMenuItems } from '@/stores/module/post/service'
+import LangPopupButton from '@/components/common/LangPopupButton.vue'
 
 const messageStore = useMessageStore()
 const announcementStore = useAnnouncementStore()
 const themeStore = useThemeStore()
 const configStore = useConfigStore()
 const postStore = usePostStore()
-const { locale } = useI18n()
+const userStore = useUserStore()
 const postData = ref<Post | null>(null)
 const show = ref(false)
 const router = useRouter()
 const activeNavName = ref('')
+const toast = useToast()
+const { t } = useI18n()
+const menuItems = getMenuItems(t)
 
-locale.value = configStore.lang.value // 设置初始语言
+const toMessage = () => {
+  if (userStore.isLogin) {
+    router.push({ name: 'message' })
+  } else {
+    toast.info(t('t.qing-xian-deng-lu'))
+  }
+}
 
 const updateNav = (name: string) => {
   postStore.nav.name = name

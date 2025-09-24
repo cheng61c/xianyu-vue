@@ -48,7 +48,7 @@
           @click.stop="
             $router.push({ name: 'postDetails', params: { postId: post.id } })
           ">
-          <span class="font-bold">{{ post.title }}</span>
+          <span class="font-bold break-all">{{ post.title }}</span>
           <div class="flex items-center gap-1 flex-shrink-0">
             <ScTag size="sm" status="info">
               {{ typeLabelMap[post.fileType as keyof typeof typeLabelMap] }}
@@ -71,7 +71,7 @@
             {{ post.createdAt }}
           </div>
         </div>
-        <div class="line-clamp-3">
+        <div class="line-clamp-3 break-all">
           {{ post.content }}
         </div>
       </div>
@@ -384,7 +384,7 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const resStore = useUserResourceStore()
 const toast = useToast()
-const typeLabelMap = useTypeLabelMap()
+const typeLabelMap = useTypeLabelMap(t)
 const openPackageList = ref(false)
 const loading = ref(false)
 const searchText = ref('')
@@ -420,7 +420,7 @@ const unpublishItem = (postIndex: number) => {
 
 const onPackageModal = (id: number) => {
   resStore.currenPostId = id
-  getPackageList()
+  getPackageList(t)
   openPackageList.value = !openPackageList.value
 }
 

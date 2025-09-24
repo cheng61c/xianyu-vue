@@ -6,7 +6,9 @@
     "zi-yuan": "资源",
     "wen-jian": "文件",
     "fu-wu-qi": "服务器",
-    "bian-ji-zi-liao": "编辑资料"
+    "bian-ji-zi-liao": "编辑资料",
+    "jiao-liu-tie-zi": "交流帖子",
+    "zi-yuan-xia-zai": "资源下载"
   },
   "d": {
     "shang-wei-kai-fa": "尚未开发",
@@ -191,7 +193,12 @@
     "xiao-xi-zhong-xin": "消息中心",
     "zong-ji-totalcount-tiao-xiao-xi": "总计 {0} 条消息",
     "zhang-hao-mi-yue-shi-nin-zhang-hao-de-si-mi-xin-xi-yong-yu-yan-zheng-shen-fen-she-zhi-xin-de-mi-yue-hou-jiu-de-mi-yue-jiang-shi-xiao": "账号秘钥是您账号的私密信息，用于验证身份，设置新的秘钥后，旧的秘钥将失效",
-    "yan-zheng-ma-she-zhi-hou-wu-fa-huo-qu-qing-tuo-shan-bao-guan": "验证码设置后无法获取，请妥善保管"
+    "yan-zheng-ma-she-zhi-hou-wu-fa-huo-qu-qing-tuo-shan-bao-guan": "验证码设置后无法获取，请妥善保管",
+    "zui-jin-deng-lu-datarecentloginstatscount": "最近登录({0})",
+    "zui-jin-zhu-ce-datarecentregisterstatscount": "最近注册({0})",
+    "zui-jin-fa-bu-de-tie-zi-datarecentpoststatscount": "最近发布的帖子({0})",
+    "zui-jin-fa-bu-de-zi-yuan-datarecentresourcepoststatscount": "最近发布的资源({0})",
+    "zui-jin-fa-bu-de-ping-lun-datarecentcommentstatscount": "最近发布的评论({0})"
   },
   "f": {
     "ji-chu-xin-xi": "基础信息",
@@ -256,7 +263,9 @@
     "jiao-liu-ban-kuai": "交流板块 :",
     "zi-yuan-ban-kuai": "资源板块 :",
     "biao-ti": "标题：",
-    "shi-pei-ban-ben": "适配版本"
+    "shi-pei-ban-ben": "适配版本",
+    "zhi-ding-xuan-xiang-yong-yu-xuan-ze-tie-zi-zai-she-qu-zhong-de-xian-shi-fang-shi-zhi-ding-de-tie-zi-hui-zai-lie-biao-zhong-you-xian-xian-shi-heng-fu-gong-gao-he-dan-chuang-gong-gao-hui-zai-zhan-nei-you-te-shu-ti-shi": "置顶选项，用于选择帖子在社区中的显示方式，置顶的帖子会在列表中优先显示，横幅公告和弹窗公告会在站内有特殊提示",
+    "xuan-ze-wen-jian": "选择文件"
   },
   "b": {
     "ti-jiao": "提交",
@@ -487,7 +496,11 @@
     "xiu-gai-tou-xiang": "修改头像",
     "yi-xiu-gai-qing-dian-ji-ti-jiao-bao-cun-xiu-gai": "已修改, 请点击提交保存修改",
     "bian-ji-zhu-ye": "编辑主页",
-    "qian-wang-fa-tie": "前往发帖"
+    "qian-wang-fa-tie": "前往发帖",
+    "zui-zao": "最早",
+    "zui-duo-zan": "最多赞",
+    "zui-zan": "最赞",
+    "geng-xin-tie-zi": "更新帖子"
   },
   "t": {
     "yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang": "验证码已发送到您的邮箱",
@@ -627,7 +640,8 @@
     "ban-ben-biao-ti": "版本标题",
     "you-xi-ban-ben-yong-yu-zai-bu-tong-ban-ben-de-you-xi-zhong-zhan-shi-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-ban-ben": "游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本",
     "ni-huan-mei-you-fa-bu-ren-he-tie-zio": "你还没有发布任何帖子哦~",
-    "jin-guan-li-yuan-ke-fa-bu": "仅管理员可发布"
+    "jin-guan-li-yuan-ke-fa-bu": "仅管理员可发布",
+    "qing-xie-xia-ni-de-ping-lun": "请写下你的评论"
   },
   "other": {
     "wen-jian-da-xiao": "文件大小:",

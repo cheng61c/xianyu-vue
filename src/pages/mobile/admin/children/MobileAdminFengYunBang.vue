@@ -333,7 +333,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown)
 })
 onMounted(() => {
-  getFengYunBangAll()
+  getFengYunBangAll(t)
   window.addEventListener('keydown', handleKeydown)
 })
 </script>

@@ -96,7 +96,11 @@
                   :class="{
                     'border border-error text-error': post.status == 2,
                   }">
-                  {{ post.status == 2 ? '撤销封禁' : '封禁' }}
+                  {{
+                    post.status == 2
+                      ? $t('d.che-xiao-feng-jin')
+                      : $t('b.feng-jin')
+                  }}
                 </ScButton>
 
                 <ScButton
@@ -105,7 +109,7 @@
                     'border border-green text-green': post.disabled == 1,
                     'border border-error text-error': post.disabled == 0,
                   }">
-                  {{ post.disabled == 0 ? $t('b.shan-chu') : '恢复' }}
+                  {{ post.disabled == 0 ? $t('b.shan-chu') : $t('b.hui-fu') }}
                 </ScButton>
 
                 <ScButton @click="updatePost(index)" Border>

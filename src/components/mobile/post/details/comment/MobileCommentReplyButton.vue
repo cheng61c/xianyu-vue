@@ -9,7 +9,9 @@
       noPd>
       <span>{{ localLikeCount }}</span>
     </ScButton>
-    <ScButton noPd @click="openReply(commentId, toCommentId)"> 回复 </ScButton>
+    <ScButton noPd @click="openReply(commentId, toCommentId)">
+      {{ $t('b.hui-fu-0') }}
+    </ScButton>
   </div>
   <div v-if="currentInput === `${commentId}-${toCommentId ?? 0}`" class="mt-3">
     <CommentInput

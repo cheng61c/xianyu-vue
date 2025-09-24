@@ -17,7 +17,11 @@
               name: postData?.type == 1 ? 'postList' : 'modList',
               params: { plateId: postData?.plate.id },
             }">
-            {{ postData?.type == 1 ? '交流帖子' : '资源下载' }}
+            {{
+              postData?.type == 1
+                ? $t('nav.jiao-liu-tie-zi')
+                : $t('nav.zi-yuan-xia-zai')
+            }}
           </RouterLink>
         </li>
         <li>
@@ -153,10 +157,11 @@ import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getPostDetails } from '@/stores/module/post/service'
 import type { Post } from '@/types/Post'
 import type { TocItem } from '@/utils/toc'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
 const router = useRouter()
-
+const { t } = useI18n()
 const postData = ref<Post | null>(null) // 获取帖子数据
 const tocList = ref<TocItem[]>([]) // 获取目录列表
 const errorPage = ref(false) // 获取错误页面标志
@@ -168,7 +173,7 @@ const postContainer = ref<HTMLElement | null>(null) // 文章内容容器
 const loading = ref(false) // 加载状态
 
 const getPost = async (postId: number) => {
-  const { post, toc } = await getPostDetails(postId)
+  const { post, toc } = await getPostDetails(postId, t)
   postData.value = post
   tocList.value = toc
 }
@@ -224,7 +229,7 @@ const scrollToHash = (hash: string) => {
 onMounted(async () => {
   loading.value = true
   const postId = route.params.postId
-  const { post, toc } = await getPostDetails(+postId)
+  const { post, toc } = await getPostDetails(+postId, t)
   postData.value = post
   tocList.value = toc
   if (post) {

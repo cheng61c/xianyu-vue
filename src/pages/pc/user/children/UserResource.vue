@@ -37,7 +37,7 @@
       <div class="ml-4 flex flex-col justify-between flex-grow h-24">
         <!-- 标题 -->
         <div
-          class="flex items-center gap-2"
+          class="flex items-center gap-2 break-all"
           @click.stop="
             router.push({ name: 'postDetails', params: { postId: post.id } })
           ">
@@ -49,7 +49,7 @@
             v-if="post.status == 1 || post.status == 3"
             size="sm"
             :status="post.visible == 1 ? 'success' : 'warning'">
-            {{ post.visible == 1 ? '正常' : '下架' }}
+            {{ post.visible == 1 ? $t('b.zheng-chang') : $t('b.xia-jia') }}
           </ScTag>
           <ScTag v-if="post.status == 2" size="sm" status="error">
             {{ $t('b.feng-jin') }}
@@ -132,7 +132,7 @@
           :icon="post.visible == 1 ? ArrowDownFromLine : ArrowUpToLine"
           :iconSize="16"
           @click="unpublishItem(postIndex)">
-          {{ post.visible == 1 ? '下架' : '发布' }}
+          {{ post.visible == 1 ? $t('b.xia-jia') : $t('b.fa-bu') }}
         </ScButton>
         <ScButton
           class="text-sm text-error px-4 border border-gray hover:border-active"
@@ -389,7 +389,7 @@ const { t } = useI18n()
 const userStore = useUserStore()
 const resStore = useUserResourceStore()
 const toast = useToast()
-const typeLabelMap = useTypeLabelMap()
+const typeLabelMap = useTypeLabelMap(t)
 const openPackageList = ref(false)
 const loading = ref(false)
 const searchText = ref('')
@@ -425,7 +425,7 @@ const unpublishItem = (postIndex: number) => {
 
 const onPackageModal = (id: number) => {
   resStore.currenPostId = id
-  getPackageList()
+  getPackageList(t)
   openPackageList.value = !openPackageList.value
 }
 

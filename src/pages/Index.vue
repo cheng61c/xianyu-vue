@@ -13,9 +13,14 @@ import { getInfo, login } from '@/stores/module/user/service'
 import { getMessages } from '@/stores/module/message/service'
 import { useThemeStore } from '@/stores/global/themeStore'
 import { applyTheme } from '@/utils/color'
+import { useI18n } from 'vue-i18n'
+import { useConfigStore } from '@/stores/global/configStore'
 
+const { t, locale } = useI18n()
 const userStore = useUserStore()
 const deviceStore = useDeviceStore()
+const configStore = useConfigStore()
+locale.value = configStore.lang.value // 设置初始语言
 
 onMounted(async () => {
   if (userStore.autoLogin) {
@@ -23,7 +28,7 @@ onMounted(async () => {
   } else {
     getInfo()
   }
-  getMessages()
+  getMessages(t)
 })
 
 const themeStore = useThemeStore()

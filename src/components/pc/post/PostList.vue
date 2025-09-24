@@ -43,16 +43,17 @@ import { SquareArrowOutUpRight } from 'lucide-vue-next'
 import ScSearch from '@/components/pc/user/ScSearch.vue'
 import { getPost, search } from '@/stores/module/post/service'
 import { usePostStore } from '@/stores/module/post/postStore'
+import { useI18n } from 'vue-i18n'
 
 const route = useRoute()
-
+const { t } = useI18n()
 const plateId = ref<string>(route.params.plateId as string)
 
 const postStore = usePostStore()
 
 const setPage = (page: number) => {
   postStore.postPage.page = page
-  getPost(+plateId.value, route)
+  getPost(+plateId.value, route, t)
 }
 
 const handleSearch = (
@@ -65,7 +66,7 @@ const handleSearch = (
   postStore.postPage.page = 1
   postStore.postPage.total = 0
   postStore.post = []
-  search(searchText, click, fileTypes, route)
+  search(searchText, click, fileTypes, route, t)
 }
 
 watch(
@@ -75,11 +76,11 @@ watch(
       plateId.value = newPlate.plateId as string
       postStore.postPage.page = 1
       postStore.postPage.limit = 10
-      getPost(+newPlate.plateId, route)
+      getPost(+newPlate.plateId, route, t)
     }
   }
 )
 onMounted(() => {
-  getPost(+route.params.plateId, route)
+  getPost(+route.params.plateId, route, t)
 })
 </script>

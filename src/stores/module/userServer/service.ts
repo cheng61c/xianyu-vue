@@ -3,7 +3,6 @@ import { useUserStore } from '../user/userStore'
 import { useUserServerStore } from './userServerStore'
 import { serverApi } from '@/apis'
 import { formatTime } from '@/utils/format'
-import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
 const userServerStore = useUserServerStore()
@@ -38,8 +37,7 @@ export const getPosts = () => {
     })
 }
 
-export const unpublishItem = (postIndex: number) => {
-  const { t } = useI18n()
+export const unpublishItem = (postIndex: number, t: any) => {
   const item = userServerStore.posts[postIndex]
   if (!item) {
     toast.error(t('t.tie-zi-bu-cun-zai'))
@@ -67,8 +65,7 @@ export const deleteItem = (postIndex: number) => {
   userServerStore.currentPostIndex = postIndex
 }
 
-export const deletePost = () => {
-  const { t } = useI18n()
+export const deletePost = (t: any) => {
   const item = userServerStore.posts[userServerStore.currentPostIndex]
   if (!item) {
     toast.error(t('t.tie-zi-bu-cun-zai'))

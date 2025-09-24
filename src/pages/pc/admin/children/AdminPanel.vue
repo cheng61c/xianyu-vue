@@ -124,11 +124,13 @@ import EChartsWrapper from '@/components/common/EChartsWrapper.vue'
 import { getPanelInfo } from '@/stores/module/admin/service'
 import type { AdminPanelInfo } from '@/types/PanelInfo'
 import { onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const loading = ref(true)
 const panelInfo = ref<AdminPanelInfo>()
 onMounted(async () => {
-  panelInfo.value = await getPanelInfo()
+  panelInfo.value = await getPanelInfo(t)
   loading.value = false
 })
 </script>
