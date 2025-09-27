@@ -21,7 +21,7 @@ export const formatImageSrcsInHtml = (html: string): string => {
   const styleRegex = /<style[^>]*>([\s\S]*?)<\/style>/gi
 
   // 清理外部样式和脚本
-  const cleanedHtml = html
+  const cleanedHtml = String(html)
     .replace(linkRegex, '')
     .replace(scriptRegex, '')
     .replace(styleRegex, '')

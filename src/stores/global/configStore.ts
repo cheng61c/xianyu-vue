@@ -12,9 +12,9 @@ export const useConfigStore = defineStore('config', {
     autoLogin: false,
     /** 后端接口 */
     serverAddress: 'http://192.168.28.238:3000/api',
-    // serverAddress: 'https://api.schub.top/api',
+    // serverAddress: 'https://api.sccmdb.cn/api',
     errorImg:
-      'https://r2.schub.top/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
+      'https://r2.sccmdb.cn/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
 
     /** 平板适配 */
     padAdaptation: false,
