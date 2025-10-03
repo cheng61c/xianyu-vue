@@ -125,7 +125,10 @@ export const formatTime = (value: string | number | Date) => {
 
 export const formatTimeAgo = (date: string | number, t: any): string => {
   // 统一转换为时间戳（毫秒）
-  const timestamp = new Date(Number(date)).getTime()
+  const timestamp =
+    typeof date === 'string' && /^\d+$/.test(date)
+      ? new Date(Number(date)).getTime()
+      : new Date(date).getTime()
   const sec = Math.floor((Date.now() - timestamp) / 1000)
   const { floor } = Math
 
