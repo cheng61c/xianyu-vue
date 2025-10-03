@@ -20,7 +20,6 @@
       <div class="flex flex-col w-full space-y-4 pb-2">
         <!-- 标题 -->
         <div class="flex items-center gap-2">
-          $t('d.ban-ben-hao-zi-yuan-ban-ben-hao')
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right"
             :data-tip="$t('d.ban-ben-hao-zi-yuan-ban-ben-hao')">

@@ -18,8 +18,7 @@
       <div class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="
-            版本号，资源版本号">
+          :data-tip="$t('d.ban-ben-hao-zi-yuan-ban-ben-hao')">
           <span class="flex items-center gap-1">
             {{ $t('b.ban-ben-hao') }} <span><CircleHelp :size="16" /></span>
           </span>
@@ -57,7 +56,11 @@
       <div class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
-          data-tip="游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本">
+          :data-tip="
+            $t(
+              't.you-xi-ban-ben-yong-yu-zai-bu-tong-ban-ben-de-you-xi-zhong-zhan-shi-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-ban-ben'
+            )
+          ">
           <span class="flex items-center gap-1">
             {{ $t('f.shi-pei-de-you-xi-ban-ben') }}
             <span><CircleHelp :size="16" /></span>

@@ -62,6 +62,13 @@
             {{ $t('nav.tie-zi') }}
           </ScButton>
           <ScButton
+            class="px-4 py-1 text-sm"
+            :activation="mode === 'resources'"
+            Border
+            @click="mode = 'resources'">
+            资源
+          </ScButton>
+          <ScButton
             v-if="verifyPermissions([1, 2, 8, 9])"
             class="px-4 py-1 text-sm"
             :activation="mode === 'server'"
@@ -74,7 +81,10 @@
 
       <!-- 置顶模式 -->
       <div
-        v-if="mode === 'post' && verifyPermissions([1, 2, 6, 9])"
+        v-if="
+          (verifyPermissions([1, 2, 6, 9]) && mode === 'post') ||
+          (verifyPermissions([1, 2, 6, 9]) && mode === 'resources')
+        "
         class="flex items-center gap-2 flex-wrap">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
@@ -142,7 +152,9 @@
       </div>
 
       <!-- 发送到板块 -->
-      <div v-if="mode === 'post'" class="flex flex-wrap items-center gap-2">
+      <div
+        v-if="mode === 'post' || mode === 'resources'"
+        class="flex flex-wrap items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
           :data-tip="
@@ -158,7 +170,7 @@
           <span>:</span>
         </label>
 
-        <div class="flex flex-wrap gap-2 w-full pl-2">
+        <div v-if="mode === 'post'" class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
             <span class="flex items-center gap-1">{{
@@ -179,7 +191,9 @@
           </template>
         </div>
 
-        <div class="flex flex-wrap gap-2 w-full pl-2">
+        <div
+          v-if="mode === 'resources'"
+          class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
             <span class="flex items-center gap-1">
@@ -203,7 +217,7 @@
 
       <!-- 文件类型 -->
       <div
-        v-if="postData.type === 2 && mode === 'post'"
+        v-if="postData.type === 2 && mode === 'resources'"
         class="flex items-center gap-2 flex-wrap">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
@@ -244,7 +258,7 @@
 
       <!-- 是否关联帖子开关 -->
       <div
-        v-if="postData.type === 2 && mode === 'post'"
+        v-if="postData.type === 2 && mode === 'resources'"
         class="flex items-center gap-2">
         <label
           class="w-24 flex justify-between items-center tooltip tooltip-right"
@@ -279,7 +293,7 @@
 
       <!-- 穿梭框选择器 -->
       <div
-        v-if="postData.type === 2 && mode === 'post' && enablePostRelation"
+        v-if="postData.type === 2 && mode === 'resources' && enablePostRelation"
         class="flex items-start gap-2">
         <div class="flex gap-6 w-full max-w-3xl">
           <!-- 左侧搜索与结果 -->
@@ -526,7 +540,7 @@ const versionList = ref<Version[]>([]) // 版本列表
 // 表单
 const postContent = ref<string | null>(null) // 帖子内容
 const title = ref('') // 标题
-const mode = ref<'post' | 'server'>('post') // 模式选择
+const mode = ref<'post' | 'server' | 'resources'>('post') // 模式选择
 const enablePostRelation = ref(false) // 是否启用关联帖子选择
 const relatedSearch = ref('') // 关联帖子搜索
 const selectedPosts = ref<SelectedPost[]>([]) // 关联帖子列表
