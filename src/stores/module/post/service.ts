@@ -42,6 +42,7 @@ export const getfileTypes = (t: any) => {
     { value: 3, label: t('b.cai-zhi') },
     { value: 4, label: t('b.pi-fu') },
     { value: 5, label: t('b.mo-zu') },
+    { value: 8, label: '联机模组' },
     { value: 7, label: t('b.qi-ta') },
   ]
 }
@@ -54,6 +55,7 @@ export const getFileTypeOptions = (t: any) => {
     { value: 3, label: t('b.cai-zhi') },
     { value: 4, label: t('b.pi-fu') },
     { value: 5, label: t('b.mo-zu') },
+    { value: 8, label: '联机模组' },
     { value: 7, label: t('b.qi-ta') },
   ]
 }

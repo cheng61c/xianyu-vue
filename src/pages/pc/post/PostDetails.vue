@@ -253,15 +253,6 @@ onMounted(async () => {
   }
 })
 
-watch(
-  () => route.params,
-  async (newParams) => {
-    const postId = newParams.postId
-    console.log('Fetching details for post ID:', postId)
-    // getPost(+postId)
-  }
-)
-
 // 监听路由hash变化
 watch(
   () => route.hash,
@@ -269,6 +260,15 @@ watch(
     console.log('newHash', newHash)
     if (newHash) {
       scrollToHash(newHash)
+    }
+  }
+)
+
+watch(
+  () => route.params.postId,
+  (newValue, oldValue) => {
+    if (newValue != oldValue) {
+      getPost(+newValue)
     }
   }
 )

@@ -16,6 +16,7 @@ export const iconMap = {
   5: Boxes,
   6: ImageIcon,
   7: FileArchive,
+  8: Boxes,
 } as const
 
 export function useTypeLabelMap(t: any) {
@@ -27,5 +28,6 @@ export function useTypeLabelMap(t: any) {
     5: t('b.mo-zu'),
     6: t('b.tu-pian'),
     7: t('b.ruan-jian'),
+    8: '联机模组',
   } as const
 }

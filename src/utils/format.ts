@@ -123,8 +123,10 @@ export const formatTime = (value: string | number | Date) => {
     : `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
 }
 
-export const formatTimeAgo = (dateString: string, t: any): string => {
-  const sec = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000)
+export const formatTimeAgo = (date: string | number, t: any): string => {
+  // 统一转换为时间戳（毫秒）
+  const timestamp = new Date(Number(date)).getTime()
+  const sec = Math.floor((Date.now() - timestamp) / 1000)
   const { floor } = Math
 
   type TimeInterval = [boolean, string]
