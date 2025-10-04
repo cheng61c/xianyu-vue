@@ -597,8 +597,11 @@ const submitPost = () => {
     return
   }
 
-  if (mode.value === 'post') {
-    if (postData.value.plateId === 0) {
+  if (mode.value === 'post' || mode.value === 'resources') {
+    if (
+      postData.value.plateId === 0 ||
+      (mode.value === 'resources' && postData.value.type !== 2)
+    ) {
       toast.error(t('t.qing-xuan-ze-ban-kuai'))
       return
     }

@@ -191,7 +191,9 @@
           </template>
         </div>
 
-        <div class="flex flex-wrap gap-2 w-full pl-2">
+        <div
+          v-if="mode === 'resources'"
+          class="flex flex-wrap gap-2 w-full pl-2">
           <label
             class="w-24 flex justify-between items-center tooltip tooltip-right">
             <span class="flex items-center gap-1">
