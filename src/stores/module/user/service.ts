@@ -22,12 +22,14 @@ export const login = async () => {
         const data = res.data.data
         data.headImg = formatLink(data.headImg)
         data.signature = formatImageSrcsInHtml(data.signature)
-        data.roles = data.roles.sort((a: Role, b: Role) => a.id - b.id)
+        data.roles = data.user.roles.sort((a: Role, b: Role) => a.id - b.id)
         userStore.userInfo = data.user
         userStore.isLogin = true
       }
     })
-    .catch((_error) => {
+    .catch((error) => {
+      console.error('登陆错误', error)
+
       userStore.userInfo = {} as UserType
       userStore.token = ''
       userStore.isLogin = false

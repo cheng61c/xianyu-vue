@@ -49,7 +49,7 @@
         v-model="commentContent"
         :placeholder="
           userStore.isLogin
-            ? computedPlaceholder
+            ? $t('t.qing-xie-xia-ni-de-ping-lun')
             : $t('t.qing-deng-lu-hou-ping-lun')
         "
         :maxlength="500"
@@ -85,6 +85,7 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const toast = useToast()
 const userStore = useUserStore()
+const loading = ref(false)
 
 const props = defineProps({
   commentId: {
@@ -109,14 +110,6 @@ const props = defineProps({
   },
 })
 
-const computedPlaceholder = computed(() => {
-  if (props.placeholder == '') {
-    return t('t.qing-xie-xia-ni-de-ping-lun')
-  }
-
-  return t('t.qing-deng-lu-hou-ping-lun')
-})
-
 const computedSubmitText = computed(() => {
   if (props.submitText == '') {
     return t('b.fa-song')
@@ -139,25 +132,38 @@ const triggerFileInput = () => {
 const handleFileChange = async (event: Event) => {
   const files = (event.target as HTMLInputElement).files
   if (!files) return
-
+  toast.info(t('d.zheng-zai-shang-chuan-tu-pian'))
+  loading.value = true
   const fileArray = Array.from(files)
+  // 存储所有上传操作的Promise
+  const uploadPromises: Promise<void>[] = []
+
   for (const file of fileArray) {
     // 添加占位图（骨架屏）
     const placeholder = { url: '', loading: true }
     imageList.value.push(placeholder)
     const index = imageList.value.length - 1
 
-    try {
-      const res = await uploadApi.uploadFile(file, 6)
-      const imageUrl = formatLink(res.data.data.url)
-      imageList.value[index] = { url: imageUrl, loading: false }
-    } catch (error) {
-      toast.error(t('t.tu-pian-shang-chuan-shi-bai-filename', [file.name]))
-      imageList.value.splice(index, 1)
-    }
+    // 创建每个文件的上传Promise并加入数组
+    const uploadPromise = (async () => {
+      try {
+        const res = await uploadApi.uploadFile(file, 6)
+        const imageUrl = formatLink(res.data.data.url)
+        imageList.value[index] = { url: imageUrl, loading: false }
+      } catch (error) {
+        toast.error(t('t.tu-pian-shang-chuan-shi-bai-filename', [file.name]))
+        imageList.value.splice(index, 1)
+      }
+    })()
+
+    uploadPromises.push(uploadPromise)
   }
 
-  // 清空 input 的值，否则无法上传同一张图两次
+  // 等待所有文件上传完成（无论成功失败）
+  await Promise.allSettled(uploadPromises)
+  // 所有操作结束后关闭loading
+  loading.value = false
+  // 清空input值，允许重复上传同一张图
   if (fileInput.value) {
     fileInput.value.value = ''
   }

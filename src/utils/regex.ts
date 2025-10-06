@@ -13,6 +13,15 @@ export const extractImageSrcs = (html: string): string[] => {
   return result
 }
 
+export const removeHtmlTags = (str: string): string => {
+  // 若输入不是字符串，直接返回空字符串或原内容（根据需求调整）
+  if (typeof str !== 'string') {
+    return ''
+  }
+  // 正则匹配所有 HTML 标签（<...>）并替换为空字符串
+  return str.replace(/<[^>]*>/g, '')
+}
+
 export const formatImageSrcsInHtml = (html: string): string => {
   if (!html) return ''
   const imgRegex = /<img([^>]+)src=["']([^"']+)["']/g

@@ -21,16 +21,16 @@ const userStore = useUserStore()
 export const getMenuItems = (t: any): MenuItem[] => {
   return [
     {
-      name: t('nav.jiao-liu-tie-zi'),
-      pathName: 'postList',
-      params: { plateId: 0 },
-      type: 1,
-    },
-    {
       name: t('nav.zi-yuan-xia-zai'),
       pathName: 'modList',
       params: { plateId: 0 },
       type: 2,
+    },
+    {
+      name: t('nav.jiao-liu-tie-zi'),
+      pathName: 'postList',
+      params: { plateId: 0 },
+      type: 1,
     },
   ]
 }

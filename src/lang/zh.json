@@ -160,7 +160,7 @@
     "fa-bu-yu-scorecreatedat": "发布于 {0}",
     "geng-xin-yu-scoreupdatedat": "更新于 {0}",
     "zi-yuan-xia-zai": "资源下载",
-    "ni-hui-fu-itemsendnickname-itemcommentcontent": "你: 回复 @{0}: {1}",
+    "ni-hui-fu-itemsendnickname-itemcommentcontent": "你：回复{0}：{1}",
     "tie-zi-biao-ti-itemposttitle": "帖子标题: {0}",
     "fa-biao-ping-fen": "发表评分",
     "dian-ji-biao-qian-tian-jia-huo-yi-chu": "点击标签添加或移除",

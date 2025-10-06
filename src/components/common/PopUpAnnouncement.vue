@@ -1,7 +1,7 @@
 <template>
   <ScModal v-model="show">
     <Card
-      class="h-[36rem] flex flex-col"
+      class="max-h-[95dvh] flex flex-col"
       :class="{
         'w-2xl ': deviceStore.device == 2,
         'w-full': deviceStore.device == 1,

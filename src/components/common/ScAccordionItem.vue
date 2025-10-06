@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-vue-next'
 
 const props = defineProps<{
   open: boolean
+  Border: boolean
 }>()
 
 const emit = defineEmits<{
@@ -59,7 +60,11 @@ const animate = (expand: boolean) => {
 </script>
 
 <template>
-  <div class="w-full border-b border-gray/80 py-1">
+  <div
+    class="w-full py-1"
+    :class="{
+      'border-b border-gray/80': Border,
+    }">
     <!-- 标题 -->
     <button
       @click="toggle"

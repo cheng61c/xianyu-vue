@@ -299,7 +299,8 @@ import ScModal from '@/components/common/ScModal.vue'
 import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { getSortOptions } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
-import { formatImageSrcsInHtml } from '@/utils/regex'
+import { removeHtmlTags } from '@/utils/regex'
+import { sendComment } from '@/stores/module/comment/service'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -370,13 +371,13 @@ const getcomments = (page: number) => {
           item.image = item.image
             ? item.image.map((img: string) => formatLink(img))
             : []
-          item.content = formatImageSrcsInHtml(item.content)
+          item.content = removeHtmlTags(item.content)
           item.children = item.children.map((child: any) => {
             child.createdAt = formatTimeOrAgo(child.createdAt, t)
             child.image = child.image
               ? child.image.map((img: string) => formatLink(img))
               : []
-            child.content = formatImageSrcsInHtml(child.content)
+            child.content = removeHtmlTags(child.content)
             return child
           })
           return item
@@ -433,20 +434,12 @@ const replay = (
   }
   console.log(data)
 
-  commentApi
-    .sendComment(data)
-    .then((res) => {
-      if (res.data.code === 200) {
-        replayContent.value = ''
-        getcomments(1) // 重新获取评论列表
-        toast.success(t('t.ping-lun-cheng-gong'))
-        if (clearContent) clearContent()
-      }
-    })
-    .catch((error) => {
-      toast.error(t('t.fa-biao-ping-lun-shi-bai-qing-shao-hou-zai-shi') + error)
-      console.error('发表评论时发生错误:', error)
-    })
+  sendComment(t, data, () => {
+    replayContent.value = ''
+    console.log('评论发送成功')
+    getcomments(1)
+    if (clearContent) clearContent()
+  })
 }
 
 watch(

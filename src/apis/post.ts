@@ -15,7 +15,7 @@ export const getPostList = (dto: PostListQueryDto) => {
     params: dto,
   })
 }
-export const getPostListTop = (top: string) => {
+export const getPostListTop = (top?: string) => {
   return request({
     method: 'get',
     url: '/post/top',

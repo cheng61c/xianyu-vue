@@ -18,6 +18,7 @@
 
   <div class="flex flex-col px-4 pt-2">
     <div class="space-y-4 pb-4">
+      <!-- 子版块 -->
       <MobilePlate />
       <div class="flex gap-2">
         <ScInput
@@ -68,6 +69,46 @@
       </div>
     </div>
 
+    <!-- 公告 -->
+    <template v-if="topPosts.length">
+      <div class="space-y-2 pb-2">
+        <ScAccordionItem v-model:open="openTopPosts" :Border="false">
+          <template #title>
+            <span
+              class="flex gap-2"
+              @click="
+                $router.push({
+                  name: 'postDetails',
+                  params: { postId: topPosts[0].id },
+                })
+              ">
+              <Megaphone />
+              {{ topPosts[0].title }}
+            </span>
+          </template>
+          <template #content>
+            <div class="flex flex-col">
+              <div
+                v-for="post in topPosts.slice(1)"
+                :key="post.id"
+                class="flex gap-2"
+                @click="
+                  $router.push({
+                    name: 'postDetails',
+                    params: { postId: post.id },
+                  })
+                ">
+                <Megaphone />
+
+                <span>{{ post.title }}</span>
+              </div>
+            </div>
+          </template>
+        </ScAccordionItem>
+      </div>
+    </template>
+
+    <!-- 帖子列表 -->
     <div class="space-y-4">
       <template v-if="postStore.post.length">
         <MobilePostItem
@@ -83,7 +124,7 @@
     @touchstart.passive="startDrag"
     @touchmove="onDrag"
     @touchend="stopDrag"
-    class="absolute right-6 flex items-center justify-centerz-3"
+    class="absolute right-6 flex items-center justify-center z-3"
     :style="buttonStyle">
     <button
       ref="toTopButton"
@@ -92,9 +133,14 @@
       <ArrowUpToLine :size="24" />
     </button>
     <button
-      class="relative bg-active w-12 h-12 text-active-content rounded-full flex items-center justify-center shadow-md"
+      class="relative bg-active z-3 w-12 h-12 text-active-content rounded-full flex items-center justify-center shadow-md"
       @click="handleClick">
       <Plus :size="24" />
+    </button>
+    <button
+      ref="leftPage"
+      class="absolute z-2 scale-10 bg-active h-8 text-active-content overflow-hidden rounded-[2rem] flex items-center justify-center shadow-md">
+      {{ postStore.postPage.page }} / {{ totalPages }}
     </button>
   </div>
 
@@ -140,6 +186,9 @@ import { gsap } from 'gsap'
 import { useAnnouncementStore } from '@/stores/global/announcementStore'
 import type { Post } from '@/types/Post'
 import { postApi } from '@/apis'
+import { formatTimeOrAgo } from '@/utils/format'
+import { Megaphone } from 'lucide-vue-next'
+import ScAccordionItem from '@/components/common/ScAccordionItem.vue'
 
 const progress = inject('refreshScroll', ref(0))
 const containerRef = inject('containerRef', ref<HTMLElement | null>(null))
@@ -152,16 +201,22 @@ const fileTypeOptions = getFileTypeOptions(t)
 const show = ref(false) // 显示置顶公告
 const announcementStore = useAnnouncementStore()
 const orderTypeOptions = getSortOptions(t)
-
+const totalPages = computed(() =>
+  Math.ceil(postStore.postPage.total / postStore.postPage.limit)
+)
 const announcementPostData = ref<Post | null>(null)
 
 const router = useRouter()
 const draggableButton: Ref<HTMLButtonElement | null> = ref(null)
 const toTopButton: Ref<HTMLButtonElement | null> = ref(null)
+const leftPage: Ref<HTMLButtonElement | null> = ref(null)
+
 const isDragging = ref<boolean>(false)
 const startY = ref<number>(0)
 const startBottom = ref<number>(0)
 const startTime = ref<number>(0)
+const topPosts = ref<Post[]>([]) // 置顶帖子列表
+const openTopPosts = ref(false) // 是否展开置顶帖子列表
 
 const buttonStyle = computed(() => ({
   bottom: `${postStore.buttonBottom}px`,
@@ -173,6 +228,13 @@ const toTop = () => {
     containerRef.value.scrollTo({
       top: 0, // 滚动到顶部
       behavior: 'smooth', // 可选：平滑滚动
+    })
+    gsap.to(leftPage.value, {
+      keyframes: [
+        { scale: 1, right: '4rem', width: '100%', duration: 0.3 },
+        { scale: 1, right: '4rem', width: '100%', duration: 1.5 },
+        { scale: 1, right: '1rem', width: '5%', duration: 0.3 },
+      ],
     })
   }
 }
@@ -304,5 +366,14 @@ onMounted(() => {
         show.value = true
       }
     })
+
+  postApi.getPostListTop().then((res) => {
+    if (res.data.code == 200) {
+      topPosts.value = res.data.data.list.map((item: Post) => {
+        item.createdAt = formatTimeOrAgo(item.createdAt, t)
+        return item
+      })
+    }
+  })
 })
 </script>

@@ -303,7 +303,7 @@ import ZoomableImage from '@/components/common/ScZoomableImage.vue'
 import { useI18n } from 'vue-i18n'
 import { getSortOptions } from '@/stores/module/post/service'
 import { sendComment } from '@/stores/module/comment/service'
-import { formatImageSrcsInHtml } from '@/utils/regex'
+import { removeHtmlTags } from '@/utils/regex'
 const { t } = useI18n()
 
 const toast = useToast()
@@ -375,13 +375,13 @@ const getcomments = (page: number) => {
           item.image = item.image
             ? item.image.map((img: string) => formatLink(img))
             : []
-          item.content = formatImageSrcsInHtml(item.content)
+          item.content = removeHtmlTags(item.content)
           item.children = item.children.map((child: any) => {
             child.createdAt = formatTimeOrAgo(child.createdAt, t)
             child.image = child.image
               ? child.image.map((img: string) => formatLink(img))
               : []
-            child.content = formatImageSrcsInHtml(child.content)
+            child.content = removeHtmlTags(child.content)
             return child
           })
           return item
@@ -437,7 +437,7 @@ const replay = (
 
   sendComment(t, data, () => {
     console.log('评论发送成功')
-    toast.success(t('t.ping-lun-cheng-gong'))
+    // toast.success(t('t.ping-lun-cheng-gong'))
     getcomments(1)
   })
 }

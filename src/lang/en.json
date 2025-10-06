@@ -160,7 +160,7 @@
     "fa-bu-yu-scorecreatedat": "Posted {0}",
     "geng-xin-yu-scoreupdatedat": "Updated {0}",
     "zi-yuan-xia-zai": "Download Resource",
-    "ni-hui-fu-itemsendnickname-itemcommentcontent": "You: reply @{0}: {1}",
+    "ni-hui-fu-itemsendnickname-itemcommentcontent": "You: reply {0}: {1}",
     "tie-zi-biao-ti-itemposttitle": "Post: {0}",
     "fa-biao-ping-fen": "Submit Rating",
     "dian-ji-biao-qian-tian-jia-huo-yi-chu": "Click tag to add/remove",

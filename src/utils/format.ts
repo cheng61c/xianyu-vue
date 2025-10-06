@@ -202,7 +202,9 @@ export const formatLink = (link: string): string => {
 
   // 检查是否是本地地址（IP或localhost）
   if (
-    /^(localhost|127\.0\.0\.1|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/.test(link)
+    /^(https?:\/\/)?(localhost|127\.0\.0\.1|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/.test(
+      link
+    )
   ) {
     return `${configStore.serverAddress}/${link}`
   }

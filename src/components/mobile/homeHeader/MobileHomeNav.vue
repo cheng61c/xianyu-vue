@@ -14,7 +14,7 @@
       <div class="bg-background w-64 h-full p-4">
         <h3 class="text-xl px-2">{{ $t('b.cai-dan') }}</h3>
         <template v-if="postStore.plate">
-          <AccordionItem v-model:open="open2">
+          <AccordionItem v-model:open="open2" Border>
             <template #title>测试工具箱</template>
             <template #content>
               <div class="flex flex-col">
