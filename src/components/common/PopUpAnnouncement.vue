@@ -1,13 +1,15 @@
 <template>
   <ScModal v-model="show">
     <Card
-      class="max-h-[95dvh] flex flex-col"
+      class="max-h-[65dvh] flex flex-col"
       :class="{
-        'w-2xl ': deviceStore.device == 2,
-        'w-full': deviceStore.device == 1,
+        'max-w-2xl ': deviceStore.device == 2,
+        'w-[80vw]': deviceStore.device == 1,
       }">
-      <div class="text-2xl">{{ postData?.title }}</div>
+      <div class="text-lg font-bold text-center">站内公告</div>
+
       <div class="flex-1 overflow-auto">
+        <div class="font-bold">{{ postData?.title }}</div>
         <div v-html="postData?.content" class="tiptap w-full h-full p-4"></div>
       </div>
       <div class="flex gap-4">
