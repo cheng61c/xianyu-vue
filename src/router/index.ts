@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    redirect: '/postList/0',
+    redirect: '/modList/0',
     component: () => import('@/pages/Index.vue'),
     children: [
       {
