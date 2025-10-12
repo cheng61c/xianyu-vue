@@ -301,7 +301,7 @@
             <input
               v-model="relatedSearch"
               type="text"
-              placeholder="$t('t.sou-suo-tie-zi-biao-ti')"
+              :placeholder="$t('t.sou-suo-tie-zi-biao-ti')"
               class="w-full mb-2 px-3 py-1.5 border border-gray-content rounded-lg text-sm focus:ring-2 focus:ring-active outline-none" />
             <div
               class="border border-gray-content rounded-lg p-2 h-[180px] overflow-y-auto space-y-1 text-sm">

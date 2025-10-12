@@ -34,10 +34,11 @@
       <ScButton
         variant="ghost"
         :disabled="currentPage >= totalPages"
-        :icon="ChevronRight"
-        icon-position="right"
         noBg
         @click="handlePageChange(currentPage + 1)">
+        <template #endIcon>
+          <ChevronRight :size="16" />
+        </template>
         {{ $t('b.xia-yi-ye') }}
       </ScButton>
     </div>

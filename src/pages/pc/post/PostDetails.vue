@@ -99,7 +99,7 @@
           <Dependencies :postData="postData" />
 
           <!-- 发布版 -->
-          <Releases :postData="postData" />
+          <!-- <Releases :postData="postData" /> -->
         </div>
       </div>
     </div>

@@ -6,8 +6,7 @@
         'justify-center': deviceStore.device == 1,
         'justify-between': deviceStore.device == 2,
       }">
-      <div
-        class="flex max-w-xs min-w-3/5 flex-1 gap-2 flex-shrink-0 items-center">
+      <div class="flex min-w-68 flex-1 gap-2 flex-shrink-0 items-center">
         <ScInput
           v-model="searchText"
           :placeholder="t('b.sou-suo')"
@@ -20,14 +19,14 @@
 
       <div
         v-if="searchType == 2 && deviceStore.device == 2"
-        class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
+        class="flex gap-2 flex-1 items-center justify-end text-active-content ml-50">
         <div class="flex-shrink-0">{{ $t('b.shai-xuan-lei-xing') }}</div>
         <ScButtonSelector :options="fileTypeOptions" v-model="fileType" />
       </div>
 
       <div
         v-if="deviceStore.device == 2"
-        class="flex gap-2 flex-1 items-center justify-end text-active-content ml-40">
+        class="flex gap-2 flex-1 items-center justify-end text-active-content ml-50">
         <div class="flex-shrink-0">{{ $t('d.pai-xu-fang-shi') }}</div>
         <ScButtonSelector
           :options="orderTypeOptions"
