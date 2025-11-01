@@ -5,21 +5,12 @@
     <EmptyState
       :title="$t('t.jia-zai-shi-bai')"
       :description="$t('t.qing-shua-xin-ye-mian-huo-dian-ji-xia-fang-fan-hui')"
-      :action="'返回'"
+      :action="$t('b.fan-hui')"
       :actionIcon="Undo2"
       @action-click="$router.back()" />
   </div>
 
-  <template v-if="!loading">
-    <CreatePost
-      v-if="createType === 'publish'"
-      :isEdit="postData !== null"
-      :post="postData" />
-    <CreateResource
-      v-if="createType === 'publishResource'"
-      :isEdit="postData !== null"
-      :post="postData" />
-  </template>
+  <router-view v-else />
 </template>
 
 <script setup lang="ts">
@@ -28,8 +19,8 @@ import { onMounted, ref } from 'vue'
 import { Undo2 } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import EmptyState from '@/components/common/EmptyState.vue'
-import CreatePost from './CreatePost.vue'
-import CreateResource from './CreateResource.vue'
+// import CreatePost from './CreatePost.vue'
+// import CreateResource from './CreateResource.vue'
 import type { Post } from '@/types/Post'
 
 const route = useRoute()

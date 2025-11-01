@@ -89,7 +89,7 @@
     class="mt-8"
     :action="$t('b.qian-wang-fa-tie')"
     :actionIcon="SquareArrowOutUpRight"
-    @action-click="$router.push({ name: 'publish' })" />
+    @action-click="$router.push({ name: 'publishPost' })" />
 
   <ScModal v-model="userServerStore.modal.isDeletePost">
     <Card class="max-w-2xl">

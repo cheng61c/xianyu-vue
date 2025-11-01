@@ -96,7 +96,10 @@
           :icon="Edit"
           :icon-size="24"
           @click="
-            $router.push({ name: 'publish', params: { postId: postData.id } })
+            $router.push({
+              name: 'publishPost',
+              params: { postId: postData.id },
+            })
           ">
           {{ $t('b.bian-ji') }}
         </ScButton>

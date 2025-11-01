@@ -187,7 +187,7 @@ export const formatNumberWithLimit = (num: number | string): string => {
  * - 是本地地址（IP或localhost） -> 替换为 configStore.serverAddress
  * - 是相对路径 -> 拼接 configStore.serverAddress
  */
-export const formatLink = (link: string): string => {
+export const formatLink = (link: string, download = false): string => {
   if (!link) return ''
 
   // 检查是否是完整链接
@@ -207,6 +207,15 @@ export const formatLink = (link: string): string => {
     )
   ) {
     return `${configStore.serverAddress}/${link}`
+  }
+
+  // 去掉 ./ 前缀
+  if (link.startsWith('./')) {
+    link = link.substring(2)
+  }
+
+  if (download) {
+    link = link.replace(/\/upload/, '/upload/download')
   }
 
   // 如果是相对路径，拼接 serverAddress

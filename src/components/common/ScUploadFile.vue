@@ -69,6 +69,7 @@ import {
   onBeforeUnmount,
   computed,
   watchEffect,
+  watch,
 } from 'vue'
 import { Plus, X } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
@@ -265,5 +266,9 @@ onMounted(() => {
     document.addEventListener('click', handleClickOutside)
     document.addEventListener('keydown', handleEscKey)
   })
+})
+
+watch(uploadedFiles, () => {
+  uploaded()
 })
 </script>

@@ -122,10 +122,7 @@
       </div>
       <div class="flex items-center gap-4">
         <span> {{ $t('b.ban-ben-hao') }} </span>
-        <ScInput
-          v-model="newVersionBody.version"
-          :placeholder="$t('b.hui-fu')"
-          class="m-2" />
+        <ScInput v-model="newVersionBody.version" class="m-2" />
       </div>
 
       <div class="flex gap-4 justify-end">

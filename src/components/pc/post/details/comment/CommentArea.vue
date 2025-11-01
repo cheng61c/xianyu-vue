@@ -1,5 +1,6 @@
 <template>
   <Card class="comment-container mx-auto" :id="id">
+    <h3 class="text-lg font-bold mb-2">评论区</h3>
     <!-- 评论输入框 -->
     <div
       v-if="userStore.isLogin"

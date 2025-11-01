@@ -123,7 +123,9 @@
         class="text-sm px-4 border border-gray hover:border-active"
         :icon="SquarePen"
         :iconSize="16"
-        @click="$router.push({ name: 'publish', params: { postId: post.id } })">
+        @click="
+          $router.push({ name: 'publishPost', params: { postId: post.id } })
+        ">
         {{ $t('b.bian-ji') }}
       </ScButton>
       <ScButton
@@ -174,7 +176,7 @@
     class="mt-8"
     :action="'前往发帖'"
     :actionIcon="SquareArrowOutUpRight"
-    @action-click="$router.push({ name: 'publish' })" />
+    @action-click="$router.push({ name: 'publishPost' })" />
 
   <ScModal v-model="openPackageList">
     <Card class="gap-4 w-[95vw] h-full max-h-[95dvh] overflow-y-auto">
@@ -254,7 +256,7 @@
                 class="px-4"
                 :icon="Download"
                 :iconSize="18"
-                @click="downloadFile(file.url, pkg.id)">
+                @click="downloadApi.download(file.url)">
                 {{ file.downloadCount }}
               </ScButton>
             </div>
@@ -356,7 +358,7 @@ import {
   Download,
   SquareArrowOutUpRight,
 } from 'lucide-vue-next'
-import { postApi } from '@/apis'
+import { postApi, downloadApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
 import { iconMap, useTypeLabelMap } from '@/utils/fileType'
@@ -375,7 +377,6 @@ import {
   getPackageList,
   searchUserResource,
   deletePackage,
-  downloadFile,
 } from '@/stores/module/userResource/service'
 import { useUserResourceStore } from '@/stores/module/userResource/userResourceStore'
 import { getPosts } from '@/stores/module/userResource/service'

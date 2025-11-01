@@ -87,7 +87,7 @@
                 class="text-sm text-error px-4 border hover:border-active"
                 :icon="Download"
                 :iconSize="16"
-                @click="downloadFile(file.url, currenPostVersion.id)">
+                @click="downloadApi.download(file.url)">
               </ScButton>
             </div>
           </div>
@@ -130,14 +130,6 @@ const versios = ref<DocumentVersion[]>([])
 const handleModalChange = (item: DocumentVersion) => {
   currenPostVersion.value = item
   showModal.value = !showModal.value
-}
-
-const downloadFile = (url: string, vid: number) => {
-  if (!url) return
-  let fileName = url.split('/').pop()
-  if (!fileName) return
-  fileName = fileName.replace(/(preview|download)\?filename=/, '')
-  downloadApi.downloadFile(fileName, vid)
 }
 
 watch(

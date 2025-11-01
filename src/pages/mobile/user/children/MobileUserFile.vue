@@ -22,7 +22,7 @@
           class="text-sm text-error px-4 border border-gray hover:border-active"
           :icon="Download"
           :iconSize="16"
-          @click="downloadFile(file.url)">
+          @click="downloadApi.download(file.url)">
           {{ file.size }}
         </ScButton>
       </div>
@@ -96,14 +96,6 @@ const getFiles = () => {
         total: response.data.data.total,
       }
     })
-}
-
-const downloadFile = (url: string) => {
-  if (!url) return
-  let fileName = url.split('/').pop()
-  if (!fileName) return
-  fileName = fileName.replace(/(\/upload\/)?(preview)(\?|\/)(filename=)?/, '')
-  downloadApi.downloadFileByUrl(fileName)
 }
 
 onMounted(() => {

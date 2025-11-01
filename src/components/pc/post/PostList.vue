@@ -29,7 +29,7 @@
       class="w-full px-auto"
       :action="'前往发帖'"
       :actionIcon="SquareArrowOutUpRight"
-      @action-click="$router.push({ name: 'publish' })" />
+      @action-click="$router.push({ name: 'publishPost' })" />
   </div>
 </template>
 

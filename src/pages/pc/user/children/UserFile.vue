@@ -107,11 +107,9 @@ const getFiles = () => {
 }
 
 const downloadFile = (url: string) => {
+  console.log('url', url)
   if (!url) return
-  let fileName = url.split('/').pop()
-  if (!fileName) return
-  fileName = fileName.replace(/(\/upload\/)?(preview)(\?|\/)(filename=)?/, '')
-  downloadApi.downloadFileByUrl(fileName)
+  downloadApi.download(url)
 }
 
 onMounted(() => {

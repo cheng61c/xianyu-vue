@@ -22,7 +22,7 @@
                 noBg
                 @click="
                   ($router.push({
-                    name: 'publish',
+                    name: 'publishPost',
                     params: { postId: postData?.id },
                   }),
                   close())

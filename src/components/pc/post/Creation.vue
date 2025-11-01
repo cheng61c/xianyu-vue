@@ -3,7 +3,7 @@
     <ScButton
       variant="ghost"
       class="text-active"
-      @click="$router.push({ name: 'publish' })"
+      @click="$router.push({ name: 'publishPost' })"
       :icon="MessageSquarePlus"
       Border>
       {{ $t('b.fa-bu-nei-rong') }}

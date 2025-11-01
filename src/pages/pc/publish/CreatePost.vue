@@ -481,7 +481,7 @@ import type { Version } from '@/types/version'
 import { verifyPermissions } from '@/utils/verify'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { getfileTypes } from '@/stores/module/post/service'
 
 const { t } = useI18n()
@@ -489,15 +489,9 @@ const toast = useToast()
 const postStore = usePostStore()
 const userStore = useUserStore()
 const router = useRouter()
+const route = useRoute()
 const fileTypes = getfileTypes(t)
-const props = defineProps({
-  post: {
-    type: Object as () => Post | null,
-  },
-  isEdit: {
-    type: Boolean,
-  },
-})
+const isEdit = ref(false)
 const plateList = ref<Plate[]>([]) // 板块列表
 const versionList = ref<Version[]>([]) // 版本列表
 
@@ -601,17 +595,15 @@ const sendPsot = () => {
 
   console.log('postData', postData.value)
 
-  postApi[props.isEdit ? 'updatePost' : 'createPost'](
-    formatPostBody(postData.value)
-  )
+  postApi[isEdit ? 'updatePost' : 'createPost'](formatPostBody(postData.value))
     .then((res: Api) => {
       if (res.data.code === 200) {
         loader.value = false
         if (postData.value.type == 2) {
           toast.success('请继续发布文件')
-          router.replace({
+          router.push({
             name: 'publishResource',
-            params: { postId: res.data.data.id },
+            params: { postId: res.data.data.id ?? postData.value.id },
           })
         } else {
           toast.success(t('t.fa-bu-cheng-gong'))
@@ -696,7 +688,7 @@ const connectionTest = async (url: string) => {
 }
 
 const formatPostBody = (body: PostDto) => {
-  if (body.id == 0 && !props.isEdit) delete body.id
+  if (body.id == 0 && !isEdit) delete body.id
   if (body.type == 1) {
     delete body.fileType
     delete body.dependencies
@@ -709,44 +701,41 @@ const formatPostBody = (body: PostDto) => {
   return body
 }
 
-onMounted(() => {
-  console.log('CreatePost mounted', props.post)
+onMounted(async () => {
+  if (route.params.postId) {
+    const res = await postApi.getPostDetail(Number(route.params.postId))
+    if (res.data.code == 200) {
+      isEdit.value = true
+      const post = res.data.data as Post
+      postData.value = {
+        id: post.id,
+        title: post.title,
+        plateId: post.plateId,
+        content: post.content,
+        cover: post.cover,
+        type: post.type,
+        fileType: post.fileType,
+        top: post.top,
+        dependencies: Array.isArray(post.dependencies)
+          ? post.dependencies.map((d) => d.id)
+          : [],
+      }
+      postContent.value = post.content
+      title.value = post.title
 
-  if (props.post) {
-    // 只拷贝需要的字段，并将 dependencies 转换为 number[]
-    // postData.value = {
-    //   ...props.post,
-    //   dependencies: Array.isArray(props.post.dependencies)
-    //     ? props.post.dependencies.map((d: any) =>
-    //         typeof d === 'object' && d.id ? d.id : d
-    //       )
-    //     : [],
-    // }
-    postData.value = {
-      id: props.post.id,
-      title: props.post.title,
-      plateId: props.post.plateId,
-      content: props.post.content,
-      cover: props.post.cover,
-      type: props.post.type,
-      fileType: props.post.fileType,
-      top: props.post.top,
-      dependencies: Array.isArray(props.post.dependencies)
-        ? props.post.dependencies.map((d) => d.id)
-        : [],
+      enablePostRelation.value = post.type === 2
+      selectedPosts.value = post.dependencies.map((d) => ({
+        id: d.id,
+        title: d.title,
+        creator: {
+          id: d.creator.id,
+          nickname: d.creator.nickname,
+        },
+      }))
+    } else {
+      isEdit.value = false
+      postContent.value = ''
     }
-    postContent.value = props.post.content
-    title.value = props.post.title
-
-    enablePostRelation.value = props.post.type === 2
-    selectedPosts.value = props.post.dependencies.map((d) => ({
-      id: d.id,
-      title: d.title,
-      creator: {
-        id: d.creator.id,
-        nickname: d.creator.nickname,
-      },
-    }))
   } else {
     postContent.value = ''
   }

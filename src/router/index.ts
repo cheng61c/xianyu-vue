@@ -40,24 +40,55 @@ const routes = [
             : import('@/pages/pc/post/PostDetails.vue')
         },
       },
+
       {
-        path: 'publish/:postId?',
+        path: 'publish',
         name: 'publish',
         component: () => {
           return isMobile
             ? import('@/pages/mobile/publish/MobilePublishIndex.vue')
             : import('@/pages/pc/publish/PublishIndex.vue')
         },
+        children: [
+          {
+            path: 'post/:postId?',
+            name: 'publishPost',
+            component: () => {
+              return isMobile
+                ? import('@/pages/mobile/publish/MobileCreatePost.vue')
+                : import('@/pages/pc/publish/CreatePost.vue')
+            },
+          },
+          {
+            path: 'resource/:postId?',
+            name: 'publishResource',
+            component: () => {
+              return isMobile
+                ? import('@/pages/mobile/publish/MobileCreateResource.vue')
+                : import('@/pages/pc/publish/CreateResource.vue')
+            },
+          },
+        ],
       },
-      {
-        path: 'publishResource/:postId?',
-        name: 'publishResource',
-        component: () => {
-          return isMobile
-            ? import('@/pages/mobile/publish/MobilePublishIndex.vue')
-            : import('@/pages/pc/publish/PublishIndex.vue')
-        },
-      },
+
+      // {
+      //   path: 'publish/:postId?',
+      //   name: 'publish',
+      //   component: () => {
+      //     return isMobile
+      //       ? import('@/pages/mobile/publish/MobilePublishIndex.vue')
+      //       : import('@/pages/pc/publish/PublishIndex.vue')
+      //   },
+      // },
+      // {
+      //   path: 'publishResource/:postId?',
+      //   name: 'publishResource',
+      //   component: () => {
+      //     return isMobile
+      //       ? import('@/pages/mobile/publish/MobilePublishIndex.vue')
+      //       : import('@/pages/pc/publish/PublishIndex.vue')
+      //   },
+      // },
       {
         path: 'message',
         name: 'message',

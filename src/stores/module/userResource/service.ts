@@ -1,4 +1,4 @@
-import { downloadApi, postApi, userApi } from '@/apis'
+import { postApi, userApi } from '@/apis'
 import { useUserResourceStore } from './userResourceStore'
 import { formatLink, formatTimeOrAgo, htmlToText } from '@/utils/format'
 import { extractImageSrcs } from '@/utils/regex'
@@ -101,14 +101,6 @@ export const getPackageList = (t: any) => {
     .catch((error) => {
       console.error('Error fetching package list:', error)
     })
-}
-
-export const downloadFile = (url: string, vid: number) => {
-  if (!url) return
-  let fileName = url.split('/').pop()
-  if (!fileName) return
-  fileName = fileName.replace(/(preview|download)\?filename=/, '')
-  downloadApi.downloadFile(fileName, vid)
 }
 
 export const deletePost = (t: any) => {

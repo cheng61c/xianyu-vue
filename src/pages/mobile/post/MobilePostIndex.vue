@@ -269,7 +269,7 @@ const handleClick = (e: MouseEvent | TouchEvent) => {
     e.preventDefault()
     return
   }
-  router.push({ name: 'publish' })
+  router.push({ name: 'publishPost' })
 }
 
 const startDrag = (e: TouchEvent) => {

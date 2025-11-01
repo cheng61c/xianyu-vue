@@ -112,6 +112,9 @@
       </div>
     </div>
 
+    {{ postInfo }}
+    {{ versionData }}
+
     <div v-if="!loaderData">
       <ScUploadFile
         :typeid="postInfo.fileType"
@@ -154,23 +157,17 @@ import ScButton from '@/components/common/ScButton.vue'
 import ScUploadFile from '@/components/common/ScUploadFile.vue'
 import { postApi, versionApi } from '@/apis'
 import type { Version } from '@/types/version'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
-const props = defineProps({
-  post: {
-    type: Object as () => Post | null,
-    default: null,
-  },
-})
-
 const toast = useToast()
 const userStore = useUserStore()
 const router = useRouter()
+const route = useRoute()
 const versionList = ref<Version[]>([]) // 版本列表
 const postInfo = ref<Post>({} as Post) // 帖子详情
 const loader = ref(false) // 加载状态
@@ -221,7 +218,7 @@ const submitVersiont = () => {
 
   loader.value = true
 
-  console.log('提交版本数据:', versionData.value.id)
+  console.log('提交版本数据:', versionData)
 
   postApi[versionData.value.id ? 'updateVersion' : 'createVersion'](
     versionData.value
@@ -250,13 +247,19 @@ const submitVersiont = () => {
 }
 
 onMounted(async () => {
-  if (props.post) {
-    versionData.value.postId = props.post.id
-    postInfo.value = props.post
+  if (route.params.postId) {
+    versionData.value.postId = Number(route.params.postId)
+    const res = await postApi.getPostDetail(Number(route.params.postId))
+    if (res.data.code == 200) {
+      postInfo.value = res.data.data as Post
+    } else {
+      toast.error(t('t.jia-zai-shi-bai'))
+      return
+    }
   }
 
-  if (router.currentRoute.value.query.resourceId) {
-    const resourceId = Number(router.currentRoute.value.query.resourceId)
+  if (route.query.resourceId) {
+    const resourceId = Number(route.query.resourceId)
     const res = await postApi.getResourceDetail(resourceId)
 
     if (res.data.code == 200) {
@@ -264,7 +267,7 @@ onMounted(async () => {
       versionData.value = {
         id: data.id,
         title: data.title,
-        version: data.version,
+        version: String(data.version),
         content: formatImageSrcsInHtml(data.content),
         files: data.files.map((file) => file.id),
         postId: data.postId,
@@ -287,5 +290,6 @@ onMounted(async () => {
       versionList.value = data.data
     }
   })
+  loader.value = false
 })
 </script>

@@ -99,7 +99,9 @@
         class="text-sm px-4 border border-gray hover:border-active"
         :icon="SquarePen"
         :iconSize="16"
-        @click="$router.push({ name: 'publish', params: { postId: post.id } })">
+        @click="
+          $router.push({ name: 'publishPost', params: { postId: post.id } })
+        ">
         {{ $t('b.bian-ji') }}
       </ScButton>
       <ScButton
@@ -151,7 +153,7 @@
     class="mt-8"
     :action="'前往发帖'"
     :actionIcon="SquareArrowOutUpRight"
-    @action-click="$router.push({ name: 'publish' })" />
+    @action-click="$router.push({ name: 'publishPost' })" />
 
   <ScModal v-model="isDeletePost">
     <Card class="max-w-2xl">
