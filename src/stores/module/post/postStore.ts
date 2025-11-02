@@ -48,7 +48,7 @@ export const usePostStore = defineStore('post', {
     buttonBottom: 60,
 
     /** 排序方式 */
-    orderType: 4,
+    orderType: 1,
 
     /** 当前帖子详情信息 */
     postData: {} as Post | null,

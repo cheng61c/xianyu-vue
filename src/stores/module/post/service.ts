@@ -42,7 +42,7 @@ export const getfileTypes = (t: any) => {
     { value: 3, label: t('b.cai-zhi') },
     { value: 4, label: t('b.pi-fu') },
     { value: 5, label: t('b.mo-zu') },
-    { value: 8, label: '联机模组' },
+    { value: 8, label: t('b.lian-ji-mo-zu') },
     { value: 7, label: t('b.qi-ta') },
   ]
 }
@@ -55,7 +55,7 @@ export const getFileTypeOptions = (t: any) => {
     { value: 3, label: t('b.cai-zhi') },
     { value: 4, label: t('b.pi-fu') },
     { value: 5, label: t('b.mo-zu') },
-    { value: 8, label: '联机模组' },
+    { value: 8, label: t('b.lian-ji-mo-zu') },
     { value: 7, label: t('b.qi-ta') },
   ]
 }
@@ -64,7 +64,7 @@ export const getSortOptions = (t: any) => {
   return [
     { value: 1, label: t('b.zui-xin'), icon: ArrowDownWideNarrow },
     { value: 2, label: t('b.zui-zao'), icon: ArrowUpNarrowWide },
-    { value: 3, label: t('b.zui-zan'), icon: ArrowDownWideNarrow },
+    // { value: 3, label: t('b.zui-zan'), icon: ArrowDownWideNarrow },
   ]
 }
 

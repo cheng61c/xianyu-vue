@@ -190,8 +190,8 @@
         v-if="resStore.packageList.length === 0"
         class="overflow-y-auto h-full">
         <EmptyState
-          description="暂无版本信息"
-          action="点击添加版本"
+          :description="$t('d.zan-wu-ban-ben-xin-xi')"
+          :action="$t('b.dian-ji-tian-jia-ban-ben')"
           :actionIcon="PackagePlus"
           actionIconSize="20"
           @action-click="toCreateResource()" />

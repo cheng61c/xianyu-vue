@@ -198,7 +198,8 @@
     "zui-jin-zhu-ce-datarecentregisterstatscount": "最近注册({0})",
     "zui-jin-fa-bu-de-tie-zi-datarecentpoststatscount": "最近发布的帖子({0})",
     "zui-jin-fa-bu-de-zi-yuan-datarecentresourcepoststatscount": "最近发布的资源({0})",
-    "zui-jin-fa-bu-de-ping-lun-datarecentcommentstatscount": "最近发布的评论({0})"
+    "zui-jin-fa-bu-de-ping-lun-datarecentcommentstatscount": "最近发布的评论({0})",
+    "zan-wu-ban-ben-xin-xi": "暂无版本信息"
   },
   "f": {
     "ji-chu-xin-xi": "基础信息",
@@ -500,7 +501,9 @@
     "zui-zao": "最早",
     "zui-duo-zan": "最多赞",
     "zui-zan": "最赞",
-    "geng-xin-tie-zi": "更新帖子"
+    "geng-xin-tie-zi": "更新帖子",
+    "lian-ji-mo-zu": "联机模组",
+    "dian-ji-tian-jia-ban-ben": "点击添加版本"
   },
   "t": {
     "yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang": "验证码已发送到您的邮箱",

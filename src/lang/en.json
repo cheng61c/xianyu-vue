@@ -198,7 +198,8 @@
     "zui-jin-zhu-ce-datarecentregisterstatscount": "Recently registered ({0})",
     "zui-jin-fa-bu-de-tie-zi-datarecentpoststatscount": "Recently released post ({0})",
     "zui-jin-fa-bu-de-zi-yuan-datarecentresourcepoststatscount": "Recently released resources ({0})",
-    "zui-jin-fa-bu-de-ping-lun-datarecentcommentstatscount": "Recently released comments ({0})"
+    "zui-jin-fa-bu-de-ping-lun-datarecentcommentstatscount": "Recently released comments ({0})",
+    "zan-wu-ban-ben-xin-xi": "No version information available"
   },
   "f": {
     "ji-chu-xin-xi": "Basic Info",
@@ -499,7 +500,9 @@
     "qian-wang-fa-tie": "Go to Post",
     "geng-xin-tie-zi": "Update Post",
     "zui-zao": "earliest",
-    "zui-zan": "Awesome"
+    "zui-zan": "Awesome",
+    "lian-ji-mo-zu": "NetMod",
+    "dian-ji-tian-jia-ban-ben": "Add Version"
   },
   "t": {
     "yan-zheng-ma-yi-fa-song-dao-nin-de-you-xiang": "Code sent to email",
