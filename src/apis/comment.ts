@@ -24,3 +24,7 @@ export const sendComment = (data: SendCommentDto) => {
 export const LikeComment = (data: { id: number }) => {
   return request.post('/post-comment/like', data)
 }
+
+export const deleteComment = (id: number) => {
+  return request.delete('/post-comment/' + id)
+}

@@ -3,7 +3,10 @@
     <ScButton class="w-full text-error" @click="toggleReportModal">
       {{ $t('b.ju-bao') }}
     </ScButton>
-    <ScButton v-if="isAdmin" class="w-full text-error" @click="">
+    <ScButton
+      v-if="isAdmin || uid === userStore.userInfo.id"
+      class="w-full text-error"
+      @click="del">
       {{ $t('b.shan-chu-ping-lun') }}
     </ScButton>
   </Card>
@@ -52,6 +55,7 @@ import ScInput from '@/components/common/ScInput.vue'
 import { reportApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import { useUserStore } from '@/stores/module/user/userStore'
+import { deleteComment } from '@/stores/module/comment/service'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -62,6 +66,14 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  uid: {
+    type: Number,
+    required: true,
+  },
+})
+const emit = defineEmits(['updateComment'])
+const isAdmin = computed(() => {
+  return verifyPermissions([1, 2, 3, 5, 9])
 })
 
 const reportModal = ref(false)
@@ -96,8 +108,9 @@ const handleReportSubmit = () => {
     })
 }
 
-const emit = defineEmits(['updateComment'])
-const isAdmin = computed(() => {
-  return verifyPermissions([1, 2, 3, 5, 9])
-})
+const del = () => {
+  deleteComment(t, props.commentId, () => {
+    emit('updateComment')
+  })
+}
 </script>

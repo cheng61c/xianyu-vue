@@ -284,12 +284,11 @@ const searchTypeoptions = [
   { value: 4, label: t('b.sou-suo-tie-zi-id') },
 ]
 
-const orderBy = ref<number | { value: number; label: string }>(4) // 排序方式
+const orderBy = ref<number | { value: number; label: string }>(1) // 排序方式
 const orderByOptions = [
-  { value: 1, label: t('b.an-dian-zan-jiang-xu') },
-  { value: 2, label: t('b.an-guan-kan-shu-jiang-xu') },
-  { value: 3, label: t('b.an-re-du-jiang-xu') },
-  { value: 4, label: t('b.an-fa-bu-shi-jian-jiang-xu') },
+  { value: 1, label: t('b.an-fa-bu-shi-jian-jiang-xu') },
+  { value: 2, label: t('b.an-dian-zan-jiang-xu') },
+  // { value: 3, label: t('b.an-re-du-jiang-xu') },
 ]
 
 const isTop = ref<number | { value: number; label: string }>(2) // 是否置顶

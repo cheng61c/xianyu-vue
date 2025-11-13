@@ -80,7 +80,8 @@
                   :icon="EllipsisVertical">
                   <CommentMenu
                     @updateComment="getcomments(1)"
-                    :comment-id="comment.id" />
+                    :comment-id="comment.id"
+                    :uid="comment.author.id" />
                 </PopupBox>
               </div>
             </div>
@@ -171,7 +172,8 @@
                           :icon="EllipsisVertical">
                           <CommentMenu
                             @updateComment="getcomments(1)"
-                            :comment-id="reply.id" />
+                            :comment-id="reply.id"
+                            :uid="reply.author.id" />
                         </PopupBox>
                       </div>
                     </div>
@@ -349,6 +351,7 @@ const setSort = (value: number) => {
 }
 
 const getcomments = (page: number) => {
+  console.log('开始')
   if (props.postData == null) return
   if (
     commentsPage.value.page >=
@@ -357,6 +360,7 @@ const getcomments = (page: number) => {
   ) {
     return
   }
+
   commentApi
     .getPostComments({
       postId: props.postData.id,
@@ -367,11 +371,15 @@ const getcomments = (page: number) => {
     .then((res) => {
       if (res.data.code === 200) {
         const list = res.data.data.list.map((item: any) => {
+          console.log(
+            'removeHtmlTags(String(item.content))',
+            removeHtmlTags(String(item.content))
+          )
           item.createdAt = formatTimeOrAgo(item.createdAt, t)
           item.image = item.image
             ? item.image.map((img: string) => formatLink(img))
             : []
-          item.content = removeHtmlTags(item.content)
+          item.content = removeHtmlTags(String(item.content))
           item.children = item.children.map((child: any) => {
             child.createdAt = formatTimeOrAgo(child.createdAt, t)
             child.image = child.image

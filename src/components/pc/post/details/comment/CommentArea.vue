@@ -97,7 +97,8 @@
                   :icon="EllipsisVertical">
                   <CommentMenu
                     @updateComment="getcomments(1)"
-                    :comment-id="comment.id" />
+                    :comment-id="comment.id"
+                    :uid="comment.author.id" />
                 </PopupBox>
               </div>
             </div>
@@ -186,7 +187,8 @@
                           :icon="EllipsisVertical">
                           <CommentMenu
                             @updateComment="getcomments(1)"
-                            :comment-id="reply.id" />
+                            :comment-id="reply.id"
+                            :uid="reply.author.id" />
                         </PopupBox>
                       </div>
                     </div>

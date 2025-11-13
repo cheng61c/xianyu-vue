@@ -112,9 +112,6 @@
       </div>
     </div>
 
-    {{ postInfo }}
-    {{ versionData }}
-
     <div v-if="!loaderData">
       <ScUploadFile
         :typeid="postInfo.fileType"

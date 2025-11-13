@@ -4,9 +4,9 @@
       {{ $t('b.ju-bao') }}
     </ScButton>
     <ScButton
-      v-if="isAdmin"
+      v-if="isAdmin || uid === userStore.userInfo.id"
       class="w-full text-error"
-      @click="deleteComment(commentId)">
+      @click="del">
       {{ $t('b.shan-chu-ping-lun') }}
     </ScButton>
   </Card>
@@ -57,12 +57,17 @@ import { reportApi } from '@/apis'
 import { useToast } from 'vue-toastification'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/module/user/userStore'
+import { deleteComment } from '@/stores/module/comment/service'
 const { t } = useI18n()
 
 const toast = useToast()
 const userStore = useUserStore()
 const props = defineProps({
   commentId: {
+    type: Number,
+    required: true,
+  },
+  uid: {
     type: Number,
     required: true,
   },
@@ -100,16 +105,10 @@ const handleReportSubmit = () => {
     })
 }
 
-const deleteComment = (_id: number) => {
-  if (!userStore.isLogin) {
-    toast.error(t('t.qing-xian-deng-lu'))
-    return
-  }
-  toast.error(t('t.huan-mei-zuo'))
-  // reportApi.deleteComment(id).then(() => {
-  //   toast.success(t('t.shan-chu-cheng-gong'))
-  //   emit('updateComment')
-  // })
+const del = () => {
+  deleteComment(t, props.commentId, () => {
+    emit('updateComment')
+  })
 }
 
 const emit = defineEmits(['updateComment'])

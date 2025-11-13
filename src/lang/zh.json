@@ -644,7 +644,8 @@
     "you-xi-ban-ben-yong-yu-zai-bu-tong-ban-ben-de-you-xi-zhong-zhan-shi-jian-yi-gen-ju-shi-ji-qing-kuang-xuan-ze-he-shi-de-ban-ben": "游戏版本，用于在不同版本的游戏中展示，建议根据实际情况选择合适的版本",
     "ni-huan-mei-you-fa-bu-ren-he-tie-zio": "你还没有发布任何帖子哦~",
     "jin-guan-li-yuan-ke-fa-bu": "仅管理员可发布",
-    "qing-xie-xia-ni-de-ping-lun": "请写下你的评论"
+    "qing-xie-xia-ni-de-ping-lun": "请写下你的评论",
+    "shan-chu-shi-bai": "删除失败"
   },
   "other": {
     "wen-jian-da-xiao": "文件大小:",
@@ -682,5 +683,6 @@
     "cha-rubzhan-shi-pin": "插入B站视频",
     "qing-xian-xuan-zhong-yi-xie-wen-ben-zai-cha-ru-lian-jie": "请先选中一些文本再插入链接",
     "jiang-wen-ben-she-zhi-wei-lian-jie": "将文本设置为链接："
-  }
+  },
+  "shan-chu-shi-bai": "删除失败"
 }

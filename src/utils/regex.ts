@@ -13,10 +13,11 @@ export const extractImageSrcs = (html: string): string[] => {
   return result
 }
 
-export const removeHtmlTags = (str: string): string => {
+export const removeHtmlTags = (str: any): string => {
+  if (!str) return ''
   // 若输入不是字符串，直接返回空字符串或原内容（根据需求调整）
   if (typeof str !== 'string') {
-    return ''
+    return String(str).replace(/<[^>]*>/g, '')
   }
   // 正则匹配所有 HTML 标签（<...>）并替换为空字符串
   return str.replace(/<[^>]*>/g, '')

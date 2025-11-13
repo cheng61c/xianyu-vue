@@ -18,3 +18,17 @@ export const sendComment = (
     }
   })
 }
+
+export const deleteComment = (t: any, id: number, close?: () => void) => {
+  commentApi
+    .deleteComment(id)
+    .then(() => {
+      toast.success(t('t.shan-chu-cheng-gong'))
+      if (close) {
+        close()
+      }
+    })
+    .catch((error) => {
+      toast.error(t('t.shan-chu-shi-bai') + error)
+    })
+}

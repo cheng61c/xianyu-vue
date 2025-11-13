@@ -595,7 +595,9 @@ const sendPsot = () => {
 
   console.log('postData', postData.value)
 
-  postApi[isEdit ? 'updatePost' : 'createPost'](formatPostBody(postData.value))
+  postApi[isEdit.value ? 'updatePost' : 'createPost'](
+    formatPostBody(postData.value)
+  )
     .then((res: Api) => {
       if (res.data.code === 200) {
         loader.value = false
@@ -688,7 +690,7 @@ const connectionTest = async (url: string) => {
 }
 
 const formatPostBody = (body: PostDto) => {
-  if (body.id == 0 && !isEdit) delete body.id
+  if (body.id == 0 && !isEdit.value) delete body.id
   if (body.type == 1) {
     delete body.fileType
     delete body.dependencies
@@ -698,6 +700,8 @@ const formatPostBody = (body: PostDto) => {
   } else {
     body.dependencies = []
   }
+  console.log('body', body)
+
   return body
 }
 
