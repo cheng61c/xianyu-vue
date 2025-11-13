@@ -14,6 +14,11 @@ const routes = [
     component: () => import('@/pages/Index.vue'),
     children: [
       {
+        path: 'test',
+        name: 'test',
+        component: () => import('@/pages/test/TestPage.vue'),
+      },
+      {
         path: 'postList/:plateId?',
         name: 'postList',
         component: () => {

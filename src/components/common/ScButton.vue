@@ -73,6 +73,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  bgClass: {
+    type: String,
+    default: 'bg-background',
+  },
 })
 
 const className = computed(() =>
@@ -81,7 +85,7 @@ const className = computed(() =>
       ? props.noBg
         ? 'bg-active text-active'
         : 'bg-active text-active-content'
-      : 'bg-background text-background-content hover:text-active',
+      : `${props.bgClass} text-background-content hover:text-active`,
     props.Border
       ? props.activation
         ? 'border border-active'

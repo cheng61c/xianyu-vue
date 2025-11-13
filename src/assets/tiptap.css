@@ -1,3 +1,5 @@
+@custom-variant dark (&:where(.dark, .dark *));
+
 .tiptap.ProseMirror {
   min-height: 20rem;
   max-height: calc(100vh - 16rem);
@@ -137,7 +139,7 @@
 /* link styles */
 
 .tiptap a {
-  color: blue;
+  color: var(--color-link);
   text-decoration: underline;
 }
 
@@ -170,11 +172,12 @@
   border-left: 3px solid gray;
   margin: 1.5rem 0;
   padding-left: 1rem;
+  background-color: var(--color-table-blockquote-background);
 }
 
 .tiptap hr {
   border: none;
-  border-top: 1px solid gray;
+  border-top: 1px solid var(--color-table-border);
   margin: 2rem 0;
 }
 
@@ -258,4 +261,36 @@
       font-weight: 700;
     }
   }
+}
+
+.tiptap table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-spacing: 0;
+}
+
+.tiptap th,
+.tiptap td {
+  border-right: 1px solid var(--color-table-border);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.tiptap th {
+  background-color: var(--color-table-header-background); /* 表头背景色 */
+}
+.tiptap td {
+  border-top: 1px solid var(--color-table-border);
+}
+.tableWrapper {
+  border-collapse: separate;
+  border-radius: 10px;
+  border: 1px solid var(--color-table-border);
+  overflow: hidden;
+}
+
+option {
+  background-color: var(--color-background); /* 下拉选项背景 */
+  color: var(--color-background-content); /* 下拉选项文字颜色 */
 }

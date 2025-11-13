@@ -17,6 +17,7 @@
   --color-active-content: #ffffff; /* 激活状态内容颜色 */
   --color-like: #f43098; /* 点赞颜色 */
   --color-bad: #f43098; /* 点踩颜色 */
+  --color-link: #66ccff;
 
   /* 自定义颜色 */
   --color-green: #1ec041;
@@ -28,6 +29,10 @@
   --color-border: 1px solid rgba(204, 204, 204, 0.6); /* 卡片边框 */
   --shadow-card: 2px 2px 4px rgba(0, 0, 0, 0.15);
   --shadow-card-md: 4px 4px 8px rgba(0, 0, 0, 0.15);
+
+  --color-table-border: #cccccc; /* 表格边框颜色 */
+  --color-table-header-background: #f5f5f5; /* 表头背景色 */
+  --color-table-blockquote-background: #f9f9f9; /* 引用块背景色 */
 }
 
 @layer base {
@@ -35,10 +40,10 @@
   .dark {
     /* 背景 */
     --color-background: #2a2f34;
-    --color-background-content: rgba(255, 255, 255, 0.75); /*普通文字*/
-    --color-text-white: rgba(255, 255, 255, 0.75); /* 白色文本 */
+    --color-background-content: #b4bbcd; /*普通文字*/
+    --color-text-white: #b4bbcd; /* 白色文本 */
     --color-text-black: #ffffff;
-    --color-text-gray: rgba(255, 255, 255, 0.6); /* 次文本颜色 */
+    --color-text-gray: #8b8b8b; /* 次文本颜色 */
 
     /* 主色 */
     --color-white: #222326;
@@ -48,6 +53,7 @@
     --color-like: #c81c6a; /* 点赞颜色 */
     --color-active: #3399bb; /* 激活状态颜色 */
     --color-active-content: #e0e0e0; /* 激活状态内容颜色 */
+    --color-link: #66ccff;
 
     /* 特定颜色修改 */
     --color-green: #249c3e; /* 绿色 */
@@ -61,6 +67,9 @@
       2px 2px 4px rgba(0, 0, 0, 0.12), -2px -2px 4px rgba(0, 0, 0, 0.18);
     --shadow-card-md:
       4px 6px 6px rgba(0, 0, 0, 0.12), -4px -4px 8px rgba(0, 0, 0, 0.18);
+    --color-table-border: #8b8b8b; /* 表格边框颜色 */
+    --color-table-header-background: #363738; /* 表头背景色 */
+    --color-table-blockquote-background: #32363b; /* 引用块背景色 */
   }
 }
 
@@ -79,7 +88,6 @@
     color: var(--color-background-content);
   }
 }
-
 @plugin "daisyui/theme" {
   name: 'light';
   default: true; /* set as default */
