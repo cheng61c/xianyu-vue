@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import svgLoader from 'vite-svg-loader'
 import tailwindcss from '@tailwindcss/vite'
 // import { visualizer } from 'rollup-plugin-visualizer'
-// import compression from 'vite-plugin-compression'
+import compression from 'vite-plugin-compression'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -19,10 +19,12 @@ export default defineConfig({
     svgLoader(),
     tailwindcss(),
     // visualizer({ open: true }), // 构建后自动打开分析页面
-    // compression({
-    //   algorithm: 'gzip', // 或 'brotliCompress'
-    //   threshold: 10240, // 对大于 10KB 的文件压缩
-    // }),
+    compression({
+      algorithm: 'gzip',
+      ext: '.gz',
+      threshold: 1024, // 小于1kb的文件不压缩
+      deleteOriginFile: true, // 删除原文件
+    }),
   ],
   base: './', // 设置基础路径
   resolve: {
@@ -66,7 +68,7 @@ export default defineConfig({
           // 1. 语言文件单独分包
           if (id.includes('/lang/')) {
             return id.includes('zh.json') ? 'zh-lang' : 'en-lang'
-          } 
+          }
 
           // 2. Pinia Store 单独分包
           if (id.includes('/stores/')) {
