@@ -128,7 +128,7 @@ const myFiles = ref<
 >([])
 watchEffect(async () => {
   const files = await uploadApi.getFilesList({
-    types: '1,2,3,4,5,7',
+    types: '1,2,3,4,5,7,8',
     page: 1,
     limit: 999,
   })

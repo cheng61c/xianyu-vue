@@ -49,6 +49,8 @@ export const usePostStore = defineStore('post', {
 
     /** 排序方式 */
     orderType: 1,
+    /** 文件类型 */
+    fileType: 0,
 
     /** 当前帖子详情信息 */
     postData: {} as Post | null,

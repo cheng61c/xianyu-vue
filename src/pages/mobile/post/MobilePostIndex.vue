@@ -28,7 +28,9 @@
         <ScButton
           :icon="Search"
           noPd
-          @click="handleSearch(postStore.searchText, true, String(fileType))">
+          @click="
+            handleSearch(postStore.searchText, true, String(postStore.fileType))
+          ">
           {{ $t('b.sou-suo') }}
         </ScButton>
 
@@ -44,7 +46,7 @@
               <ScButtonSelector
                 col
                 :options="fileTypeOptions"
-                v-model="fileType"
+                v-model="postStore.fileType"
                 @click="close()" />
             </Card>
           </template>
@@ -196,7 +198,6 @@ const postStore = usePostStore()
 const { t } = useI18n()
 const route = useRoute()
 const plateId = ref<string>(route.params.plateId as string)
-const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
 const show = ref(false) // 显示置顶公告
 const announcementStore = useAnnouncementStore()
@@ -333,13 +334,16 @@ watch(
   },
   { immediate: true }
 )
-watch(fileType, () => {
-  search(postStore.searchText, true, String(fileType.value), route, t)
-})
+watch(
+  () => postStore.fileType,
+  () => {
+    search(postStore.searchText, true, String(postStore.fileType), route, t)
+  }
+)
 watch(
   () => postStore.orderType,
   () => {
-    search(postStore.searchText, true, String(fileType.value), route, t)
+    search(postStore.searchText, true, String(postStore.fileType), route, t)
   }
 )
 

@@ -115,7 +115,7 @@ export const toPage = (
 
 /** 获取帖子 */
 export const getPost = async (
-  pid: number,
+  pid: number, // 板块id
   route: RouteLocationNormalizedLoadedGeneric,
   t: any
 ) => {
@@ -136,6 +136,9 @@ export const getPost = async (
   }
   if (pid !== 0) {
     query.plateId = pid
+  }
+  if (postStore.fileType !== 0) {
+    query.fileTypes = String(postStore.fileType)
   }
   query.page = postStore.postPage.page
   query.limit = postStore.postPage.limit
@@ -186,6 +189,8 @@ export const search = (
 
   if (fileTypes && fileTypes != '0' && fileTypes.length > 0) {
     query.fileTypes = fileTypes
+  } else {
+    query.fileTypes = String(postStore.fileType)
   }
   if (postStore.searchText != '') {
     query.title = postStore.searchText

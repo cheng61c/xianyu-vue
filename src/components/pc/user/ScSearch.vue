@@ -21,7 +21,9 @@
         v-if="searchType == 2 && deviceStore.device == 2"
         class="flex gap-2 flex-1 items-center justify-end text-active-content ml-50">
         <div class="flex-shrink-0">{{ $t('b.shai-xuan-lei-xing') }}</div>
-        <ScButtonSelector :options="fileTypeOptions" v-model="fileType" />
+        <ScButtonSelector
+          :options="fileTypeOptions"
+          v-model="postStore.fileType" />
       </div>
 
       <div
@@ -45,7 +47,7 @@
             <ScButtonSelector
               col
               :options="fileTypeOptions"
-              v-model="fileType"
+              v-model="postStore.fileType"
               @click="close()" />
           </Card>
         </template>
@@ -102,7 +104,6 @@ const props = defineProps({
 const { t } = useI18n()
 const deviceStore = useDeviceStore()
 const postStore = usePostStore()
-const fileType = ref<number>(0)
 const fileTypeOptions = getFileTypeOptions(t)
 const orderTypeOptions = getSortOptions(t)
 
@@ -124,9 +125,12 @@ watch(searchText, (val) => {
   emit('update:modelValue', val)
 })
 
-watch(fileType, () => {
-  handleSearch()
-})
+watch(
+  () => postStore.fileType,
+  () => {
+    handleSearch()
+  }
+)
 watch(
   () => postStore.orderType,
   () => {
@@ -134,6 +138,6 @@ watch(
   }
 )
 const handleSearch = () => {
-  emit('search', String(searchText.value), true, String(fileType.value))
+  emit('search', String(searchText.value), true, String(postStore.fileType))
 }
 </script>
