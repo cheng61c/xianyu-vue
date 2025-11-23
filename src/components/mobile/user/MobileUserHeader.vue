@@ -70,7 +70,7 @@ const onFileChange = async (e: Event) => {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (!file) return
   try {
-    const res = await uploadApi.uploadFile(file, 6)
+    const res = await uploadApi.uploadFileChunked(file, 6)
     if (res.data.code === 200) {
       const avatarUrl = res.data.data.url
       const response = await userApi.updateUser({ headImg: avatarUrl })

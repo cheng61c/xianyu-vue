@@ -1,3 +1,4 @@
 {
-  "serverAddress": "https://m.suancaixianyu.cn/api"
+  "serverAddress": "https://m.suancaixianyu.cn/api",
+  "uploadAddress": "https://upload.suancaixianyu.cn/upload"
 }

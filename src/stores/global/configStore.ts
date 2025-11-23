@@ -13,8 +13,9 @@ export const useConfigStore = defineStore('config', {
     /** 后端接口 */
     serverAddress: 'http://127.0.0.1:3000/api',
     // serverAddress: 'https://api.sccmdb.cn/api',
+    uploadAddress: 'http://localhost:3001/upload',
     errorImg:
-      'https://r2.sccmdb.cn/70f1f283c19356cabc66c7cae8216ea80cdab0d6139dfbbac2de6e4cdc79fa3d-error.png',
+      'https://r2.scbbs.top/2025/1119/de379f1fe269fa74c1e701d7eb2cc78360de7c79cc6d843611ce0f5e7a382003-eb46c1ae-7616-4fb0-bf40-35d55d5b4836.png',
 
     /** 平板适配 */
     padAdaptation: false,
@@ -49,6 +50,7 @@ export const useConfigStore = defineStore('config', {
       } else {
         console.log('本地环境，使用默认配置')
         this.serverAddress = 'http://127.0.0.1:3000/api'
+        this.uploadAddress = 'http://localhost:3001/upload'
       }
     },
   },

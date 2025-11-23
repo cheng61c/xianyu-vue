@@ -246,7 +246,7 @@ const updateHerdImg = async () => {
     console.log('上传文件:', file)
     loading.value = true // 开始上传时设置加载状态
     uploadApi
-      .uploadFile(file, 6)
+      .uploadFileChunked(file, 6)
       .then((res) => {
         if (res.data.code === 200) {
           const avatarUrl = res.data.data.url

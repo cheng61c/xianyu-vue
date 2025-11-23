@@ -284,7 +284,7 @@ const handleFileChange = async (event: Event) => {
   uploadLoading.value = true
   try {
     const file = files[0]
-    const res = await uploadApi.uploadFile(file, 6)
+    const res = await uploadApi.uploadFileChunked(file, 6)
     forms.value.headImg = res.data.data.url
     uploadLoading.value = false
   } catch (error) {

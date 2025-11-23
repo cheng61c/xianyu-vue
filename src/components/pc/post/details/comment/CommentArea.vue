@@ -410,7 +410,8 @@ const replay = (
   content: string,
   image?: string[],
   commentId?: number,
-  toCommentId?: number
+  toCommentId?: number,
+  closeCallback?: () => void
 ) => {
   if (!userStore.isLogin) {
     toast.error(t('t.qing-xian-deng-lu-hou-zai-fa-biao-ping-lun'))
@@ -441,6 +442,9 @@ const replay = (
   sendComment(t, data, () => {
     console.log('评论发送成功')
     // toast.success(t('t.ping-lun-cheng-gong'))
+    if (closeCallback) {
+      closeCallback()
+    }
     getcomments(1)
   })
 }

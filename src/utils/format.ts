@@ -123,6 +123,12 @@ export const formatTime = (value: string | number | Date) => {
     : `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}`
 }
 
+/**
+ * 格式化时间为多久前
+ * @param date 时间
+ * @param t 本地化
+ * @returns 返回多久前的时间
+ */
 export const formatTimeAgo = (date: string | number, t: any): string => {
   // 统一转换为时间戳（毫秒）
   const timestamp =

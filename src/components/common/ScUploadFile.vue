@@ -36,14 +36,24 @@
           <div
             v-for="(file, index) in uploadedFiles"
             :key="index"
-            class="relative px-6 h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
+            class="relative px-6 min-h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer"
             @click.stop>
             <ScButton
-              :icon="iconMap[props.typeid as keyof typeof iconMap]"
+              :icon="
+                file.state
+                  ? iconMap[props.typeid as keyof typeof iconMap]
+                  : FileUp
+              "
               :iconSize="deviceStore.device == 2 ? 36 : 24"
               noBg
               noPd />
-            <div class="text-center px-2 break-all">{{ file.name }}</div>
+            <div>
+              <div class="text-center px-2 break-all">{{ file.name }}</div>
+              <div v-if="!file.state">
+                上传中...({{ file.progress }}/{{ file.totalChunks }})
+              </div>
+            </div>
+
             <button
               @click.stop="removeFile(index)"
               class="absolute top-1 right-1 w-8 h-8 bg-white/70 hover:bg-white text-red-500 rounded-full p-1 shadow cursor-pointe"
@@ -51,6 +61,7 @@
               <X />
             </button>
           </div>
+
           <div
             class="relative h-28 rounded-lg border border-gray overflow-hidden shadow-sm flex items-center justify-center cursor-pointer">
             <Plus :size="36" />
@@ -69,9 +80,8 @@ import {
   onBeforeUnmount,
   computed,
   watchEffect,
-  watch,
 } from 'vue'
-import { Plus, X } from 'lucide-vue-next'
+import { Plus, X, FileUp } from 'lucide-vue-next'
 import { useToast } from 'vue-toastification'
 import Card from './Card.vue'
 import ScButton from './ScButton.vue'
@@ -108,6 +118,9 @@ const uploadedFiles = ref<
     size: number
     name: string
     id: number
+    state: boolean
+    progress: number
+    totalChunks: number
   }[]
 >([])
 
@@ -164,41 +177,61 @@ const handleDrop = (e: DragEvent) => {
   }
 }
 
-const handleFiles = (selectedFiles: File[]) => {
+// 补零
+// const pad = (n: number) => n.toString().padStart(2, '0')
+
+// 处理文件
+const handleFiles = async (selectedFiles: File[]) => {
   for (const file of selectedFiles) {
     toast.info(
       t('t.zheng-zai-shang-chuan-filetypelabelvalue', [fileTypeLabel.value])
     )
+    uploadedFiles.value.push({
+      name: file.name,
+      id: 0,
+      size: file.size,
+      state: false,
+      progress: 0,
+      totalChunks: 0,
+    })
+    const fileIndex = uploadedFiles.value.length - 1
+
     uploading.value = true
     uploadApi
-      .uploadFile(file, props.typeid)
-      .then((res) => {
-        if (res.data.code === 200) {
-          files.value.push({ file })
-          toast.success(
-            t('t.filetypelabelvalue-shang-chuan-cheng-gong', [
-              fileTypeLabel.value,
-            ])
-          )
+      .uploadFileChunked(
+        file,
+        props.typeid,
+        15 * 1024 * 1024 /* 15MB */,
+        (progress: number, totalChunks: number) => {
+          uploadedFiles.value[fileIndex].progress = progress
+          uploadedFiles.value[fileIndex].totalChunks = totalChunks
         }
-        uploading.value = false
-        console.log(res.data.data)
+      )
+      .then((res) => {
+        console.log('res', res)
 
-        uploadedFiles.value.push({
-          name: file.name,
-          id: res.data.data.id,
-          size: file.size,
-        })
-        uploaded()
+        if (res.data.code !== 200) {
+          toast.error(res.data.msg || '上传失败')
+          uploadedFiles.value.splice(fileIndex, 1)
+        } else {
+          uploadedFiles.value[fileIndex].state = true
+          uploadedFiles.value[fileIndex].id = res.data.data.id
+          toast.success('成功')
+          uploaded()
+        }
       })
-      .catch((error) => {
-        toast.error(
-          t(
-            't.filetypelabelvalue-shang-chuan-shi-bai-qing-shang-chuan-dui-ying-ge-shi-de-wen-jian',
-            [fileTypeLabel.value]
-          ) + error.msg
+      .catch(() => {
+        toast.error('失败')
+        uploadedFiles.value.splice(fileIndex, 1)
+      })
+      .finally(() => {
+        // 检查是否所有的文件都上传完成
+        const allUploaded = uploadedFiles.value.every(
+          (file) => file.state === true
         )
-        uploading.value = false
+        if (allUploaded) {
+          uploading.value = false
+        }
       })
   }
   // 去重
@@ -210,6 +243,7 @@ const handleFiles = (selectedFiles: File[]) => {
           t.file.name === fileObj.file.name && t.file.size === fileObj.file.size
       )
   )
+  uploaded()
 }
 
 const uploaded = () => {
@@ -261,14 +295,15 @@ onBeforeUnmount(() => {
 })
 
 onMounted(() => {
-  uploadedFiles.value = props.loadFiles || []
+  uploadedFiles.value = (props.loadFiles || []).map((file) => ({
+    ...file,
+    state: true,
+    progress: 0,
+    totalChunks: 0,
+  }))
   nextTick(() => {
     document.addEventListener('click', handleClickOutside)
     document.addEventListener('keydown', handleEscKey)
   })
-})
-
-watch(uploadedFiles, () => {
-  uploaded()
 })
 </script>

@@ -115,7 +115,7 @@ const handleFileChange = async (event: Event) => {
     // 创建每个文件的上传Promise并加入数组
     const uploadPromise = (async () => {
       try {
-        const res = await uploadApi.uploadFile(file, 6)
+        const res = await uploadApi.uploadFileChunked(file, 6)
         const imageUrl = formatLink(res.data.data.url)
         imageList.value[index] = { url: imageUrl, loading: false }
       } catch (error) {

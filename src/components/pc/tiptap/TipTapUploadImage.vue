@@ -188,7 +188,7 @@ const handleFiles = (files: File[]) => {
     if (file.type.startsWith('image/')) {
       toast.info(t('t.zheng-zai-shang-chuan-tu-pian-qing-shao-deng'))
       uploading.value = true
-      uploadApi.uploadFile(file, 6).then((res) => {
+      uploadApi.uploadFileChunked(file, 6).then((res) => {
         if (res.data.code === 200) {
           images.value.push({
             file,

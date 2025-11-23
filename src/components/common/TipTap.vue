@@ -294,7 +294,7 @@ const onImageUpload = async (e: Event) => {
   const files = (e.target as HTMLInputElement).files
   if (!files || !files.length) return
   for (const file of Array.from(files)) {
-    const res = await uploadApi.uploadFile(file, 6)
+    const res = await uploadApi.uploadFileChunked(file, 6)
     const url = formatLink(res.data.data?.url)
     if (url) {
       editor.value?.chain().focus().setImage({ src: url }).run()
