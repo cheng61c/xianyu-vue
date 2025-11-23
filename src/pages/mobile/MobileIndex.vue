@@ -6,6 +6,11 @@
     <div class="home-content">
       <RouterView />
     </div>
+    <div
+      class="text-center"
+      v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])">
+      updateTime: 2025年11月23日21:48:34
+    </div>
   </div>
   <PopUpAnnouncement />
 </template>
@@ -15,6 +20,8 @@ import { useRoute } from 'vue-router'
 import PopUpAnnouncement from '@/components/common/PopUpAnnouncement.vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { verifyPermissions } from '@/utils/verify'
+
 gsap.registerPlugin(ScrollTrigger)
 
 const containerRef = ref<HTMLElement | null>(null)
