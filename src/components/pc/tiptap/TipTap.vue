@@ -240,9 +240,11 @@ function togglePopup(value?: string) {
   }
 }
 
-function addImg(url: string) {
+const imgs = ref<{ [key: string]: string }>({})
+function addImg(viewUrl: string, url: string) {
   if (editor.value) {
-    editor.value.chain().focus().setImage({ src: url }).run()
+    editor.value.chain().focus().setImage({ src: viewUrl }).run()
+    imgs.value[viewUrl] = url
   }
 }
 

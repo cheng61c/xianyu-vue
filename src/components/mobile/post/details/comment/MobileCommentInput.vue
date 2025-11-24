@@ -7,7 +7,7 @@
           class="relative w-20 h-20 border border-gray-300 rounded-lg overflow-hidden">
           <img
             v-if="!img.loading"
-            :src="img.url"
+            :src="img.viewUrl || img.url"
             alt="uploaded"
             class="w-full h-full object-cover" />
           <div v-else class="skeleton w-full h-full bg-gray-200"></div>
@@ -123,7 +123,7 @@ const commentContent = ref('')
 const fileInput = ref<HTMLInputElement | null>(null)
 
 // 图片列表，包括 loading 状态和 URL
-const imageList = ref<{ url: string; loading: boolean }[]>([])
+const imageList = ref<{ url: string; viewUrl: string; loading: boolean }[]>([])
 
 const triggerFileInput = () => {
   fileInput.value?.click()
@@ -140,7 +140,7 @@ const handleFileChange = async (event: Event) => {
 
   for (const file of fileArray) {
     // 添加占位图（骨架屏）
-    const placeholder = { url: '', loading: true }
+    const placeholder = { url: '', viewUrl: '', loading: true }
     imageList.value.push(placeholder)
     const index = imageList.value.length - 1
 
@@ -149,7 +149,11 @@ const handleFileChange = async (event: Event) => {
       try {
         const res = await uploadApi.uploadFileChunked(file, 6)
         const imageUrl = formatLink(res.data.data.url)
-        imageList.value[index] = { url: imageUrl, loading: false }
+        imageList.value[index] = {
+          url: imageUrl,
+          viewUrl: res.data.data.viewUrl,
+          loading: false,
+        }
       } catch (error) {
         toast.error(t('t.tu-pian-shang-chuan-shi-bai-filename', [file.name]))
         imageList.value.splice(index, 1)

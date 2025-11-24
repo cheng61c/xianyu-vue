@@ -48,7 +48,7 @@
               :src="img.preview"
               :alt="$t('d.yu-lan-tu')"
               class="w-28 h-28 object-cover"
-              @click.stop="$emit('addImg', img.preview)" />
+              @click.stop="addImg(img.preview, img.url)" />
             <!-- 删除按钮 -->
             <button
               @click.stop="removeImage(index)"
@@ -104,7 +104,7 @@
                 :src="img.preview"
                 :alt="$t('d.yu-lan-tu')"
                 class="w-28 h-28 object-cover"
-                @click.stop="addImg(img)" />
+                @click.stop="addImg(img.preview, img.url)" />
               <!-- 删除按钮 -->
               <button
                 @click.stop="removeImage(index)"
@@ -147,7 +147,7 @@ const isOpen = ref(false)
 const uploading = ref(false)
 
 // 保存所有图片对象（包含文件本体和预览链接）
-const images = ref<{ file: File; preview: string }[]>([])
+const images = ref<{ file: File; preview: string; url: string }[]>([])
 
 // 触发文件选择器
 const triggerFileInput = () => {
@@ -155,7 +155,7 @@ const triggerFileInput = () => {
 }
 
 // 点击添加图片
-const addImg = (img: { file: File; preview: string }) => {
+const addImg = (preview: string, url: string) => {
   if (uploading.value) {
     toast.error(t('t.zheng-zai-shang-chuan-qing-shao-hou-zai-shi'))
     return
@@ -163,7 +163,7 @@ const addImg = (img: { file: File; preview: string }) => {
   if (deviceStore.device === 1) {
     isOpen.value = false
   }
-  emit('addImg', img.preview)
+  emit('addImg', preview, url)
 }
 
 // 处理选择图片
@@ -192,7 +192,8 @@ const handleFiles = (files: File[]) => {
         if (res.data.code === 200) {
           images.value.push({
             file,
-            preview: formatLink(res.data.data.url),
+            preview: formatLink(res.data.data.viewUrl),
+            url: formatLink(res.data.data.url),
           })
         }
         uploading.value = false

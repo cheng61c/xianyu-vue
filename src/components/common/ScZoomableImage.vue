@@ -14,7 +14,7 @@
     @click="handleClickOutside">
     <img
       ref="imgRef"
-      :src="src"
+      :src="imgSrc"
       :alt="$t('t.tu-pian-yu-lan')"
       @dblclick.prevent
       @mousedown.prevent
@@ -32,9 +32,11 @@ import { ref, computed } from 'vue'
 
 const deviceStore = useDeviceStore()
 
-defineProps<{
+const props = defineProps<{
   src: string
 }>()
+
+const imgSrc = props.src.replace(/!\/fwfh\/368x238$/, '') // 移除特定后缀以获取原图
 
 const emit = defineEmits<{
   (e: 'click-outside'): void
