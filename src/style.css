@@ -6,6 +6,13 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+@font-face {
+  font-family: 'JetBrainsMono';
+  src: url('/public/JetBrainsMono-SemiBold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --cp-container-bg: var(--color-background);
 }

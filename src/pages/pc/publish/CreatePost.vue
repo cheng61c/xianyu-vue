@@ -726,7 +726,8 @@ onMounted(async () => {
       }
       postContent.value = post.content
       title.value = post.title
-
+      mode.value =
+        post.type === 1 ? 'post' : post.type === 2 ? 'resources' : 'server'
       enablePostRelation.value = post.type === 2
       selectedPosts.value = post.dependencies.map((d) => ({
         id: d.id,

@@ -8,7 +8,7 @@
     <div
       class="text-center"
       v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])">
-      updateTime: 2025年11月23日22:31:24
+      updateTime: 2025年11月27日22:16:21
     </div>
     <PopUpAnnouncement />
   </div>

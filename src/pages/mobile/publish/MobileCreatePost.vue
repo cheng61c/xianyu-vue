@@ -55,6 +55,7 @@
         </label>
         <div class="flex gap-2">
           <ScButton
+            v-if="isEdit ? mode !== 'server' : true"
             class="px-4 py-1 text-sm"
             :activation="mode === 'post'"
             Border
@@ -62,6 +63,7 @@
             {{ $t('nav.tie-zi') }}
           </ScButton>
           <ScButton
+            v-if="isEdit ? mode !== 'server' : true"
             class="px-4 py-1 text-sm"
             :activation="mode === 'resources'"
             Border
@@ -69,7 +71,11 @@
             资源
           </ScButton>
           <ScButton
-            v-if="verifyPermissions([1, 2, 8, 9])"
+            v-if="
+              isEdit
+                ? verifyPermissions([1, 2, 8, 9]) && mode === 'server'
+                : verifyPermissions([1, 2, 8, 9])
+            "
             class="px-4 py-1 text-sm"
             :activation="mode === 'server'"
             Border
@@ -364,7 +370,7 @@
           v-model="serverData.url"
           type="text"
           class="w-full max-w-md px-4 py-2 border border-gray-content rounded-lg focus:outline-none focus:ring-2 focus:ring-active"
-          placeholder="$t('d.qing-shu-ru-fu-wu-qi-ip') "
+          :placeholder="$t('d.qing-shu-ru-fu-wu-qi-ip')"
           @blur="connectionTest(serverData.url)" />
         <span
           class="text-info tooltip tooltip-right"
@@ -508,7 +514,7 @@ import { verifyPermissions } from '@/utils/verify'
 import { useUserStore } from '@/stores/module/user/userStore'
 import { useDeviceStore } from '@/stores/global/deviceStore'
 import ScDrawer from '@/components/common/ScDrawer.vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { getfileTypes } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
 
@@ -537,6 +543,8 @@ const props = defineProps({
 const plateList = ref<Plate[]>([]) // 板块列表
 const versionList = ref<Version[]>([]) // 版本列表
 
+const route = useRoute()
+const isEdit = ref<boolean>(props.isEdit || false)
 // 表单
 const postContent = ref<string | null>(null) // 帖子内容
 const title = ref('') // 标题
@@ -747,44 +755,45 @@ const formatPostBody = (body: PostDto) => {
   return body
 }
 
-onMounted(() => {
+onMounted(async () => {
   console.log('CreatePost mounted', props.post)
 
-  if (props.post) {
-    // 只拷贝需要的字段，并将 dependencies 转换为 number[]
-    // postData.value = {
-    //   ...props.post,
-    //   dependencies: Array.isArray(props.post.dependencies)
-    //     ? props.post.dependencies.map((d: any) =>
-    //         typeof d === 'object' && d.id ? d.id : d
-    //       )
-    //     : [],
-    // }
-    postData.value = {
-      id: props.post.id,
-      title: props.post.title,
-      plateId: props.post.plateId,
-      content: props.post.content,
-      cover: props.post.cover,
-      type: props.post.type,
-      fileType: props.post.fileType,
-      top: props.post.top,
-      dependencies: Array.isArray(props.post.dependencies)
-        ? props.post.dependencies.map((d) => d.id)
-        : [],
-    }
-    postContent.value = props.post.content
-    title.value = props.post.title
+  if (route.params.postId) {
+    const res = await postApi.getPostDetail(Number(route.params.postId))
+    if (res.data.code == 200) {
+      isEdit.value = true
+      const post = res.data.data as Post
+      postData.value = {
+        id: post.id,
+        title: post.title,
+        plateId: post.plateId,
+        content: post.content,
+        cover: post.cover,
+        type: post.type,
+        fileType: post.fileType,
+        top: post.top,
+        dependencies: Array.isArray(post.dependencies)
+          ? post.dependencies.map((d) => d.id)
+          : [],
+      }
+      postContent.value = post.content
+      title.value = post.title
 
-    enablePostRelation.value = props.post.type === 2
-    selectedPosts.value = props.post.dependencies.map((d) => ({
-      id: d.id,
-      title: d.title,
-      creator: {
-        id: d.creator.id,
-        nickname: d.creator.nickname,
-      },
-    }))
+      mode.value =
+        post.type === 1 ? 'post' : post.type === 2 ? 'resources' : 'server'
+      enablePostRelation.value = post.type === 2
+      selectedPosts.value = post.dependencies.map((d) => ({
+        id: d.id,
+        title: d.title,
+        creator: {
+          id: d.creator.id,
+          nickname: d.creator.nickname,
+        },
+      }))
+    } else {
+      isEdit.value = false
+      postContent.value = ''
+    }
   } else {
     postContent.value = ''
   }

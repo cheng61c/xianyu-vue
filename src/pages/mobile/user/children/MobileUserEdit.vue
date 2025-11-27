@@ -16,7 +16,7 @@
     <div class="flex gap-4 items-center">
       <span>{{ $t('f.ni-cheng') }}</span>
       <ScInput
-        v-model="userInfo.nickname"
+        v-model="nickName"
         type="text"
         :placeholder="$t('f.qing-shu-ru-ni-cheng')" />
     </div>
@@ -87,6 +87,7 @@ const deviceStore = useDeviceStore()
 const isOpen = ref(false)
 const signature = ref('')
 const mobileUserHeader = ref<InstanceType<typeof MobileUserHeader> | null>(null)
+const nickName = ref('')
 
 const onUpdateAvatar = () => {
   if (mobileUserHeader.value) {
@@ -117,7 +118,7 @@ const getCurrentUserInfo = () => {
 const updateInfo = () => {
   userApi
     .updateUser({
-      nickname: userInfo.nickname,
+      nickname: nickName.value,
       signature: userInfo.signature,
     })
     .then((response) => {

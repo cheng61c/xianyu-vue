@@ -124,6 +124,8 @@
           class="hidden"
           ref="fileInput" />
       </ScButton>
+
+      <!-- 链接 -->
       <ScButton
         bgClass="bg-gray/20"
         @click="openLinkDialog"
@@ -141,6 +143,7 @@
           <ScButton Border @click="closeLinkDialog">取消</ScButton>
         </Card>
       </ScModal>
+
       <!-- 视频 -->
       <ScButton
         bgClass="bg-gray/20"
@@ -148,6 +151,7 @@
         :icon="Video"
         :iconSize="22">
       </ScButton>
+      <!-- 视频输入弹窗 -->
       <ScModal
         v-model="showVideoDialog"
         class="fixed z-50 border p-4 rounded shadow">
@@ -162,43 +166,52 @@
     <EditorContent :editor="editor" class="editor-content" />
     <!-- 气泡菜单 -->
     <BubbleMenu
-      v-if="editor"
+      v-if="editor && !editor.isActive('imageResize')"
       :editor="editor"
       :tippyOptions="{ duration: 100 }">
       <Card class="flex gap-1 w-full">
         <div class="flex gap-1 w-full flex-wrap">
-          <template v-if="!isImageSelected">
-            <ScButton
-              bgClass="bg-gray/20"
-              :activation="editor?.isActive('bold')"
-              @click="toggleBold"
-              :icon="Bold">
-            </ScButton>
-            <ScButton
-              bgClass="bg-gray/20"
-              :activation="editor?.isActive('italic')"
-              @click="toggleItalic"
-              :icon="Italic">
-            </ScButton>
-            <ScButton
-              bgClass="bg-gray/20"
-              @click="toggleUnderline"
-              :activation="editor?.isActive('underline')"
-              :icon="Underline">
-            </ScButton>
-            <ScButton
-              bgClass="bg-gray/20"
-              @click="openLinkDialog"
-              :activation="editor?.isActive('link')"
-              :icon="Link2"></ScButton>
-          </template>
+          <ScButton
+            bgClass="bg-gray/20"
+            :activation="editor?.isActive('bold')"
+            @click="toggleBold"
+            :icon="Bold">
+          </ScButton>
+          <ScButton
+            bgClass="bg-gray/20"
+            :activation="editor?.isActive('italic')"
+            @click="toggleItalic"
+            :icon="Italic">
+          </ScButton>
+          <ScButton
+            bgClass="bg-gray/20"
+            @click="toggleUnderline"
+            :activation="editor?.isActive('underline')"
+            :icon="Underline">
+          </ScButton>
+          <ScButton
+            bgClass="bg-gray/20"
+            @click="openLinkDialog"
+            :activation="editor?.isActive('link')"
+            :icon="Link2">
+          </ScButton>
+          <!-- 添加颜色选择按钮 -->
+          <ScButton
+            bgClass="bg-gray/20"
+            @click="() => editor?.chain().focus().setColor('#FF0000').run()"
+            :icon="PaintRoller">
+          </ScButton>
+          <ScButton
+            bgClass="bg-gray/20"
+            @click="
+              () =>
+                editor?.chain().focus().setHighlight({ color: '#FFFF00' }).run()
+            "
+            :icon="HighlighterIcon">
+          </ScButton>
 
           <template v-if="editor?.isActive('table')">
-            <ScButton Border @click="addRowAfter">+行</ScButton>
-            <ScButton Border @click="addColumnAfter">+列</ScButton>
-            <ScButton Border @click="deleteRow">删行</ScButton>
-            <ScButton Border @click="deleteColumn">删列</ScButton>
-            <ScButton Border @click="deleteTable">删表</ScButton>
+            <ScButton bgClass="bg-gray/20 " @click="mergeCells">合并</ScButton>
           </template>
         </div>
       </Card>
@@ -209,14 +222,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import {
   Editor,
   EditorContent,
   BubbleMenu,
   VueNodeViewRenderer,
 } from '@tiptap/vue-3'
-import CodeBlockView from './CodeBlockView.vue'
+import CodeBlockView from './tiptap/CodeBlockView.vue'
+import TableView from './tiptap/TableView.vue'
 import StarterKit from '@tiptap/starter-kit'
 import UnderlineExtension from '@tiptap/extension-underline'
 import Heading from '@tiptap/extension-heading'
@@ -228,13 +242,13 @@ import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import { Video as VideoExtensions } from '@/extensions/video'
-// 替换原 Image
+// 图片插入扩展
 import ResizableImage from 'tiptap-extension-resize-image'
+import { Dropcursor } from '@tiptap/extension-dropcursor'
 
 // 代码高亮相关
 import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight'
 import Link from '@tiptap/extension-link'
-
 import { createLowlight } from 'lowlight'
 import javascript from 'highlight.js/lib/languages/javascript'
 import typescript from 'highlight.js/lib/languages/typescript'
@@ -243,6 +257,10 @@ import html from 'highlight.js/lib/languages/xml'
 import python from 'highlight.js/lib/languages/python'
 import csharp from 'highlight.js/lib/languages/csharp'
 import 'highlight.js/styles/github-dark.css' // 可换其他主题
+
+import Color from '@tiptap/extension-color'
+import Highlight from '@tiptap/extension-highlight'
+import { TextStyle } from '@tiptap/extension-text-style'
 
 import {
   Bold,
@@ -260,6 +278,8 @@ import {
   Redo,
   ImageUp,
   Video,
+  HighlighterIcon,
+  PaintRoller,
 } from 'lucide-vue-next'
 
 // 注册语言
@@ -285,6 +305,8 @@ const showLinkDialog = ref(false)
 const linkUrl = ref('')
 const showVideoDialog = ref(false)
 const videoUrl = ref('')
+/** 图片地址映射 */
+const imageUrls = ref<{ [key: string]: string }>({})
 
 const triggerFileInput = () => {
   fileInput.value?.click()
@@ -294,13 +316,31 @@ const onImageUpload = async (e: Event) => {
   const files = (e.target as HTMLInputElement).files
   if (!files || !files.length) return
   for (const file of Array.from(files)) {
+    // 上传图片
     const res = await uploadApi.uploadFileChunked(file, 6)
     const url = formatLink(res.data.data?.url)
+    const filePath = URL.createObjectURL(file)
+    imageUrls.value[filePath] = res.data.data?.url
+
     if (url) {
-      editor.value?.chain().focus().setImage({ src: url }).run()
+      // 插入本地地址的图片用于显示
+      editor.value?.chain().focus().setImage({ src: filePath }).run()
     }
   }
   ;(e.target as HTMLInputElement).value = ''
+}
+
+/**
+ * 上传图片, 完事后返回本地连接用于插入到文章
+ * @param file 图片文件
+ * @return 本地连接
+ */
+const uploadImages = async (file: File): Promise<string> => {
+  const res = await uploadApi.uploadFileChunked(file, 6)
+  const url = formatLink(res.data.data?.url)
+  const filePath = URL.createObjectURL(file)
+  imageUrls.value[filePath] = url
+  return filePath
 }
 
 const toggleBold = () => editor.value?.chain().focus().toggleBold().run()
@@ -326,12 +366,15 @@ const insertTable = () => {
 }
 const undo = () => editor.value?.chain().focus().undo().run()
 const redo = () => editor.value?.chain().focus().redo().run()
-const addRowAfter = () => editor.value?.chain().focus().addRowAfter().run()
-const addColumnAfter = () =>
-  editor.value?.chain().focus().addColumnAfter().run()
-const deleteRow = () => editor.value?.chain().focus().deleteRow().run()
-const deleteColumn = () => editor.value?.chain().focus().deleteColumn().run()
-const deleteTable = () => editor.value?.chain().focus().deleteTable().run()
+// const addRowAfter = () => editor.value?.chain().focus().addRowAfter().run()
+// const addColumnAfter = () =>
+//   editor.value?.chain().focus().addColumnAfter().run()
+// const deleteRow = () => editor.value?.chain().focus().deleteRow().run()
+// const deleteColumn = () => editor.value?.chain().focus().deleteColumn().run()
+// const deleteTable = () => editor.value?.chain().focus().deleteTable().run()
+const mergeCells = () => {
+  editor.value?.chain().focus().mergeCells().run()
+}
 
 const setCodeBlockLanguage = () => {
   editor.value
@@ -358,15 +401,6 @@ const setLink = () => {
   }
   closeLinkDialog()
 }
-const isImageSelected = computed(() => {
-  const state = editor.value?.state
-  if (!state) return false
-  const { selection } = state
-  // 选区是 NodeSelection 并且类型为 image
-  return (
-    (selection as any).node && (selection as any).node.type.name === 'image'
-  )
-})
 const openVideoDialog = () => {
   showVideoDialog.value = true
   videoUrl.value = ''
@@ -394,12 +428,19 @@ onMounted(() => {
       StarterKit.configure({
         codeBlock: false,
       }),
+      TextStyle,
+      Color,
+      Highlight,
       UnderlineExtension,
       Heading.configure({ levels: [1, 2, 3] }),
       BulletList,
       OrderedList,
       BlockquoteExtension,
-      Table.configure({ resizable: true }),
+      Table.configure({ resizable: true }).extend({
+        addNodeView() {
+          return VueNodeViewRenderer(TableView)
+        },
+      }),
       TableRow,
       TableCell,
       TableHeader,
@@ -415,6 +456,7 @@ onMounted(() => {
         inline: false,
         allowBase64: false,
       }),
+      Dropcursor,
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -422,6 +464,52 @@ onMounted(() => {
     ],
     content: '',
     autofocus: true,
+    onCreate({ editor }) {
+      // 监听来自 TableView 的自定义事件
+      ;(editor as any).on &&
+        (editor as any).on('table:add-row', (payload: any) => {
+          // 这里可以在外层做额外处理，比如显示提示或做统计
+          console.log('TableView 请求添加行，payload:', payload)
+        })
+
+      // 监听 drop 事件
+      editor.view.dom.addEventListener('drop', async (event: DragEvent) => {
+        event.preventDefault()
+        if (!event.dataTransfer?.files?.length) return
+        for (const file of event.dataTransfer.files) {
+          if (file.type.startsWith('image/')) {
+            const url = await uploadImages(file)
+            if (url) {
+              // 插入本地地址的图片用于显示
+              editor.chain().focus().setImage({ src: url }).run()
+            }
+          }
+        }
+      })
+      // 新增 paste 事件
+      editor.view.dom.addEventListener(
+        'paste',
+        async (event: ClipboardEvent) => {
+          if (!event.clipboardData?.files?.length) return
+          for (const file of event.clipboardData.files) {
+            if (file.type.startsWith('image/')) {
+              // 上传图片
+              const url = await uploadImages(file)
+              // 插入本地预览
+              if (url) {
+                editor.chain().focus().setImage({ src: url }).run()
+              }
+            }
+          }
+        }
+      )
+    },
+    onUpdate({ editor }) {
+      const state = editor.state
+      const { from } = state.selection
+      const node = state.doc.nodeAt(from)
+      console.log('当前指针位置的元素:', node?.type.name || '无')
+    },
   })
 })
 

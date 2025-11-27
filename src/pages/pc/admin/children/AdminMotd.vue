@@ -261,16 +261,8 @@ watch(textarea, () => {
   min-width: 2.5rem;
   text-align: right;
 }
-
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('/public/JetBrainsMono-SemiBold.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
 .code-input {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'JetBrainsMono', monospace;
   font-size: 14px;
   white-space: pre;
 }

@@ -578,6 +578,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-code/-/extension-code-2.24.0.tgz#b71a934110120987813cd445633960e3cc1ab883"
   integrity sha512-2pYGdTSyzjJrxsMNGpm8+E+Z60iMdUn4AYhrTfSHKObvZbGEhqWpxBRIUjL6xulSjYxmXzQFrYzh0BWYuXYPeA==
 
+"@tiptap/extension-color@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extension-color/-/extension-color-3.11.0.tgz#44f1d9eae833b1a935c086a2c21be7d8d538aa1f"
+  integrity sha512-4H+3nyheow0tBt+q/Pkkm/pR/F6vUAdKZaq1HtWFi7LcFzCYxdB3Si625EparKO3kMvGvULjdd+/zt68NS7Acw==
+
 "@tiptap/extension-document@^2.24.0":
   version "2.24.0"
   resolved "https://registry.npmjs.org/@tiptap/extension-document/-/extension-document-2.24.0.tgz#1c7e6d838b35ed5bad0ecd12712d7a0fa86f8378"
@@ -587,6 +592,11 @@
   version "2.24.0"
   resolved "https://registry.npmjs.org/@tiptap/extension-dropcursor/-/extension-dropcursor-2.24.0.tgz#9886f1d46a0dbdd518949373cdcfe10dff2c852b"
   integrity sha512-Oi3aNppt23U2POjowV6/6XtQG9LrMFqqun8LAAx3DItgkK3eqaEH5C39kZ75XpWpbPcZ7G+0+1qNOqU1ZyOFgg==
+
+"@tiptap/extension-dropcursor@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extension-dropcursor/-/extension-dropcursor-3.11.0.tgz#869236f9644f80f316bd643281e1cb2623f80747"
+  integrity sha512-gW/QMGAyiXGSpO+X/lTeiBQn1Or8T8UVB3y9Cv2Lh6zx0SWU+FA28EH+y6s3fm872reN4dH/9rEvMuJjhU/BEw==
 
 "@tiptap/extension-floating-menu@^2.24.0":
   version "2.24.0"
@@ -610,10 +620,10 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-heading/-/extension-heading-2.24.0.tgz#e16eded5fa34bd20771ed1788ed46c01fd68c363"
   integrity sha512-qfrcn6QlOFxd0T4VMDloxzv7YUlOX5Cc/S60+7aRLUNMrByQyk+C1OwSdX3Wx6fYWhCszzFblTGTCWu5QijK/w==
 
-"@tiptap/extension-highlight@^2.12.0":
-  version "2.24.0"
-  resolved "https://registry.npmjs.org/@tiptap/extension-highlight/-/extension-highlight-2.24.0.tgz#9bc3a7f0ffe99cb5d8f37ba49ead62d3932b2f7e"
-  integrity sha512-xRPcZR7ebHODvQobYJI5FDOd6UGguTHK7ez/wM7lKuVj5+VhmM/r5OBM68QZrZol5lYHcamfaIx4hmydCt4ecw==
+"@tiptap/extension-highlight@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extension-highlight/-/extension-highlight-3.11.0.tgz#839c9e80166a83d22ac37714b4dd20d8ade3bf82"
+  integrity sha512-1Yzz77Nr4JB22WwAHKgfBsO+4fTaDdCsYVx9HDFkfGk6hliATwtNXvoi/7srfNjSpZzLUeqmPLjOhx3WS/hwtw==
 
 "@tiptap/extension-history@^2.24.0":
   version "2.24.0"
@@ -702,6 +712,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-text-style/-/extension-text-style-2.24.0.tgz#f5b498d2267a3a88fe40a4d26ec60b343fb2c453"
   integrity sha512-SLMDatlJg421SLNGn4768WKXmTXWIiVCX2DWzzD+9XeoTFC2d6io1pveanQVsp3xVoUZtG9fi5uss0b9AWu6+w==
 
+"@tiptap/extension-text-style@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extension-text-style/-/extension-text-style-3.11.0.tgz#210f5e39fc60e72dc0bf3dbf58968e21d54eff07"
+  integrity sha512-q8RM4gzmdnUHosL65SIJzTTmL29bm+3hNPdloOuJyLd4sTYs2q+cues5mH5/n85HqX3+TvKrfrTVb1Yj62E1NA==
+
 "@tiptap/extension-text@^2.24.0":
   version "2.24.0"
   resolved "https://registry.npmjs.org/@tiptap/extension-text/-/extension-text-2.24.0.tgz#d5b6b50a9f5154d746062b21d7f807a4fbf4a6e2"
@@ -711,6 +726,11 @@
   version "2.24.0"
   resolved "https://registry.npmjs.org/@tiptap/extension-underline/-/extension-underline-2.24.0.tgz#85129ae5b3094baec92d02e2a10627c07fac99c8"
   integrity sha512-RJZZHA6NJLhkbUNlj8OYl0masXdmMhG9KGrG5JAx8GjCepbfSisVf3Hll/w6bNPnXUYxGztmEZia4x8fOYj2hQ==
+
+"@tiptap/extensions@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.npmmirror.com/@tiptap/extensions/-/extensions-3.11.0.tgz#d6f6020312cda743738bbc1e918cd10a7f7d84fc"
+  integrity sha512-g43beA73ZMLezez1st9LEwYrRHZ0FLzlsSlOZKk7sdmtHLmuqWHf4oyb0XAHol1HZIdGv104rYaGNgmQXr1ecQ==
 
 "@tiptap/pm@^2.11.7", "@tiptap/pm@^2.24.0":
   version "2.24.0"
