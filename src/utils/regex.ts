@@ -23,6 +23,11 @@ export const removeHtmlTags = (str: any): string => {
   return str.replace(/<[^>]*>/g, '')
 }
 
+/**
+ *  格式化HTML字符串中的图片src属性
+ * @param html html字符串
+ * @returns  格式化后的html字符串
+ */
 export const formatImageSrcsInHtml = (html: string): string => {
   if (!html) return ''
   const imgRegex = /<img([^>]+)src=["']([^"']+)["']/g

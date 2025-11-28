@@ -26,7 +26,9 @@
         <template #header>
           <span class="text-active">{{ $t('f.dian-ji-bian-ji-zhu-ye') }}</span>
         </template>
-        <TipTap v-model="userInfo.signature" />
+        <div class="border border-gray/20 rounded-lg p-4">
+          <TipTap v-model="userInfo.signature" />
+        </div>
       </ScCollapse>
     </div>
 
@@ -133,7 +135,7 @@
 import ScButton from '@/components/common/ScButton.vue'
 
 import Card from '@/components/common/Card.vue'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import ScCollapse from '@/components/common/ScCollapse.vue'
 import { userApi } from '@/apis'
 import type { UserType } from '@/types/user'
@@ -143,7 +145,7 @@ import { forceLogout, updateUserVerifyCode } from '@/stores/module/user/service'
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
 import UserHeader from '@/components/pc/user/UserHeader.vue'
-import { formatLink } from '@/utils/format'
+import { formatLink, formatUploadImage } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -251,7 +253,7 @@ const updateInfo = () => {
   userApi
     .updateUser({
       nickname: nickname.value,
-      signature: userInfo.value.signature,
+      signature: formatUploadImage(userInfo.value.signature),
     })
     .then((response) => {
       if (response.data.code === 200) {

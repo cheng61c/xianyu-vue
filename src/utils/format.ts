@@ -2,11 +2,13 @@ import { toHtml } from 'hast-util-to-html'
 import { createLowlight } from 'lowlight'
 import csharp from 'highlight.js/lib/languages/csharp'
 import { useConfigStore } from '@/stores/global/configStore'
+import { usePostStore } from '@/stores/module/post/postStore'
 
 const lowlight = createLowlight({
   csharp: csharp, // 只注册 C# 语言
 })
 const configStore = useConfigStore()
+const postStore = usePostStore()
 
 export const htmlToText = (html: string): string => {
   if (!html || html === '') return ''
@@ -168,13 +170,16 @@ export const formatNumber = (
   if (numericValue < 1000) return numericValue.toString() // 小于 1000 直接返回
 
   const units = ['k', 'M', 'B', 'T'] // 千、百万、十亿、万亿
-  const exponent = Math.floor(Math.log10(numericValue) / 3) // 计算单位级别
-  const scaledNum = numericValue / Math.pow(1000, exponent) // 缩放数字
+  // Math.log10 在某些 TypeScript/目标环境中可能不可用，使用自然对数作为通用替代
+  const exponent = Math.floor(Math.log(numericValue) / Math.log(1000)) // 计算单位级别（以1000为底）
+  // 防止指数超出 units 长度（例如极大数值）
+  const cappedExp = Math.min(Math.max(exponent, 1), units.length)
+  const scaledNum = numericValue / Math.pow(1000, cappedExp) // 缩放数字
 
   // 处理小数部分（如 1200 → "1.2k" 而非 "1k"）
   const decimalPlaces = scaledNum % 1 === 0 ? 0 : decimals
 
-  return `${scaledNum.toFixed(decimalPlaces)}${units[exponent - 1]}`
+  return `${scaledNum.toFixed(decimalPlaces)}${units[cappedExp - 1]}`
 }
 
 /**
@@ -336,4 +341,18 @@ export const formatXml = (xml: string, indentSize: number = 2): string => {
     console.error('XML formatting failed:', e)
     return xml // 解析失败时返回原内容
   }
+}
+
+/**
+ * 格式化上传图片链接
+ * @param html 即将上传的html字符串
+ * @returns 替换后的html字符串
+ */
+export const formatUploadImage = (html: string): string => {
+  for (const [localUrl, serverUrl] of Object.entries(
+    postStore.uploadImageMap
+  )) {
+    html = html.replace(new RegExp(localUrl, 'g'), serverUrl)
+  }
+  return html
 }

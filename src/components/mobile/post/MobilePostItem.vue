@@ -83,11 +83,11 @@
       </ScButton>
 
       <ScButton noPadding noBg :icon="MessageCircle">
-        {{ formatNumber(post.commentCount) }}
+        {{ post.commentCount }}
       </ScButton>
 
       <ScButton noPadding noBg :icon="Eye">
-        {{ formatNumber(post.views) }}
+        {{ post.views }}
       </ScButton>
       <ScButton
         v-if="post.type == 2"
@@ -106,7 +106,7 @@ import Avatar from '@/components/common/Avatar.vue'
 import Card from '@/components/common/Card.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import { defineProps } from 'vue'
-import { htmlToText, formatNumber } from '@/utils/format'
+import { htmlToText } from '@/utils/format'
 import {
   MessageCircle,
   Eye,

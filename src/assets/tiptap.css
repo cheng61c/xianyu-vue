@@ -2,7 +2,7 @@
 
 .tiptap.ProseMirror {
   min-height: 20rem;
-  max-height: calc(100vh - 16rem);
+  max-height: calc(100vh - 15rem);
   overflow: auto;
   border-radius: 8px;
   padding: 2rem;
@@ -15,8 +15,8 @@
 }
 
 .mobileTipTap .tiptap.ProseMirror {
-  min-height: calc(100dvh - 8rem);
-  max-height: calc(100dvh - 8rem);
+  min-height: calc(100dvh - 6rem);
+  max-height: calc(100dvh - 6rem);
   padding: 0.5rem;
 }
 

@@ -1,7 +1,7 @@
 import { heloApi } from '@/apis'
 import { useFengYunBangStore } from './FengYunBangStore'
 import type { FengYunBang } from '@/types/FengYunBang'
-import { formatTimeOrAgo } from '@/utils/format'
+import { formatTimeOrAgo, formatUploadImage } from '@/utils/format'
 import { useToast } from 'vue-toastification'
 const toast = useToast()
 const fengYunBangStore = useFengYunBangStore()
@@ -45,6 +45,7 @@ export const addFengYunBang = (
 ) => {
   const apiMethod =
     body.id && body.id != 0 ? 'updateFengYunBang' : 'createFengYunBang'
+  body.content = formatUploadImage(body.content)
   ;(heloApi as any)[apiMethod](body).then(async (res: any) => {
     if (res.data.code === 200) {
       toast.success('操作成功')

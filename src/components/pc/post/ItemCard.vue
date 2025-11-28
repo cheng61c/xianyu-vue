@@ -78,7 +78,7 @@
             'text-like': localPost.isLiked,
           }"
           @click.stop="like(localPost.id)">
-          {{ formatNumber(localPost.likeCount) }}
+          {{ localPost.likeCount }}
         </ScButton>
 
         <ScButton
@@ -89,15 +89,15 @@
             'text-bad': localPost.isBaded,
           }"
           @click.stop="bad(localPost.id)">
-          {{ formatNumber(localPost.badCount) }}
+          {{ localPost.badCount }}
         </ScButton>
 
         <ScButton noPadding noBg :icon="MessageCircle">
-          {{ formatNumber(localPost.commentCount) }}
+          {{ localPost.commentCount }}
         </ScButton>
 
         <ScButton noPadding noBg :icon="Eye">
-          {{ formatNumber(localPost.views) }}
+          {{ localPost.views }}
         </ScButton>
       </div>
     </div>

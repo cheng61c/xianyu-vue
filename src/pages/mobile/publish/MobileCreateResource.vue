@@ -147,7 +147,7 @@
     <div v-if="versionData.content !== null" class="bg-background rounded-t-lg">
       <TipTap
         v-model="versionData.content"
-        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+        :is-mobile="deviceStore.device == 1" />
     </div>
   </ScDrawer>
 </template>
@@ -169,8 +169,9 @@ import { useDeviceStore } from '@/stores/global/deviceStore'
 import ScButton from '@/components/common/ScButton.vue'
 import ScUploadFile from '@/components/common/ScUploadFile.vue'
 import ScDrawer from '@/components/common/ScDrawer.vue'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import { useI18n } from 'vue-i18n'
+import { formatUploadImage } from '@/utils/format'
 
 const props = defineProps({
   post: {
@@ -245,10 +246,11 @@ const submitVersiont = () => {
     toast.error(t('t.nei-rong-bu-neng-wei-kong'))
     return
   }
-
   if (versionData.value.id == 0) {
     delete versionData.value.id // 确保新建时不包含ID
   }
+
+  versionData.value.content = formatUploadImage(versionData.value.content)
   loader.value = true
   console.log('提交版本数据:', versionData.value.id)
 

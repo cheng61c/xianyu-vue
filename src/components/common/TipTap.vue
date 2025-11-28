@@ -1,19 +1,38 @@
 <template>
-  <div class="tiptap-editor">
+  <div class="tiptap-editor" :class="{ 'h-[100dvh]': isMobile }">
+    <!-- 移动端关闭按钮 -->
+    <ScButton
+      v-if="isMobile"
+      noPd
+      class="absolute top-[-1.7rem] left-2 w-10 h-6 pointer-events-none"
+      :icon="X"></ScButton>
     <!-- 工具栏 -->
-    <div class="toolbar flex gap-2 mb-2 flex-wrap p-2">
+    <div
+      class="toolbar flex gap-2 mb-2"
+      :class="{
+        'flex-wrap': !isMobile,
+        'overflow-x-scroll  p-2': isMobile,
+      }">
       <!-- 撤回 -->
       <ScButton
         bgClass="bg-gray/20"
         @click="undo"
         :icon="Undo"
-        :iconSize="22"></ScButton>
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }"></ScButton>
       <!-- 重做 -->
       <ScButton
         bgClass="bg-gray/20"
         @click="redo"
         :icon="Redo"
-        :iconSize="22"></ScButton>
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }"></ScButton>
 
       <!-- 加粗 -->
       <ScButton
@@ -21,7 +40,11 @@
         :activation="editor?.isActive('bold')"
         @click="toggleBold"
         :icon="Bold"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 斜体 -->
       <ScButton
@@ -29,7 +52,11 @@
         :activation="editor?.isActive('italic')"
         @click="toggleItalic"
         :icon="Italic"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 下划线 -->
       <ScButton
@@ -37,7 +64,11 @@
         @click="toggleUnderline"
         :activation="editor?.isActive('underline')"
         :icon="Underline"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 标题 -->
       <ScButton
@@ -45,7 +76,11 @@
         @click="setHeading(1)"
         :activation="editor?.isActive('heading', { level: 1 })"
         :icon="Heading1"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 标题2 -->
       <ScButton
@@ -53,7 +88,23 @@
         @click="setHeading(2)"
         :activation="editor?.isActive('heading', { level: 2 })"
         :icon="Heading2"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
+      </ScButton>
+      <!-- 标题3 -->
+      <ScButton
+        bgClass="bg-gray/20"
+        @click="setHeading(3)"
+        :activation="editor?.isActive('heading', { level: 3 })"
+        :icon="Heading3"
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 列表 -->
       <ScButton
@@ -61,7 +112,11 @@
         @click="toggleBulletList"
         :activation="editor?.isActive('bulletList')"
         :icon="List"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 有序列表 -->
       <ScButton
@@ -69,7 +124,11 @@
         @click="toggleOrderedList"
         :activation="editor?.isActive('orderedList')"
         :icon="ListOrdered"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 引用 -->
       <ScButton
@@ -77,13 +136,21 @@
         @click="toggleBlockquote"
         :activation="editor?.isActive('blockquote')"
         :icon="Quote"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 代码块 -->
       <ScButton
         bgClass="bg-gray/20"
-        :activation="editor?.isActive('codeBlock')">
-        <SquareCode @click="toggleCodeBlock" />
+        :activation="editor?.isActive('codeBlock')"
+        :noPd="isMobile"
+        :class="{
+          'px-2 h-8': isMobile,
+        }">
+        <SquareCode :size="iconSize" @click="toggleCodeBlock" />
 
         <!-- 在工具栏添加语言选择器 -->
         <select
@@ -106,7 +173,11 @@
         @click="insertTable"
         :activation="editor?.isActive('table')"
         :icon="Table2"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
 
       <!-- 图片上传 -->
@@ -114,7 +185,11 @@
         bgClass="bg-gray/20"
         @click="triggerFileInput"
         :icon="ImageUp"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
         <!-- 推荐写法 -->
         <input
           type="file"
@@ -131,14 +206,31 @@
         @click="openLinkDialog"
         :activation="editor?.isActive('link')"
         :icon="Link2"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 链接输入弹窗 -->
       <ScModal
         v-model="showLinkDialog"
         class="fixed z-50 border p-4 rounded shadow">
         <Card>
-          <ScInput v-model="linkUrl" placeholder="请输入链接地址" />
+          <h3 class="text-lg font-bold">插入超链接</h3>
+          <div class="flex gap-2 items-center">
+            <span>显示文本</span>
+            <ScInput
+              v-model="linkText"
+              placeholder="链接显示文本（选中的文本会自动填入）"
+              class="mb-2" />
+          </div>
+
+          <div class="flex gap-2 items-center">
+            <span>链接地址</span>
+            <ScInput v-model="linkUrl" placeholder="请输入链接地址" />
+          </div>
+
           <ScButton Border @click="setLink">确定</ScButton>
           <ScButton Border @click="closeLinkDialog">取消</ScButton>
         </Card>
@@ -149,7 +241,11 @@
         bgClass="bg-gray/20"
         @click="openVideoDialog"
         :icon="Video"
-        :iconSize="22">
+        :iconSize="iconSize"
+        :noPd="isMobile"
+        :class="{
+          'w-8 h-8': isMobile,
+        }">
       </ScButton>
       <!-- 视频输入弹窗 -->
       <ScModal
@@ -163,7 +259,12 @@
       </ScModal>
     </div>
     <!-- 编辑器主体 -->
-    <EditorContent :editor="editor" class="editor-content" />
+    <EditorContent
+      :editor="editor"
+      class="editor-content"
+      :class="{
+        mobileTipTap: isMobile,
+      }" />
     <!-- 气泡菜单 -->
     <BubbleMenu
       v-if="editor && !editor.isActive('imageResize')"
@@ -196,7 +297,7 @@
             :icon="Link2">
           </ScButton>
           <!-- 添加颜色选择按钮 -->
-          <ScButton
+          <!-- <ScButton
             bgClass="bg-gray/20"
             @click="() => editor?.chain().focus().setColor('#FF0000').run()"
             :icon="PaintRoller">
@@ -208,7 +309,7 @@
                 editor?.chain().focus().setHighlight({ color: '#FFFF00' }).run()
             "
             :icon="HighlighterIcon">
-          </ScButton>
+          </ScButton> -->
 
           <template v-if="editor?.isActive('table')">
             <ScButton bgClass="bg-gray/20 " @click="mergeCells">合并</ScButton>
@@ -222,7 +323,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import {
   Editor,
   EditorContent,
@@ -278,8 +379,10 @@ import {
   Redo,
   ImageUp,
   Video,
-  HighlighterIcon,
-  PaintRoller,
+  // HighlighterIcon,
+  // PaintRoller,
+  Heading3,
+  X,
 } from 'lucide-vue-next'
 
 // 注册语言
@@ -297,20 +400,34 @@ import ScButton from './ScButton.vue'
 import { formatLink } from '@/utils/format'
 import ScModal from './ScModal.vue'
 import ScInput from './ScInput.vue'
+import { usePostStore } from '@/stores/module/post/postStore'
+
+const props = defineProps<{
+  modelValue: string
+  shadow?: boolean
+  isMobile?: boolean
+}>()
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string]
+}>()
 
 const editor = ref<Editor>()
 const fileInput = ref<HTMLInputElement | null>(null)
 const currentLanguage = ref('javascript')
 const showLinkDialog = ref(false)
 const linkUrl = ref('')
+const linkText = ref('')
 const showVideoDialog = ref(false)
 const videoUrl = ref('')
 /** 图片地址映射 */
-const imageUrls = ref<{ [key: string]: string }>({})
-
+const postStore = usePostStore()
+const imageUrls = postStore.uploadImageMap
 const triggerFileInput = () => {
   fileInput.value?.click()
 }
+
+const iconSize = props.isMobile ? 18 : 22
 
 const onImageUpload = async (e: Event) => {
   const files = (e.target as HTMLInputElement).files
@@ -320,7 +437,7 @@ const onImageUpload = async (e: Event) => {
     const res = await uploadApi.uploadFileChunked(file, 6)
     const url = formatLink(res.data.data?.url)
     const filePath = URL.createObjectURL(file)
-    imageUrls.value[filePath] = res.data.data?.url
+    imageUrls[filePath] = res.data.data?.url
 
     if (url) {
       // 插入本地地址的图片用于显示
@@ -339,7 +456,7 @@ const uploadImages = async (file: File): Promise<string> => {
   const res = await uploadApi.uploadFileChunked(file, 6)
   const url = formatLink(res.data.data?.url)
   const filePath = URL.createObjectURL(file)
-  imageUrls.value[filePath] = url
+  imageUrls[filePath] = url
   return filePath
 }
 
@@ -385,20 +502,52 @@ const setCodeBlockLanguage = () => {
 }
 const openLinkDialog = () => {
   showLinkDialog.value = true
-  linkUrl.value = ''
+  // 预填选中文本
+  const state = editor.value?.state
+  if (state) {
+    const { from, to } = state.selection
+    const selected = state.doc.textBetween(from, to, ' ')
+    linkText.value = selected || ''
+  } else {
+    linkText.value = ''
+  }
+
+  // 预填已有链接地址
+  const attrs = editor.value?.getAttributes('link') || {}
+  linkUrl.value = attrs.href || ''
 }
 const closeLinkDialog = () => {
   showLinkDialog.value = false
 }
 const setLink = () => {
-  if (linkUrl.value) {
+  if (!editor.value) return closeLinkDialog()
+
+  const url = linkUrl.value
+  const text = linkText.value || url
+
+  // 使用事务替换选区为指定文本并添加 link mark
+  const { state, view } = editor.value
+  const { from, to } = state.selection
+
+  view.dispatch(
+    state.tr
+      .insertText(text, from, to)
+      .addMark(
+        from,
+        from + text.length,
+        state.schema.marks.link.create({ href: url })
+      )
+  )
+
+  // 将光标移动到已插入链接后（传入数字位置），使用安全链式调用以防 editor 未定义
+  if (editor.value) {
     editor.value
-      ?.chain()
+      .chain()
       .focus()
-      .extendMarkRange('link')
-      .setLink({ href: linkUrl.value })
+      .setTextSelection(from + text.length)
       .run()
   }
+
   closeLinkDialog()
 }
 const openVideoDialog = () => {
@@ -425,9 +574,7 @@ const insertVideo = () => {
 onMounted(() => {
   editor.value = new Editor({
     extensions: [
-      StarterKit.configure({
-        codeBlock: false,
-      }),
+      StarterKit.configure({ codeBlock: false }),
       TextStyle,
       Color,
       Highlight,
@@ -511,6 +658,18 @@ onMounted(() => {
       console.log('当前指针位置的元素:', node?.type.name || '无')
     },
   })
+  if (props.modelValue) {
+    editor.value.commands.setContent(props.modelValue)
+  }
+})
+
+// 监听编辑器内容变化,触发更新事件
+watch(editor, (newEditor) => {
+  if (newEditor) {
+    newEditor.on('update', () => {
+      emit('update:modelValue', newEditor.getHTML())
+    })
+  }
 })
 
 onBeforeUnmount(() => {

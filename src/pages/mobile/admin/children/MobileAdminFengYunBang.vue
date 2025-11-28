@@ -150,7 +150,10 @@
 
   <ScDrawer v-model="isOpenTipTap" position="bottom">
     <div class="bg-background rounded-t-lg">
-      <TipTap v-if="content !== null" v-model="content" class="mobileTipTap" />
+      <TipTap
+        v-if="content !== null"
+        v-model="content"
+        :is-mobile="deviceStore.device == 1" />
     </div>
   </ScDrawer>
 </template>
@@ -158,7 +161,7 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import ScModal from '@/components/common/ScModal.vue'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { Plus, RotateCcw } from 'lucide-vue-next'

@@ -55,7 +55,7 @@
     <div v-if="userInfo.signature !== null" class="bg-background rounded-t-lg">
       <TipTap
         v-model="userInfo.signature"
-        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+        :is-mobile="deviceStore.device == 1" />
     </div>
   </ScDrawer>
 </template>
@@ -64,7 +64,7 @@
 import ScButton from '@/components/common/ScButton.vue'
 
 import Card from '@/components/common/Card.vue'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import { userApi } from '@/apis'
 import type { UserType } from '@/types/user'
 import { onMounted, ref } from 'vue'
@@ -73,7 +73,7 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import ScInput from '@/components/common/ScInput.vue'
 import { useToast } from 'vue-toastification'
 import MobileUserHeader from '@/components/mobile/user/MobileUserHeader.vue'
-import { formatLink } from '@/utils/format'
+import { formatLink, formatUploadImage } from '@/utils/format'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
 import { useDeviceStore } from '@/stores/global/deviceStore'
@@ -119,7 +119,7 @@ const updateInfo = () => {
   userApi
     .updateUser({
       nickname: nickName.value,
-      signature: userInfo.signature,
+      signature: formatUploadImage(userInfo.signature),
     })
     .then((response) => {
       if (response.data.code === 200) {

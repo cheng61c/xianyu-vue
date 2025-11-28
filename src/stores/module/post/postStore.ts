@@ -11,6 +11,8 @@ export const usePostStore = defineStore('post', {
     searchHistory: [] as string[],
     /** 草稿 */
     drafts: {} as Record<string, any>,
+    /** 上传的图片与本地文件映射 */
+    uploadImageMap: {} as { [key: string]: string },
 
     /** 当前大板块 */
     currentPlate: {

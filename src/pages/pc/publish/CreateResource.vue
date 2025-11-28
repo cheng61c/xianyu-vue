@@ -120,9 +120,9 @@
     </div>
 
     <!-- 编辑器 -->
-    <div v-if="!loaderData">
+    <Card v-if="!loaderData">
       <TipTap v-model="versionData.content" />
-    </div>
+    </Card>
 
     <!-- 发布按钮 -->
     <div class="text-right">
@@ -147,7 +147,7 @@
 import type { Api } from '@/types'
 import { onMounted, ref } from 'vue'
 import { CircleHelp } from 'lucide-vue-next'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import type { Post, PostCreateVersionDto } from '@/types/Post'
 import { useToast } from 'vue-toastification'
 import ScButton from '@/components/common/ScButton.vue'
@@ -159,6 +159,8 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import type { DocumentVersion } from '@/types/DocumentVersion'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
+import { formatUploadImage } from '@/utils/format'
+import Card from '@/components/common/Card.vue'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -213,6 +215,7 @@ const submitVersiont = () => {
     return
   }
 
+  versionData.value.content = formatUploadImage(versionData.value.content)
   loader.value = true
 
   console.log('提交版本数据:', versionData)

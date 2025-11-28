@@ -162,12 +162,12 @@
   <EmptyState
     v-if="resStore.posts.length === 0 && userStore.isLogin"
     :title="$t('t.zan-wu-tie-zi')"
-    :description="'你还没有发布任何帖子哦~'"
+    :description="$t('t.ni-huan-mei-you-fa-bu-ren-he-tie-zio')"
     iconSize="64"
     iconColor="#ccc"
     :icon="Package"
     class="mt-8"
-    :action="'前往发帖'"
+    :action="$t('b.qian-wang-fa-tie')"
     :actionIcon="SquareArrowOutUpRight"
     @action-click="$router.push({ name: 'publishPost' })" />
 

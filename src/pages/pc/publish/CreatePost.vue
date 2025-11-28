@@ -441,9 +441,9 @@
     </div>
 
     <!-- 编辑器 -->
-    <div v-if="postContent !== null">
+    <Card v-if="postContent !== null">
       <TipTap v-model="postContent" />
-    </div>
+    </Card>
 
     <!-- 发布按钮 -->
     <div class="flex justify-end my-2">
@@ -469,7 +469,7 @@ import {
   CircleHelp,
   CircleAlert,
 } from 'lucide-vue-next'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'
@@ -483,6 +483,8 @@ import { useUserStore } from '@/stores/module/user/userStore'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { getfileTypes } from '@/stores/module/post/service'
+import { formatUploadImage } from '@/utils/format'
+import Card from '@/components/common/Card.vue'
 
 const { t } = useI18n()
 const toast = useToast()
@@ -588,7 +590,7 @@ const sendPsot = () => {
     return
   }
   postData.value.title = title.value
-  postData.value.content = postContent.value
+  postData.value.content = formatUploadImage(postContent.value)
   postData.value.dependencies = selectedPosts.value.map((p) => p.id)
 
   loader.value = true

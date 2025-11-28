@@ -107,7 +107,7 @@
           class="m-2" />
       </div>
 
-      <div class="mt-4">
+      <div class="mt-4 border border-gray/20 rounded-lg p-4">
         <TipTap v-model="forms.content" />
       </div>
 
@@ -151,7 +151,7 @@
 <script setup lang="ts">
 import Card from '@/components/common/Card.vue'
 import ScModal from '@/components/common/ScModal.vue'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import ScButton from '@/components/common/ScButton.vue'
 import ScInput from '@/components/common/ScInput.vue'
 import { Plus, RotateCcw } from 'lucide-vue-next'

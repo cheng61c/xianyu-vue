@@ -483,9 +483,7 @@
 
   <ScDrawer v-model="isOpen" position="bottom">
     <div v-if="postContent !== null" class="bg-background rounded-t-lg">
-      <TipTap
-        v-model="postContent"
-        :class="deviceStore.device == 1 ? 'mobileTipTap' : ''" />
+      <TipTap v-model="postContent" :is-mobile="deviceStore.device == 1" />
     </div>
   </ScDrawer>
 </template>
@@ -501,7 +499,7 @@ import {
   CircleAlert,
   ChevronLeft,
 } from 'lucide-vue-next'
-import TipTap from '@/components/pc/tiptap/TipTap.vue'
+import TipTap from '@/components/common/TipTap.vue'
 import type { Post, SelectedPost } from '@/types/Post'
 import type PostDto from '@/types/PostDto'
 import { useToast } from 'vue-toastification'
@@ -517,6 +515,7 @@ import ScDrawer from '@/components/common/ScDrawer.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getfileTypes } from '@/stores/module/post/service'
 import { useI18n } from 'vue-i18n'
+import { formatUploadImage } from '@/utils/format'
 
 const toast = useToast()
 const postStore = usePostStore()
@@ -638,7 +637,7 @@ const sendPsot = () => {
     return
   }
   postData.value.title = title.value
-  postData.value.content = postContent.value
+  postData.value.content = formatUploadImage(postContent.value)
   postData.value.dependencies = selectedPosts.value.map((p) => p.id)
   loader.value = true
 
