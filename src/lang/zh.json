@@ -544,7 +544,7 @@
     "qing-shu-ru-ban-ben-nei-rong": "请输入版本内容",
     "ban-ben-fa-bu-cheng-gong": "版本发布成功",
     "qing-shua-xin-ye-mian-huo-dian-ji-xia-fang-fan-hui": "请刷新页面或点击下方返回",
-    "sha-ye-bu-shi-zou-le": "啥也不是，走了",
+    "sha-ye-bu-shi-zou-le": "啥也不是",
     "geng-xin-yong-hu-xin-xi-cheng-gong": "更新用户信息成功",
     "geng-xin-yong-hu-xin-xi-shi-bai": "更新用户信息失败:",
     "geng-xin-jiao-se-shi-bai": "更新角色失败:",
@@ -645,7 +645,8 @@
     "ni-huan-mei-you-fa-bu-ren-he-tie-zio": "你还没有发布任何帖子哦~",
     "jin-guan-li-yuan-ke-fa-bu": "仅管理员可发布",
     "qing-xie-xia-ni-de-ping-lun": "请写下你的评论",
-    "shan-chu-shi-bai": "删除失败"
+    "shan-chu-shi-bai": "删除失败",
+    "qing-ji-xu-fa-bu-wen-jian": "请继续发布文件"
   },
   "other": {
     "wen-jian-da-xiao": "文件大小:",

@@ -325,6 +325,7 @@ const updateVersion = (index: number) => {
       }
     })
     .catch((error) => {
+      toast.error(t('t.wei-zhi-cuo-wu'))
       console.error('请求失败:', error.msg)
     })
 }

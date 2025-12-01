@@ -68,13 +68,13 @@
             :activation="mode === 'resources'"
             Border
             @click="mode = 'resources'">
-            资源
+            {{ $t('nav.zi-yuan') }}
           </ScButton>
           <ScButton
-            v-if="
+            :disabled="
               isEdit
                 ? verifyPermissions([1, 2, 8, 9]) && mode === 'server'
-                : verifyPermissions([1, 2, 8, 9])
+                : !verifyPermissions([1, 2, 8, 9])
             "
             class="px-4 py-1 text-sm"
             :activation="mode === 'server'"

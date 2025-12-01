@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-full flex flex-1 flex-col pb-4">
+  <div class="w-full h-full flex flex-1 flex-col pb-4 min-w-2xl">
     <ScSearch
       key="user-post-search"
       :placeholder="$t('t.sou-suo-tie-zi-biao-ti')"

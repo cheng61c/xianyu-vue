@@ -272,7 +272,7 @@
   </ScModal>
 
   <!-- 评论输入框 -->
-  <div class="absolute bottom-0 left-0 right-0 bg-background flex w-full">
+  <div class="absolute bottom-0 left-0 right-0 bg-background flex w-full z-2">
     <CommentInput
       @submit="replay"
       :submitText="$t('b.fa-biao-ping-lun')"

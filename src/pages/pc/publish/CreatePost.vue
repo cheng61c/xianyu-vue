@@ -55,6 +55,7 @@
         </label>
         <div class="flex gap-2">
           <ScButton
+            v-if="isEdit ? mode !== 'server' : true"
             class="px-4 py-1 text-sm"
             :activation="mode === 'post'"
             Border
@@ -62,17 +63,22 @@
             {{ $t('nav.tie-zi') }}
           </ScButton>
           <ScButton
+            v-if="isEdit ? mode !== 'server' : true"
             class="px-4 py-1 text-sm"
             :activation="mode === 'resources'"
             Border
             @click="mode = 'resources'">
-            资源
+            {{ $t('nav.zi-yuan') }}
           </ScButton>
           <ScButton
-            v-if="verifyPermissions([1, 2, 8, 9])"
             class="px-4 py-1 text-sm"
             :activation="mode === 'server'"
             Border
+            :disabled="
+              isEdit
+                ? verifyPermissions([1, 2, 8, 9]) && mode === 'server'
+                : !verifyPermissions([1, 2, 8, 9])
+            "
             @click="mode = 'server'">
             {{ $t('nav.fu-wu-qi') }}
           </ScButton>
@@ -603,8 +609,8 @@ const sendPsot = () => {
     .then((res: Api) => {
       if (res.data.code === 200) {
         loader.value = false
-        if (postData.value.type == 2) {
-          toast.success('请继续发布文件')
+        if (postData.value.type == 2 && !isEdit.value) {
+          toast.success(t('t.qing-ji-xu-fa-bu-wen-jian'))
           router.push({
             name: 'publishResource',
             params: { postId: res.data.data.id ?? postData.value.id },

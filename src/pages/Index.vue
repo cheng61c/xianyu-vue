@@ -1,5 +1,5 @@
 <template>
-  <PcIndex v-if="deviceStore.device == 2" />
+  <PcIndex v-if="deviceStore.device == 2" @contextmenu="handleMouseMove" />
   <MobileIndex v-else />
 </template>
 
@@ -39,4 +39,9 @@ watch(
   },
   { immediate: true }
 )
+
+const handleMouseMove = (e: MouseEvent) => {
+  configStore.menu.x = e.clientX
+  configStore.menu.y = e.clientY
+}
 </script>

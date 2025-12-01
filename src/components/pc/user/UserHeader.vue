@@ -1,18 +1,17 @@
 <template>
   <Card
-    v-if="userStore.isLogin"
     class="stats w-full items-center"
     :class="{
       'max-w-6xl min-w-4xl ': deviceStore.device == 2,
     }"
     noCol>
     <Avatar
-      :src="formatLink(userStore.userInfo.headImg) || ''"
-      :alt="userStore.userInfo.nickname"
+      :src="formatLink(userInfo.headImg) || ''"
+      :alt="userInfo.nickname"
       :size="64"
       @click="updateHerdImg" />
     <div>
-      <div class="text-lg font-bold">{{ userStore.userInfo.nickname }}</div>
+      <div class="text-lg font-bold">{{ userInfo.nickname }}</div>
       <div class="flex items-center flex-wrap gap-2">
         <ScTag size="sm" status="info"> uid {{ userInfo.id }} </ScTag>
         <ScRole :user="userInfo" isAll size="sm"></ScRole>
@@ -21,12 +20,13 @@
         {{
           $t(
             'd.shang-ci-deng-lu-shi-jian-formattimeuserstoreuserinfolastlogintime',
-            [formatTimeOrAgo(userStore.userInfo.lastLoginTime, $t)]
+            [formatTimeOrAgo(userInfo.lastLoginTime, $t)]
           )
         }}
       </div>
     </div>
   </Card>
+
   <ScModal v-model="updateHerdImgModal">
     <Card
       :class="{
@@ -137,7 +137,6 @@ const { t } = useI18n()
 const deviceStore = useDeviceStore()
 const toast = useToast()
 const userStore = useUserStore()
-const userInfo = ref(userStore.userInfo)
 const updateHerdImgModal = ref(false)
 const loading = ref(false) // 上传状态
 const previewBgColor = ref('#00000000')
@@ -153,7 +152,6 @@ const props = defineProps({
     default: () => ({}),
   },
 })
-
 const clearColor = () => {
   previewBgColor.value = '#00000000'
 }

@@ -99,9 +99,16 @@ const hideMenu = () => {
 
 const onContextMenu = (e: MouseEvent) => {
   e.preventDefault()
-  menuX.value = e.clientX
-  menuY.value = e.clientY - 180
-  console.log(e.clientX, e.clientY - 180)
+  if (wrapperRef.value) {
+    const rect = wrapperRef.value.getBoundingClientRect()
+    menuX.value = e.clientX - rect.left // 相对于元素的X坐标
+    menuY.value = e.clientY - rect.top // 相对于元素的Y坐标
+  } else {
+    menuX.value = e.clientX
+    menuY.value = e.clientY
+  }
+
+  console.log(menuX.value, menuY.value)
 
   menuVisible.value = true
 }

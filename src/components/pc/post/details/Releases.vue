@@ -39,6 +39,13 @@
     </div>
   </Card>
 
+  <Card v-if="!versios || versios.length == 0" class="mb-4" :id="id">
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.zi-yuan-xia-zai') }}</h3>
+    <div class="text-gray-content">
+      {{ $t('d.shi-mo-ye-mei-you') }}
+    </div>
+  </Card>
+
   <ScModal v-model="showModal">
     <Card class="gap-4 w-4xl h-full max-h-[80vh] overflow-y-auto">
       <div class="flex justify-between items-center">

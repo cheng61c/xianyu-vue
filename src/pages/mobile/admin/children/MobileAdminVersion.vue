@@ -56,7 +56,6 @@
     v-else
     :title="$t('t.zan-wu-tie-zi')"
     iconSize="64"
-    iconColor="#ccc"
     :icon="ArchiveX"
     class="mt-8"
     :action="$t('b.dian-ji-shua-xin')"
@@ -84,7 +83,10 @@
       </div>
       <div class="flex items-center gap-4">
         <span> {{ $t('b.ban-ben-hao') }} </span>
-        <ScInput v-model="currentVersionBody.version" class="m-2" />
+        <ScInput
+          v-model="currentVersionBody.version"
+          :placeholder="$t('b.ban-ben-hao')"
+          class="m-2" />
       </div>
 
       <div class="flex gap-4 justify-end">
@@ -328,6 +330,7 @@ const updateVersion = (index: number) => {
       }
     })
     .catch((error) => {
+      toast.error(t('t.wei-zhi-cuo-wu'))
       console.error('请求失败:', error.msg)
     })
 }

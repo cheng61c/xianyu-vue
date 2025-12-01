@@ -3,6 +3,7 @@ import { createLowlight } from 'lowlight'
 import csharp from 'highlight.js/lib/languages/csharp'
 import { useConfigStore } from '@/stores/global/configStore'
 import { usePostStore } from '@/stores/module/post/postStore'
+import { marked } from 'marked'
 
 const lowlight = createLowlight({
   csharp: csharp, // 只注册 C# 语言
@@ -354,5 +355,12 @@ export const formatUploadImage = (html: string): string => {
   )) {
     html = html.replace(new RegExp(localUrl, 'g'), serverUrl)
   }
+  return html
+}
+
+export const markedToHtml = async (md: string): Promise<string> => {
+  if (!md || md === '') return ''
+  const html = await marked.parse(md)
+  if (!html || html === '') return ''
   return html
 }

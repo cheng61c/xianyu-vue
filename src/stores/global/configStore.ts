@@ -21,6 +21,11 @@ export const useConfigStore = defineStore('config', {
     padAdaptation: false,
     /** 网络请求中 */
     loading: false,
+    /** 鼠标位置 */
+    menu: {
+      x: 0,
+      y: 0,
+    },
   }),
 
   actions: {

@@ -1,5 +1,5 @@
 <template>
-  <template v-if="props.isAll && userInfo.roles.length > 0">
+  <template v-if="props.isAll && userInfo.roles && userInfo.roles.length > 0">
     <ScTag
       v-for="role in userInfo.roles"
       :key="role.id"
@@ -8,9 +8,9 @@
       <template v-if="!props.noRole">{{ role.name }}</template>
     </ScTag>
   </template>
-  <template v-else>
+  <template v-else-if="props.isAll && userInfo.roles">
     <ScTag
-      :bgColor="userInfo.roles[0]?.color"
+      :bgColor="userInfo.roles[0]?.color ?? 'var(--color-active)'"
       :size="props.size"
       :status="!userInfo.roles[0] ? 'info' : ''">
       <template

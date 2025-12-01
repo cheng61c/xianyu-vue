@@ -3,12 +3,13 @@
   <div class="mx-auto max-w-[1600px] pb-4 pm-4">
     <HomeHeader />
     <div class="w-full mx-auto px-4 pt-1 overflow-y-auto">
+      <!-- 主页PostIndex -->
       <router-view></router-view>
     </div>
     <div
       class="text-center"
-      v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])">
-      updateTime: 2025年11月29日00:08:33
+      v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])">
+      updateTime: 2025年12月1日22:14:54
     </div>
     <PopUpAnnouncement />
   </div>

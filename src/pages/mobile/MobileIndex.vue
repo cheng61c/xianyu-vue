@@ -3,13 +3,14 @@
     ref="containerRef"
     class="overflow-y-auto overflow-x-hidden w-full h-[100dvh]">
     <!-- 内容列表 - 这个区域现在会填充剩余空间 -->
+    <!-- 主页MobilePostIndex -->
     <div class="home-content">
       <RouterView />
     </div>
     <div
       class="text-center"
-      v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 9, 10])">
-      updateTime: 2025年11月29日00:08:33
+      v-if="verifyPermissions([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])">
+      updateTime: 2025年12月1日22:14:54
     </div>
   </div>
   <PopUpAnnouncement />

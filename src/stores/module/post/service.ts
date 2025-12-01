@@ -3,7 +3,12 @@ import { plateApi, postApi, reportApi } from '@/apis'
 import { usePostStore } from '@/stores/module/post/postStore'
 import type { Api } from '@/types'
 import type { Plate } from '@/types/Plate'
-import { formatNumber, formatTimeOrAgo, lightHtml } from '@/utils/format'
+import {
+  formatNumber,
+  formatTimeOrAgo,
+  lightHtml,
+  markedToHtml,
+} from '@/utils/format'
 import { extractImageSrcs, formatImageSrcsInHtml } from '@/utils/regex'
 import type { PostListQueryDto } from '@/types/PostListQueryDto'
 import type { Post } from '@/types/Post'
@@ -137,7 +142,7 @@ export const getPost = async (
   if (pid !== 0) {
     query.plateId = pid
   }
-  if (postStore.fileType !== 0) {
+  if (postStore.fileType !== 0 && query.type == 2) {
     query.fileTypes = String(postStore.fileType)
   }
   query.page = postStore.postPage.page
@@ -162,6 +167,7 @@ export const getPost = async (
     }
   })
 }
+
 /** 搜索帖子 */
 export const search = (
   key: string,
@@ -170,6 +176,8 @@ export const search = (
   route: RouteLocationNormalizedLoadedGeneric,
   t: any
 ) => {
+  console.log('fileTypes', fileTypes)
+
   if (click) {
     postStore.postPage.page = 1
   }
@@ -187,17 +195,19 @@ export const search = (
     query.plateId = postStore.plateId
   }
 
-  if (fileTypes && fileTypes != '0' && fileTypes.length > 0) {
+  if (fileTypes && fileTypes != '0' && query.type == 2) {
     query.fileTypes = fileTypes
-  } else {
-    query.fileTypes = String(postStore.fileType)
   }
+
   if (postStore.searchText != '') {
     query.title = postStore.searchText
   }
 
   query.page = postStore.postPage.page
   query.limit = postStore.postPage.limit
+
+  console.log('query', query)
+
   postApi.getPostList(query).then((response: Api) => {
     const res = response.data
     if (res.code === 200) {
@@ -221,9 +231,11 @@ export const getPostDetails = async (postId: number, t: any) => {
   postStore.errorPage = false // 重置错误页面标志
   return postApi
     .getPostDetail(postId)
-    .then((response: Api) => {
+    .then(async (response: Api) => {
       const data = response.data.data as Post
-      data.content = lightHtml(formatImageSrcsInHtml(data.content))
+      data.content = lightHtml(
+        formatImageSrcsInHtml(await markedToHtml(data.content))
+      )
       data.createdAt = formatTimeOrAgo(data.createdAt, t)
       data.updatedAt = formatTimeOrAgo(data.updatedAt, t)
       data.commentCount = formatNumber(data.commentCount)

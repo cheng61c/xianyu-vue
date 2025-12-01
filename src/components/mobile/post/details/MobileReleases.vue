@@ -14,7 +14,7 @@
               'bg-active/30': vIndex != 0,
             }"></div>
           <div
-            class="bg-active h-4 w-4 rounded-full tooltip tooltip-left z-2"
+            class="bg-active h-4 w-4 rounded-full tooltip tooltip-left z-1"
             :data-tip="item.createdAt"></div>
           <div
             class="h-1/3 w-1 flex-1"
@@ -26,16 +26,28 @@
         <!-- 内容 -->
         <div
           @click="handleModalChange(item)"
-          class="flex gap-1 items-center py-2 col-start-2 row-start-1 row-span-3">
+          class="flex gap-1 items-center py-2 flex-wrap">
           <ScTag v-if="vIndex == 0" size="sm" status="success">
             {{ $t('b.zui-xin') }}
           </ScTag>
           <ScTag size="sm" status="info">
             {{ item.version }}
           </ScTag>
-          {{ item.title }}
+          <ScTag size="sm" status="info">
+            <Package :size="14" class="mr-1" /> {{ item.files.length }}
+          </ScTag>
+          <div class="">
+            {{ item.title }}
+          </div>
         </div>
       </div>
+    </div>
+  </Card>
+
+  <Card v-if="!versios || versios.length == 0" class="mb-4">
+    <h3 class="text-lg font-bold mb-2">{{ $t('d.zi-yuan-xia-zai') }}</h3>
+    <div class="text-gray-content">
+      {{ $t('d.shi-mo-ye-mei-you') }}
     </div>
   </Card>
 
@@ -110,7 +122,7 @@ import ScModal from '@/components/common/ScModal.vue'
 import type { DocumentVersion } from '@/types/DocumentVersion'
 import EmptyState from '@/components/common/EmptyState.vue'
 import ScButton from '@/components/common/ScButton.vue'
-import { Download, Minimize2 } from 'lucide-vue-next'
+import { Download, Minimize2, Package } from 'lucide-vue-next'
 import { formatFileSize, formatTimeOrAgo } from '@/utils/format'
 import { downloadApi } from '@/apis'
 import { useI18n } from 'vue-i18n'

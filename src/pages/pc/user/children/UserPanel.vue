@@ -75,7 +75,13 @@
     </div>
   </Card>
 
-  <Card v-if="userStore.isLogin" class="stats max-w-6xl min-w-4xl w-full" noCol>
+  <Card
+    v-if="
+      (!userStore.isLogin && userInfo && !isCurrentUser) ||
+      (userStore.isLogin && userInfo && !isCurrentUser)
+    "
+    class="stats max-w-6xl min-w-4xl w-full"
+    noCol>
     <div
       v-html="userInfo.signature || '<p>这个人很懒，什么都没有留下</p>'"
       class="tiptap w-full"></div>
@@ -86,7 +92,7 @@
 import { formatLink, formatNumber, formatTimeOrAgo } from '@/utils/format'
 import { useUserStore } from '@/stores/module/user/userStore'
 import type { UserType } from '@/types'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import {
   ScrollText,
   MessageCircle,
@@ -102,10 +108,11 @@ import { useRoute } from 'vue-router'
 import { userApi } from '@/apis'
 import { formatImageSrcsInHtml } from '@/utils/regex'
 import { useI18n } from 'vue-i18n'
+import { deepClone } from '@/utils/copy'
 
 const { t } = useI18n()
 const userStore = useUserStore()
-const userInfo = ref<UserType>(userStore.userInfo)
+const userInfo = ref<UserType>(deepClone(userStore.userInfo))
 const route = useRoute()
 const isCurrentUser = computed(() => {
   return !route.query.userId
@@ -200,10 +207,44 @@ const getPanel = async (userId: number) => {
   comments.value.count = panel.comments.count
 }
 
+const getUserInfo = (uid: number) => {
+  userApi
+    .getUser(uid)
+    .then((response) => {
+      const data = response.data.data as UserType
+      data.headImg = formatLink(data.headImg)
+      data.signature = formatImageSrcsInHtml(data.signature)
+      userInfo.value = data
+      loading.value = false
+    })
+    .catch((error) => {
+      console.error('Error fetching user info:', error)
+      loading.value = false
+    })
+}
+
 onMounted(() => {
-  const userId = route.query.userId
-    ? Number(route.query.userId)
-    : userStore.userInfo.id
-  getPanel(userId ?? userStore.userInfo.id)
+  loading.value = true
+  if (route.query.userId) {
+    console.log('route.query.userId', route.query.userId)
+    getUserInfo(Number(route.query.userId))
+    return
+  } else {
+    getCurrentUserInfo()
+    getPanel(userStore.userInfo.id)
+  }
 })
+
+watch(
+  () => route.query,
+  (newVal) => {
+    loading.value = true
+    if (newVal.userId) {
+      getUserInfo(Number(newVal.userId))
+    } else {
+      getCurrentUserInfo()
+    }
+  },
+  { immediate: true }
+)
 </script>

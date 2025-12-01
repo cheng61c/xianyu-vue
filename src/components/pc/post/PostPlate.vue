@@ -1,62 +1,40 @@
 <template>
-  <ul class="flex flex-col gap-4 p-1 min-w-40">
-    <Card
-      @click="handleCardClick(0, route, router)"
-      class="w-full cursor-pointer"
-      :activation="activation == 0">
-      <div class="flex gap-2 text-background-content justify-between">
-        <span
-          class="flex gap-2 items-center justify-center text-background-content font-bold"
-          :class="{ 'text-primary': activation == 0 }">
-          <Signpost />
-          {{ $t('b.quan-bu-ban-kuai') }}
-        </span>
-      </div>
-    </Card>
-
-    <li
-      v-for="plate in postStore.plate[
-        postStore.currentPlate.currentRouteName as string
-      ]"
-      :key="plate.id">
-      <Card
-        @click="handleCardClick(plate.id, route, router)"
-        class="w-full cursor-pointer"
-        :activation="
-          activation == plate.id ||
-          postStore.currentPlate.currentRouteName == plate.name
-        ">
-        <div class="flex gap-2 text-background-content justify-between">
-          <span
-            class="flex gap-2 items-center justify-center text-background-content font-bold"
-            :class="{ 'text-primary': activation == plate.id }">
-            <Signpost />
-            {{ plate.name }}
-          </span>
-        </div>
-      </Card>
-    </li>
-  </ul>
+  <ScButtonSelector v-model="activation" :options="plates"> </ScButtonSelector>
 </template>
 <script setup lang="ts">
 import { usePostStore } from '@/stores/module/post/postStore'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Signpost } from 'lucide-vue-next'
 import {
   getPlate,
   getPost,
   handleCardClick,
 } from '@/stores/module/post/service'
-import Card from '@/components/common/Card.vue'
 import { useI18n } from 'vue-i18n'
+import ScButtonSelector from '@/components/common/ScButtonSelector.vue'
 
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const postStore = usePostStore()
+const plates = computed(() => {
+  const list =
+    postStore.plate[postStore.currentPlate.currentRouteName as string] || []
+  return [
+    {
+      value: 0,
+      label: t('b.quan-bu-ban-kuai'),
+    },
+    ...list.map((item) => {
+      return {
+        value: item.id,
+        label: item.name,
+      }
+    }),
+  ]
+})
 
-const activation = ref(0)
+const activation = ref<number>(0)
 
 onMounted(async () => {
   postStore.currentPlate.currentRouteName = (route.name as string) || ''
@@ -64,6 +42,10 @@ onMounted(async () => {
     ? +(route.params.plateId as string)
     : 0
   getPlate(t)
+})
+
+watch(activation, (newVal) => {
+  handleCardClick(newVal, route, router)
 })
 
 watch(

@@ -25,7 +25,7 @@
         </li>
       </template>
 
-      <li v-if="postData?.type == 2 && postData?.postVersions?.length">
+      <li v-if="postData?.type == 2">
         <RouterLink
           :to="{ hash: `#releases` }"
           class="hover:underline text-blue-600 cursor-pointer">
