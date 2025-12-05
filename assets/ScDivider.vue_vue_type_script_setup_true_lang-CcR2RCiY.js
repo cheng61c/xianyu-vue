@@ -1,0 +1,1 @@
+import{v as e,f as t,o as c}from"./lucide-vue-next-ClG1DyIk.js";const i=e({__name:"ScDivider",props:{vertical:{type:Boolean}},setup(e){const i=e,r={width:i.vertical?"1px":void 0,height:i.vertical?void 0:"1px",margin:"4px",backgroundColor:"#cccccc99",flexShrink:0,alignSelf:"stretch"};return(e,i)=>(c(),t("div",{style:r}))}});export{i as _};

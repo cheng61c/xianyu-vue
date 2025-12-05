@@ -1,0 +1,1 @@
+import{d as defineStore}from"../../lucide-vue-next-ClG1DyIk.js";const o=defineStore("user",{state:()=>({token:"",userInfo:{},account:"",password:"",autoLogin:!1,isLogin:!1,showLoginModal:!1}),actions:{logout(){this.token="",this.userInfo={},this.account="",this.password="",this.autoLogin=!1,this.isLogin=!1,this.showLoginModal=!1}},persist:!0});export{o as u};

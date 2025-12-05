@@ -1,0 +1,1 @@
+import{s,d as c}from"../admin/service-BRQ-emKh.js";import{u as e}from"../../lucide-vue-next-ClG1DyIk.js";const a=e(),n=(c,e,n)=>{s(e).then(s=>{200===s.data.code&&(a.success(c("t.ping-lun-cheng-gong")),n&&n())})},t=(s,e,n)=>{c(e).then(()=>{a.success(s("t.shan-chu-cheng-gong")),n&&n()}).catch(c=>{a.error(s("t.shan-chu-shi-bai")+c)})};export{t as d,n as s};

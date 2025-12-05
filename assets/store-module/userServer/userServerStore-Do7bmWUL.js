@@ -1,0 +1,1 @@
+import{d as defineStore}from"../../lucide-vue-next-ClG1DyIk.js";const t=defineStore("userServer",{state:()=>({pagination:{page:1,limit:10,total:0},resLoding:!1,posts:[],currentPostIndex:-1,modal:{isDeletePost:!1}}),actions:{}});export{t as u};
