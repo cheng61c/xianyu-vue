@@ -1,0 +1,1 @@
+import{ak as a,al as n,am as s,an as i,ao as u,ap as o,aq as b}from"./vendor-lucide-DYSNolYz.js";const r={1:b,2:o,3:u,4:i,5:a,6:s,7:n,8:a};function t(a){return{1:a("b.cun-dang"),2:a("b.jia-ju"),3:a("b.cai-zhi"),4:a("b.pi-fu"),5:a("b.mo-zu"),6:a("b.tu-pian"),7:a("b.ruan-jian"),8:"联机模组"}}export{r as i,t as u};

@@ -1,0 +1,1 @@
+import{d as defineStore}from"../lucide-vue-next-DYmFLWJU.js";const e=defineStore("theme",{state:()=>({themeList:[],colors:{primary:"#3b82f6",primaryHover:"#93c5fd",primaryPress:"#2563eb",background:"#f8fcff"},darkTheme:!1}),persist:!0});export{e as u};
