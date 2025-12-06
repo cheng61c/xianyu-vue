@@ -8,23 +8,17 @@ import compression from 'vite-plugin-compression'
 
 // https://vite.dev/config/
 export default defineConfig({
-  define: {
-    __INTLIFY_PROD_DEVTOOLS__: false, // 禁用生产环境 devtools
-    __VUE_I18N_FULL_INSTALL__: false, // 禁用完整安装
-    __VUE_I18N_LEGACY_API__: false,
-    __VUE_I18N_PROD_DEVTOOLS__: false,
-  },
   plugins: [
     vue(),
     svgLoader(),
     tailwindcss(),
-    // visualizer({ open: true }), // 构建后自动打开分析页面
-    compression({
-      algorithm: 'gzip',
-      ext: '.gz',
-      threshold: 1024, // 小于1kb的文件不压缩
-      deleteOriginFile: true, // 删除原文件
-    }),
+    // 注释/删除这部分压缩配置
+    // compression({
+    //   algorithm: 'gzip',
+    //   ext: '.gz',
+    //   threshold: 1024,
+    //   deleteOriginFile: true, // 这行是导致原始index.html被删除的关键
+    // }),
   ],
   base: '/xianyu-vue/', // 设置基础路径
   resolve: {
