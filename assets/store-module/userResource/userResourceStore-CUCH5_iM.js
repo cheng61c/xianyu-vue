@@ -1,0 +1,1 @@
+import{d as defineStore}from"../../lucide-vue-next-Cfi51zEF.js";const e=defineStore("userResource",{state:()=>({currenPkgId:0,currenPostId:0,packageList:[],posts:[],pagination:{page:1,limit:10,total:0,count:0},searchText:"",loading:!1,isDeletePkg:!1,isDeletePost:!1,isSearch:!1}),actions:{},persist:!0});export{e as u};

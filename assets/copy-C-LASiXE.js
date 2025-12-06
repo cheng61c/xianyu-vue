@@ -1,0 +1,1 @@
+function t(r){if(null===r||"object"!=typeof r)return r;if(r instanceof Date)return new Date(r.getTime());if(Array.isArray(r))return r.map(r=>t(r));const e={};for(const n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=t(r[n]));return e}export{t as d};
